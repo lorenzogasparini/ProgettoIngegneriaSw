@@ -28,7 +28,7 @@ public class NavBar extends HBox {
     private void initialize() {
         this.setSpacing(10);
         this.setPadding(new Insets(10));
-        this.setStyle("-fx-background-color: #007bff;");
+        this.setStyle("-fx-background-color: #2a9d8f;");
         
         Label brandLabel = new Label("Dash App");
         brandLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 18px;");
@@ -84,7 +84,7 @@ public class NavBar extends HBox {
         
         // Hover effect
         button.setOnMouseEntered(e -> 
-            button.setStyle("-fx-background-color: #0069d9; -fx-text-fill: white; -fx-cursor: hand;"));
+            button.setStyle("-fx-background-color: #21867a; -fx-text-fill: white; -fx-cursor: hand;"));
         button.setOnMouseExited(e -> 
             button.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-cursor: hand;"));
         

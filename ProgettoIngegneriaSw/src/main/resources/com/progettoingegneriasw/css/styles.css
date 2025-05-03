@@ -2,97 +2,102 @@
 .root {
     -fx-font-family: 'Segoe UI', Arial, sans-serif;
     -fx-font-size: 14px;
-    -fx-background-color: #f8f9fa;
+    -fx-background-color: #f1f7f6; /* light mint background */
 }
 
 /* Button Styles */
 .button {
-    -fx-background-color: #007bff;
+    -fx-background-color: #2a9d8f; /* teal green */
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-padding: 8px 16px;
-    -fx-background-radius: 4px;
+    -fx-background-radius: 6px;
     -fx-cursor: hand;
 }
 
 .button:hover {
-    -fx-background-color: #0069d9;
+    -fx-background-color: #21867a;
 }
 
 .button-secondary {
-    -fx-background-color: #6c757d;
+    -fx-background-color: #b0bec5; /* soft gray-blue */
+    -fx-text-fill: #263238;
 }
 
 .button-secondary:hover {
-    -fx-background-color: #5a6268;
+    -fx-background-color: #90a4ae;
 }
 
 .button-success {
-    -fx-background-color: #28a745;
+    -fx-background-color: #6ab04c; /* calm green */
+    -fx-text-fill: white;
 }
 
 .button-success:hover {
-    -fx-background-color: #218838;
+    -fx-background-color: #558b2f;
 }
 
 /* Form Styles */
 .form-control {
     -fx-padding: 8px;
-    -fx-background-radius: 4px;
-    -fx-border-color: #ced4da;
-    -fx-border-radius: 4px;
-    -fx-background-color: white;
-    -fx-prompt-text-fill: #6c757d;
+    -fx-background-radius: 6px;
+    -fx-border-color: #b0bec5;
+    -fx-border-radius: 6px;
+    -fx-background-color: #ffffff;
+    -fx-prompt-text-fill: #78909c;
 }
 
 .form-control:focused {
-    -fx-border-color: #80bdff;
-    -fx-effect: dropshadow(gaussian, rgba(0, 123, 255, 0.25), 0, 0, 0, 0);
+    -fx-border-color: #6c5ce7; /* lavender highlight */
+    -fx-effect: dropshadow(gaussian, rgba(108, 92, 231, 0.2), 0, 0, 0, 0);
 }
 
 .form-label {
     -fx-font-weight: bold;
+    -fx-text-fill: #37474f;
 }
 
 /* Card Styles */
 .card {
-    -fx-background-color: white;
+    -fx-background-color: #ffffff;
     -fx-padding: 15px;
-    -fx-background-radius: 8px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 3);
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 10, 0, 0, 2);
 }
 
 .card-header {
     -fx-font-size: 18px;
     -fx-font-weight: bold;
     -fx-padding: 0 0 10px 0;
-    -fx-border-color: transparent transparent #dee2e6 transparent;
+    -fx-border-color: transparent transparent #cfd8dc transparent;
     -fx-border-width: 0 0 1px 0;
+    -fx-text-fill: #263238;
 }
 
 /* Navigation */
 .nav-container {
-    -fx-background-color: #007bff;
+    -fx-background-color: #2a9d8f;
     -fx-padding: 10px;
+    -fx-text-fill: white;
 }
 
 /* Alert Styles */
 .alert-success {
-    -fx-text-fill: #155724;
-    -fx-background-color: #d4edda;
+    -fx-text-fill: #1b5e20;
+    -fx-background-color: #dcedc8;
     -fx-padding: 10px;
-    -fx-background-radius: 4px;
-    -fx-border-color: #c3e6cb;
-    -fx-border-radius: 4px;
+    -fx-background-radius: 6px;
+    -fx-border-color: #c5e1a5;
+    -fx-border-radius: 6px;
 }
 
 .alert-danger {
-    -fx-text-fill: #721c24;
-    -fx-background-color: #f8d7da;
+    -fx-text-fill: #c62828;
+    -fx-background-color: #ffcdd2;
     -fx-padding: 10px;
-    -fx-background-radius: 4px;
-    -fx-border-color: #f5c6cb;
-    -fx-border-radius: 4px;
+    -fx-background-radius: 6px;
+    -fx-border-color: #ef9a9a;
+    -fx-border-radius: 6px;
 }
 
 /* Container and Layout */
@@ -101,5 +106,5 @@
 }
 
 .section {
-    -fx-padding: 10px 0;
+    -fx-padding: 12px 0;
 }
