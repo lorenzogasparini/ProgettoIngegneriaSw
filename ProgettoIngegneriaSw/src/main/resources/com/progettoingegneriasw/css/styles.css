@@ -48,7 +48,7 @@
 }
 
 .form-control:focused {
-    -fx-border-color: #6c5ce7; /* lavender highlight */
+    -fx-border-color: #2a9d8f; /* lavender highlight */
     -fx-effect: dropshadow(gaussian, rgba(108, 92, 231, 0.2), 0, 0, 0, 0);
 }
 
