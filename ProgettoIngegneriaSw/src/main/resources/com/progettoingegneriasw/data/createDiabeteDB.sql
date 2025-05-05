@@ -1,0 +1,147 @@
+/* CANCELLA TUTTI I DATI DALLE TABELLE
+-- Disabilita temporaneamente le chiavi esterne per evitare errori di vincolo
+PRAGMA foreign_keys = OFF;
+
+DELETE FROM log;
+DELETE FROM rilevazione_sintomo;
+DELETE FROM rilevazione_glicemia;
+DELETE FROM rilevazione_farmaco;
+DELETE FROM patologia_paziente;
+DELETE FROM terapia;
+DELETE FROM farmaco;
+DELETE FROM patologia;
+DELETE FROM paziente;
+DELETE FROM diabetologo;
+DELETE FROM amministratore;
+
+-- Riabilita i vincoli
+PRAGMA foreign_keys = ON;
+*/
+
+/* CANCELLA TUTTE LE TABELLE
+DROP TABLE IF EXISTS log;
+DROP TABLE IF EXISTS rilevazione_sintomo;
+DROP TABLE IF EXISTS rilevazione_glicemia;
+DROP TABLE IF EXISTS rilevazione_farmaco;
+DROP TABLE IF EXISTS patologia_paziente;
+DROP TABLE IF EXISTS terapia;
+DROP TABLE IF EXISTS farmaco;
+DROP TABLE IF EXISTS patologia;
+DROP TABLE IF EXISTS paziente;
+DROP TABLE IF EXISTS diabetologo;
+DROP TABLE IF EXISTS amministratore;
+
+*/
+
+-- Tabella amministratore
+CREATE TABLE amministratore (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
+
+-- Tabella diabetologo
+CREATE TABLE diabetologo (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    email VARCHAR(100) NOT NULL
+);
+
+-- Tabella paziente
+CREATE TABLE paziente (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    email VARCHAR(100),
+    id_diabetologo INTEGER NOT NULL,
+    data_nascita DATE,
+    peso REAL,
+    provincia_residenza VARCHAR(2),
+    comune_residenza VARCHAR(100),
+    note_paziente TEXT,
+    FOREIGN KEY(id_diabetologo) REFERENCES diabetologo(id)
+);
+
+
+-- Tabella log
+CREATE TABLE log (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_paziente INTEGER NOT NULL,
+    id_diabetologo INTEGER NOT NULL,
+    azione TEXT NOT NULL,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(id_paziente) REFERENCES paziente(id),
+    FOREIGN KEY(id_diabetologo) REFERENCES diabetologo(id)
+);
+
+
+-- Tabella rilevazione_glicemia
+CREATE TABLE rilevazione_glicemia (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_paziente INTEGER NOT NULL,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    valore INTEGER NOT NULL, -- in mg
+    prima_pasto BOOLEAN, -- se false il valore è dopo il pasto
+    FOREIGN KEY(id_paziente) REFERENCES paziente(id)
+);
+
+-- Tabella rilevazione_sintomo
+CREATE TABLE rilevazione_sintomo (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_paziente INTEGER NOT NULL,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    sintomo TEXT NOT NULL,
+    intensita INTEGER CHECK (intensita >= 1 AND intensita <= 10), -- valore da 1 a 10
+    FOREIGN KEY(id_paziente) REFERENCES paziente(id)
+);
+
+-- Tabella patologia
+CREATE TABLE patologia (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome VARCHAR(1000) NOT NULL,
+    codice_icd VARCHAR(10) NOT NULL UNIQUE -- codice standardizzato (ICD) a livello internazionale
+);
+
+
+-- Tabella farmaco
+CREATE TABLE farmaco (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    codice_aic VARCHAR(9) NOT NULL UNIQUE,
+    nome VARCHAR(1000) NOT NULL
+);
+
+-- Tabella terapia
+CREATE TABLE terapia (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_farmaco INTEGER NOT NULL,
+    dosi_giornaliere INTEGER, -- numero di dosi al giorno
+    quantita_per_dose REAL, -- in mg
+    note TEXT,
+    FOREIGN KEY(id_farmaco) REFERENCES farmaco(id)
+);
+
+-- Tabella patologia_paziente
+CREATE TABLE patologia_paziente (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_paziente INTEGER NOT NULL,
+    id_patologia INTEGER NOT NULL,
+    id_terapia INTEGER NOT NULL,
+    data_diagnosi DATE,
+	note_patologia TEXT, -- note specifiche relative alla patologia di questo paziente
+    FOREIGN KEY(id_paziente) REFERENCES paziente(id),
+    FOREIGN KEY(id_patologia) REFERENCES patologia(id),
+    FOREIGN KEY(id_terapia) REFERENCES terapia(id),
+    UNIQUE(id_paziente, id_patologia) -- un paziente può essere diagnosticato solo una volta con quella patologia
+    				      -- ma per la stessa patologia può avere più terapia
+);
+
+-- Tabella rilevazione_farmaco
+CREATE TABLE rilevazione_farmaco (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_paziente INTEGER NOT NULL,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    quantita REAL, -- in mg
+    note TEXT,
+    FOREIGN KEY(id_paziente) REFERENCES paziente(id)
+);
