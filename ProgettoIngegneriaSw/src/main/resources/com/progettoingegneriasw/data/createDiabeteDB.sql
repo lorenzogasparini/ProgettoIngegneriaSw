@@ -36,6 +36,8 @@ DROP TABLE IF EXISTS amministratore;
 -- Tabella amministratore
 CREATE TABLE amministratore (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+	nome VARCHAR(50) NOT NULL,
+	cognome VARCHAR(50) NOT NULL,
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL
 );
@@ -43,6 +45,8 @@ CREATE TABLE amministratore (
 -- Tabella diabetologo
 CREATE TABLE diabetologo (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+	nome VARCHAR(50) NOT NULL,
+	cognome VARCHAR(50) NOT NULL,
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     email VARCHAR(100) NOT NULL
@@ -51,6 +55,8 @@ CREATE TABLE diabetologo (
 -- Tabella paziente
 CREATE TABLE paziente (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+	nome VARCHAR(50) NOT NULL,
+	cognome VARCHAR(50) NOT NULL,
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     email VARCHAR(100),
@@ -107,7 +113,7 @@ CREATE TABLE patologia (
 -- Tabella farmaco
 CREATE TABLE farmaco (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    codice_aic VARCHAR(9) NOT NULL UNIQUE,
+    codice_aic VARCHAR(10) NOT NULL UNIQUE,
     nome VARCHAR(1000) NOT NULL
 );
 
@@ -116,7 +122,7 @@ CREATE TABLE terapia (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     id_farmaco INTEGER NOT NULL,
     dosi_giornaliere INTEGER, -- numero di dosi al giorno
-    quantita_per_dose REAL, -- in mg
+    quantita_per_dose REAL, -- in g
     note TEXT,
     FOREIGN KEY(id_farmaco) REFERENCES farmaco(id)
 );
