@@ -1,19 +1,19 @@
 -- Amministratori
-INSERT INTO amministratore (username, password) VALUES
-('admin1', 'hashed_pw1'),
-('admin2', 'hashed_pw2');
+INSERT INTO amministratore (nome, cognome, username, password) VALUES
+('Lorenzo', 'Gasparini', 'admin1', 'hashed_pw1'),
+('Andrea', 'Pellizzari', 'admin2', 'hashed_pw2');
 
 -- Diabetologi
-INSERT INTO diabetologo (username, password, email) VALUES
-('drrossi', 'hashed_pw3', 'rossi@asl.it'),
-('drbianchi', 'hashed_pw4', 'bianchi@asl.it');
+INSERT INTO diabetologo (nome, cognome, username, password, email) VALUES
+('Luca', 'Rossi', 'drrossi', 'hashed_pw3', 'rossi@asl.it'),
+('Pietro', 'Bianchi', 'drbianchi', 'hashed_pw4', 'bianchi@asl.it');
 
 -- Pazienti
-INSERT INTO paziente (username, password, email, id_diabetologo, data_nascita, peso, provincia_residenza, comune_residenza, note_paziente) VALUES
-('mario.rossi', 'hashed_pw5', 'mario.rossi@gmail.com', 1, '1980-05-12', 80.5, 'RM', 'Roma', 'Segue dieta bilanciata'),
-('lucia.verdi', 'hashed_pw6', 'lucia.verdi@gmail.com', 1, '1975-11-23', 65.0, 'MI', 'Milano', 'Allergica a penicillina'),
-('giulia.bianchi', 'hashed_pw7', 'giulia.bianchi@gmail.com', 2, '1990-02-08', 72.3, 'TO', 'Torino', NULL),
-('andrea.neri', 'hashed_pw8', 'andrea.neri@gmail.com', 2, '2000-07-30', 78.0, 'FI', 'Firenze', 'Sportivo, non fumatore');
+INSERT INTO paziente (nome, cognome, username, password, email, id_diabetologo, data_nascita, peso, provincia_residenza, comune_residenza, note_paziente) VALUES
+('Mario' , 'Rossi', 'mario.rossi', 'hashed_pw5', 'mario.rossi@gmail.com', 1, '1980-05-12', 80.5, 'RM', 'Roma', 'Segue dieta bilanciata'),
+('Lucia', 'Verdi', 'lucia.verdi', 'hashed_pw6', 'lucia.verdi@gmail.com', 1, '1975-11-23', 65.0, 'MI', 'Milano', 'Allergica a penicillina'),
+('Giulia', 'Bianchi', 'giulia.bianchi', 'hashed_pw7', 'giulia.bianchi@gmail.com', 2, '1990-02-08', 72.3, 'TO', 'Torino', NULL),
+('Andrea', 'Neri', 'andrea.neri', 'hashed_pw8', 'andrea.neri@gmail.com', 2, '2000-07-30', 78.0, 'FI', 'Firenze', 'Sportivo, non fumatore');
 
 -- Log
 INSERT INTO log (id_paziente, id_diabetologo, azione) VALUES
