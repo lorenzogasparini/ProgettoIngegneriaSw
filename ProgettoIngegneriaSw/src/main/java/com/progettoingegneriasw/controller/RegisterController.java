@@ -2,7 +2,7 @@ package com.progettoingegneriasw.controller;
 
 import com.progettoingegneriasw.Main;
 import com.progettoingegneriasw.model.User;
-import com.progettoingegneriasw.model.UserRepository;
+import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.view.ViewNavigator;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -22,11 +22,11 @@ public class RegisterController {
     @FXML
     private Label statusLabel;
     
-    private UserRepository userRepository;
+    private UserDAO userDAO;
     
     @FXML
     public void initialize() {
-        userRepository = Main.getUserRepository();
+        userDAO = Main.getUserRepository();
         statusLabel.setVisible(false);
     }
     
@@ -42,7 +42,7 @@ public class RegisterController {
             return;
         }
         
-        if (userRepository.usernameExists(username)) {
+        if (userDAO.usernameExists(username)) {
             showError("Username already exists");
             return;
         }
@@ -54,7 +54,7 @@ public class RegisterController {
         
         // Create and save new user
         User newUser = User.create(username, password);
-        userRepository.saveUser(newUser);
+        userDAO.saveUser(newUser);
         
         // Show success message
         showSuccess("Registration successful! Please log in.");

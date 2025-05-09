@@ -2,7 +2,7 @@ package com.progettoingegneriasw.controller;
 
 import com.progettoingegneriasw.Main;
 import com.progettoingegneriasw.model.User;
-import com.progettoingegneriasw.model.UserRepository;
+import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.view.ViewNavigator;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -19,11 +19,11 @@ public class LoginController {
     @FXML
     private Label statusLabel;
     
-    private UserRepository userRepository;
+    private UserDAO userDAO;
     
     @FXML
     public void initialize() {
-        userRepository = Main.getUserRepository();
+        userDAO = Main.getUserRepository();
         statusLabel.setVisible(false);
     }
     
@@ -37,7 +37,7 @@ public class LoginController {
             return;
         }
         
-        User user = userRepository.getUser(username);
+        User user = userDAO.getUser(username);
         if (user != null && user.checkPassword(password)) {
             // Login successful
             ViewNavigator.setAuthenticatedUser(username);

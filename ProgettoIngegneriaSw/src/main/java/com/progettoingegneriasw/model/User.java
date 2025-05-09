@@ -1,10 +1,13 @@
 package com.progettoingegneriasw.model;
 
-public class User {
+import com.progettoingegneriasw.model.Admin.Admin;
+import com.progettoingegneriasw.model.Medico.Medico;
+import com.progettoingegneriasw.model.Paziente.Paziente;
+
+public class User implements UserInterface{ // todo: rendere questa classe astratta
     private String id;
     private String username;
     private String password;
-    private boolean isAdmin;
     
     /**
      * Constructor for creating a user with username and password
@@ -12,26 +15,21 @@ public class User {
      * @param username The user's username
      * @param password The user's password (stored in plain text for educational purposes)
      */
-    public User(String username, String password, boolean isAdmin) {
+    public User(String username, String password) {
         this.id = username; // Using username as ID for simplicity
         this.username = username;
         this.password = password;
-        this.isAdmin = isAdmin;
     }
     
     /**
      * Factory method to create a new user
-     * 
+     *
      * @param username The user's username
      * @param password The user's password
      * @return A new User object
      */
-    public static User create(String username, String password, boolean isAdmin) {
-        return new User(username, password, isAdmin);
-    }
-
     public static User create(String username, String password) {
-        return new User(username, password, false);
+        return new User(username, password);
     }
     
     /**
@@ -71,7 +69,26 @@ public class User {
         return password;
     }
 
+    public UserTypes getUserType(){
+        if (this instanceof Admin)
+            return UserTypes.Admin;
+        else if(this instanceof Medico)
+            return UserTypes.Medico;
+        else if(this instanceof Paziente)
+            return UserTypes.Paziente;
+        else
+            throw new UserTypeNotFoundException("This user type is not found");
+    }
+
     public boolean isAdmin() {
-        return isAdmin;
+        return this.getUserType().equals(UserTypes.Admin);
+    }
+
+    public boolean isMedico() {
+        return this.getUserType().equals(UserTypes.Medico);
+    }
+
+    public boolean isPaziente() {
+        return this.getUserType().equals(UserTypes.Paziente);
     }
 }

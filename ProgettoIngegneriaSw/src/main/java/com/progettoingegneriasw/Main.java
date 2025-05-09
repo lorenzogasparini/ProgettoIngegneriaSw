@@ -1,6 +1,6 @@
 package com.progettoingegneriasw;
 
-import com.progettoingegneriasw.model.UserRepository;
+import com.progettoingegneriasw.model.UserDAO;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,7 +11,7 @@ import java.net.URL;
 
 public class Main extends Application {
     
-    private static UserRepository userRepository = new UserRepository();
+    private static UserDAO userDAO = new UserDAO();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -36,8 +36,8 @@ public class Main extends Application {
     /**
      * Get the application-wide user repository
      */
-    public static UserRepository getUserRepository() {
-        return userRepository;
+    public static UserDAO getUserRepository() {
+        return userDAO;
     }
 
     public static void main(String[] args) {

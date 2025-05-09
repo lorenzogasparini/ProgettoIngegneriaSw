@@ -24,11 +24,11 @@ public class DatabaseManager {
         }
         
         this.dbUrl = "jdbc:sqlite:" + dbPath;
-        initializeDatabase();
+        //initializeDatabase(); // commented (not used)
     }
     
     /**
-     * Initialize the database and create tables if they don't exist
+     * Initialize the database and create tables if they don't exist --> NOT USED
      */
     private void initializeDatabase() {
         try (Connection conn = getConnection();
