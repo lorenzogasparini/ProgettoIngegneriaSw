@@ -9,7 +9,7 @@ public class MedicoDAO extends UserDAO {
 
     private MedicoDAO() {
         // Init DB connection, maybe from a config class
-
+        super();
     }
 
     public static synchronized MedicoDAO getInstance() {

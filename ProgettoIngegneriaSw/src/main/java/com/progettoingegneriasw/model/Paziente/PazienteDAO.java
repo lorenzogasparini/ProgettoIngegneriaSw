@@ -12,7 +12,7 @@ public class PazienteDAO extends UserDAO {
 
     private PazienteDAO() {
         // Init DB connection, maybe from a config class
-
+        super();
     }
 
     public static synchronized PazienteDAO getInstance() { // synchronized to avoid more thread accessing at the same time

@@ -9,6 +9,7 @@ public class AdminDAO extends UserDAO {
 
     private AdminDAO(){
         // Init DB connection, maybe from a config class
+        super();
     }
 
     public static synchronized AdminDAO getInstance() {
