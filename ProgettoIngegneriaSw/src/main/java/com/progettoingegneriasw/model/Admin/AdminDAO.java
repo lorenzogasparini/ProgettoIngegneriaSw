@@ -24,5 +24,5 @@ public class AdminDAO extends UserDAO {
         return SQLTableName;
     }
 
-    // todo: aggiungi i metodi per l'Admin
+    // todo: aggiungi i metodi per l'Admin (non vanno messi nell'interfaccia perchè non esistono intefaccie per i DAO)
 }

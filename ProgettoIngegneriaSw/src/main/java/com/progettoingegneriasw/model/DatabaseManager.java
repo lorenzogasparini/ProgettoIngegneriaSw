@@ -24,42 +24,60 @@ public class DatabaseManager {
         }
         
         this.dbUrl = "jdbc:sqlite:" + dbPath;
-        //initializeDatabase(); // commented (not used)
+        initializeDatabase(); // commented (not used)
     }
-    
-    /**
-     * Initialize the database and create tables if they don't exist --> NOT USED
-     */
+
     private void initializeDatabase() {
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement()) {
 
-            //  Sostituibile con executeFile(DATABASE_CREATION_SQL) ed executeFile(DATABASE_POPULATION_SQL)
-            // Create users table if it doesn't exist
-            stmt.execute("CREATE TABLE IF NOT EXISTS users (" +
-                         "username TEXT PRIMARY KEY, " +
-                         "password TEXT, " +
-                         "is_admin INTEGER" +
-                         ")");
-            
-            // Check if admin user exists, create if it doesn't
-            try (ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE username = 'admin'")) {
-                if (!rs.next()) {
-                    // Admin user doesn't exist, create it
-                    try (PreparedStatement pstmt = conn.prepareStatement(
-                            "INSERT INTO users (username, password, is_admin) VALUES (?, ?, ?)")) {
-                        pstmt.setString(1, "admin");
-                        pstmt.setString(2, "admin");
-                        pstmt.setInt(3, 1);
-                        pstmt.executeUpdate();
-                    }
-                }
-            }
-            
+            // Create amministratore table
+            stmt.executeUpdate("""
+            CREATE TABLE amministratore (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        	nome VARCHAR(50) NOT NULL,
+                        	cognome VARCHAR(50) NOT NULL,
+                            username VARCHAR(50) NOT NULL UNIQUE,
+                            password VARCHAR(255) NOT NULL
+                        );
+        """);
+
+            // Create diabetologo table
+            stmt.executeUpdate("""
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        	nome VARCHAR(50) NOT NULL,
+                        	cognome VARCHAR(50) NOT NULL,
+                            username VARCHAR(50) NOT NULL UNIQUE,
+                            password VARCHAR(255) NOT NULL,
+                            email VARCHAR(100) NOT NULL
+        """);
+
+            // Create paziente table
+            stmt.executeUpdate("""
+            CREATE TABLE paziente (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        	nome VARCHAR(50) NOT NULL,
+                        	cognome VARCHAR(50) NOT NULL,
+                            username VARCHAR(50) NOT NULL UNIQUE,
+                            password VARCHAR(255) NOT NULL,
+                            email VARCHAR(100),
+                            id_diabetologo INTEGER NOT NULL,
+                            data_nascita DATE,
+                            peso REAL,
+                            provincia_residenza VARCHAR(2),
+                            comune_residenza VARCHAR(100),
+                            note_paziente TEXT,
+                            FOREIGN KEY(id_diabetologo) REFERENCES diabetologo(id)
+                        );
+        """);
+
+            System.out.println("Database tables initialized.");
+
         } catch (SQLException e) {
             System.err.println("Error initializing database: " + e.getMessage());
         }
     }
+
 
     /**
      * Funzione che permette di eseguire query SQL direttamente da file fornito in input

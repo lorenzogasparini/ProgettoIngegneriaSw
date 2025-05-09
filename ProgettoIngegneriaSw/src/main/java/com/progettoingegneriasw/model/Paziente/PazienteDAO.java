@@ -27,14 +27,12 @@ public class PazienteDAO extends UserDAO {
         return SQLTableName;
     }
 
-    // todo: aggiungere i metodi per i pazienti... (metti prima nell'interfaccia)
-
     public int getMedico(Paziente paziente){ // note: methods don't have to be static
         // todo: get via SQL id_diabetologo del paziente passato
         return 0; // todo: completare
     }
 
 
-
+    // todo: aggiungere i metodi per i pazienti (non vanno messi nell'interfaccia perchè non esistono interfaccie per i DAO)
 
 }

@@ -1,6 +1,5 @@
 package com.progettoingegneriasw.controller;
 
-import com.progettoingegneriasw.Main;
 import com.progettoingegneriasw.model.User;
 import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.view.ViewNavigator;
@@ -23,7 +22,7 @@ public class LoginController {
     
     @FXML
     public void initialize() {
-        userDAO = Main.getUserRepository();
+        userDAO = UserDAO.getLoggedUserDAO();
         statusLabel.setVisible(false);
     }
     

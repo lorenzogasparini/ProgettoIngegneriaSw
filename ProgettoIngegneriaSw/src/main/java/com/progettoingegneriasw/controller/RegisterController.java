@@ -26,7 +26,7 @@ public class RegisterController {
     
     @FXML
     public void initialize() {
-        userDAO = Main.getUserRepository();
+        //userDAO = Main.getUserRepository();
         statusLabel.setVisible(false);
     }
     
@@ -42,7 +42,7 @@ public class RegisterController {
             return;
         }
         
-        if (userDAO.usernameExists(username)) {
+        if (userDAO.userExists(username)) {
             showError("Username already exists");
             return;
         }
@@ -53,8 +53,8 @@ public class RegisterController {
         }
         
         // Create and save new user
-        User newUser = User.create(username, password);
-        userDAO.saveUser(newUser);
+        //User newUser = User.create(username, password, "nome", "cognome"); // todo: fix with correct datas
+        //userDAO.saveUser(newUser);
         
         // Show success message
         showSuccess("Registration successful! Please log in.");

@@ -1,58 +1,85 @@
 package com.progettoingegneriasw.model.Paziente;
 
 import com.progettoingegneriasw.model.User;
-
-import java.sql.Timestamp;
+import java.sql.Date;
 
 public class PazienteUser extends User implements Paziente{
 
-    // todo: attributi privati pazienti
-    private Timestamp dataNascita;
-
+    // todo: ALLA FINE, per limitare i problemi capire se è possibile lasciare i campi final
+    private String email;
+    private Integer idDiabetologo;
+    private Date dataNascita;
+    private Double peso;
+    private String provinciaResidenza;
+    private String comuneResidenza;
+    private String notePaziente;
 
 
     /**
-     * Constructor for creating a user with username and password
+     * Constructor for creating a user with username
      *
      * @param username The user's username
-     * @param password The user's password (stored in plain text for educational purposes)
      */
-    public PazienteUser(String username, String password) {
-        super(username, password);
+    public PazienteUser(String username) {
+        this(null, username, null, null, null, null, null,
+                null, null, null, null, null);
     }
 
+    public PazienteUser(Integer id, String username, String password, String nome, String cognome, String email,
+                        Integer idDiabetologo, Date dataNascita, Double peso, String provinciaResidenza,
+                        String comuneResidenza, String notePaziente){
+        super(id, username, password, nome, cognome);
+        this.email = email;
+        this.idDiabetologo = idDiabetologo;
+        this.dataNascita = dataNascita;
+        this.peso = peso;
+        this.provinciaResidenza = provinciaResidenza;
+        this.comuneResidenza = comuneResidenza;
+        this.notePaziente = notePaziente;
+    }
+
+    public String toString(){
+        return super.toString() + "; email: " + email + "; idDiabetologo: " + idDiabetologo + "; dataNascita: " +
+                dataNascita + "; peso: " + peso + "; provinciaResidenza: " + provinciaResidenza +
+                "; comuneResidenza: " + comuneResidenza + "; notePaziente: " + notePaziente;
+    }
+
+
+
+
+    /// Metodi per gli attributi del paziente
     @Override
     public String getEmail() {
-        return "";
+        return email;
     }
 
     @Override
     public int getIdMedico() {
-        return 0;
+        return idDiabetologo;
     }
 
     @Override
-    public Timestamp getDataNascita() {
+    public Date getDataNascita() {
         return dataNascita;
     }
 
     @Override
     public double getPeso() {
-        return 0;
+        return peso;
     }
 
     @Override
     public String getProvinciaResidenza() {
-        return "";
+        return provinciaResidenza;
     }
 
     @Override
     public String getComuneResidenza() {
-        return "";
+        return comuneResidenza;
     }
 
     @Override
     public String getNotePaziente() {
-        return "";
+        return notePaziente;
     }
 }

@@ -1,6 +1,5 @@
 package com.progettoingegneriasw.controller;
 
-import com.progettoingegneriasw.Main;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -12,8 +11,6 @@ import javafx.scene.layout.VBox;
 import com.progettoingegneriasw.model.User;
 import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.view.ViewNavigator;
-
-import java.util.Map;
 
 public class StatsController {
 
@@ -35,7 +32,7 @@ public class StatsController {
     
     @FXML
     public void initialize() {
-        userDAO = Main.getUserRepository();
+        userDAO = UserDAO.getLoggedUserDAO();
         currentUsername = ViewNavigator.getAuthenticatedUser();
         user = userDAO.getUser(currentUsername);
         
@@ -62,6 +59,7 @@ public class StatsController {
      */
     private void populateUserList() {
         // Clear the container first
+        /* // todo: sistemare
         userListContainer.getChildren().clear();
         
         // Get all users
@@ -91,6 +89,7 @@ public class StatsController {
             Label noUsersLabel = new Label("No regular users found.");
             userListContainer.getChildren().add(noUsersLabel);
         }
+         */
     }
     
     /**

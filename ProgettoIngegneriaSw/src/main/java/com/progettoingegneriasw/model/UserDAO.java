@@ -10,46 +10,21 @@ import com.progettoingegneriasw.model.Paziente.Paziente;
 import com.progettoingegneriasw.model.Paziente.PazienteDAO;
 import com.progettoingegneriasw.model.Paziente.PazienteUser;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class UserDAO { // todo: rendere questa classe abstract
+public class UserDAO { // todo: è corretto rendere questa classe abstract???
     private final DatabaseManager dbManager;
     // private Map<String, User> userCache = new HashMap<>(); // this contains all the users --> NOT USED
-    private User currentUser; // this contains the current logged user;
+    public static User loggedUser; // this contains the current logged user; //todo: capire dove metterlo
 
     public UserDAO() {
         this.dbManager = new DatabaseManager();
         //refreshUserCache();
     }
 
-    // todo: capire quando chiamare questo metodo (probabilmente dopo che l'utente si logga)
-    private void refreshCurrentUser(User currUser){
-        currentUser = currUser;
+    // todo: capire quando chiamare questo metodo (probabilmente dopo che l'utente si logga) e metterlo private finiti i test
+    public void refreshLoggedUser(User currUser){
+        loggedUser = currUser;
     }
 
-    // NOT USED!
-    /**
-     * Refresh the user cache from the database
-     */
-//    private void refreshUserCache() {
-//        userCache.clear();
-//
-//        dbManager.executeQuery(
-//            "SELECT username, password FROM users",
-//            rs -> {
-//                while (rs.next()) {
-//                    String username = rs.getString("username");
-//                    String password = rs.getString("password");
-//                    //boolean isAdmin = rs.getInt("is_admin") == 1;
-//
-//                    User user = new User(username, password);
-//                    userCache.put(username, user);
-//                }
-//                return null;
-//            }
-//        );
-//    }
 
     /**
      * Save a user to the right table
@@ -63,19 +38,23 @@ public class UserDAO { // todo: rendere questa classe abstract
                 Admin admin = (Admin) user;
 
                 success = dbManager.executeUpdate(
-                        "INSERT OR REPLACE INTO " + adminDAO.getSQLTableName() + " (username, password) VALUES (?, ?)",
+                        "INSERT OR REPLACE INTO " + adminDAO.getSQLTableName() + " (username, password, nome, cognome) VALUES (?, ?, ?, ?)",
                         admin.getUsername(),
-                        admin.getPassword()
+                        admin.getPassword(),
+                        admin.getNome(),
+                        admin.getCognome()
                 );
             } else if (user.isMedico()) {
                 MedicoDAO medicoDAO = MedicoDAO.getInstance();
                 Medico medico = (Medico) user;
 
                 success = dbManager.executeUpdate(
-                        "INSERT OR REPLACE INTO " + medicoDAO.getSQLTableName() + " (username, password, email) VALUES (?, ?, ?)",
+                        "INSERT OR REPLACE INTO " + medicoDAO.getSQLTableName() + " (username, password, nome, cognome, email) VALUES (?, ?, ?, ?, ?)",
                         medico.getUsername(),
                         medico.getPassword(),
-                        medico.getEmail()
+                        medico.getEmail(),
+                        medico.getNome(),
+                        medico.getCognome()
                 );
             } else if (user.isPaziente()) {
                 PazienteDAO pazienteDAO = PazienteDAO.getInstance();
@@ -83,10 +62,13 @@ public class UserDAO { // todo: rendere questa classe abstract
 
                 success = dbManager.executeUpdate(
                         "INSERT OR REPLACE INTO " + pazienteDAO.getSQLTableName() +
-                                " (username, password, email, id_diabetologo, data_nascita, peso, provincia_residenza, comune_residenza, note_paziente) " +
+                                " (username, password, nome, cognome, email, id_diabetologo, " +
+                                "data_nascita, peso, provincia_residenza, comune_residenza, note_paziente) " +
                                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                         paziente.getUsername(),
                         paziente.getPassword(),
+                        paziente.getNome(),
+                        paziente.getCognome(),
                         paziente.getEmail(),
                         pazienteDAO.getMedico(paziente),
                         paziente.getDataNascita(),
@@ -102,15 +84,12 @@ public class UserDAO { // todo: rendere questa classe abstract
             e.printStackTrace();
         }
 
-        // No user cache logic needed
     }
 
-    // todo: togli commento
     /*
     /**
      * Delete a user from the repository
      */
-    /*
     public void deleteUser(String username) {
         User user = getUser(username);
         boolean success = false;
@@ -136,19 +115,25 @@ public class UserDAO { // todo: rendere questa classe abstract
             }
         }
     }
-    */
+
 
     /**
      * Get a user by username
+     * Try first searching in table 'amministratore' after in table 'diabetologo' and last but not least on 'paziente'
      */
-    /*
     public User getUser(String username) {
         // Try to get Admin
         User user = dbManager.executeQuery(
-                "SELECT username, password FROM amministratore WHERE username = ?",
+                "SELECT id, username, password FROM amministratore WHERE username = ?",
                 rs -> {
                     if (rs.next()) {
-                        return new AdminUser(rs.getString("username"), rs.getString("password"));
+                        return new AdminUser(
+                                rs.getInt("id"),
+                                rs.getString("username"),
+                                rs.getString("password"),
+                                rs.getString("nome"),
+                                rs.getString("cognome")
+                        );
                     }
                     return null;
                 },
@@ -159,12 +144,15 @@ public class UserDAO { // todo: rendere questa classe abstract
 
         // Try to get Medico
         user = dbManager.executeQuery(
-                "SELECT username, password, email FROM diabetologo WHERE username = ?",
+                "SELECT id, username, password, email FROM diabetologo WHERE username = ?",
                 rs -> {
                     if (rs.next()) {
                         return new MedicoUser(
+                                rs.getInt("id"),
                                 rs.getString("username"),
                                 rs.getString("password"),
+                                rs.getString("nome"),
+                                rs.getString("cognome"),
                                 rs.getString("email")
                         );
                     }
@@ -177,13 +165,16 @@ public class UserDAO { // todo: rendere questa classe abstract
 
         // Try to get Paziente
         user = dbManager.executeQuery(
-                "SELECT username, password, email, id_diabetologo, data_nascita, peso, provincia_residenza, comune_residenza, note_paziente " +
+                "SELECT id, username, password, email, id_diabetologo, data_nascita, peso, provincia_residenza, comune_residenza, note_paziente " +
                         "FROM paziente WHERE username = ?",
                 rs -> {
                     if (rs.next()) {
                         return new PazienteUser(
+                                rs.getInt("id"),
                                 rs.getString("username"),
                                 rs.getString("password"),
+                                rs.getString("nome"),
+                                rs.getString("cognome"),
                                 rs.getString("email"),
                                 rs.getInt("id_diabetologo"),
                                 rs.getDate("data_nascita"),
@@ -200,29 +191,38 @@ public class UserDAO { // todo: rendere questa classe abstract
 
         return user;
     }
-*/
 
-    // todo: togli commento
-    /*
+
     /**
      * Check if a username exists
-     /*
-    public boolean usernameExists(String username) {
-        //return userCache.containsKey(username);
-        //return getUser(username) != null;
-    }
     */
+    public boolean userExists(String username) {
 
-    // non utilizzato perché la cache locale non è più utilizzata
-//    /**
-//     * Get all users
-//     */
-//    public Map<String, User> getAllUsers() {
-//        return new HashMap<>(userCache);
-//    }
+        return getUser(username) != null;
+    }
 
-    //todo: quando UserModel sarà astratto togliere il codice da qui e definire questa funzione solo nei figli
+
+    //todo: quando UserDAO sarà astratto togliere il codice da qui e definire questa funzione solo nei figli
     public String getSQLTableName(){
         return "";
+    }
+
+
+
+
+    /**
+     *
+     * @return the right DAO for the user (AdminDAO, MedicoDAO or PazienteDAO)
+     */
+    public static UserDAO getLoggedUserDAO(){
+
+        if(loggedUser.isAdmin())
+            return AdminDAO.getInstance();
+        else if(loggedUser.isMedico())
+            return MedicoDAO.getInstance();
+        else if(loggedUser.isPaziente())
+            return PazienteDAO.getInstance();
+        else
+            throw new UserTypeNotFoundException("Cannot return correct DAO because User is not among acceptable types");
     }
 }

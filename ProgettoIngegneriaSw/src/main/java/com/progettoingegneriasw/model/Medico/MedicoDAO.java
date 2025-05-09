@@ -25,5 +25,5 @@ public class MedicoDAO extends UserDAO {
         return SQLTableName;
     }
 
-    // todo: aggiungere i metodi del medico
+    // todo: aggiungere i metodi del medico (non vanno messi nell'interfaccia perchè non esistono interfaccie per i DAO)
 }

@@ -1,36 +1,54 @@
 package com.progettoingegneriasw.model;
 
 import com.progettoingegneriasw.model.Admin.Admin;
+import com.progettoingegneriasw.model.Admin.AdminDAO;
 import com.progettoingegneriasw.model.Medico.Medico;
+import com.progettoingegneriasw.model.Medico.MedicoDAO;
 import com.progettoingegneriasw.model.Paziente.Paziente;
+import com.progettoingegneriasw.model.Paziente.PazienteDAO;
 
 public class User implements UserInterface{ // todo: rendere questa classe astratta
-    private String id;
+    private Integer id;
     private String username;
     private String password;
-    
-    /**
-     * Constructor for creating a user with username and password
-     * 
-     * @param username The user's username
-     * @param password The user's password (stored in plain text for educational purposes)
-     */
-    public User(String username, String password) {
-        this.id = username; // Using username as ID for simplicity
+    private String nome;
+    private String cognome;
+
+    public User(String username){
+        this(null, username, null, null, null);
+    }
+
+    public User(String username, String password){ // todo: probabilmente sarà da cancellare questo costruttore e tenere solo gli altri 2
+        this(null, username, password, null, null);
+    }
+
+    public User(String username, String password, String nome, String cognome){
+        this(null, username, password, nome, cognome);
+    }
+
+    public User(Integer id, String username, String password, String nome, String cognome){
+        this.id = id;
         this.username = username;
         this.password = password;
+        this.nome = nome;
+        this.cognome = cognome;
     }
-    
-    /**
-     * Factory method to create a new user
-     *
-     * @param username The user's username
-     * @param password The user's password
-     * @return A new User object
-     */
-    public static User create(String username, String password) {
-        return new User(username, password);
-    }
+
+
+    // todo: capire se utilizzare al posto di questo create saveUser() contenuto in UserDAO
+//    /**
+//     * Factory method to create a new user
+//     *
+//     * @param username The user's username
+//     * @param password The user's password
+//     * @return A new User object
+//     */
+//    public static User create(String username, String password, String nome, String cognome) {
+//        User user =  new User(username, password, nome, cognome);
+//        UserDAO userDAO = UserDAO.getInstance();
+//
+//        return user;
+//    }
     
     /**
      * Verify if the provided password matches the stored password
@@ -47,7 +65,7 @@ public class User implements UserInterface{ // todo: rendere questa classe astra
      * 
      * @return The user's ID (same as username in this implementation)
      */
-    public String getId() {
+    public int getId() {
         return id;
     }
     
@@ -67,6 +85,16 @@ public class User implements UserInterface{ // todo: rendere questa classe astra
      */
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getNome() {
+        return nome;
+    }
+
+    @Override
+    public String getCognome() {
+        return cognome;
     }
 
     public UserTypes getUserType(){
@@ -91,4 +119,10 @@ public class User implements UserInterface{ // todo: rendere questa classe astra
     public boolean isPaziente() {
         return this.getUserType().equals(UserTypes.Paziente);
     }
+
+    public String toString(){
+        return "id: " + id + "; username: " + username + "; password: " + password + "; nome: " + nome +
+                "; cognome: " + cognome;
+    }
+
 }
