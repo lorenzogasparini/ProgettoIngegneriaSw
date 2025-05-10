@@ -24,58 +24,7 @@ public class DatabaseManager {
         }
         
         this.dbUrl = "jdbc:sqlite:" + dbPath;
-        initializeDatabase(); // commented (not used)
-    }
-
-    private void initializeDatabase() {
-        try (Connection conn = getConnection();
-             Statement stmt = conn.createStatement()) {
-
-            // Create amministratore table
-            stmt.executeUpdate("""
-            CREATE TABLE amministratore (
-                            id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        	nome VARCHAR(50) NOT NULL,
-                        	cognome VARCHAR(50) NOT NULL,
-                            username VARCHAR(50) NOT NULL UNIQUE,
-                            password VARCHAR(255) NOT NULL
-                        );
-        """);
-
-            // Create diabetologo table
-            stmt.executeUpdate("""
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        	nome VARCHAR(50) NOT NULL,
-                        	cognome VARCHAR(50) NOT NULL,
-                            username VARCHAR(50) NOT NULL UNIQUE,
-                            password VARCHAR(255) NOT NULL,
-                            email VARCHAR(100) NOT NULL
-        """);
-
-            // Create paziente table
-            stmt.executeUpdate("""
-            CREATE TABLE paziente (
-                            id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        	nome VARCHAR(50) NOT NULL,
-                        	cognome VARCHAR(50) NOT NULL,
-                            username VARCHAR(50) NOT NULL UNIQUE,
-                            password VARCHAR(255) NOT NULL,
-                            email VARCHAR(100),
-                            id_diabetologo INTEGER NOT NULL,
-                            data_nascita DATE,
-                            peso REAL,
-                            provincia_residenza VARCHAR(2),
-                            comune_residenza VARCHAR(100),
-                            note_paziente TEXT,
-                            FOREIGN KEY(id_diabetologo) REFERENCES diabetologo(id)
-                        );
-        """);
-
-            System.out.println("Database tables initialized.");
-
-        } catch (SQLException e) {
-            System.err.println("Error initializing database: " + e.getMessage());
-        }
+        //initializeDatabase(); // commented (not used)
     }
 
 
@@ -83,7 +32,7 @@ public class DatabaseManager {
      * Funzione che permette di eseguire query SQL direttamente da file fornito in input
      * @param path : parametro "percorso" in cui si trova il file SQL da eseguire
      */
-    public void executeFile(String path) {
+    public void executeFile(String path) { // da testare
         try (FileReader reader = new FileReader(path);
              // Wrap the FileReader in a BufferedReader for efficient reading.
              BufferedReader bufferedReader = new BufferedReader(reader);

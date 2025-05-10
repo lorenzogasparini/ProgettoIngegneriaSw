@@ -19,6 +19,7 @@ public class AdminUser extends User implements Admin{
         this(null, username, password, nome, cognome);
     }
 
+
     public AdminUser(Integer id, String username, String password, String nome, String cognome) {
         super(id, username, password, nome, cognome);
     }

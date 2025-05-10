@@ -10,6 +10,8 @@ import com.progettoingegneriasw.model.Paziente.Paziente;
 import com.progettoingegneriasw.model.Paziente.PazienteDAO;
 import com.progettoingegneriasw.model.Paziente.PazienteUser;
 
+import java.sql.Date;
+
 public class UserDAO { // todo: è corretto rendere questa classe abstract???
     private final DatabaseManager dbManager;
     // private Map<String, User> userCache = new HashMap<>(); // this contains all the users --> NOT USED
@@ -29,7 +31,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
     /**
      * Save a user to the right table
      */
-    public void saveUser(User user) {
+    public void saveUser(User user) { // Funzionante!
         boolean success = false;
 
         try {
@@ -64,13 +66,13 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                         "INSERT OR REPLACE INTO " + pazienteDAO.getSQLTableName() +
                                 " (username, password, nome, cognome, email, id_diabetologo, " +
                                 "data_nascita, peso, provincia_residenza, comune_residenza, note_paziente) " +
-                                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                         paziente.getUsername(),
                         paziente.getPassword(),
                         paziente.getNome(),
                         paziente.getCognome(),
                         paziente.getEmail(),
-                        pazienteDAO.getMedico(paziente),
+                        paziente.getIdMedico(),
                         paziente.getDataNascita(),
                         paziente.getPeso(),
                         paziente.getProvinciaResidenza(),
@@ -90,19 +92,19 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
     /**
      * Delete a user from the repository
      */
-    public void deleteUser(String username) {
+    public void deleteUser(String username) { // todo: da testare
         User user = getUser(username);
         boolean success = false;
 
         if (user != null && !user.isAdmin()) {
             try {
-                if (user instanceof Medico) {
+                if (user.isMedico()) {
                     MedicoDAO medicoDAO = MedicoDAO.getInstance();
                     success = dbManager.executeUpdate(
                             "DELETE FROM " + medicoDAO.getSQLTableName() + " WHERE username = ?",
                             username
                     );
-                } else if (user instanceof Paziente) {
+                } else if (user.isPaziente()) {
                     PazienteDAO pazienteDAO = PazienteDAO.getInstance();
                     success = dbManager.executeUpdate(
                             "DELETE FROM " + pazienteDAO.getSQLTableName() + " WHERE username = ?",
@@ -116,15 +118,31 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
         }
     }
 
+    //todo: rimuovere se non necessaria (era una funzione per testare il db)
+        public void printAllPazientiDB(){
+        dbManager.executeQuery(
+                "SELECT username, password FROM paziente",
+                rs -> {
+                    while (rs.next()) {
+                        String username = rs.getString("username");
+                        String password = rs.getString("password");
+
+                        System.out.println("username: " + username + "; password: " + password);
+                    }
+                    return null;
+                }
+        );
+    }
+
 
     /**
      * Get a user by username
      * Try first searching in table 'amministratore' after in table 'diabetologo' and last but not least on 'paziente'
      */
-    public User getUser(String username) {
+    public User getUser(String username) { // Funziona!
         // Try to get Admin
         User user = dbManager.executeQuery(
-                "SELECT id, username, password FROM amministratore WHERE username = ?",
+                "SELECT id, username, password, nome, cognome FROM amministratore WHERE username = ?",
                 rs -> {
                     if (rs.next()) {
                         return new AdminUser(
@@ -144,7 +162,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
 
         // Try to get Medico
         user = dbManager.executeQuery(
-                "SELECT id, username, password, email FROM diabetologo WHERE username = ?",
+                "SELECT id, username, password, nome, cognome, email FROM diabetologo WHERE username = ?",
                 rs -> {
                     if (rs.next()) {
                         return new MedicoUser(
@@ -165,8 +183,8 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
 
         // Try to get Paziente
         user = dbManager.executeQuery(
-                "SELECT id, username, password, email, id_diabetologo, data_nascita, peso, provincia_residenza, comune_residenza, note_paziente " +
-                        "FROM paziente WHERE username = ?",
+                "SELECT id, username, password, nome, cognome, email, id_diabetologo, data_nascita, peso," +
+                        " provincia_residenza, comune_residenza, note_paziente FROM paziente WHERE username = ?",
                 rs -> {
                     if (rs.next()) {
                         return new PazienteUser(
@@ -177,7 +195,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                                 rs.getString("cognome"),
                                 rs.getString("email"),
                                 rs.getInt("id_diabetologo"),
-                                rs.getDate("data_nascita"),
+                                Date.valueOf(rs.getString("data_nascita")),
                                 rs.getDouble("peso"),
                                 rs.getString("provincia_residenza"),
                                 rs.getString("comune_residenza"),
@@ -189,15 +207,16 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                 username
         );
 
-        return user;
+        if (user == null)
+            System.out.println(username + " not found!");
+        return user; // potrebbe essere null (verificarlo quando si chiama il metodo)
     }
 
 
     /**
      * Check if a username exists
     */
-    public boolean userExists(String username) {
-
+    public boolean userExists(String username) { // Funziona!
         return getUser(username) != null;
     }
 
@@ -206,8 +225,6 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
     public String getSQLTableName(){
         return "";
     }
-
-
 
 
     /**

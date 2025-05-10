@@ -25,6 +25,13 @@ public class PazienteUser extends User implements Paziente{
                 null, null, null, null, null);
     }
 
+    public PazienteUser(String username, String password, String nome, String cognome, String email,
+                        Integer idDiabetologo, Date dataNascita, Double peso, String provinciaResidenza,
+                        String comuneResidenza, String notePaziente){
+        this(null, username, password, nome, cognome, email, idDiabetologo, dataNascita, peso, provinciaResidenza,
+                comuneResidenza, notePaziente);
+    }
+
     public PazienteUser(Integer id, String username, String password, String nome, String cognome, String email,
                         Integer idDiabetologo, Date dataNascita, Double peso, String provinciaResidenza,
                         String comuneResidenza, String notePaziente){

@@ -1,9 +1,18 @@
 package com.progettoingegneriasw;
 
 import com.progettoingegneriasw.model.Admin.AdminDAO;
+import com.progettoingegneriasw.model.Admin.AdminUser;
+import com.progettoingegneriasw.model.Medico.MedicoDAO;
+import com.progettoingegneriasw.model.Medico.MedicoUser;
+import com.progettoingegneriasw.model.Paziente.PazienteDAO;
+import com.progettoingegneriasw.model.Paziente.PazienteUser;
+import com.progettoingegneriasw.model.User;
 import com.progettoingegneriasw.model.UserDAO;
 import javafx.application.Application;
 import javafx.stage.Stage;
+
+import java.sql.Date;
+import java.time.LocalDate;
 
 public class Main extends Application {
     
@@ -44,8 +53,55 @@ public class Main extends Application {
         // todo: eseguire i test in quest'area
         System.out.println("---- TEST Model ----");
         AdminDAO adminDAO = AdminDAO.getInstance();
-        String user = adminDAO.getUser("admin1").toString();
-        System.out.println(user);
+        MedicoDAO medicoDAO = MedicoDAO.getInstance();
+        PazienteDAO pazienteDAO = PazienteDAO.getInstance();
+
+        // TEST generale per prendere tutti i pazienti
+        adminDAO.printAllPazientiDB();
+
+
+
+        // TEST ricerca admin, medico, paziente e utente non trovato
+        if(adminDAO.userExists("admin1")){
+            User adminUser = adminDAO.getUser("admin1");
+            System.out.println(adminUser.toString());
+        }
+
+        if(pazienteDAO.userExists("drbianchi")){
+            User medicoUser = medicoDAO.getUser("drbianchi");
+            System.out.println(medicoUser.toString());
+        }
+
+        if(medicoDAO.userExists("lucia.verdi")){
+            User pazienteUser = pazienteDAO.getUser("lucia.verdi");
+            System.out.println(pazienteUser.toString());
+        }
+
+        if(adminDAO.userExists("utenteNonEsistente")){
+            User utenteNonEsistente = adminDAO.getUser("utenteNonEsistente");
+            System.out.println(utenteNonEsistente.toString());
+        }
+
+        // TEST INSERIMENTO/MODIFICA utenti (modificare i valori dei campi per poterne inserire di nuovi)
+        AdminUser newAdminUser = new AdminUser("admin3", "admin3", "Pietro", "Corsi");
+        adminDAO.saveUser(newAdminUser);
+
+        MedicoUser newMedicoUser = new MedicoUser("drdestri", "1234", "Mario",
+                "Destri", "mario.destri@gmail.it");
+        medicoDAO.saveUser(newMedicoUser);
+
+        PazienteUser newPazienteUser = new PazienteUser("rebonato.mattia", "1234", "Mattia",
+                "Rebonato", "mattia.rebonato@gmail.com", 0,
+                new Date(2004, 05, 1), 70.0, "VR",
+                "Angiari","non assume regolarmente i farmaci e ha spesso problemi!");
+        pazienteDAO.saveUser(newPazienteUser);
+
+
+        // TEST CANCELLAZIONE UTENTE
+        medicoDAO.deleteUser(newMedicoUser.getUsername());
+        pazienteDAO.deleteUser(newPazienteUser.getUsername());
+        // test che deve generare un errore:
+        //adminDAO.deleteUser(newAdminUser.getUsername());
 
 
     }

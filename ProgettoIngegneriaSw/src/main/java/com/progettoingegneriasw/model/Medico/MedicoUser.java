@@ -15,6 +15,10 @@ public class MedicoUser extends User implements Medico{
         this(null, username, null, null, null, null);
     }
 
+    public MedicoUser(String username, String password, String nome, String cognome, String email){
+        this(null, username, password, nome, cognome, email);
+    }
+
     public MedicoUser(Integer id, String username, String password, String nome, String cognome, String email){
         super(id, username, password, nome, cognome);
         this.email = email;
