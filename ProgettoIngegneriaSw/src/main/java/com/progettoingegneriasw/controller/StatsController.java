@@ -1,8 +1,5 @@
 package com.progettoingegneriasw.controller;
 
-import java.util.HashMap;
-
-import com.progettoingegneriasw.Main;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -12,10 +9,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import com.progettoingegneriasw.model.User;
-import com.progettoingegneriasw.model.UserRepository;
+import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.view.ViewNavigator;
-import java.lang.StringBuilder;
-import java.util.Map;
 
 public class StatsController {
 
@@ -31,15 +26,15 @@ public class StatsController {
     @FXML
     private VBox userListContainer;
 
-    private UserRepository userRepository;
+    private UserDAO userDAO;
     private String currentUsername;
     private User user;
     
     @FXML
     public void initialize() {
-        userRepository = Main.getUserRepository();
+        userDAO = UserDAO.getLoggedUserDAO();
         currentUsername = ViewNavigator.getAuthenticatedUser();
-        user = userRepository.getUser(currentUsername);
+        user = userDAO.getUser(currentUsername);
         
         if (user.isAdmin()) {
             // For admin users, show the user management interface
@@ -64,10 +59,11 @@ public class StatsController {
      */
     private void populateUserList() {
         // Clear the container first
+        /* // todo: sistemare
         userListContainer.getChildren().clear();
         
         // Get all users
-        Map<String, User> users = userRepository.getAllUsers();
+        Map<String, User> users = userDAO.getAllUsers();
         
         // Add a header row
         HBox headerRow = createHeaderRow();
@@ -93,6 +89,7 @@ public class StatsController {
             Label noUsersLabel = new Label("No regular users found.");
             userListContainer.getChildren().add(noUsersLabel);
         }
+         */
     }
     
     /**
@@ -153,11 +150,12 @@ public class StatsController {
      * Handle making a user an admin
      */
     private void handleMakeAdmin(String username) {
-        User userToPromote = userRepository.getUser(username);
+        User userToPromote = userDAO.getUser(username);
         if (userToPromote != null) {
             // Create a new user with admin privileges
-            User promotedUser = new User(username, userToPromote.getPassword(), true);
-            userRepository.saveUser(promotedUser);
+            //User promotedUser = new User(username, userToPromote.getPassword(), true); // admin
+            User promotedUser = new User(username, userToPromote.getPassword());
+            userDAO.saveUser(promotedUser);
             
             // Refresh the user list
             populateUserList();
@@ -168,10 +166,10 @@ public class StatsController {
      * Handle deleting a user
      */
     private void handleDeleteUser(String username) {
-        User userToDelete = userRepository.getUser(username);
+        User userToDelete = userDAO.getUser(username);
         if (userToDelete != null && !userToDelete.isAdmin()) {
             // Delete the user
-            userRepository.deleteUser(username);
+            userDAO.deleteUser(username);
             
             // Refresh the user list
             populateUserList();

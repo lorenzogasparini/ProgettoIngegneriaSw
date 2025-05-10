@@ -24,48 +24,15 @@ public class DatabaseManager {
         }
         
         this.dbUrl = "jdbc:sqlite:" + dbPath;
-        initializeDatabase();
+        //initializeDatabase(); // commented (not used)
     }
-    
-    /**
-     * Initialize the database and create tables if they don't exist
-     */
-    private void initializeDatabase() {
-        try (Connection conn = getConnection();
-             Statement stmt = conn.createStatement()) {
 
-            //  Sostituibile con executeFile(DATABASE_CREATION_SQL) ed executeFile(DATABASE_POPULATION_SQL)
-            // Create users table if it doesn't exist
-            stmt.execute("CREATE TABLE IF NOT EXISTS users (" +
-                         "username TEXT PRIMARY KEY, " +
-                         "password TEXT, " +
-                         "is_admin INTEGER" +
-                         ")");
-            
-            // Check if admin user exists, create if it doesn't
-            try (ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE username = 'admin'")) {
-                if (!rs.next()) {
-                    // Admin user doesn't exist, create it
-                    try (PreparedStatement pstmt = conn.prepareStatement(
-                            "INSERT INTO users (username, password, is_admin) VALUES (?, ?, ?)")) {
-                        pstmt.setString(1, "admin");
-                        pstmt.setString(2, "admin");
-                        pstmt.setInt(3, 1);
-                        pstmt.executeUpdate();
-                    }
-                }
-            }
-            
-        } catch (SQLException e) {
-            System.err.println("Error initializing database: " + e.getMessage());
-        }
-    }
 
     /**
      * Funzione che permette di eseguire query SQL direttamente da file fornito in input
      * @param path : parametro "percorso" in cui si trova il file SQL da eseguire
      */
-    public void executeFile(String path) {
+    public void executeFile(String path) { // da testare
         try (FileReader reader = new FileReader(path);
              // Wrap the FileReader in a BufferedReader for efficient reading.
              BufferedReader bufferedReader = new BufferedReader(reader);

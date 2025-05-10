@@ -1,8 +1,7 @@
 package com.progettoingegneriasw.controller;
 
-import com.progettoingegneriasw.Main;
 import com.progettoingegneriasw.model.User;
-import com.progettoingegneriasw.model.UserRepository;
+import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.view.ViewNavigator;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -25,7 +24,7 @@ public class ProfileController {
     @FXML
     private Label statusLabel;
     
-    private UserRepository userRepository;
+    private UserDAO userDAO;
     private String currentUsername;
     
     /**
@@ -34,7 +33,7 @@ public class ProfileController {
      */
     @FXML
     public void initialize() {
-        userRepository = Main.getUserRepository();
+        userDAO = UserDAO.getLoggedUserDAO();
         currentUsername = ViewNavigator.getAuthenticatedUser();
         
         // Display the current username
@@ -65,9 +64,9 @@ public class ProfileController {
         }
         
         // Update the user with the new password
-        User currentUser = userRepository.getUser(currentUsername);
-        User updatedUser = new User(currentUsername, newPassword, currentUser.isAdmin());
-        userRepository.saveUser(updatedUser);
+        User currentUser = userDAO.getUser(currentUsername);
+        User updatedUser = new User(currentUsername, newPassword);
+        userDAO.saveUser(updatedUser);
         
         showSuccess("Password updated successfully");
         
