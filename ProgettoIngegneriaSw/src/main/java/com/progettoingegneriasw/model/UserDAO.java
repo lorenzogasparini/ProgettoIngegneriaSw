@@ -73,7 +73,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                         paziente.getCognome(),
                         paziente.getEmail(),
                         paziente.getIdMedico(),
-                        paziente.getDataNascita(),
+                        paziente.getDataNascita().toString(), // using .toString() insert in format: 'aaaa-mm-dd'
                         paziente.getPeso(),
                         paziente.getProvinciaResidenza(),
                         paziente.getComuneResidenza(),
@@ -93,7 +93,15 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
      * Delete a user from the repository
      */
     public void deleteUser(String username) { // todo: da testare
-        User user = getUser(username);
+
+        User user;
+
+        if(userExists(username)){
+            user = getUser(username);
+        }else{
+            return;
+        }
+
         boolean success = false;
 
         if (user != null && !user.isAdmin()) {
@@ -195,7 +203,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                                 rs.getString("cognome"),
                                 rs.getString("email"),
                                 rs.getInt("id_diabetologo"),
-                                Date.valueOf(rs.getString("data_nascita")),
+                                java.sql.Date.valueOf(rs.getString("data_nascita")),
                                 rs.getDouble("peso"),
                                 rs.getString("provincia_residenza"),
                                 rs.getString("comune_residenza"),

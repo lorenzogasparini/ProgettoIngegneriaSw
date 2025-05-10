@@ -92,7 +92,7 @@ public class Main extends Application {
 
         PazienteUser newPazienteUser = new PazienteUser("rebonato.mattia", "1234", "Mattia",
                 "Rebonato", "mattia.rebonato@gmail.com", 0,
-                new Date(2004, 05, 1), 70.0, "VR",
+                Date.valueOf("2004-05-01"), 70.0, "VR",
                 "Angiari","non assume regolarmente i farmaci e ha spesso problemi!");
         pazienteDAO.saveUser(newPazienteUser);
 
@@ -101,7 +101,7 @@ public class Main extends Application {
         medicoDAO.deleteUser(newMedicoUser.getUsername());
         pazienteDAO.deleteUser(newPazienteUser.getUsername());
         // test che deve generare un errore:
-        //adminDAO.deleteUser(newAdminUser.getUsername());
+        adminDAO.deleteUser(newAdminUser.getUsername());
 
 
     }
