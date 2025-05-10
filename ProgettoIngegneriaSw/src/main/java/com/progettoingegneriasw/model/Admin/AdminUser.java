@@ -6,7 +6,7 @@ public class AdminUser extends User implements Admin{
 
 
     public AdminUser(String username){
-        super(username);
+        this(null, username, null, null, null);
     }
 
     /**
