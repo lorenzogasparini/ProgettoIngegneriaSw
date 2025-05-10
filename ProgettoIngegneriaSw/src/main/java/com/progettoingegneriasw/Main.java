@@ -104,5 +104,8 @@ public class Main extends Application {
         adminDAO.deleteUser(newAdminUser.getUsername());
 
 
+        // todo: other test here
+
+
     }
 }
