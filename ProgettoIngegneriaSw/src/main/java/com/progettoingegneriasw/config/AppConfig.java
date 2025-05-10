@@ -16,7 +16,6 @@ public class AppConfig {
 //    public static final String DATABASE_CREATION_SQL = DATA_DIR + "/createDiabeteDB.sql";
 
 
-
     // Create data directory if it doesn't exist
     static {
         File dataDir = new File(DATA_DIR);

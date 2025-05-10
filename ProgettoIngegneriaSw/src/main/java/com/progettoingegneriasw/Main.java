@@ -56,10 +56,9 @@ public class Main extends Application {
         MedicoDAO medicoDAO = MedicoDAO.getInstance();
         PazienteDAO pazienteDAO = PazienteDAO.getInstance();
 
+
         // TEST generale per prendere tutti i pazienti
-        adminDAO.printAllPazientiDB();
-
-
+        //adminDAO.printAllPazientiDB();
 
         // TEST ricerca admin, medico, paziente e utente non trovato
         if(adminDAO.userExists("admin1")){
@@ -99,7 +98,7 @@ public class Main extends Application {
 
         // TEST CANCELLAZIONE UTENTE
         medicoDAO.deleteUser(newMedicoUser.getUsername());
-        pazienteDAO.deleteUser(newPazienteUser.getUsername());
+        //pazienteDAO.deleteUser(newPazienteUser.getUsername());
         // test che deve generare un errore:
         adminDAO.deleteUser(newAdminUser.getUsername());
 

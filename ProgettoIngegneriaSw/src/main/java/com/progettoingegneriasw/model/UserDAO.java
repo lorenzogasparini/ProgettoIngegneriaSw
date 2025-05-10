@@ -127,20 +127,20 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
     }
 
     //todo: rimuovere se non necessaria (era una funzione per testare il db)
-        public void printAllPazientiDB(){
-        dbManager.executeQuery(
-                "SELECT username, password FROM paziente",
-                rs -> {
-                    while (rs.next()) {
-                        String username = rs.getString("username");
-                        String password = rs.getString("password");
-
-                        System.out.println("username: " + username + "; password: " + password);
-                    }
-                    return null;
-                }
-        );
-    }
+//        public void printAllPazientiDB(){
+//        dbManager.executeQuery(
+//                "SELECT username, password FROM paziente",
+//                rs -> {
+//                    while (rs.next()) {
+//                        String username = rs.getString("username");
+//                        String password = rs.getString("password");
+//
+//                        System.out.println("username: " + username + "; password: " + password);
+//                    }
+//                    return null;
+//                }
+//        );
+//    }
 
 
     /**
