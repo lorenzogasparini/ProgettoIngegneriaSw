@@ -146,8 +146,10 @@ CREATE TABLE patologia_paziente (
 CREATE TABLE rilevazione_farmaco (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     id_paziente INTEGER NOT NULL,
+	id_farmaco INTEGER NOT NULL,
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
     quantita REAL, -- in mg
     note TEXT,
-    FOREIGN KEY(id_paziente) REFERENCES paziente(id)
+    FOREIGN KEY(id_paziente) REFERENCES paziente(id),
+	FOREIGN KEY(id_farmaco) REFERENCES farmaco(id)
 );
