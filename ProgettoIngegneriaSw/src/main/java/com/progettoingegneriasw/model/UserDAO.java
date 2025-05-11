@@ -27,6 +27,9 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
         loggedUser = currUser;
     }
 
+    public DatabaseManager getConnection(){
+        return dbManager;
+    }
 
     /**
      * Save a user to the right table
@@ -249,5 +252,24 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
             return PazienteDAO.getInstance();
         else
             throw new UserTypeNotFoundException("Cannot return correct DAO because User is not among acceptable types");
+    }
+
+    /**
+     *
+     * @param username The given username of the MedicoDAO instance
+     * @return The id of the MedicoDAO instance, taken by DB query
+     */
+    public int getIdFromDB(String username, UserDAO user) {   //  Funzionamento corretto
+        String query = "SELECT id FROM " + user.getSQLTableName() + " WHERE username = ";
+        return getConnection().executeQuery(
+                query + " ?",
+                rs -> {
+                    if (rs.next()) {
+                        return rs.getInt("id");
+                    }
+                    return -1;
+                },
+                username
+        );
     }
 }

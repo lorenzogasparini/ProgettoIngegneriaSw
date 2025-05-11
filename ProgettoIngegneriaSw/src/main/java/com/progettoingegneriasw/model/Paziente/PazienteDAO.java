@@ -10,7 +10,7 @@ public class PazienteDAO extends UserDAO {
     private final String SQLTableName = "paziente";
     private static PazienteDAO instance;
 
-    private PazienteDAO() {
+    public PazienteDAO() {
         // Init DB connection, maybe from a config class
         super();
     }

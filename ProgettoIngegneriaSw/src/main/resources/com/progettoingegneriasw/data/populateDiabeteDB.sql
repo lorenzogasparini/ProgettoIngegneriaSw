@@ -66,10 +66,10 @@ INSERT INTO rilevazione_sintomo (id_paziente, sintomo, intensita) VALUES
 (4, 'Capogiri', 5);
 
 -- Rilevazione Farmaco
-INSERT INTO rilevazione_farmaco (id_paziente, quantita, note) VALUES
-(1, 500, 'Dopo colazione'),
-(1, 500, 'Dopo cena'),
-(2, 15, 'Insulina serale'),
-(3, 20, 'Routine sera');
+INSERT INTO rilevazione_farmaco (id_paziente, id_farmaco, quantita, note) VALUES
+(1, 1, 500, 'Dopo colazione'),
+(1, 1, 500, 'Dopo cena'),
+(2, 4, 15, 'Insulina serale'),
+(3, 1, 20, 'Routine sera');
 
 
