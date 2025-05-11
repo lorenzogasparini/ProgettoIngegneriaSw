@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -106,8 +107,7 @@ public class Main extends Application {
         adminDAO.deleteUser(newAdminUser.getUsername());
 
 
-        // todo: other test here
-        /*  TEST DAO Query ||  */
+        /*  TEST DAO Query : MedicoDAO */
         Map<Integer, User> paz = new HashMap<>();
         paz = medicoDAO.getPazientiFromDB("drbianchi");
         System.out.print("\nTest query pazienti curati: dal diabetologo: drbianchi \n");
@@ -115,6 +115,29 @@ public class Main extends Application {
             System.out.println("Paziente id : " + pazi.getKey() + " --  User Info: " + pazi.getValue());
         }
 
+        String[] rilevazioni_farmaci = medicoDAO.getRilevazioniFarmaci("mario.rossi");
+        for(String rilevazione : rilevazioni_farmaci){
+            System.out.println("Rilevazione : " + rilevazione);
+        }
 
+        String[] rilevazioni_glicemia = medicoDAO.getRilevazioniGlicemia("mario.rossi");
+        for(String rilevazione : rilevazioni_glicemia){
+            System.out.println("Rilevazione : " + rilevazione);
+        }
+
+        String[] rilevazioni_sintomi = medicoDAO.getRilevazioniSintomi("mario.rossi");
+        for(String rilevazione : rilevazioni_sintomi){
+            System.out.println("Rilevazione : " + rilevazione);
+        }
+
+        String[] patologie = medicoDAO.getPatologiePaziente("mario.rossi");
+        for(String patologia : patologie){
+            System.out.println("Patologia : " + patologia);
+        }
+
+        String[] terapie = medicoDAO.getTerapiePaziente("mario.rossi");
+        for(String ter : terapie){
+            System.out.println("Terapia : " + ter);
+        }
     }
 }
