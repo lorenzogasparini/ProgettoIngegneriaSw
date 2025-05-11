@@ -12,7 +12,10 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Main extends Application {
     
@@ -47,7 +50,7 @@ public class Main extends Application {
 //        return userDAO;
 //    }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         //launch(args); // todo: da decommentare finiti i test su model
 
         // todo: eseguire i test in quest'area
@@ -104,6 +107,13 @@ public class Main extends Application {
 
 
         // todo: other test here
+        /*  TEST DAO Query ||  */
+        Map<Integer, User> paz = new HashMap<>();
+        paz = medicoDAO.getPazientiFromDB("drbianchi");
+        System.out.print("\nTest query pazienti curati: dal diabetologo: drbianchi \n");
+        for(Map.Entry<Integer, User> pazi : paz.entrySet()){
+            System.out.println("Paziente id : " + pazi.getKey() + " --  User Info: " + pazi.getValue());
+        }
 
 
     }

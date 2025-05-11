@@ -27,6 +27,9 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
         loggedUser = currUser;
     }
 
+    public DatabaseManager getConnection(){
+        return dbManager;
+    }
 
     /**
      * Save a user to the right table
