@@ -2,25 +2,23 @@ package com.progettoingegneriasw.model.Utils;
 
 import java.sql.Timestamp;
 
-public class RilevazioneSintomo {
-    private int id;
-    private int idPaziente;
-    private Timestamp timestamp;
+public class RilevazioneSintomo extends Rilevazione{
+
     private String sintomo;
     private int intensita;
 
     public RilevazioneSintomo(int id, int idPaziente, Timestamp timestamp, String sintomo, int intensita){
-        this.id = id;
-        this.idPaziente = idPaziente;
-        this.timestamp = timestamp;
+        super(id, idPaziente, timestamp);
         this.sintomo = sintomo;
         this.intensita = intensita;
     }
 
-    public int getId(){ return id; }
-    public int getIdPaziente() { return idPaziente; }
-    public Timestamp getTimestamp() { return timestamp; }
     public String getSintomo() { return sintomo; }
     public int getIntensita() { return intensita; }
+
+    public String toString(){
+        return "id: " + super.getId() + "; idPaziente: " + super.getIdPaziente() + "; timestamp: " + super.getTimestamp() +
+                "; sintomo: " + sintomo + "; intensita: " + intensita;
+    }
 
 }

@@ -2,33 +2,26 @@ package com.progettoingegneriasw.model.Utils;
 
 import java.sql.Timestamp;
 
-public class RilevazioneFarmaco {
-    private int id;
-    private int idPaziente;
-    private int idFarmaco;
-    private Timestamp timestamp;
+public class RilevazioneFarmaco extends Rilevazione{
+
+    private int id_farmaco;
     private double quantita;
     private String note;
 
     public RilevazioneFarmaco(int id, int idPaziente, int idFarmaco, Timestamp timestamp, double quantita, String note){
-        this.id = id;
-        this.idPaziente = idPaziente;
-        this.idFarmaco = idFarmaco;
-        this.timestamp = timestamp;
+        super(id, idPaziente, timestamp);
+        this.id_farmaco = idFarmaco;
         this.quantita = quantita;
         this.note = note;
     }
 
-    public int getId(){ return id; }
-    public int getIdPaziente(){ return idPaziente; }
-    public int getIdFarmaco(){ return idFarmaco; }
-    public Timestamp getTimestamp(){ return timestamp; }
+    public int getIdFarmaco(){ return id_farmaco; }
     public double getQuantita() { return  quantita; }
     public String getNote() { return note; }
 
     public String toString(){
-        return "id: " + id + "; idPaziente: " + idPaziente + "; idFarmaco: " + idFarmaco + "; timestamp: " +
-                timestamp + "; quantità: " + quantita + "; note: " + note;
+        return "id: " + super.getId() + "; idPaziente: " + super.getIdPaziente() + "; id_farmaco: " + id_farmaco + "; timestamp: " +
+                super.getTimestamp() + "; quantità: " + quantita + "; note: " + note;
     }
 
 }

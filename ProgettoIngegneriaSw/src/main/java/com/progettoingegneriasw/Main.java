@@ -8,10 +8,7 @@ import com.progettoingegneriasw.model.Paziente.Paziente;
 import com.progettoingegneriasw.model.Paziente.PazienteDAO;
 import com.progettoingegneriasw.model.Paziente.PazienteUser;
 import com.progettoingegneriasw.model.User;
-import com.progettoingegneriasw.model.Utils.RilevazioneGlicemia;
-import com.progettoingegneriasw.model.Utils.Patologia;
-import com.progettoingegneriasw.model.Utils.RilevazioneFarmaco;
-import com.progettoingegneriasw.model.Utils.RilevazioneSintomo;
+import com.progettoingegneriasw.model.Utils.*;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -134,8 +131,8 @@ public class Main extends Application {
             System.out.println("Patologia : " + patologia);
         }
 
-        String[] terapie = medicoDAO.getTerapiePaziente("mario.rossi");
-        for(String ter : terapie){
+        Terapia[] terapie = medicoDAO.getTerapiePaziente("mario.rossi");
+        for(Terapia ter : terapie){
             System.out.println("Terapia : " + ter);
         }
     }

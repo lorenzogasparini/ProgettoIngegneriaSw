@@ -3,10 +3,7 @@ package com.progettoingegneriasw.model.Medico;
 import com.progettoingegneriasw.model.Paziente.Paziente;
 import com.progettoingegneriasw.model.Paziente.PazienteUser;
 import com.progettoingegneriasw.model.UserDAO;
-import com.progettoingegneriasw.model.Utils.RilevazioneGlicemia;
-import com.progettoingegneriasw.model.Utils.Patologia;
-import com.progettoingegneriasw.model.Utils.RilevazioneFarmaco;
-import com.progettoingegneriasw.model.Utils.RilevazioneSintomo;
+import com.progettoingegneriasw.model.Utils.*;
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -190,7 +187,7 @@ public class MedicoDAO extends UserDAO {
         System.out.println("\n\nPatologie id_paziente: " + id_paziente);
 
         super.getConnection().executeQuery(
-                "SELECT p.id AS p_id, p.nome AS p_nome, p.codice_aic AS p_codice_aic"
+                "SELECT p.id AS p_id, p.nome AS p_nome, p.codice_icd AS p_codice_icd"
                 + " FROM patologia p"
                 + " INNER JOIN patologia_paziente pp ON p.id = pp.id_patologia"
                 + " WHERE pp.id_paziente = ?",
@@ -198,9 +195,9 @@ public class MedicoDAO extends UserDAO {
                     while (rs.next()) {
                         patologie.add(
                                 new Patologia(
-                                        rs.getInt("id"),
-                                        rs.getString("nome"),
-                                        rs.getString("codice_icd")
+                                        rs.getInt("p_id"),
+                                        rs.getString("p_nome"),
+                                        rs.getString("p_codice_icd")
                                 )
                         );
                     }
@@ -212,14 +209,14 @@ public class MedicoDAO extends UserDAO {
     }
 
     // todo: implementare con Terapia
-    public String[] getTerapiePaziente(String username) throws SQLException {   //  Verificare il risultato fornito
+    public Terapia[] getTerapiePaziente(String username) throws SQLException {   //  Verificare il risultato fornito
         int id_paziente = getIdFromDB(username);
-        ArrayList<String> rilevazioni = new ArrayList<>();
+        ArrayList<Terapia> terapie = new ArrayList<>();
         if(id_paziente == -1) {
             throw new SQLException();   //  Verificare se si tratta della giusta eccezione
         }
 
-        System.out.println("\n\nPatologie id_paziente: " + id_paziente);
+        System.out.println("\n\nTerapie id_paziente: " + id_paziente);
 
         super.getConnection().executeQuery(
                 "SELECT t.id, t.id_farmaco, t.dosi_giornaliere, t.quantita_per_dose, t.note, f.id, f.codice_aic, f.nome"
@@ -228,12 +225,12 @@ public class MedicoDAO extends UserDAO {
                 + " WHERE pp.id_paziente = ?",
                 rs -> {
                     while (rs.next()) {
-                        rilevazioni.add(rs.getInt("id") + ", " + rs.getInt("id_farmaco") + ", " + rs.getInt("dosi_giornaliere") + ", " + rs.getFloat("quantita_per_dose") + ", " + rs.getString("note") + ", " + rs.getInt("id") + ", " + rs.getString("codice_aic") + ", " + rs.getString("nome"));
+                        terapie.add(new Terapia(rs.getInt("id"), rs.getInt("dosi_giornaliere"), rs.getFloat("quantita_per_dose"), rs.getString("note"), new Terapia.Farmaco(rs.getInt("id_farmaco"), rs.getString("codice_aic"), rs.getString("nome"))));
                     }
                     return null;
                 },
                 id_paziente
         );
-        return rilevazioni.toArray(new String[rilevazioni.size()]);
+        return terapie.toArray(new Terapia[terapie.size()]);
     }
 }
