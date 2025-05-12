@@ -1,6 +1,7 @@
 package com.progettoingegneriasw.model.Medico;
 
 import com.progettoingegneriasw.model.Admin.AdminUser;
+import com.progettoingegneriasw.model.Paziente.Paziente;
 import com.progettoingegneriasw.model.Paziente.PazienteDAO;
 import com.progettoingegneriasw.model.Paziente.PazienteUser;
 import com.progettoingegneriasw.model.User;
@@ -41,8 +42,8 @@ public class MedicoDAO extends UserDAO {
      * @param username The String-value for the username of the intance of MedicoUser
      * @return HashMap that contains all the users observed by the intance of MedicoUser
      */
-    public Map<Integer, User> getPazientiFromDB(String username) throws SQLException {
-        Map<Integer, User> pazienti = new TreeMap<>();
+    public Paziente[] getPazientiFromDB(String username) throws SQLException { // todo: capire se è giusto far ritornare un Paziente
+        ArrayList<Paziente> pazienti = new ArrayList<>(); // nota: metto l'interfaccia come argomento e non PazienteUser
         int id_diabetologo = getIdFromDB(username);
         if(id_diabetologo == -1) {
             throw new SQLException();   //  Verificare se si tratta della giusta eccezione
@@ -52,25 +53,27 @@ public class MedicoDAO extends UserDAO {
                 "SELECT * FROM paziente p WHERE p.id_diabetologo = ?",
                 rs -> {
                     while (rs.next()) { // todo: capire... perché è stata fatta una mappa e non una lista di PazientiUser? (perché l'id è tenuto separato)?
-                        pazienti.put(rs.getInt("id"),new PazienteUser(
+                        pazienti.add(new PazienteUser(
+                                rs.getInt("id"),
                                 rs.getString("username"),
                                 rs.getString("password"),
                                 rs.getString("nome"),
                                 rs.getString("cognome"),
                                 rs.getString("email"),
                                 rs.getInt("id_diabetologo"),
-                                java.sql.Date.valueOf(rs.getString("data_nascita")),
+                                Date.valueOf(rs.getString("data_nascita")),
                                 rs.getDouble("peso"),
                                 rs.getString("provincia_residenza"),
                                 rs.getString("comune_residenza"),
-                                rs.getString("note_paziente")));
+                                rs.getString("note_paziente"))
+                        );
                     }
                     return null;
                 },
                 id_diabetologo
         );
 
-        return pazienti;
+        return pazienti.toArray(new Paziente[pazienti.size()]);
     }
 
     // todo: capire... non facciamo una classe per rilevazioni e quindi ritorniamo un array di Rilevazione?

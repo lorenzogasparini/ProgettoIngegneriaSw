@@ -4,6 +4,7 @@ import com.progettoingegneriasw.model.Admin.AdminDAO;
 import com.progettoingegneriasw.model.Admin.AdminUser;
 import com.progettoingegneriasw.model.Medico.MedicoDAO;
 import com.progettoingegneriasw.model.Medico.MedicoUser;
+import com.progettoingegneriasw.model.Paziente.Paziente;
 import com.progettoingegneriasw.model.Paziente.PazienteDAO;
 import com.progettoingegneriasw.model.Paziente.PazienteUser;
 import com.progettoingegneriasw.model.User;
@@ -108,11 +109,10 @@ public class Main extends Application {
 
 
         /*  TEST DAO Query : MedicoDAO */
-        Map<Integer, User> paz = new HashMap<>();
-        paz = medicoDAO.getPazientiFromDB("drbianchi");
+        Paziente[] pazienti = medicoDAO.getPazientiFromDB("drbianchi");
         System.out.print("\nTest query pazienti curati: dal diabetologo: drbianchi \n");
-        for(Map.Entry<Integer, User> pazi : paz.entrySet()){
-            System.out.println("Paziente id : " + pazi.getKey() + " --  User Info: " + pazi.getValue());
+        for(Paziente paziente: pazienti){
+            System.out.println(paziente);
         }
 
         String[] rilevazioni_farmaci = medicoDAO.getRilevazioniFarmaci("mario.rossi");
