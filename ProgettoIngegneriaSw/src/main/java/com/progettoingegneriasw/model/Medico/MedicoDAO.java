@@ -43,7 +43,7 @@ public class MedicoDAO extends UserDAO {
      */
     public Map<Integer, User> getPazientiFromDB(String username) throws SQLException {
         Map<Integer, User> pazienti = new TreeMap<>();
-        int id_diabetologo = getIdFromDB(username, this);
+        int id_diabetologo = getIdFromDB(username);
         if(id_diabetologo == -1) {
             throw new SQLException();   //  Verificare se si tratta della giusta eccezione
         }
@@ -51,8 +51,19 @@ public class MedicoDAO extends UserDAO {
         super.getConnection().executeQuery(
                 "SELECT * FROM paziente p WHERE p.id_diabetologo = ?",
                 rs -> {
-                    while (rs.next()) {
-                        pazienti.put(rs.getInt("id"),new PazienteUser(rs.getString("username"), rs.getString("password"), rs.getString("nome"), rs.getString("cognome"), rs.getString("email"), rs.getInt("id_diabetologo"), java.sql.Date.valueOf(rs.getString("data_nascita")), rs.getDouble("peso"), rs.getString("provincia_residenza"), rs.getString("comune_residenza"), rs.getString("note_paziente")));
+                    while (rs.next()) { // todo: capire... perché è stata fatta una mappa e non una lista di PazientiUser? (perché l'id è tenuto separato)?
+                        pazienti.put(rs.getInt("id"),new PazienteUser(
+                                rs.getString("username"),
+                                rs.getString("password"),
+                                rs.getString("nome"),
+                                rs.getString("cognome"),
+                                rs.getString("email"),
+                                rs.getInt("id_diabetologo"),
+                                java.sql.Date.valueOf(rs.getString("data_nascita")),
+                                rs.getDouble("peso"),
+                                rs.getString("provincia_residenza"),
+                                rs.getString("comune_residenza"),
+                                rs.getString("note_paziente")));
                     }
                     return null;
                 },
@@ -62,8 +73,9 @@ public class MedicoDAO extends UserDAO {
         return pazienti;
     }
 
+    // todo: capire... non facciamo una classe per rilevazioni e quindi ritorniamo un array di Rilevazione?
     public String[] getRilevazioniFarmaci(String username) throws SQLException {
-        int id_paziente = getIdFromDB(username, new PazienteDAO());
+        int id_paziente = getIdFromDB(username);
         ArrayList<String> rilevazioni = new ArrayList<>();
         if(id_paziente == -1) {
             throw new SQLException();   //  Verificare se si tratta della giusta eccezione
@@ -87,8 +99,9 @@ public class MedicoDAO extends UserDAO {
         return rilevazioni.toArray(new String[rilevazioni.size()]);
     }
 
+    // todo: niente classe Rilevazione?
     public String[] getRilevazioniGlicemia(String username) throws SQLException {
-        int id_paziente = getIdFromDB(username, new PazienteDAO());
+        int id_paziente = getIdFromDB(username);
         ArrayList<String> rilevazioni = new ArrayList<>();
         if(id_paziente == -1) {
             throw new SQLException();   //  Verificare se si tratta della giusta eccezione
@@ -112,7 +125,7 @@ public class MedicoDAO extends UserDAO {
     }
 
     public String[] getRilevazioniSintomi(String username) throws SQLException {
-        int id_paziente = getIdFromDB(username, new PazienteDAO());
+        int id_paziente = getIdFromDB(username);
         ArrayList<String> rilevazioni = new ArrayList<>();
         if(id_paziente == -1) {
             throw new SQLException();   //  Verificare se si tratta della giusta eccezione
@@ -135,8 +148,9 @@ public class MedicoDAO extends UserDAO {
         return rilevazioni.toArray(new String[rilevazioni.size()]);
     }
 
+    // todo: non facciamo una classe per Patologia?
     public String[] getPatologiePaziente(String username) throws SQLException {
-        int id_paziente = getIdFromDB(username, new PazienteDAO());
+        int id_paziente = getIdFromDB(username);
         ArrayList<String> rilevazioni = new ArrayList<>();
         if(id_paziente == -1) {
             throw new SQLException();   //  Verificare se si tratta della giusta eccezione
@@ -160,8 +174,9 @@ public class MedicoDAO extends UserDAO {
         return rilevazioni.toArray(new String[rilevazioni.size()]);
     }
 
+    // todo: capire... non facciamo una classe Terapia?
     public String[] getTerapiePaziente(String username) throws SQLException {   //  Verificare il risultato fornito
-        int id_paziente = getIdFromDB(username, new PazienteDAO());
+        int id_paziente = getIdFromDB(username);
         ArrayList<String> rilevazioni = new ArrayList<>();
         if(id_paziente == -1) {
             throw new SQLException();   //  Verificare se si tratta della giusta eccezione

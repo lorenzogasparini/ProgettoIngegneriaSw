@@ -28,5 +28,10 @@ public class AdminUser extends User implements Admin{
         return super.toString();
     }
 
+    @Override
+    public String getSQLTableName() {
+        return AdminDAO.getInstance().getSQLTableName();
+    }
+
     /// NON HA METODI AdminUser perché non ha attributi in più di User
 }

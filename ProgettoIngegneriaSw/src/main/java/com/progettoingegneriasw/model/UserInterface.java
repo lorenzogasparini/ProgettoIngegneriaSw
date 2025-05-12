@@ -10,4 +10,5 @@ public interface UserInterface {
     public boolean isAdmin();
 
     public String toString();
+    public String getSQLTableName();
 }

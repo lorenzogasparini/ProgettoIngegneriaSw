@@ -28,6 +28,11 @@ public class MedicoUser extends User implements Medico{
         return super.toString() + "; email: " + email;
     }
 
+    @Override
+    public String getSQLTableName() {
+        return MedicoDAO.getInstance().getSQLTableName();
+    }
+
     /// Metodi per gli attributi del medico
     @Override
     public String getEmail() {

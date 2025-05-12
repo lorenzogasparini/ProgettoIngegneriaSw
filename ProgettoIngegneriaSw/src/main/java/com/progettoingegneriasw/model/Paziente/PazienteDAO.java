@@ -10,6 +10,7 @@ public class PazienteDAO extends UserDAO {
     private final String SQLTableName = "paziente";
     private static PazienteDAO instance;
 
+    // todo: capire in che modo renderlo privato per implementare il singleton
     public PazienteDAO() {
         // Init DB connection, maybe from a config class
         super();

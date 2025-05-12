@@ -51,7 +51,10 @@ public class PazienteUser extends User implements Paziente{
                 "; comuneResidenza: " + comuneResidenza + "; notePaziente: " + notePaziente;
     }
 
-
+    @Override
+    public String getSQLTableName() {
+        return PazienteDAO.getInstance().getSQLTableName();
+    }
 
 
     /// Metodi per gli attributi del paziente

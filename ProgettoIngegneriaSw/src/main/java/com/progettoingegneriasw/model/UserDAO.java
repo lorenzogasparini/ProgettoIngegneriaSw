@@ -259,8 +259,11 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
      * @param username The given username of the MedicoDAO instance
      * @return The id of the MedicoDAO instance, taken by DB query
      */
-    public int getIdFromDB(String username, UserDAO user) {   //  Funzionamento corretto
-        String query = "SELECT id FROM " + user.getSQLTableName() + " WHERE username = ";
+    public int getIdFromDB(String username) {   //  Funzionamento corretto
+
+        // todo: capire se questa parte aggiunta è corretta
+
+        String query = "SELECT id FROM " + getUser(username).getSQLTableName() + " WHERE username = ";
         return getConnection().executeQuery(
                 query + " ?",
                 rs -> {
