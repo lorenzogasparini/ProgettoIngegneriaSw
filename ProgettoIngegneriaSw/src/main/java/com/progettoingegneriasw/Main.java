@@ -8,16 +8,15 @@ import com.progettoingegneriasw.model.Paziente.Paziente;
 import com.progettoingegneriasw.model.Paziente.PazienteDAO;
 import com.progettoingegneriasw.model.Paziente.PazienteUser;
 import com.progettoingegneriasw.model.User;
-import com.progettoingegneriasw.model.UserDAO;
+import com.progettoingegneriasw.model.Utils.RilevazioneGlicemia;
+import com.progettoingegneriasw.model.Utils.Patologia;
+import com.progettoingegneriasw.model.Utils.RilevazioneFarmaco;
+import com.progettoingegneriasw.model.Utils.RilevazioneSintomo;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 import java.sql.Date;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Main extends Application {
     
@@ -115,23 +114,23 @@ public class Main extends Application {
             System.out.println(paziente);
         }
 
-        String[] rilevazioni_farmaci = medicoDAO.getRilevazioniFarmaci("mario.rossi");
-        for(String rilevazione : rilevazioni_farmaci){
+        RilevazioneFarmaco[] rilevazioni_farmaci = medicoDAO.getRilevazioniFarmaci("mario.rossi");
+        for(RilevazioneFarmaco rilevazioneFarmaco : rilevazioni_farmaci){
+            System.out.println("Rilevazione farmaco: " + rilevazioneFarmaco);
+        }
+
+        RilevazioneGlicemia[] rilevazioni_glicemia = medicoDAO.getRilevazioniGlicemia("mario.rossi");
+        for(RilevazioneGlicemia rilevazioneGlicemia : rilevazioni_glicemia){
+            System.out.println("Rilevazione glicemia: " + rilevazioneGlicemia);
+        }
+
+        RilevazioneSintomo[] rilevazioni_sintomi = medicoDAO.getRilevazioniSintomi("mario.rossi");
+        for(RilevazioneSintomo rilevazione : rilevazioni_sintomi){
             System.out.println("Rilevazione : " + rilevazione);
         }
 
-        String[] rilevazioni_glicemia = medicoDAO.getRilevazioniGlicemia("mario.rossi");
-        for(String rilevazione : rilevazioni_glicemia){
-            System.out.println("Rilevazione : " + rilevazione);
-        }
-
-        String[] rilevazioni_sintomi = medicoDAO.getRilevazioniSintomi("mario.rossi");
-        for(String rilevazione : rilevazioni_sintomi){
-            System.out.println("Rilevazione : " + rilevazione);
-        }
-
-        String[] patologie = medicoDAO.getPatologiePaziente("mario.rossi");
-        for(String patologia : patologie){
+        Patologia[] patologie = medicoDAO.getPatologiePaziente("mario.rossi");
+        for(Patologia patologia : patologie){
             System.out.println("Patologia : " + patologia);
         }
 
