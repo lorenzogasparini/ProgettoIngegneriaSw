@@ -15,7 +15,7 @@
     Elaborato conclusivo del corso di Ingegneria del Software: Servizio clinico per la gestione di pazienti diabetici
     <br />
     <br />
-    <a href="https://github.com/lorenzogasparini/ProgettoIngegneriaSw/doc"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/lorenzogasparini/ProgettoIngegneriaSw/tree/main/doc"><strong>Explore the docs »</strong></a>
     <br />
     <a href="https://github.com/lorenzogasparini/ProgettoIngegneriaSw/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     &middot;
