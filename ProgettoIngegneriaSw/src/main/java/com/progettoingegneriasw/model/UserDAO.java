@@ -37,13 +37,18 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
     public void saveUser(User user) { // Funzionante!
         boolean success = false;
 
+        if(userExists(user.getUsername())){
+            updateUser(user);
+            return;
+        }
+
         try {
             if (user.isAdmin()) {
                 AdminDAO adminDAO = AdminDAO.getInstance();
                 Admin admin = (Admin) user;
 
                 success = dbManager.executeUpdate(
-                        "INSERT OR REPLACE INTO " + adminDAO.getSQLTableName() + " (username, password, nome, cognome) VALUES (?, ?, ?, ?)",
+                        "INSERT INTO " + adminDAO.getSQLTableName() + " (username, password, nome, cognome) VALUES (?, ?, ?, ?)",
                         admin.getUsername(),
                         admin.getPassword(),
                         admin.getNome(),
@@ -54,7 +59,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                 Medico medico = (Medico) user;
 
                 success = dbManager.executeUpdate(
-                        "INSERT OR REPLACE INTO " + medicoDAO.getSQLTableName() + " (username, password, nome, cognome, email) VALUES (?, ?, ?, ?, ?)",
+                        "INSERT INTO " + medicoDAO.getSQLTableName() + " (username, password, nome, cognome, email) VALUES (?, ?, ?, ?, ?)",
                         medico.getUsername(),
                         medico.getPassword(),
                         medico.getEmail(),
@@ -66,7 +71,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                 Paziente paziente = (Paziente) user;
 
                 success = dbManager.executeUpdate(
-                        "INSERT OR REPLACE INTO " + pazienteDAO.getSQLTableName() +
+                        "INSERT INTO " + pazienteDAO.getSQLTableName() +
                                 " (username, password, nome, cognome, email, id_diabetologo, " +
                                 "data_nascita, peso, provincia_residenza, comune_residenza, note_paziente) " +
                                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
@@ -89,6 +94,75 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
             e.printStackTrace();
         }
 
+    }
+
+    private void updateUser(User user){
+        // todo: implementa l'UPDATE se l'utente è già esistente
+        boolean success = false;
+
+        /*UPDATE paziente SET note_paziente = 'dieta poco sana', peso = 74.5 WHERE username = 'giulia.bianchi'*/
+
+        try {
+            if (user.isAdmin()) {
+                AdminDAO adminDAO = AdminDAO.getInstance();
+                Admin admin = (Admin) user;
+
+                success = dbManager.executeUpdate(
+                        "UPDATE " + adminDAO.getSQLTableName() + " SET username = ?, password = ?, nome = ?," +
+                                " cognome = ?" +
+                                " WHERE username = ?",
+                        admin.getUsername(),
+                        admin.getPassword(),
+                        admin.getNome(),
+                        admin.getCognome(),
+                        admin.getUsername()
+                );
+
+            } else if (user.isMedico()) {
+                MedicoDAO medicoDAO = MedicoDAO.getInstance();
+                Medico medico = (Medico) user;
+
+                success = dbManager.executeUpdate(
+                        "UPDATE " + medicoDAO.getSQLTableName() + " SET username = ?, password = ?, nome = ?, " +
+                                "cognome = ?, email = ?" +
+                                "WHERE username = ?",
+                        medico.getUsername(),
+                        medico.getPassword(),
+                        medico.getNome(),
+                        medico.getCognome(),
+                        medico.getEmail(),
+                        medico.getUsername()
+                );
+
+            } else if (user.isPaziente()) {
+                PazienteDAO pazienteDAO = PazienteDAO.getInstance();
+                Paziente paziente = (Paziente) user;
+
+                success = dbManager.executeUpdate(
+                        "UPDATE " + pazienteDAO.getSQLTableName() + " SET username = ?, password = ?, nome = ?," +
+                                " cognome = ?, email = ?, id_diabetologo = ?, data_nascita = ?, peso = ?, " +
+                                "provincia_residenza = ?, comune_residenza = ?, note_paziente = ?" +
+                                " WHERE username = ?",
+                        paziente.getUsername(),
+                        paziente.getPassword(),
+                        paziente.getNome(),
+                        paziente.getCognome(),
+                        paziente.getEmail(),
+                        paziente.getIdMedico(),
+                        paziente.getDataNascita().toString(),
+                        paziente.getPeso(),
+                        paziente.getProvinciaResidenza(),
+                        paziente.getComuneResidenza(),
+                        paziente.getNotePaziente(),
+                        paziente.getUsername()
+                );
+
+            }
+        } catch (Exception e) {
+            success = false;
+            System.err.println("Error saving user: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     /*

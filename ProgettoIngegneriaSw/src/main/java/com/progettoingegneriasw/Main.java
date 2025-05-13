@@ -86,13 +86,13 @@ public class Main extends Application {
         AdminUser newAdminUser = new AdminUser("admin3", "admin3", "Pietro", "Corsi");
         adminDAO.saveUser(newAdminUser);
 
-        MedicoUser newMedicoUser = new MedicoUser("drdestri", "1234", "Mario",
+        MedicoUser newMedicoUser = new MedicoUser("drdestri", "12345", "Mario",
                 "Destri", "mario.destri@gmail.it");
         medicoDAO.saveUser(newMedicoUser);
 
         PazienteUser newPazienteUser = new PazienteUser("rebonato.mattia", "1234", "Mattia",
-                "Rebonato", "mattia.rebonato@gmail.com", 0,
-                Date.valueOf("2004-05-01"), 70.0, "VR",
+                "Rebonato", "mattia.rebonato@gmail.com", 1,
+                Date.valueOf("2004-05-01"), 65.0, "VR",
                 "Angiari","non assume regolarmente i farmaci e ha spesso problemi!");
         pazienteDAO.saveUser(newPazienteUser);
 
