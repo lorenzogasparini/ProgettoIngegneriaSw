@@ -26,7 +26,7 @@ public class RegisterController {
     
     @FXML
     public void initialize() {
-        //userDAO = Main.getUserRepository();
+        userDAO = UserDAO.getInstance();
         statusLabel.setVisible(false);
     }
     
@@ -51,7 +51,9 @@ public class RegisterController {
             showError("Passwords do not match");
             return;
         }
-        
+
+        // todo: finire la parte di registrazione prendendosi oltre ai dati del paziente il tipo di paziente in modo
+        // todo: da creare uno User di quel tipo e poi passarlo a userDAO.saveUser()
         // Create and save new user
         //User newUser = User.create(username, password, "nome", "cognome"); // todo: fix with correct datas
         //userDAO.saveUser(newUser);

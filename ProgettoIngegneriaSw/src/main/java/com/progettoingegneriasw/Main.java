@@ -8,35 +8,40 @@ import com.progettoingegneriasw.model.Paziente.Paziente;
 import com.progettoingegneriasw.model.Paziente.PazienteDAO;
 import com.progettoingegneriasw.model.Paziente.PazienteUser;
 import com.progettoingegneriasw.model.User;
+import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.model.Utils.*;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
 
 public class Main extends Application {
     
-    //private static UserDAO userDAO = new UserDAO();
+    private static UserDAO userDAO = UserDAO.getInstance();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Load the main application view
 
-//        URL mainViewUrl = getClass().getResource("/com/progettoingegneriasw/fxml/MainView.fxml");
-//        FXMLLoader loader = new FXMLLoader(mainViewUrl);
-//
-//        Parent root = loader.load();
-//
-//        // Set up the scene
-//        Scene scene = new Scene(root, 800, 600);
-//        URL cssUrl = getClass().getResource("/com/progettoingegneriasw/css/styles.css");
-//        scene.getStylesheets().add(cssUrl.toExternalForm());
-//
-//        // Configure and show the stage
-//        primaryStage.setTitle("Progetto Diabete");
-//        primaryStage.setScene(scene);
-//        primaryStage.show();
+        URL mainViewUrl = getClass().getResource("/com/progettoingegneriasw/fxml/MainView.fxml");
+        FXMLLoader loader = new FXMLLoader(mainViewUrl);
+
+        Parent root = loader.load();
+
+        // Set up the scene
+        Scene scene = new Scene(root, 800, 600);
+        URL cssUrl = getClass().getResource("/com/progettoingegneriasw/css/styles.css");
+        scene.getStylesheets().add(cssUrl.toExternalForm());
+
+        // Configure and show the stage
+        primaryStage.setTitle("Progetto Diabete");
+        primaryStage.setScene(scene);
+        primaryStage.show();
 
     }
 
@@ -49,7 +54,7 @@ public class Main extends Application {
 //    }
 
     public static void main(String[] args) throws SQLException {
-        //launch(args); // todo: da decommentare finiti i test su model
+        launch(args); // todo: da decommentare finiti i test su model
 
         // todo: eseguire i test in quest'area
         System.out.println("---- TEST Model ----");

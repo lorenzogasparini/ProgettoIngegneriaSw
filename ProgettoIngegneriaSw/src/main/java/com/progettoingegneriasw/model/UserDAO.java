@@ -14,17 +14,28 @@ import java.sql.Date;
 
 public class UserDAO { // todo: è corretto rendere questa classe abstract???
     private final DatabaseManager dbManager;
-    // private Map<String, User> userCache = new HashMap<>(); // this contains all the users --> NOT USED
+    private static UserDAO instance;
     public static User loggedUser; // this contains the current logged user; //todo: capire dove metterlo
 
-    public UserDAO() {
+    protected UserDAO() {
         this.dbManager = new DatabaseManager();
         //refreshUserCache();
+    }
+
+    public static synchronized UserDAO getInstance() {
+        if (instance == null) {
+            instance = new UserDAO();
+        }
+        return instance;
     }
 
     // todo: capire quando chiamare questo metodo (probabilmente dopo che l'utente si logga) e metterlo private finiti i test
     public void refreshLoggedUser(User currUser){
         loggedUser = currUser;
+    }
+
+    public static boolean userIsLogged(){
+        return loggedUser != null;
     }
 
     public DatabaseManager getConnection(){
@@ -317,6 +328,9 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
      * @return the right DAO for the user (AdminDAO, MedicoDAO or PazienteDAO)
      */
     public static UserDAO getLoggedUserDAO(){
+
+        if (!userIsLogged())
+            return new UserDAO();
 
         if(loggedUser.isAdmin())
             return AdminDAO.getInstance();
