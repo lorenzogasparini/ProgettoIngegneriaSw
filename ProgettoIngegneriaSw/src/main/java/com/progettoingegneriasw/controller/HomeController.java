@@ -29,6 +29,11 @@ public class HomeController {
     private void handleRegister() {
         ViewNavigator.navigateToRegister();
     }
+
+    @FXML
+    private void handleTest() {
+        ViewNavigator.navigateToTest();
+    }
     
     @FXML
     private void handleDashboard() {

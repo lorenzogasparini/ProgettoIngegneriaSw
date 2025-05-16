@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.progettoingegneriasw.controller.TestController" prefHeight="400.0" prefWidth="600.0">
+            <TableView fx:id="tableView" layoutX="35.0" layoutY="28.0" prefHeight="200.0" prefWidth="250.0">
+                <columns>
+                    <TableColumn prefWidth="75.0" text="UserId" fx:id="Id" />
+                    <TableColumn prefWidth="100.0" text="UserName" fx:id="Username" />
+                    <TableColumn prefWidth="100.0" text="Nome" fx:id="Nome" />
+                    <TableColumn prefWidth="100.0" text="Cognome" fx:id="Cognome" />
+                    <TableColumn prefWidth="100.0" text="Password" fx:id="Password" />
+                </columns>
+            </TableView>
+
+</VBox>

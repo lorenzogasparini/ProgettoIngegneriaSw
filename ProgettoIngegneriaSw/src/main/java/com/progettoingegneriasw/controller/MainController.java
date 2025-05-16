@@ -35,7 +35,7 @@ public class MainController {
     public void setContent(Node content) {
         mainContainer.setCenter(content);
     }
-    
+
     /**
      * Update the navigation bar based on authentication status
      */

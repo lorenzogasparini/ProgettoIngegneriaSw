@@ -49,6 +49,13 @@ public class ViewNavigator {
     public static void navigateToHome() {
         loadView("HomeView.fxml");
     }
+
+    /**
+     * Navigate to the test view
+     */
+    public static void navigateToTest() {
+        loadView("TestView.fxml");
+    }
     
     /**
      * Navigate to the login view
