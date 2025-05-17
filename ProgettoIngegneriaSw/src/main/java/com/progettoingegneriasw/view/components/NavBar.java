@@ -69,9 +69,9 @@ public class NavBar extends HBox {
     private void createUnauthenticatedNavButtons() {
         Button homeBtn = createNavButton("Home", e -> ViewNavigator.navigateToHome());
         Button loginBtn = createNavButton("Login", e -> ViewNavigator.navigateToLogin());
-        Button registerBtn = createNavButton("Register", e -> ViewNavigator.navigateToRegister());
-        
-        this.getChildren().addAll(homeBtn, loginBtn, registerBtn);
+        //  Button registerBtn = createNavButton("Register", e -> ViewNavigator.navigateToRegister());
+
+        this.getChildren().addAll(homeBtn, loginBtn/*, registerBtn*/);
     }
     
     /**

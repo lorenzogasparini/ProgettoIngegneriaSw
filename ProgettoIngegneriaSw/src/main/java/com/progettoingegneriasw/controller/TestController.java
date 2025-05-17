@@ -34,12 +34,6 @@ public class TestController {
     @FXML private TableColumn<Paziente, String> Provincia_residenza;
 
     public void initialize() throws SQLException {
-        // If we're already authenticated, hide login/register buttons
-        if (ViewNavigator.isAuthenticated()) {
-            loginButton.setVisible(false);
-            registerButton.setVisible(false);
-        }
-
         Id.setCellValueFactory(new PropertyValueFactory<Paziente, Integer>("Id"));
         Username.setCellValueFactory(new PropertyValueFactory<Paziente, String>("Username"));
         Nome.setCellValueFactory(new PropertyValueFactory<Paziente, String>("Nome"));

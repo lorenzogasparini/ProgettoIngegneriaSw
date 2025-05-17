@@ -2,6 +2,7 @@ package com.progettoingegneriasw.view;
 
 import com.progettoingegneriasw.Main;
 import com.progettoingegneriasw.controller.MainController;
+import com.progettoingegneriasw.model.UserDAO;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 
@@ -104,7 +105,7 @@ public class ViewNavigator {
     }
     
     /**
-     * Set the authenticated user
+     * Set the authenticated user and the user role
      * @param username The username of the authenticated user
      */
     public static void setAuthenticatedUser(String username) {

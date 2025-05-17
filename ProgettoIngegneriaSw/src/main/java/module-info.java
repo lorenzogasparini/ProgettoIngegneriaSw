@@ -2,6 +2,7 @@ module com.example.progettoingegneriasw {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
+    requires java.desktop;
 
     opens com.progettoingegneriasw to javafx.fxml;
     opens com.progettoingegneriasw.controller to javafx.fxml;

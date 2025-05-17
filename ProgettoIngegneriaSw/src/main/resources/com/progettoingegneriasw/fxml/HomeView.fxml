@@ -9,16 +9,17 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox spacing="20.0" styleClass="container" xmlns="http://javafx.com/javafx/16" 
-      xmlns:fx="http://javafx.com/fxml/1" 
-      fx:controller="com.progettoingegneriasw.controller.HomeController">
+<?import javafx.scene.control.Hyperlink?>
+<VBox spacing="20.0" styleClass="container" alignment="CENTER" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.progettoingegneriasw.controller.HomeController">
    <children>
-      <Label text="Welcome to the Dash Multi-Page App" textAlignment="CENTER">
+      <Label text="Benvenuto nel sistema &#128400;" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <Label text="This is a template for a multi-page JavaFX application with authentication." wrapText="true" />
+      <Label text="Autenticati per accedere all'utilizzo del sistema di telemedicina." wrapText="true" />
+
+      <!-- observableArrayList
       <VBox spacing="10.0">
          <children>
             <Label text="Features:">
@@ -41,12 +42,13 @@
             </ListView>
          </children>
       </VBox>
-      <HBox spacing="10.0">
+      -->
+
+      <HBox spacing="10.0" alignment="CENTER">
          <children>
-            <Button fx:id="loginButton" mnemonicParsing="false" onAction="#handleLogin" text="Login" />
-            <Button fx:id="registerButton" mnemonicParsing="false" onAction="#handleRegister" text="Register" />
-            <Button fx:id="testButton" mnemonicParsing="false" onAction="#handleTest" text="Test" />
-            <Button mnemonicParsing="false" onAction="#handleDashboard" text="Go to Dashboard" />
+            <Hyperlink fx:id="loginButton" mnemonicParsing="false" onAction="#handleLogin" text="Log-in" />
+            <!-- <Hyperlink fx:id="registerButton" mnemonicParsing="false" onAction="#handleRegister" text="Sign-up" /> -->
+            <Hyperlink fx:id="testButton" mnemonicParsing="false" onAction="#handleTest" text="Test" />
          </children>
       </HBox>
    </children>

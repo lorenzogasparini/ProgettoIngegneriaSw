@@ -7,35 +7,37 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox spacing="20.0" styleClass="container" xmlns="http://javafx.com/javafx/16" 
-      xmlns:fx="http://javafx.com/fxml/1" 
-      fx:controller="com.progettoingegneriasw.controller.DashboardController">
+<VBox spacing="20.0" styleClass="container" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" alignment="BASELINE_CENTER" fx:controller="com.progettoingegneriasw.controller.DashboardController">
    <children>
       <Label text="Dashboard" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <Label fx:id="welcomeLabel" text="Welcome to your dashboard!" wrapText="true" />
-      <Label text="This is a protected dashboard page. Only logged-in users can see this." 
-             wrapText="true" />
-      <HBox spacing="20.0">
+
+      <Label fx:id="welcomeLabel" text="Benvenuto nella tua dashboard!" wrapText="true" />
+      <!-- <Label text="This is a protected dashboard page. Only logged-in users can see this." wrapText="true" /> -->
+
+      <HBox spacing="20.0" alignment="CENTER" fx:id="handlingPanelMedico">
          <children>
-            <VBox styleClass="card" HBox.hgrow="ALWAYS">
+            <!-- VBox Visualizza pazienti -->
+            <VBox styleClass="card" HBox.hgrow="ALWAYS" fx:id="pannelloVisualizzaPazienti">
                <children>
-                  <Label styleClass="card-header" text="Stats Overview" />
-                  <Label text="This card could contain stats or charts." wrapText="true">
+                  <Label styleClass="card-header" text="Visualizza pazienti" />
+                  <Label text="Visualizza i pazienti, le terapie assegnate ed eventuali rilevazioni pervenute." wrapText="true">
                      <VBox.margin>
                         <Insets bottom="10.0" top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <Button mnemonicParsing="false" text="Details" fx:id="statDetails" onAction="#handleStatDetails" />
+                  <Button mnemonicParsing="false" text="Visualizza" fx:id="visualizzaPazienti" onAction="#handleVisualizzaPazienti" />
                </children>
                <padding>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </padding>
             </VBox>
-            <VBox styleClass="card" HBox.hgrow="ALWAYS">
+
+            <!-- VBox Attività recenti -->
+            <VBox styleClass="card" HBox.hgrow="ALWAYS" fx:id="pannelloAttivitaRecenti">
                <children>
                   <Label styleClass="card-header" text="Recent Activity" />
                   <Label text="This card could show recent user activity." wrapText="true">
@@ -49,7 +51,9 @@
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </padding>
             </VBox>
-            <VBox styleClass="card" HBox.hgrow="ALWAYS">
+
+            <!-- VBox Notifiche -->
+            <VBox styleClass="card" HBox.hgrow="ALWAYS" fx:id="pannelloNotifiche">
                <children>
                   <Label styleClass="card-header" text="Notifications" />
                   <Label text="This card could list user notifications." wrapText="true">
@@ -65,6 +69,26 @@
             </VBox>
          </children>
       </HBox>
+
+      <HBox spacing="20.0" alignment="CENTER" fx:id="handlingPanelPaziente">
+         <!-- VBox inserisci rilevazione -->
+         <VBox styleClass="card" HBox.hgrow="ALWAYS" fx:id="pannelloGestisciRilevazioni">
+            <children>
+               <Label styleClass="card-header" text="Gestione rilevazioni" />
+               <Label text="Gestisci le rilevazioni di glicemia, sintomi ed assunzioni di farmaci." wrapText="true">
+                  <VBox.margin>
+                     <Insets bottom="10.0" top="10.0" />
+                  </VBox.margin>
+               </Label>
+               <Button mnemonicParsing="false" text="Dettagli" fx:id="gestioneRilevazioni" onAction="#handleGestioneRilevazioni" />
+            </children>
+            <padding>
+               <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+            </padding>
+         </VBox>
+      </HBox>
+
+      <!--
       <HBox spacing="10.0">
          <children>
             <Button mnemonicParsing="false" onAction="#handleViewProfile" text="View Profile" />
@@ -75,6 +99,7 @@
             <Insets top="10.0" />
          </VBox.margin>
       </HBox>
+      -->
    </children>
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
