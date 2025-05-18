@@ -363,4 +363,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                 username
         );
     }
+
+    // todo: method to get alerts
+    //public List<Alert> // get alerts
 }

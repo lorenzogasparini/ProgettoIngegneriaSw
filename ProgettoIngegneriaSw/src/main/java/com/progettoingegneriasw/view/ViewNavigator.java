@@ -111,6 +111,10 @@ public class ViewNavigator {
     public static void setAuthenticatedUser(String username) {
         authenticatedUser = username;
         mainController.updateNavBar(isAuthenticated());
+
+        // todo: testare gli alert
+        //mainController.checkAndShowAlerts();
+
     }
     
     /**

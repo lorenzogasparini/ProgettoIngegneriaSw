@@ -1,3 +1,4 @@
+
 -- Amministratori
 INSERT INTO amministratore (nome, cognome, username, password) VALUES
 ('Lorenzo', 'Gasparini', 'admin1', 'hashed_pw1'),
@@ -51,12 +52,12 @@ INSERT INTO patologia_paziente (id_paziente, id_patologia, id_terapia, data_diag
 (4, 4, 1, '2019-12-30', NULL);
 
 -- Rilevazione Glicemia
-INSERT INTO rilevazione_glicemia (id_paziente, valore, prima_pasto) VALUES
-(1, 120, 1),
-(1, 140, 0),
-(2, 180, 0),
-(3, 100, 1),
-(4, 95, 1);
+INSERT INTO rilevazione_glicemia (id_paziente, valore, gravita, prima_pasto) VALUES
+(1, 145, 1, 1),
+(1, 140, 0, 0),
+(2, 230, 2, 0),
+(3, 60, 2, 1),
+(4, 95, 0, 1);
 
 -- Rilevazione Sintomo
 INSERT INTO rilevazione_sintomo (id_paziente, sintomo, intensita) VALUES
@@ -73,3 +74,31 @@ INSERT INTO rilevazione_farmaco (id_paziente, id_farmaco, quantita, note) VALUES
 (3, 1, 20, 'Routine sera');
 
 
+
+
+-- ALERT per glicemia alta
+INSERT INTO alert (id_paziente, id_rilevazione, tipo_alert, data_alert, letto) VALUES
+(2, 3, 'glicemia', '2025-05-17 08:00:00', 0),
+(1, 2, 'glicemia', '2025-05-16 18:30:00', 1);
+
+-- ALERT per mancata assunzione farmaco (ipotetico, id_rilevazione scelto da farmaco)
+INSERT INTO alert (id_paziente, id_rilevazione, tipo_alert, data_alert, letto) VALUES
+(1, 2, 'farmaco', '2025-05-15 21:00:00', 0),
+(2, 3, 'farmaco', '2025-05-16 22:00:00', 0);
+
+-- ALERT per sintomo rilevato con alta intensità
+INSERT INTO alert (id_paziente, id_rilevazione, tipo_alert, data_alert, letto) VALUES
+(2, 2, 'sintomo', '2025-05-17 10:00:00', 1),
+(4, 4, 'sintomo', '2025-05-17 09:30:00', 0);
+
+-- ALERT di glicemia bassa
+INSERT INTO alert (id_paziente, id_rilevazione, tipo_alert, data_alert, letto) VALUES
+(4, 5, 'glicemia', '2025-05-17 07:00:00', 0);
+
+-- ALERT per sintomo lieve
+INSERT INTO alert (id_paziente, id_rilevazione, tipo_alert, data_alert, letto) VALUES
+(3, 3, 'sintomo', '2025-05-16 17:45:00', 1);
+
+-- ALERT farmaco con dose anomala
+INSERT INTO alert (id_paziente, id_rilevazione, tipo_alert, data_alert, letto) VALUES
+(3, 4, 'farmaco', '2025-05-16 08:00:00', 0);

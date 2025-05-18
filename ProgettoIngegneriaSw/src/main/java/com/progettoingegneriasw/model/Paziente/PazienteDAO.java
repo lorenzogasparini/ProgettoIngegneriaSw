@@ -35,5 +35,5 @@ public class PazienteDAO extends UserDAO {
 
 
     // todo: aggiungere i metodi per i pazienti (non vanno messi nell'interfaccia perchè non esistono interfaccie per i DAO)
-
+    // todo: aggiungi metodi di inserimento rilevazioni_farmaco, glicemia e sintomo
 }

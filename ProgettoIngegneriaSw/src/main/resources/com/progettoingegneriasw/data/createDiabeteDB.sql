@@ -83,11 +83,37 @@ CREATE TABLE log (
 
 
 -- Tabella rilevazione_glicemia
+-- DESCRIZIONE CAMPO gravita
+-- 0: valore normale
+--    - prima pasto: 80 - 130 mg/dL
+--    - dopo pasto: ≤ 180 mg/dL
+--
+-- 1: iperglicemia lieve
+--    - prima pasto: 131–160 mg/dL
+--    - dopo pasto: 181–200 mg/dL
+-- 1: ipoglicemia lieve
+--    - prima pasto: 70–79 mg/dL
+--    - dopo pasto: 70–79 mg/dL
+--
+-- 2: iperglicemia moderata
+--    - prima pasto: 161–200 mg/dL
+--    - dopo pasto: 201–250 mg/dL
+-- 2: ipoglicemia moderata
+--    - prima pasto: 60–69 mg/dL
+--    - dopo pasto: 60–69 mg/dL
+--
+-- 3: iperglicemia grave
+--    - prima pasto: >200 mg/dL
+--    - dopo pasto: >250 mg/dL
+-- 3: ipoglicemia grave
+--    - prima pasto: <60 mg/dL
+--    - dopo pasto: <60 mg/dL
 CREATE TABLE rilevazione_glicemia (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     id_paziente INTEGER NOT NULL,
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
     valore INTEGER NOT NULL, -- in mg
+    gravita INTEGER CHECK (gravita >= 0 AND gravita <= 3),
     prima_pasto BOOLEAN, -- se false il valore è dopo il pasto
     FOREIGN KEY(id_paziente) REFERENCES paziente(id)
 );
@@ -152,4 +178,15 @@ CREATE TABLE rilevazione_farmaco (
     note TEXT,
     FOREIGN KEY(id_paziente) REFERENCES paziente(id),
 	FOREIGN KEY(id_farmaco) REFERENCES farmaco(id)
+);
+
+-- Tabella alert
+CREATE TABLE alert (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_paziente INTEGER NOT NULL,
+    id_rilevazione INTEGER NOT NULL, -- "dynamic FOREIGN KEY" related to tipo_alert
+    tipo_alert TEXT NOT NULL CHECK(tipo_alert IN ('farmaco', 'glicemia', 'sintomo')),
+    data_alert TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    letto BOOLEAN DEFAULT 0, -- se è stato visualizzato o no
+    FOREIGN KEY(id_paziente) REFERENCES paziente(id)
 );

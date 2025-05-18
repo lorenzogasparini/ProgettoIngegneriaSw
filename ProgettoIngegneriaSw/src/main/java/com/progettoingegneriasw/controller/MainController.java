@@ -7,6 +7,8 @@ import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
+import javax.swing.text.View;
+
 public class MainController {
     @FXML
     private BorderPane mainContainer;
@@ -42,4 +44,12 @@ public class MainController {
     public void updateNavBar(boolean isAuthenticated) {
         navBar.updateAuthStatus(isAuthenticated, ViewNavigator.getAuthenticatedUser());
     }
+
+//    public void checkAndShowAlerts(){
+//        if(!ViewNavigator.isAuthenticated()){ // todo: in UserDAO è presente un'altra funzione per verificare se l'utente è loggato
+//            return; // teoricamente non dovrebbe mai entrare qui
+//        }
+//
+//
+//    }
 }
