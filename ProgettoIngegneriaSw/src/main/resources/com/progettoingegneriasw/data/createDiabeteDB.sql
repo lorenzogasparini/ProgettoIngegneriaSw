@@ -181,11 +181,13 @@ CREATE TABLE rilevazione_farmaco (
 );
 
 -- Tabella alert
+-- se id_rilevazione punta ad un id di rilevazione_farmaco è relativo all'ultima volta che è stato assunto il farmaco in questione
+-- se id_rilevazione punta ad un id di rilevazione_glicemia è relativo alla rilevazione di glicemia di interesse
 CREATE TABLE alert (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     id_paziente INTEGER NOT NULL,
     id_rilevazione INTEGER NOT NULL, -- "dynamic FOREIGN KEY" related to tipo_alert
-    tipo_alert TEXT NOT NULL CHECK(tipo_alert IN ('farmaco', 'glicemia', 'sintomo')),
+    tipo_alert TEXT NOT NULL CHECK(tipo_alert IN ('glicemia', 'promemoriaFarmaco', 'farmacoNonAssuntoDa3Giorni')),
     data_alert TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     letto BOOLEAN DEFAULT 0, -- se è stato visualizzato o no
     FOREIGN KEY(id_paziente) REFERENCES paziente(id)

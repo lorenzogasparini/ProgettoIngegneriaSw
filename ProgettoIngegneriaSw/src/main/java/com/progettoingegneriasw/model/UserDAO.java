@@ -9,8 +9,11 @@ import com.progettoingegneriasw.model.Medico.MedicoUser;
 import com.progettoingegneriasw.model.Paziente.Paziente;
 import com.progettoingegneriasw.model.Paziente.PazienteDAO;
 import com.progettoingegneriasw.model.Paziente.PazienteUser;
+import com.progettoingegneriasw.model.Utils.Alert;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO { // todo: è corretto rendere questa classe abstract???
     private final DatabaseManager dbManager;
@@ -365,5 +368,5 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
     }
 
     // todo: method to get alerts
-    //public List<Alert> // get alerts
+    //public ArrayList<Alert> getAllAlerts() // todo: da ridefinire in PazienteDAO perché deve prendere solo gli alert con
 }
