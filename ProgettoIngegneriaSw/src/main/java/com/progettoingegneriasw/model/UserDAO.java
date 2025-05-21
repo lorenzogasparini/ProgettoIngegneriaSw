@@ -9,11 +9,8 @@ import com.progettoingegneriasw.model.Medico.MedicoUser;
 import com.progettoingegneriasw.model.Paziente.Paziente;
 import com.progettoingegneriasw.model.Paziente.PazienteDAO;
 import com.progettoingegneriasw.model.Paziente.PazienteUser;
-import com.progettoingegneriasw.model.Utils.Alert;
-
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
+import com.progettoingegneriasw.model.Utils.Farmaco;
+import com.progettoingegneriasw.model.Utils.Log;
 
 public class UserDAO { // todo: è corretto rendere questa classe abstract???
     private final DatabaseManager dbManager;
@@ -179,59 +176,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
         }
     }
 
-    /*
-    /**
-     * Delete a user from the repository
-     */
-    public void deleteUser(String username) { // todo: da testare
 
-        User user;
-
-        if(userExists(username)){
-            user = getUser(username);
-        }else{
-            return;
-        }
-
-        boolean success = false;
-
-        if (user != null && !user.isAdmin()) {
-            try {
-                if (user.isMedico()) {
-                    MedicoDAO medicoDAO = MedicoDAO.getInstance();
-                    success = dbManager.executeUpdate(
-                            "DELETE FROM " + medicoDAO.getSQLTableName() + " WHERE username = ?",
-                            username
-                    );
-                } else if (user.isPaziente()) {
-                    PazienteDAO pazienteDAO = PazienteDAO.getInstance();
-                    success = dbManager.executeUpdate(
-                            "DELETE FROM " + pazienteDAO.getSQLTableName() + " WHERE username = ?",
-                            username
-                    );
-                }
-            } catch (Exception e) {
-                System.err.println("Error deleting user: " + e.getMessage());
-                e.printStackTrace();
-            }
-        }
-    }
-
-    //todo: rimuovere se non necessaria (era una funzione per testare il db)
-//        public void printAllPazientiDB(){
-//        dbManager.executeQuery(
-//                "SELECT username, password FROM paziente",
-//                rs -> {
-//                    while (rs.next()) {
-//                        String username = rs.getString("username");
-//                        String password = rs.getString("password");
-//
-//                        System.out.println("username: " + username + "; password: " + password);
-//                    }
-//                    return null;
-//                }
-//        );
-//    }
 
 
     /**
@@ -352,8 +297,6 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
      */
     public int getIdFromDB(String username) {   //  Funzionamento corretto
 
-        // todo: capire se questa parte aggiunta è corretta
-
         String query = "SELECT id FROM " + getUser(username).getSQLTableName() + " WHERE username = ";
         return getConnection().executeQuery(
                 query + " ?",
@@ -364,6 +307,35 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                     return -1;
                 },
                 username
+        );
+    }
+
+    // todo: chiamare questa funzione in ogni altra funzione e probabilmente creare un metodo intermediario
+    // todo: per generare l'oggetto Log a seconda del contesto che poi chiami questa funzione
+    public void setLog(Log log){
+        dbManager.executeUpdate(
+                "INSERT INTO log (id_paziente, id_diabetologo, azione, timestamp) VALUES (?, ?, ?, ?)",
+                log.getIdPaziente(),
+                log.getIdDiabetologo(),
+                log.getAzione(),
+                log.getTimestamp().toString()
+        );
+    }
+
+    public Farmaco getFaracoFromId(Integer idFarmaco){
+        return getConnection().executeQuery(
+                "SELECT id FROM farmaco WHERE id = ?",
+                rs -> {
+                    if (rs.next()) {
+                        return new Farmaco(
+                                rs.getInt("id"),
+                                rs.getString("codice_aic"),
+                                rs.getString("nome")
+                        );
+                    }
+                    return null;
+                },
+                idFarmaco
         );
     }
 

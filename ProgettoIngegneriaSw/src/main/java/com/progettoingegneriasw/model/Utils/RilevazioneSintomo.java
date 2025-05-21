@@ -7,7 +7,11 @@ public class RilevazioneSintomo extends Rilevazione{
     private String sintomo;
     private int intensita;
 
-    public RilevazioneSintomo(int id, int idPaziente, Timestamp timestamp, String sintomo, int intensita){
+    public RilevazioneSintomo(int idPaziente, Timestamp timestamp, String sintomo, int intensita){
+        this(null, idPaziente, timestamp, sintomo, intensita);
+    }
+
+    public RilevazioneSintomo(Integer id, int idPaziente, Timestamp timestamp, String sintomo, int intensita){
         super(id, idPaziente, timestamp);
         this.sintomo = sintomo;
         this.intensita = intensita;

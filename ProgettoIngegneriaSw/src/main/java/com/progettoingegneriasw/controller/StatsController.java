@@ -1,5 +1,6 @@
 package com.progettoingegneriasw.controller;
 
+import com.progettoingegneriasw.model.Admin.AdminDAO;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -169,7 +170,7 @@ public class StatsController {
         User userToDelete = userDAO.getUser(username);
         if (userToDelete != null && !userToDelete.isAdmin()) {
             // Delete the user
-            userDAO.deleteUser(username);
+            AdminDAO.getInstance().deleteUser(username);
             
             // Refresh the user list
             populateUserList();

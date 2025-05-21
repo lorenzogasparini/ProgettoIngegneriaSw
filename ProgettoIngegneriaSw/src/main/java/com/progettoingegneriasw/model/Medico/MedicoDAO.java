@@ -32,14 +32,46 @@ public class MedicoDAO extends UserDAO {
         return SQLTableName;
     }
 
-    // todo: aggiungere i metodi del medico (non vanno messi nell'interfaccia perchè non esistono interfaccie per i DAO)
+
+
+
+
+
+    // Metodi del medico
+    public Paziente[] getAllPazienti(){
+        ArrayList<Paziente> pazienti = new ArrayList<>();
+        super.getConnection().executeQuery(
+                "SELECT * FROM paziente",
+                rs -> {
+                    while (rs.next()) {
+                        pazienti.add(new PazienteUser(
+                                        rs.getInt("id"),
+                                        rs.getString("username"),
+                                        rs.getString("password"),
+                                        rs.getString("nome"),
+                                        rs.getString("cognome"),
+                                        rs.getString("email"),
+                                        rs.getInt("id_diabetologo"),
+                                        Date.valueOf(rs.getString("data_nascita")),
+                                        rs.getDouble("peso"),
+                                        rs.getString("provincia_residenza"),
+                                        rs.getString("comune_residenza"),
+                                        rs.getString("note_paziente")
+                                )
+                        );
+                    }
+                    return null;
+                }
+        );
+        return pazienti.toArray(new Paziente[pazienti.size()]);
+    }
 
     /**
      * @param username The String-value for the username of the intance of MedicoUser
      * @return HashMap that contains all the users observed by the intance of MedicoUser
      */
     public Paziente[] getPazientiFromDB(String username) throws SQLException { // todo: capire se è giusto far ritornare un Paziente
-        ArrayList<Paziente> pazienti = new ArrayList<>(); // nota: metto l'interfaccia come argomento e non PazienteUser
+        ArrayList<Paziente> pazienti = new ArrayList<>();
         int id_diabetologo = getIdFromDB(username);
         if(id_diabetologo == -1) {
             throw new SQLException();   //  Verificare se si tratta della giusta eccezione
@@ -48,7 +80,7 @@ public class MedicoDAO extends UserDAO {
         super.getConnection().executeQuery(
                 "SELECT * FROM paziente p WHERE p.id_diabetologo = ?",
                 rs -> {
-                    while (rs.next()) { // todo: capire... perché è stata fatta una mappa e non una lista di PazientiUser? (perché l'id è tenuto separato)?
+                    while (rs.next()) {
                         pazienti.add(new PazienteUser(
                                     rs.getInt("id"),
                                     rs.getString("username"),
@@ -80,8 +112,6 @@ public class MedicoDAO extends UserDAO {
         if(id_paziente == -1) {
             throw new SQLException();   //  Verificare se si tratta della giusta eccezione
         }
-
-        System.out.println("\n\nRilevazione farmaco : " + id_paziente);
 
         super.getConnection().executeQuery(
                 "SELECT r.id AS r_id, r.id_paziente AS r_id_paziente, r.id_farmaco AS r_id_farmaco, " +
@@ -118,8 +148,6 @@ public class MedicoDAO extends UserDAO {
             throw new SQLException();   //  Verificare se si tratta della giusta eccezione
         }
 
-        System.out.println("\n\nRilevazione glicemia id_paziente: " + id_paziente);
-
         super.getConnection().executeQuery(
                 "SELECT *"
                         + "FROM rilevazione_glicemia r "
@@ -151,7 +179,6 @@ public class MedicoDAO extends UserDAO {
             throw new SQLException();   //  Verificare se si tratta della giusta eccezione
         }
 
-        System.out.println("\n\nRilevazione sintomi id_paziente: " + id_paziente);
 
         super.getConnection().executeQuery(
                     "SELECT * "
@@ -184,8 +211,6 @@ public class MedicoDAO extends UserDAO {
             throw new SQLException();   //  Verificare se si tratta della giusta eccezione
         }
 
-        System.out.println("\n\nPatologie id_paziente: " + id_paziente);
-
         super.getConnection().executeQuery(
                 "SELECT p.id AS p_id, p.nome AS p_nome, p.codice_icd AS p_codice_icd"
                 + " FROM patologia p"
@@ -208,15 +233,13 @@ public class MedicoDAO extends UserDAO {
         return patologie.toArray(new Patologia[patologie.size()]);
     }
 
-    // todo: implementare con Terapia
+
     public Terapia[] getTerapiePaziente(String username) throws SQLException {   //  Verificare il risultato fornito
         int id_paziente = getIdFromDB(username);
         ArrayList<Terapia> terapie = new ArrayList<>();
         if(id_paziente == -1) {
             throw new SQLException();   //  Verificare se si tratta della giusta eccezione
         }
-
-        System.out.println("\n\nTerapie id_paziente: " + id_paziente);
 
         super.getConnection().executeQuery(
                 "SELECT t.id, t.id_farmaco, t.dosi_giornaliere, t.quantita_per_dose, t.note, f.id, f.codice_aic, f.nome"
@@ -225,7 +248,15 @@ public class MedicoDAO extends UserDAO {
                 + " WHERE pp.id_paziente = ?",
                 rs -> {
                     while (rs.next()) {
-                        terapie.add(new Terapia(rs.getInt("id"), rs.getInt("dosi_giornaliere"), rs.getFloat("quantita_per_dose"), rs.getString("note"), new Terapia.Farmaco(rs.getInt("id_farmaco"), rs.getString("codice_aic"), rs.getString("nome"))));
+                        terapie.add(new Terapia(rs.getInt("id"),
+                                rs.getInt("dosi_giornaliere"),
+                                rs.getFloat("quantita_per_dose"),
+                                rs.getString("note"),
+                                new Farmaco(rs.getInt("id_farmaco"),
+                                        rs.getString("codice_aic"),
+                                        rs.getString("nome")
+                                )
+                        ));
                     }
                     return null;
                 },
@@ -233,4 +264,57 @@ public class MedicoDAO extends UserDAO {
         );
         return terapie.toArray(new Terapia[terapie.size()]);
     }
+
+
+
+    // todo: getRilevazioneGlicemia() parametrica come getRilevazioneFarmaco()
+
+    // todo: getRilevazioneSintomo() parametrica come getRilevazioneFarmaco()
+
+
+
+    public RilevazioneFarmaco[] getRilevazioneFarmaco() throws SQLException {
+        return getRilevazioneFarmaco("");
+    }
+
+    /* query esempio
+        SELECT rf.*, f.*
+        FROM paziente p
+        INNER JOIN rilevazione_farmaco rf ON p.id = rf.id_paziente
+        INNER JOIN farmaco f ON rf.id_farmaco = f.id
+        WHERE (:username IS NULL OR username = :username);
+     */
+    public RilevazioneFarmaco[] getRilevazioneFarmaco(String usernamePaziente) throws SQLException {
+        ArrayList<RilevazioneFarmaco> rilevazioniFarmaci = new ArrayList<>();
+
+        String query =
+                "SELECT rf.* " +
+                        "FROM paziente p " +
+                        "INNER JOIN rilevazione_farmaco rf ON p.id = rf.id_paziente " +
+                        "WHERE (? IS NULL OR p.username = ?)";
+
+        super.getConnection().executeQuery(
+                query,
+                rs -> {
+                    while (rs.next()) {
+                        rilevazioniFarmaci.add(new RilevazioneFarmaco(
+                                rs.getInt("id"),
+                                rs.getInt("id_paziente"),
+                                rs.getInt("id_farmaco"),
+                                rs.getTimestamp("timestamp"),
+                                rs.getFloat("quantita"),
+                                rs.getString("note")
+                        ));
+                    }
+                    return null;
+                },
+                usernamePaziente.isEmpty() ? null : usernamePaziente,  // 1st placeholder
+                usernamePaziente.isEmpty() ? null : usernamePaziente   // 2nd placeholder
+        );
+
+        return rilevazioniFarmaci.toArray(new RilevazioneFarmaco[0]);
+    }
+
+
+
 }

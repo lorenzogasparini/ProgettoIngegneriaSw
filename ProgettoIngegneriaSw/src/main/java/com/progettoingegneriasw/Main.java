@@ -19,10 +19,18 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.Map;
 
 public class Main extends Application {
     
     private static UserDAO userDAO = UserDAO.getInstance();
+    private static AdminDAO adminDAO = AdminDAO.getInstance();
+    private static MedicoDAO medicoDAO = MedicoDAO.getInstance();
+    private static PazienteDAO pazienteDAO = PazienteDAO.getInstance();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -54,60 +62,87 @@ public class Main extends Application {
 //    }
 
     public static void main(String[] args) throws SQLException {
-        launch(args); // todo: da decommentare finiti i test su model
+        launch(args);
 
-        // todo: eseguire i test in quest'area
+        // eseguire i test in questa sezione
         System.out.println("---- TEST Model ----");
-        AdminDAO adminDAO = AdminDAO.getInstance();
-        MedicoDAO medicoDAO = MedicoDAO.getInstance();
-        PazienteDAO pazienteDAO = PazienteDAO.getInstance();
+
+        // todo: si porebbe parametrizzare il nome dell'utente su cui fare i vari test (esempio: "mario.rossi")
+
+        testUser();
+        testAdmin();
+        testMedico();
+        testPaziente();
 
 
-        // TEST generale per prendere tutti i pazienti
-        //adminDAO.printAllPazientiDB();
+    }
+
+    /**
+     * metodo per testare le funzionalità generali degli utenti
+     */
+    private static void testUser(){
+
+        System.out.println("\n\n\n -- TEST USER (general) -- \n");
 
         // TEST ricerca admin, medico, paziente e utente non trovato
-        if(adminDAO.userExists("admin1")){
-            User adminUser = adminDAO.getUser("admin1");
+        if(userDAO.userExists("admin1")){
+            User adminUser = userDAO.getUser("admin1");
             System.out.println(adminUser.toString());
         }
 
-        if(pazienteDAO.userExists("drbianchi")){
-            User medicoUser = medicoDAO.getUser("drbianchi");
-            System.out.println(medicoUser.toString());
-        }
 
-        if(medicoDAO.userExists("lucia.verdi")){
-            User pazienteUser = pazienteDAO.getUser("lucia.verdi");
-            System.out.println(pazienteUser.toString());
-        }
-
-        if(adminDAO.userExists("utenteNonEsistente")){
-            User utenteNonEsistente = adminDAO.getUser("utenteNonEsistente");
+        if(userDAO.userExists("utenteNonEsistente")){
+            User utenteNonEsistente = userDAO.getUser("utenteNonEsistente");
             System.out.println(utenteNonEsistente.toString());
         }
 
         // TEST INSERIMENTO/MODIFICA utenti (modificare i valori dei campi per poterne inserire di nuovi)
         AdminUser newAdminUser = new AdminUser("admin3", "admin3", "Pietro", "Corsi");
-        adminDAO.saveUser(newAdminUser);
+        userDAO.saveUser(newAdminUser);
+
+        // USER: test inserimento log
+        System.out.println("test inserimento Log");
+        userDAO.setLog(new Log(1, 1, "test Log", Timestamp.from(Instant.now())));
+
+    }
+
+    private static void testAdmin(){
+
+        System.out.println("\n\n\n -- TEST ADMIN -- \n");
+
+
+        // ADMIN: cancellazione utente
+        AdminUser newAdminUser = new AdminUser("admin3", "admin3", "Pietro", "Corsi");
+        adminDAO.deleteUser(newAdminUser.getUsername());
+
+        // ADMIN: metodo per ottenere i Log
+        System.out.println("Lista Logs:");
+        Log[] logs = adminDAO.getLogs();
+        for(Log log: logs){
+            System.out.println("Log: " + log);
+        }
+
+    }
+
+    private static void testMedico() throws SQLException {
+
+        System.out.println("\n\n\n -- TEST MEDICO -- \n");
+
+        // MEDICO: Ottieni tutti i pazienti
+        System.out.println("Lista di tutti i pazienti:");
+        Paziente[] allPazienti = medicoDAO.getAllPazienti();
+        for(Paziente paziente: allPazienti){
+            System.out.println("Paziente: " + paziente);
+        }
+
+        if(userDAO.userExists("lucia.verdi")){
+            User pazienteUser = pazienteDAO.getUser("lucia.verdi");
+            System.out.println(pazienteUser.toString());
+        }
 
         MedicoUser newMedicoUser = new MedicoUser("drdestri", "12345", "Mario",
                 "Destri", "mario.destri@gmail.it");
         medicoDAO.saveUser(newMedicoUser);
-
-        PazienteUser newPazienteUser = new PazienteUser("rebonato.mattia", "1234", "Mattia",
-                "Rebonato", "mattia.rebonato@gmail.com", 1,
-                Date.valueOf("2004-05-01"), 65.0, "VR",
-                "Angiari","non assume regolarmente i farmaci e ha spesso problemi!");
-        pazienteDAO.saveUser(newPazienteUser);
-
-
-        // TEST CANCELLAZIONE UTENTE
-        medicoDAO.deleteUser(newMedicoUser.getUsername());
-        //pazienteDAO.deleteUser(newPazienteUser.getUsername());
-        // test che deve generare un errore:
-        adminDAO.deleteUser(newAdminUser.getUsername());
-
 
         /*  TEST DAO Query : MedicoDAO */
         Paziente[] pazienti = medicoDAO.getPazientiFromDB("drbianchi");
@@ -140,5 +175,75 @@ public class Main extends Application {
         for(Terapia ter : terapie){
             System.out.println("Terapia : " + ter);
         }
+
+        // TEST getRilevazioni...
+        System.out.println("\n TEST getRilevazioni()...");
+        // MEDICO: getRilevazioneFarmaco()
+        System.out.println("test rilevazioneFarmaco di qualsiasi paziente");
+        RilevazioneFarmaco[] rilevazioniFarmaci = medicoDAO.getRilevazioneFarmaco();
+        for(RilevazioneFarmaco rilevazioneFarmaco : rilevazioniFarmaci){
+            System.out.println(rilevazioneFarmaco);
+        }
+
+        System.out.println("test rilevazioneFarmaco paziente specifico: mario.rossi");
+        rilevazioniFarmaci = medicoDAO.getRilevazioneFarmaco("mario.rossi");
+        for(RilevazioneFarmaco rilevazioneFarmaco : rilevazioniFarmaci){
+            System.out.println(rilevazioneFarmaco);
+        }
+
     }
+
+    private static void testPaziente() throws SQLException {
+
+        System.out.println("\n\n\n -- TEST PAZIENTE -- \n");
+
+        if(pazienteDAO.userExists("drbianchi")){
+            User medicoUser = medicoDAO.getUser("drbianchi");
+            System.out.println(medicoUser.toString());
+        }
+
+        PazienteUser newPazienteUser = new PazienteUser("rebonato.mattia", "1234", "Mattia",
+                "Rebonato", "mattia.rebonato@gmail.com", 1,
+                Date.valueOf("2004-05-01"), 65.0, "VR",
+                "Angiari","non assume regolarmente i farmaci e ha spesso problemi!");
+        pazienteDAO.saveUser(newPazienteUser);
+
+
+        // Ottieni la lista farmaci di un paziente
+        System.out.println("Lista dei pazienti di mario.rossi");
+        Farmaco[] farmaci = pazienteDAO.getFarmaciPaziente("mario.rossi");
+        for(Farmaco farmaco: farmaci){
+            System.out.println("Farmaco: " + farmaco);
+        }
+
+        // Ottieni la lista farmaci di un paziente e indica anche se ogni farmaco è già stato assunto o no di oggi
+        System.out.println("Lista dei pazienti di mario.rossi");
+        Map<Farmaco, Boolean> farmaciEAssunzioni = pazienteDAO.getFarmaciPazienteEAssunzioni("mario.rossi");
+        for(Farmaco farmaco: farmaciEAssunzioni.keySet()){
+            System.out.println("Farmaco: " + farmaco + "; assunto: " + farmaciEAssunzioni.get(farmaco));
+        }
+
+        // -- TEST INSERIMENTO RILEVAZIONI --
+        // PAZIENTE: inserimento di una rilevazione sintomo --> FUNZIONA!
+//        System.out.println("Test inserimento rilevazione Sintomo");
+//        RilevazioneSintomo rilevazioneSintomo =
+//                new RilevazioneSintomo(1, Timestamp.from(Instant.now()), "Cervicale", 7);
+//        pazienteDAO.setRilevazioneSintomo(rilevazioneSintomo);
+
+        // PAZIENTE: inserimento di una rilevazione glicemia --> FUNZIONA!
+//        System.out.println("Test inserimento rilevazione Glicemia");
+//        RilevazioneGlicemia rilevazioneGlicemia =
+//                new RilevazioneGlicemia(1, Timestamp.from(Instant.now()), 270, true);
+//        pazienteDAO.setRilevazioneGlicemia(rilevazioneGlicemia);
+//
+//        // PAZIENTE: inserimento di una rilevazione farmaco
+//        System.out.println("Test inserimento rilevazione Farmaco");
+//        RilevazioneFarmaco rilevazioneFarmaco =
+//                new RilevazioneFarmaco(1, 2, Timestamp.from(Instant.now()), 50, "");
+//        pazienteDAO.setRilevazioneFarmaco(rilevazioneFarmaco);
+
+    }
+
+
+
 }

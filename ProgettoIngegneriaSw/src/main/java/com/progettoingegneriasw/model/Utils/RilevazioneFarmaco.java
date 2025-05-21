@@ -8,7 +8,11 @@ public class RilevazioneFarmaco extends Rilevazione{
     private double quantita;
     private String note;
 
-    public RilevazioneFarmaco(int id, int idPaziente, int idFarmaco, Timestamp timestamp, double quantita, String note){
+    public RilevazioneFarmaco(int idPaziente, int idFarmaco, Timestamp timestamp, double quantita, String note){
+        this(null, idPaziente, idFarmaco, timestamp, quantita, note);
+    }
+
+    public RilevazioneFarmaco(Integer id, int idPaziente, int idFarmaco, Timestamp timestamp, double quantita, String note){
         super(id, idPaziente, timestamp);
         this.id_farmaco = idFarmaco;
         this.quantita = quantita;

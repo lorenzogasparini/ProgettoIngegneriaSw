@@ -7,18 +7,6 @@ public class Terapia {
     private String note;
     private Farmaco farmaco;
 
-    public static class Farmaco {
-        int id;
-        String codice_aic;
-        String nome;
-
-        public Farmaco(int id, String codice_aic, String nome) {
-            this.id = id;
-            this.codice_aic = codice_aic;
-            this.nome = nome;
-        }
-    }
-
     public Terapia(int id, int dosiGiornaliere, double quantitaPerDose, String note, Farmaco farmaco){
         this.id = id;
         this.dosiGiornaliere = dosiGiornaliere;
