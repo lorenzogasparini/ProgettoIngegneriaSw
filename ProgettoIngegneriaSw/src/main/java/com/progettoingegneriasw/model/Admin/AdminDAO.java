@@ -33,7 +33,7 @@ public class AdminDAO extends UserDAO {
         return SQLTableName;
     }
 
-    // todo: aggiungi i metodi per l'Admin (non vanno messi nell'interfaccia perchè non esistono intefaccie per i DAO)
+    // todo: aggiungi i metodi per l'Admin
 
     /*
     /**
@@ -77,7 +77,7 @@ public class AdminDAO extends UserDAO {
         super.getConnection().executeQuery(
                 "SELECT * FROM log",
                 rs -> {
-                    while (rs.next()) { // todo: capire... perché è stata fatta una mappa e non una lista di PazientiUser? (perché l'id è tenuto separato)?
+                    while (rs.next()) {
                         logs.add(new Log(
                                         rs.getInt("id"),
                                         rs.getInt("id_paziente"),

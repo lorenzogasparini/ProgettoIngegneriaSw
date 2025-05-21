@@ -267,9 +267,75 @@ public class MedicoDAO extends UserDAO {
 
 
 
-    // todo: getRilevazioneGlicemia() parametrica come getRilevazioneFarmaco()
+    public RilevazioneSintomo[] getRilevazioneSintomo(){
+        return getRilevazioneSintomo("");
+    }
 
-    // todo: getRilevazioneSintomo() parametrica come getRilevazioneFarmaco()
+    public RilevazioneSintomo[] getRilevazioneSintomo(String usernamePaziente){
+        ArrayList<RilevazioneSintomo> rilevazioniSintomo = new ArrayList<>();
+
+        String query =
+                "SELECT rs.* " +
+                        "FROM paziente p " +
+                        "INNER JOIN rilevazione_sintomo rs ON p.id = rs.id_paziente " +
+                        "WHERE (? IS NULL OR p.username = ?)";
+
+        super.getConnection().executeQuery(
+                query,
+                rs -> {
+                    while (rs.next()) {
+                        rilevazioniSintomo.add(new RilevazioneSintomo(
+                                rs.getInt("id"),
+                                rs.getInt("id_paziente"),
+                                rs.getTimestamp("timestamp"),
+                                rs.getString("sintomo"),
+                                rs.getInt("intensita")
+                        ));
+                    }
+                    return null;
+                },
+                usernamePaziente.isEmpty() ? null : usernamePaziente,  // 1st placeholder
+                usernamePaziente.isEmpty() ? null : usernamePaziente   // 2nd placeholder
+        );
+
+        return rilevazioniSintomo.toArray(new RilevazioneSintomo[0]);
+    }
+
+
+
+    public RilevazioneGlicemia[] getRilevazioneGlicemia(){
+        return getRilevazioneGlicemia("");
+    }
+
+    public RilevazioneGlicemia[] getRilevazioneGlicemia(String usernamePaziente){
+        ArrayList<RilevazioneGlicemia> rilevazioniGliecemia = new ArrayList<>();
+
+        String query =
+                "SELECT rg.* " +
+                        "FROM paziente p " +
+                        "INNER JOIN rilevazione_glicemia rg ON p.id = rg.id_paziente " +
+                        "WHERE (? IS NULL OR p.username = ?)";
+
+        super.getConnection().executeQuery(
+                query,
+                rs -> {
+                    while (rs.next()) {
+                        rilevazioniGliecemia.add(new RilevazioneGlicemia(
+                                rs.getInt("id"),
+                                rs.getInt("id_paziente"),
+                                rs.getTimestamp("timestamp"),
+                                rs.getInt("valore"),
+                                rs.getBoolean("prima_pasto")
+                        ));
+                    }
+                    return null;
+                },
+                usernamePaziente.isEmpty() ? null : usernamePaziente,  // 1st placeholder
+                usernamePaziente.isEmpty() ? null : usernamePaziente   // 2nd placeholder
+        );
+
+        return rilevazioniGliecemia.toArray(new RilevazioneGlicemia[0]);
+    }
 
 
 

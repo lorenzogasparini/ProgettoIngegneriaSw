@@ -189,7 +189,7 @@ public class PazienteDAO extends UserDAO {
         );
     }
 
-    // todo: funzione getDiabetologoRiferimento()
+    // todo: funzione getMedicoRiferimento()
 
 
     // todo: funzione per l'inserimento in Alert se ci sono dei dati sballati in rilevazione_glicemia

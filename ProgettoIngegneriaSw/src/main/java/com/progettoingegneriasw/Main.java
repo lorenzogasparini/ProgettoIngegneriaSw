@@ -178,13 +178,43 @@ public class Main extends Application {
 
         // TEST getRilevazioni...
         System.out.println("\n TEST getRilevazioni()...");
+
+
+        // MEDICO: getRilevazioneSintomo()
+        System.out.println("test rilevazionesintomo di qualsiasi paziente");
+        RilevazioneSintomo[] rilevazioniSintomi = medicoDAO.getRilevazioneSintomo();
+        for(RilevazioneSintomo rilevazioneSintomo : rilevazioniSintomi){
+            System.out.println(rilevazioneSintomo);
+        }
+
+        System.out.println("test rilevazionesintomo paziente specifico: mario.rossi");
+        rilevazioniSintomi = medicoDAO.getRilevazioniSintomi("mario.rossi");
+        for(RilevazioneSintomo rilevazioneSintomo : rilevazioniSintomi){
+            System.out.println(rilevazioneSintomo);
+        }
+
+
+
+        // MEDICO: getRilevazioneGlicemia()
+        System.out.println("test rilevazioneglicemia di qualsiasi paziente");
+        RilevazioneGlicemia[] rilevazioniGlicemia = medicoDAO.getRilevazioneGlicemia();
+        for(RilevazioneGlicemia rilevazioneGlicemia : rilevazioniGlicemia){
+            System.out.println(rilevazioneGlicemia);
+        }
+        System.out.println("test rilevazioneglicemia paziente specifico: mario.rossi");
+        rilevazioniGlicemia = medicoDAO.getRilevazioniGlicemia("mario.rossi");
+        for(RilevazioneGlicemia rilevazioneGlicemia : rilevazioniGlicemia){
+            System.out.println(rilevazioneGlicemia);
+        }
+
+
+
         // MEDICO: getRilevazioneFarmaco()
         System.out.println("test rilevazioneFarmaco di qualsiasi paziente");
         RilevazioneFarmaco[] rilevazioniFarmaci = medicoDAO.getRilevazioneFarmaco();
         for(RilevazioneFarmaco rilevazioneFarmaco : rilevazioniFarmaci){
             System.out.println(rilevazioneFarmaco);
         }
-
         System.out.println("test rilevazioneFarmaco paziente specifico: mario.rossi");
         rilevazioniFarmaci = medicoDAO.getRilevazioneFarmaco("mario.rossi");
         for(RilevazioneFarmaco rilevazioneFarmaco : rilevazioniFarmaci){
