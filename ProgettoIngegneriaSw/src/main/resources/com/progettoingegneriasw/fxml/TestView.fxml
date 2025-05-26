@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.progettoingegneriasw.controller.TestController">
-            <TableView fx:id="tableView" VBox.vgrow="ALWAYS" >
+            <TableView fx:id="tableView" VBox.vgrow="ALWAYS" onMouseClicked="#clickHandling" >
                 <columns>
                     <TableColumn prefWidth="75.0" text="UserId" fx:id="Id" />
                     <TableColumn prefWidth="100.0" text="UserName" fx:id="Username" />

@@ -5,13 +5,17 @@ import com.progettoingegneriasw.model.Paziente.Paziente;
 import com.progettoingegneriasw.model.User;
 import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.view.ViewNavigator;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -36,6 +40,11 @@ public class TestController {
     @FXML private TableColumn<Paziente, String> comuneResidenza;
     @FXML private TableColumn<Paziente, String> notePaziente;
 
+    /**
+     * Variabile per la gestione globale della navigazione verso la view per la gestione del paziente selezionato
+     */
+    protected static Paziente selectedUser;
+
     public void initialize() throws SQLException {
         Id.setCellValueFactory(new PropertyValueFactory<Paziente, Integer>("Id"));
         Username.setCellValueFactory(new PropertyValueFactory<Paziente, String>("Username"));
@@ -58,9 +67,40 @@ public class TestController {
         tableView.setItems(users);
     }
 
+    @FXML
+    private void clickHandling(){
+        tableView.setOnMouseClicked(event -> {
+            /* Codice di prova, che inte
+            if (event.getClickCount() == 1) {
+                System.out.println("1 click");
+            } else if (event.getClickCount() == 2) {
+                System.out.println("2 click TableView");
+
+                Object selectedItem = tableView.getSelectionModel().getSelectedItem();
+                if (selectedItem != null) {
+                    System.out.println("Hai cliccato: " + selectedItem.toString());
+                }
+            }
+            */
+
+            // Per  la riga cliccata:
+            selectedUser = tableView.getSelectionModel().getSelectedItem();
+            if (selectedUser != null) {
+                //  System.out.println("Hai cliccato: " + (pazienteSelezionato.getUsername()));
+                handleUserHandling();
+            }
+        });
+
+    }
+
     /*
     TODO: Da gestire la tabella come insieme di row cliccabili, che reindirizzano ad una view apposita per visualizzazione del paziente
     */
+
+    @FXML
+    private void handleUserHandling(){
+        ViewNavigator.navigateToUserHandling();
+    }
 
     @FXML
     private void handleLogin() {
