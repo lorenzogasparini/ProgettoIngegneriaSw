@@ -58,6 +58,10 @@ public class TestController {
         tableView.setItems(users);
     }
 
+    /*
+    TODO: Da gestire la tabella come insieme di row cliccabili, che reindirizzano ad una view apposita per visualizzazione del paziente
+    */
+
     @FXML
     private void handleLogin() {
         ViewNavigator.navigateToLogin();

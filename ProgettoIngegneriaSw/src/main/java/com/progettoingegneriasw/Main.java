@@ -42,7 +42,7 @@ public class Main extends Application {
         Parent root = loader.load();
 
         // Set up the scene
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root, 1000, 650);
         URL cssUrl = getClass().getResource("/com/progettoingegneriasw/css/styles.css");
         scene.getStylesheets().add(cssUrl.toExternalForm());
 
