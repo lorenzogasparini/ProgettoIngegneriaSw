@@ -8,6 +8,10 @@ module com.example.progettoingegneriasw {
     opens com.progettoingegneriasw.controller to javafx.fxml;
     opens com.progettoingegneriasw.view.components to javafx.fxml;
 
+    requires javafx.base;
+
+    opens com.progettoingegneriasw.model.Paziente to javafx.base;
+
     exports com.progettoingegneriasw;
     exports com.progettoingegneriasw.controller;
     exports com.progettoingegneriasw.model;

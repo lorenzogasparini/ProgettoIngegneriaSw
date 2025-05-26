@@ -13,7 +13,13 @@
                     <TableColumn prefWidth="100.0" text="UserName" fx:id="Username" />
                     <TableColumn prefWidth="100.0" text="Nome" fx:id="Nome" />
                     <TableColumn prefWidth="100.0" text="Cognome" fx:id="Cognome" />
-                    <TableColumn prefWidth="100.0" text="Password" fx:id="Password" />
+                    <TableColumn prefWidth="100.0" text="Email" fx:id="email" />
+                    <TableColumn prefWidth="100.0" text="Diabetologo" fx:id="idDiabetologo" />
+                    <TableColumn prefWidth="100.0" text="Data nascita" fx:id="dataNascita" />
+                    <TableColumn prefWidth="100.0" text="Peso" fx:id="peso" />
+                    <TableColumn prefWidth="100.0" text="Provincia residenza" fx:id="provinciaResidenza" />
+                    <TableColumn prefWidth="100.0" text="Comune residenza" fx:id="comuneResidenza" />
+                    <TableColumn prefWidth="100.0" text="Note" fx:id="notePaziente" />
                 </columns>
             </TableView>
 

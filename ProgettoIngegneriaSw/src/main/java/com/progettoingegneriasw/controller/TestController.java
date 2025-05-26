@@ -28,21 +28,30 @@ public class TestController {
     @FXML private TableColumn<Paziente, String> Username;
     @FXML private TableColumn<Paziente, String> Nome;
     @FXML private TableColumn<Paziente, String> Cognome;
-    @FXML private TableColumn<Paziente, String> Password;
-    @FXML private TableColumn<Paziente, String> Email;
-    @FXML private TableColumn<Paziente, Double> Peso;
-    @FXML private TableColumn<Paziente, String> Provincia_residenza;
+    @FXML private TableColumn<Paziente, String> email;
+    @FXML private TableColumn<Paziente, Integer> idDiabetologo;
+    @FXML private TableColumn<Paziente, Date> dataNascita;
+    @FXML private TableColumn<Paziente, Double> peso;
+    @FXML private TableColumn<Paziente, String> provinciaResidenza;
+    @FXML private TableColumn<Paziente, String> comuneResidenza;
+    @FXML private TableColumn<Paziente, String> notePaziente;
 
     public void initialize() throws SQLException {
         Id.setCellValueFactory(new PropertyValueFactory<Paziente, Integer>("Id"));
         Username.setCellValueFactory(new PropertyValueFactory<Paziente, String>("Username"));
         Nome.setCellValueFactory(new PropertyValueFactory<Paziente, String>("Nome"));
         Cognome.setCellValueFactory(new PropertyValueFactory<Paziente, String>("Cognome"));
-        Password.setCellValueFactory(new PropertyValueFactory<Paziente, String>("Password"));
+        email.setCellValueFactory(new PropertyValueFactory<Paziente, String>("email"));
+        idDiabetologo.setCellValueFactory(new PropertyValueFactory<Paziente, Integer>("idMedico"));
+        dataNascita.setCellValueFactory(new PropertyValueFactory<Paziente, Date>("dataNascita"));
+        peso.setCellValueFactory(new PropertyValueFactory<Paziente, Double>("peso"));
+        provinciaResidenza.setCellValueFactory(new PropertyValueFactory<Paziente, String>("provinciaResidenza"));
+        comuneResidenza.setCellValueFactory(new PropertyValueFactory<Paziente, String>("comuneResidenza"));
+        notePaziente.setCellValueFactory(new PropertyValueFactory<Paziente, String>("notePaziente"));
 
         MedicoDAO medicoDAO = MedicoDAO.getInstance();
-        medicoDAO.getUser("drrossi");
-        Paziente[] pazienti = medicoDAO.getPazientiFromDB("drrossi");
+        medicoDAO.getUser(ViewNavigator.getAuthenticatedUser());
+        Paziente[] pazienti = medicoDAO.getPazientiFromDB(ViewNavigator.getAuthenticatedUser());
 
         ObservableList<Paziente> users = FXCollections.observableArrayList(pazienti);
 
