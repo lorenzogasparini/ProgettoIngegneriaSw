@@ -11,6 +11,10 @@ public class Farmaco {
         this.nome = nome;
     }
 
+    public int getId() { return id; }
+    public String getCodice_aic() { return codice_aic; }
+    public String getNome() { return nome; }
+
     public String toString(){
         return "id: " + id + "; codice_aic: " + codice_aic + "; nome: " + nome;
     }

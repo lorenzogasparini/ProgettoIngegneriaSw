@@ -15,11 +15,11 @@ public class Terapia {
         this.farmaco = farmaco;
     }
 
-    private int getId(){ return id; }
-    private int getDosiGiornaliere() { return dosiGiornaliere; }
-    private double getQuantitaPerDose() { return quantitaPerDose; }
-    private String getNote() { return note; }
-    private Farmaco getFarmaco() { return farmaco; }
+    public int getId(){ return id; }
+    public int getDosiGiornaliere() { return dosiGiornaliere; }
+    public double getQuantitaPerDose() { return quantitaPerDose; }
+    public String getNote() { return note; }
+    public Farmaco getFarmaco() { return farmaco; }
 
     public String toString(){
         return "id: " + id + "; dosiGiornaliere: " + dosiGiornaliere +
