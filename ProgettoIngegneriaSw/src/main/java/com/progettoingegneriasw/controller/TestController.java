@@ -70,7 +70,7 @@ public class TestController {
     @FXML
     private void clickHandling(){
         tableView.setOnMouseClicked(event -> {
-            /* Codice di prova, che inte
+            /* Codice di prova, che permette di gestire il numero di click
             if (event.getClickCount() == 1) {
                 System.out.println("1 click");
             } else if (event.getClickCount() == 2) {
@@ -92,10 +92,6 @@ public class TestController {
         });
 
     }
-
-    /*
-    TODO: Da gestire la tabella come insieme di row cliccabili, che reindirizzano ad una view apposita per visualizzazione del paziente
-    */
 
     @FXML
     private void handleUserHandling(){

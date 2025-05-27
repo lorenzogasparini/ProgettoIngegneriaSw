@@ -9,19 +9,109 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.shape.Rectangle?>
 
+<?import javafx.scene.text.Font?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.progettoingegneriasw.controller.UserHandlingController">
-    <BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+    <BorderPane xmlns="http://javafx.com/javafx/17" VBox.vgrow="ALWAYS" xmlns:fx="http://javafx.com/fxml/1">
         <center>
-            <HBox alignment="CENTER" spacing="10">
+            <HBox alignment="CENTER" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS" spacing="10">
                 <padding>
                     <Insets top="20" right="20" bottom="20" left="20"/>
                 </padding>
-                <VBox alignment="CENTER" spacing="10">
-                    <Label fx:id="prova" text="prova"/>
-                    <Rectangle width="200" height="150" fill="WHITE" stroke="BLACK" strokeWidth="2"/>
-                    <Rectangle width="200" height="150" fill="WHITE" stroke="BLACK" strokeWidth="2"/>
+
+                <VBox alignment="CENTER" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS" spacing="10">
+                    <!--
+                    <BorderPane prefHeight="150" prefWidth="200" style="-fx-background-color: lightblue; -fx-border-color: black; -fx-border-width: 2;">
+                    </BorderPane>
+                    -->
+
+                    <VBox alignment="CENTER" HBox.hgrow="ALWAYS" prefHeight="300" prefWidth="500" styleClass="card, container" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+                        <children>
+                            <Label text="Dati paziente" textAlignment="CENTER">
+                                <font>
+                                    <Font name="System Bold" size="24.0" />
+                                </font>
+                                <VBox.margin>
+                                    <Insets bottom="20.0" />
+                                </VBox.margin>
+                            </Label>
+                            <Label fx:id="prova" text="prova"/>
+
+                            <!-- Proseguire da qui, costruire correttamente il BorderPane come strutturato, sostituendo i border Pane interni con
+                                dimensione corretta ed ancorati, in maniera da renderli stabili con il cambio di dimensione della finestra
+                             -->
+
+                            <Button defaultButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                    onAction="#handleLogin" text="Login">
+                                <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                </VBox.margin>
+                            </Button>
+                        </children>
+                        <padding>
+                            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                        </padding>
+                    </VBox>
+
+                    <VBox alignment="CENTER" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS" prefHeight="300" prefWidth="600" styleClass="card, container" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+                        <children>
+                            <Label text="Rilevazioni" textAlignment="CENTER">
+                                <font>
+                                    <Font name="System Bold" size="24.0" />
+                                </font>
+                                <VBox.margin>
+                                    <Insets bottom="20.0" />
+                                </VBox.margin>
+                            </Label>
+
+                            <!-- Proseguire da qui, costruire correttamente il BorderPane come strutturato, sostituendo i border Pane interni con
+                                dimensione corretta ed ancorati, in maniera da renderli stabili con il cambio di dimensione della finestra
+                             -->
+
+                            <Button defaultButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                    onAction="#handleLogin" text="Login">
+                                <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                </VBox.margin>
+                            </Button>
+                        </children>
+
+                        <padding>
+                            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                        </padding>
+                    </VBox>
+
                 </VBox>
-                <Rectangle width="200" height="310" fill="WHITE" stroke="BLACK" strokeWidth="2"/>
+
+
+                <VBox alignment="CENTER" HBox.hgrow="ALWAYS" prefHeight="600" prefWidth="300" styleClass="card, container" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+                    <children>
+                        <Label text="Terapie" textAlignment="CENTER">
+                            <font>
+                                <Font name="System Bold" size="24.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets bottom="20.0" />
+                            </VBox.margin>
+                        </Label>
+
+                        <!-- Proseguire da qui, costruire correttamente il BorderPane come strutturato, sostituendo i border Pane interni con
+                            dimensione corretta ed ancorati, in maniera da renderli stabili con il cambio di dimensione della finestra
+                         -->
+
+                        <Button defaultButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                onAction="#handleLogin" text="Login">
+                            <VBox.margin>
+                                <Insets bottom="10.0" />
+                            </VBox.margin>
+                        </Button>
+                    </children>
+
+                    <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                    </padding>
+                </VBox>
+
+
             </HBox>
         </center>
     </BorderPane>
