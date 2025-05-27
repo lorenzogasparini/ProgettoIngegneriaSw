@@ -103,6 +103,13 @@ public class ViewNavigator {
             navigateToLogin();
         }
     }
+
+    /**
+     * Navigate to the user handling view
+     */
+    public static void navigateToUserHandling() {
+        loadView("UserHandlingView.fxml");
+    }
     
     /**
      * Set the authenticated user and the user role
