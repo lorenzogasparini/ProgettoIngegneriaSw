@@ -32,20 +32,19 @@ public class UserHandlingController {
 
     @FXML
     private void handleLogin() {
-        ViewNavigator.navigateToLogin();
         TestController.selectedUser = null;
+        ViewNavigator.navigateToLogin();
     }
 
     @FXML
     private void handleRegister() {
-        ViewNavigator.navigateToRegister();
         TestController.selectedUser = null;
-
+        ViewNavigator.navigateToRegister();
     }
 
     @FXML
     private void handleDashboard() {
-        ViewNavigator.navigateToDashboard();
         TestController.selectedUser = null;
+        ViewNavigator.navigateToDashboard();
     }
 }
