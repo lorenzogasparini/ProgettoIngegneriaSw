@@ -6,13 +6,13 @@ import java.sql.Date;
 public class PazienteUser extends User implements Paziente{
 
     // todo: ALLA FINE, per limitare i problemi capire se è possibile lasciare i campi final
-    private String email;
-    private Integer idDiabetologo;
-    private Date dataNascita;
-    private Double peso;
-    private String provinciaResidenza;
-    private String comuneResidenza;
-    private String notePaziente;
+    private final String email;
+    private final Integer idDiabetologo;
+    private final Date dataNascita;
+    private final Double peso;
+    private final String provinciaResidenza;
+    private final String comuneResidenza;
+    private final String notePaziente;
 
 
     /**

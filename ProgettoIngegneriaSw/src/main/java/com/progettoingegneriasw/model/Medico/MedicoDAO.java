@@ -36,7 +36,6 @@ public class MedicoDAO extends UserDAO {
 
 
 
-
     // Metodi del medico
     public Paziente[] getAllPazienti(){
         ArrayList<Paziente> pazienti = new ArrayList<>();
@@ -105,7 +104,7 @@ public class MedicoDAO extends UserDAO {
         return pazienti.toArray(new Paziente[pazienti.size()]);
     }
 
-
+    /*
     public RilevazioneFarmaco[] getRilevazioniFarmaci(String username) throws SQLException {
         int id_paziente = getIdFromDB(username);
         ArrayList<RilevazioneFarmaco> rilevazioniFarmaci = new ArrayList<>();
@@ -139,8 +138,9 @@ public class MedicoDAO extends UserDAO {
         );
         return rilevazioniFarmaci.toArray(new RilevazioneFarmaco[rilevazioniFarmaci.size()]);
     }
+     */
 
-
+    /*
     public RilevazioneGlicemia[] getRilevazioniGlicemia(String username) throws SQLException {
         int id_paziente = getIdFromDB(username);
         ArrayList<RilevazioneGlicemia> rilevazioniGlicemia = new ArrayList<>();
@@ -170,7 +170,9 @@ public class MedicoDAO extends UserDAO {
         );
         return rilevazioniGlicemia.toArray(new RilevazioneGlicemia[rilevazioniGlicemia.size()]);
     }
+     */
 
+    /*
     public RilevazioneSintomo[] getRilevazioniSintomi(String username) throws SQLException {
         int id_paziente = getIdFromDB(username);
         ArrayList<RilevazioneSintomo> rilevazioniSintomo = new ArrayList<>();
@@ -202,7 +204,7 @@ public class MedicoDAO extends UserDAO {
         );
         return rilevazioniSintomo.toArray(new RilevazioneSintomo[rilevazioniSintomo.size()]);
     }
-
+    */
 
     public Patologia[] getPatologiePaziente(String username) throws SQLException {
         int id_paziente = getIdFromDB(username);
@@ -233,6 +235,66 @@ public class MedicoDAO extends UserDAO {
         return patologie.toArray(new Patologia[patologie.size()]);
     }
 
+    public void setPatologiaPaziente(Patologia patologia, String username, Terapia terapia, Date dataDiagnosi, String notePatologia){
+        int id_paziente = getIdFromDB(username);
+        super.getConnection().executeUpdate(
+                "INSERT INTO patologia_paziente (id_paziente, id_patologia, id_terapia, data_diagnosi, note_patologia) " +
+                        "VALUES (?, ?, ?, ?, ?)",
+                id_paziente,
+                patologia.getId(),
+                (terapia != null) ? terapia.getId() : null,
+                dataDiagnosi.toString(),
+                notePatologia
+        );
+    }
+
+    /// getPatologie() (tutte oppure facendo una ricerca della patologia per nome)
+    public Patologia[] getPatologie() throws SQLException {
+        return getPatologie("");
+    }
+
+    public Patologia[] getPatologie(String nomePatologia) throws SQLException {
+        ArrayList<Patologia> patologie = new ArrayList<>();
+
+        String query =
+                "SELECT p.* " +
+                        "FROM patologia p " +
+                        "WHERE (? IS NULL OR p.nome LIKE ?)";
+
+        String likePattern = nomePatologia == null || nomePatologia.isEmpty() ? null : "%" + nomePatologia + "%";
+
+        super.getConnection().executeQuery(
+                query,
+                rs -> {
+                    while (rs.next()) {
+                        patologie.add(new Patologia(
+                                rs.getInt("id"),
+                                rs.getString("nome"),
+                                rs.getString("codice_icd")
+                        ));
+                    }
+                    return null;
+                },
+                likePattern,  // for the IS NULL check
+                likePattern   // for the LIKE operator
+        );
+
+        return patologie.toArray(new Patologia[0]);
+    }
+
+
+    /// aggiunge le patologie non ancora presenti nella lista
+    public void addPatologia(Patologia patologia){
+        super.getConnection().executeUpdate(
+                "INSERT INTO patologia (nome, codice_icd) " +
+                        "VALUES (?, ?)",
+                patologia.getNome(),
+                patologia.getCodiceIcd()
+        );
+    }
+
+
+
 
     public Terapia[] getTerapiePaziente(String username) throws SQLException {   //  Verificare il risultato fornito
         int id_paziente = getIdFromDB(username);
@@ -249,13 +311,13 @@ public class MedicoDAO extends UserDAO {
                 rs -> {
                     while (rs.next()) {
                         terapie.add(new Terapia(rs.getInt("id"),
-                                rs.getInt("dosi_giornaliere"),
-                                rs.getFloat("quantita_per_dose"),
-                                rs.getString("note"),
                                 new Farmaco(rs.getInt("id_farmaco"),
                                         rs.getString("codice_aic"),
                                         rs.getString("nome")
-                                )
+                                ),
+                                rs.getInt("dosi_giornaliere"),
+                                rs.getDouble("quantita_per_dose"),
+                                rs.getString("note")
                         ));
                     }
                     return null;
@@ -265,13 +327,81 @@ public class MedicoDAO extends UserDAO {
         return terapie.toArray(new Terapia[terapie.size()]);
     }
 
+    /// consente sia di inserire una terapia sia di modificarla nel caso sia già esistenta.
+    /// Se la patologia non è ancora stata creata è necessario crearne prima una per quel paziente
+    /// tramite setPatologiaPaziente()
+    public void setTerapiaPaziente(Terapia terapia, String username, Patologia patologia) {
+        int id_paziente = getIdFromDB(username);
+        final Integer[] tmp = new Integer[2]; // to be assigned into a lambda it must be a final int[]
+        int terapiaId, patologiaPazienteId;
+
+        // Check if there's already a terapia in patologia_paziente record
+        super.getConnection().executeQuery(
+                "SELECT pp.id, pp.id_terapia " +
+                        " FROM patologia_paziente pp " +
+                        " WHERE pp.id_paziente = ? AND pp.id_patologia = ?",
+                rs -> {
+                    while (rs.next()) {
+                        tmp[0] = rs.getInt("id");
+                        tmp[1] = rs.getInt("id_terapia");
+                    }
+                    return null;
+                },
+                id_paziente,
+                patologia.getId()
+        );
+
+        if(tmp[0] != null)
+            patologiaPazienteId = tmp[0];
+        else
+            return; // non è stata ancora assegnata la patologia al paziente
+
+        if(tmp[1] != null)
+            terapiaId = tmp[1]; // la patologia del paziente ha già una terapia associata
+        else
+            terapiaId = -1; // la patologia di quel paziente non ha ancora una terapia associata
 
 
-    public RilevazioneSintomo[] getRilevazioneSintomo(){
-        return getRilevazioneSintomo("");
+        if (terapiaId <= 0) {
+            // Insert a new terapia
+            terapiaId = super.getConnection().executeInsertAndReturnId(
+                    "INSERT INTO terapia (id_farmaco, dosi_giornaliere, quantita_per_dose, note) VALUES (?, ?, ?, ?)",
+                    terapia.getFarmaco().getId(),
+                    terapia.getDosiGiornaliere(),
+                    terapia.getQuantitaPerDose(),
+                    terapia.getNote()
+            );
+
+            // update patologia paziente fk id_terapia with the one inserted
+            if (terapiaId >= 0) {
+                // Update
+                super.getConnection().executeUpdate(
+                        "UPDATE patologia_paziente SET id_terapia = ? WHERE id = ?",
+                        terapiaId,
+                        patologiaPazienteId
+                );
+            }
+
+        } else {
+            // Update existing terapia
+            super.getConnection().executeUpdate(
+                    "UPDATE terapia SET id_farmaco = ?, dosi_giornaliere = ?, quantita_per_dose = ?, note = ? WHERE id = ?",
+                    terapia.getFarmaco().getId(),
+                    terapia.getDosiGiornaliere(),
+                    terapia.getQuantitaPerDose(),
+                    terapia.getNote(),
+                    terapiaId
+            );
+        }
+
     }
 
-    public RilevazioneSintomo[] getRilevazioneSintomo(String usernamePaziente){
+
+    public RilevazioneSintomo[] getRilevazioniSintomo(){
+        return getRilevazioniSintomo("");
+    }
+
+    public RilevazioneSintomo[] getRilevazioniSintomo(String usernamePaziente){
         ArrayList<RilevazioneSintomo> rilevazioniSintomo = new ArrayList<>();
 
         String query =
@@ -303,11 +433,11 @@ public class MedicoDAO extends UserDAO {
 
 
 
-    public RilevazioneGlicemia[] getRilevazioneGlicemia(){
-        return getRilevazioneGlicemia("");
+    public RilevazioneGlicemia[] getRilevazioniGlicemia(){
+        return getRilevazioniGlicemia("");
     }
 
-    public RilevazioneGlicemia[] getRilevazioneGlicemia(String usernamePaziente){
+    public RilevazioneGlicemia[] getRilevazioniGlicemia(String usernamePaziente){
         ArrayList<RilevazioneGlicemia> rilevazioniGliecemia = new ArrayList<>();
 
         String query =
@@ -339,8 +469,8 @@ public class MedicoDAO extends UserDAO {
 
 
 
-    public RilevazioneFarmaco[] getRilevazioneFarmaco() throws SQLException {
-        return getRilevazioneFarmaco("");
+    public RilevazioneFarmaco[] getRilevazioniFarmaco() throws SQLException {
+        return getRilevazioniFarmaco("");
     }
 
     /* query esempio
@@ -350,7 +480,7 @@ public class MedicoDAO extends UserDAO {
         INNER JOIN farmaco f ON rf.id_farmaco = f.id
         WHERE (:username IS NULL OR username = :username);
      */
-    public RilevazioneFarmaco[] getRilevazioneFarmaco(String usernamePaziente) throws SQLException {
+    public RilevazioneFarmaco[] getRilevazioniFarmaco(String usernamePaziente) throws SQLException {
         ArrayList<RilevazioneFarmaco> rilevazioniFarmaci = new ArrayList<>();
 
         String query =
@@ -381,6 +511,6 @@ public class MedicoDAO extends UserDAO {
         return rilevazioniFarmaci.toArray(new RilevazioneFarmaco[0]);
     }
 
-
+    // todo: getAlerts() (all and by username) discriminando per tipo di alert (glicemia o farmacoNonAssuntoDa3Giorni)
 
 }

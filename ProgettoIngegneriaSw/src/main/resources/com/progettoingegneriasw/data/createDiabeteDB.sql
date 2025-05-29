@@ -158,7 +158,7 @@ CREATE TABLE patologia_paziente (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     id_paziente INTEGER NOT NULL,
     id_patologia INTEGER NOT NULL,
-    id_terapia INTEGER NOT NULL,
+    id_terapia INTEGER,
     data_diagnosi DATE,
 	note_patologia TEXT, -- note specifiche relative alla patologia di questo paziente
     FOREIGN KEY(id_paziente) REFERENCES paziente(id),

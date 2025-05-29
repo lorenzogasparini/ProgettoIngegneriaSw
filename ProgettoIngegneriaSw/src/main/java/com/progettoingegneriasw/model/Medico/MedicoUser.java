@@ -4,7 +4,7 @@ import com.progettoingegneriasw.model.User;
 
 public class MedicoUser extends User implements Medico{
 
-    private String email;
+    private final String email;
 
     /**
      * Constructor for creating a user with username and password

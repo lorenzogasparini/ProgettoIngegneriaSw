@@ -14,15 +14,15 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.SubScene;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.Map;
 
 public class Main extends Application {
@@ -69,6 +69,7 @@ public class Main extends Application {
 
         // todo: si porebbe parametrizzare il nome dell'utente su cui fare i vari test (esempio: "mario.rossi")
 
+
         testUser();
         testAdmin();
         testMedico();
@@ -103,6 +104,16 @@ public class Main extends Application {
         // USER: test inserimento log
         System.out.println("test inserimento Log");
         userDAO.setLog(new Log(1, 1, "test Log", Timestamp.from(Instant.now())));
+
+        // USER: test per apertura app di mail
+        /*
+        pazienteDAO.contattaDiabetologo(
+                "diabetologo@example.com",
+                "Valori glicemia fuori soglia",
+                "Gentile diabetologo,\n\nHo notato valori anomali oggi. Potremmo sentirci?\n\nCordiali saluti."
+        );
+        */
+
 
     }
 
@@ -151,6 +162,7 @@ public class Main extends Application {
             System.out.println(paziente);
         }
 
+        /* todo: cancellare
         RilevazioneFarmaco[] rilevazioni_farmaci = medicoDAO.getRilevazioniFarmaci("mario.rossi");
         for(RilevazioneFarmaco rilevazioneFarmaco : rilevazioni_farmaci){
             System.out.println("Rilevazione farmaco: " + rilevazioneFarmaco);
@@ -165,6 +177,7 @@ public class Main extends Application {
         for(RilevazioneSintomo rilevazione : rilevazioni_sintomi){
             System.out.println("Rilevazione : " + rilevazione);
         }
+         */
 
         Patologia[] patologie = medicoDAO.getPatologiePaziente("mario.rossi");
         for(Patologia patologia : patologie){
@@ -182,19 +195,21 @@ public class Main extends Application {
 
         // MEDICO: getRilevazioneSintomo()
         System.out.println("test rilevazionesintomo di qualsiasi paziente");
-        RilevazioneSintomo[] rilevazioniSintomi = medicoDAO.getRilevazioneSintomo();
+        RilevazioneSintomo[] rilevazioniSintomi = medicoDAO.getRilevazioniSintomo();
         for(RilevazioneSintomo rilevazioneSintomo : rilevazioniSintomi){
             System.out.println(rilevazioneSintomo);
         }
 
+        /* todo: cancellare
         System.out.println("test rilevazionesintomo paziente specifico: mario.rossi");
         rilevazioniSintomi = medicoDAO.getRilevazioniSintomi("mario.rossi");
         for(RilevazioneSintomo rilevazioneSintomo : rilevazioniSintomi){
             System.out.println(rilevazioneSintomo);
         }
+         */
 
 
-
+        /* todo: cancellare
         // MEDICO: getRilevazioneGlicemia()
         System.out.println("test rilevazioneglicemia di qualsiasi paziente");
         RilevazioneGlicemia[] rilevazioniGlicemia = medicoDAO.getRilevazioneGlicemia();
@@ -206,20 +221,55 @@ public class Main extends Application {
         for(RilevazioneGlicemia rilevazioneGlicemia : rilevazioniGlicemia){
             System.out.println(rilevazioneGlicemia);
         }
+         */
 
 
 
         // MEDICO: getRilevazioneFarmaco()
         System.out.println("test rilevazioneFarmaco di qualsiasi paziente");
-        RilevazioneFarmaco[] rilevazioniFarmaci = medicoDAO.getRilevazioneFarmaco();
+        RilevazioneFarmaco[] rilevazioniFarmaci = medicoDAO.getRilevazioniFarmaco();
         for(RilevazioneFarmaco rilevazioneFarmaco : rilevazioniFarmaci){
             System.out.println(rilevazioneFarmaco);
         }
         System.out.println("test rilevazioneFarmaco paziente specifico: mario.rossi");
-        rilevazioniFarmaci = medicoDAO.getRilevazioneFarmaco("mario.rossi");
+        rilevazioniFarmaci = medicoDAO.getRilevazioniFarmaco("mario.rossi");
         for(RilevazioneFarmaco rilevazioneFarmaco : rilevazioniFarmaci){
             System.out.println(rilevazioneFarmaco);
         }
+
+        // MEDICO: setPatologiaPaziente() --> ok!
+        //medicoDAO.setPatologiaPaziente(new Patologia(4), "lucia.verdi", null,
+         //       Date.valueOf("2025-05-29"), "");
+
+
+        // MEDICO: getPatologie() con o senza nome patologia --> ok!
+        System.out.println("\nLista di tutte le patologie: ");
+        patologie = medicoDAO.getPatologie();
+        for (Patologia patologia: patologie){
+            System.out.println(patologia);
+        }
+
+        System.out.println("\nLista di tutte le patologie che contengono la parola 'Ipertensione'");
+        patologie = medicoDAO.getPatologie("Ipertensione");
+        for (Patologia patologia: patologie){
+            System.out.println(patologia);
+        }
+
+        // MEDICO:  addPatologia() --> ok!
+        //System.out.println("\n inserimento di una patologia");
+        //medicoDAO.addPatologia(new Patologia("Retinopatia diabetica", "E53"));
+
+
+        // MEDICO: setTerapiaPaziente() --> ok!
+        System.out.println("\ninserimento terapia ad un paziente");
+        medicoDAO.setTerapiaPaziente(new Terapia(
+                new Farmaco(1,"012345678", "Metformina"), 3, 10.0, "pasti"),
+                "lucia.verdi", new Patologia(4));
+
+        System.out.println("\nmodifica terapia già presente");
+        medicoDAO.setTerapiaPaziente(new Terapia(
+                        new Farmaco(1,"012345678", "Metformina"), 2, 40.0, "dopo i pasti"),
+                "lucia.verdi", new Patologia(4));
 
     }
 
@@ -271,6 +321,10 @@ public class Main extends Application {
 //        RilevazioneFarmaco rilevazioneFarmaco =
 //                new RilevazioneFarmaco(1, 2, Timestamp.from(Instant.now()), 50, "");
 //        pazienteDAO.setRilevazioneFarmaco(rilevazioneFarmaco);
+
+        // PAZIENTE: getMedicoRiferimento
+        System.out.println("Medico di riferimento del paziente mario.rossi: " + pazienteDAO.getMedicoRiferimento("mario.rossi"));
+
 
     }
 
