@@ -62,7 +62,7 @@ public class UserHandlingController {
         Nome_farmaco.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getFarmaco().getNome()));
         Codice_aic.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getFarmaco().getCodice_aic()));
+                new SimpleStringProperty(cellData.getValue().getFarmaco().getCodiceAic()));
 
         MedicoDAO medicoDAO = MedicoDAO.getInstance();
         medicoDAO.getUser(ViewNavigator.getAuthenticatedUser());
