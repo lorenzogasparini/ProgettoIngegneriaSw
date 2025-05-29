@@ -100,10 +100,9 @@
                             </VBox.margin>
                         </Label>
 
-
                         <!-- Da completare -->
-                        <!--onMouseClicked="#terapiaHandling"-->
-                        <TableView fx:id="tableViewRilevazioni" VBox.vgrow="ALWAYS" onMouseClicked="#handleRilevazione" >
+                        <!--onMouseClicked="rilevazioniHandling" : pagina dove si può analizzare una tabella delle rilevazioni di quel tipo, e dove è possibile consultare le statistiche delle stesse-->
+                        <TableView fx:id="tableViewRilevazioniFarmaci" VBox.vgrow="ALWAYS" onMouseClicked="#handleRilevazione" >
                             <columns>
                                 <TableColumn prefWidth="75.0" text="UserId" fx:id="Id2" />
                                 <TableColumn prefWidth="100.0" text="UserName" fx:id="Usernam2" />
@@ -116,6 +115,38 @@
                                 <TableColumn prefWidth="100.0" text="Provincia residenza" fx:id="provinciaResidenza2" />
                                 <TableColumn prefWidth="100.0" text="Comune residenza" fx:id="comuneResidenza2" />
                                 <TableColumn prefWidth="100.0" text="Note" fx:id="notePaziente2" />
+                            </columns>
+                        </TableView>
+
+                        <TableView fx:id="tableViewRilevazioniGlicemia" VBox.vgrow="ALWAYS" onMouseClicked="#handleRilevazione" >
+                            <columns>
+                                <TableColumn prefWidth="75.0" text="UserId" fx:id="Id3" />
+                                <TableColumn prefWidth="100.0" text="UserName" fx:id="Username3" />
+                                <TableColumn prefWidth="100.0" text="Nome" fx:id="Nome3" />
+                                <TableColumn prefWidth="100.0" text="Cognome" fx:id="Cognome3" />
+                                <TableColumn prefWidth="100.0" text="Email" fx:id="email3" />
+                                <TableColumn prefWidth="100.0" text="Diabetologo" fx:id="idDiabetologo3" />
+                                <TableColumn prefWidth="100.0" text="Data nascita" fx:id="dataNascita3" />
+                                <TableColumn prefWidth="100.0" text="Peso" fx:id="peso3" />
+                                <TableColumn prefWidth="100.0" text="Provincia residenza" fx:id="provinciaResidenza3" />
+                                <TableColumn prefWidth="100.0" text="Comune residenza" fx:id="comuneResidenza3" />
+                                <TableColumn prefWidth="100.0" text="Note" fx:id="notePaziente3" />
+                            </columns>
+                        </TableView>
+
+                        <TableView fx:id="tableViewRilevazioniSintomi" VBox.vgrow="ALWAYS" onMouseClicked="#handleRilevazione" >
+                            <columns>
+                                <TableColumn prefWidth="75.0" text="UserId" fx:id="Id4" />
+                                <TableColumn prefWidth="100.0" text="UserName" fx:id="Usernam4" />
+                                <TableColumn prefWidth="100.0" text="Nome" fx:id="Nome4" />
+                                <TableColumn prefWidth="100.0" text="Cognome" fx:id="Cognome4" />
+                                <TableColumn prefWidth="100.0" text="Email" fx:id="email4" />
+                                <TableColumn prefWidth="100.0" text="Diabetologo" fx:id="idDiabetologo4" />
+                                <TableColumn prefWidth="100.0" text="Data nascita" fx:id="dataNascita4" />
+                                <TableColumn prefWidth="100.0" text="Peso" fx:id="peso4" />
+                                <TableColumn prefWidth="100.0" text="Provincia residenza" fx:id="provinciaResidenza4" />
+                                <TableColumn prefWidth="100.0" text="Comune residenza" fx:id="comuneResidenza4" />
+                                <TableColumn prefWidth="100.0" text="Note" fx:id="notePaziente4" />
                             </columns>
                         </TableView>
                     </children>
