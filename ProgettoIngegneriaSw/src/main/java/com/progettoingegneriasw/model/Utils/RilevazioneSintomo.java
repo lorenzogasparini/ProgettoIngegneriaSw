@@ -4,8 +4,8 @@ import java.sql.Timestamp;
 
 public class RilevazioneSintomo extends Rilevazione{
 
-    private String sintomo;
-    private int intensita;
+    private final String sintomo;
+    private final int intensita;
 
     public RilevazioneSintomo(int idPaziente, Timestamp timestamp, String sintomo, int intensita){
         this(null, idPaziente, timestamp, sintomo, intensita);
@@ -21,8 +21,7 @@ public class RilevazioneSintomo extends Rilevazione{
     public int getIntensita() { return intensita; }
 
     public String toString(){
-        return "id: " + super.getId() + "; idPaziente: " + super.getIdPaziente() + "; timestamp: " + super.getTimestamp() +
-                "; sintomo: " + sintomo + "; intensita: " + intensita;
+        return super.toString() + "; sintomo: " + sintomo + "; intensita: " + intensita;
     }
 
 }

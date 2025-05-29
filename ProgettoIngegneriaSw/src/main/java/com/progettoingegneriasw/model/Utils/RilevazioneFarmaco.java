@@ -4,9 +4,9 @@ import java.sql.Timestamp;
 
 public class RilevazioneFarmaco extends Rilevazione{
 
-    private int id_farmaco;
-    private double quantita;
-    private String note;
+    private final  int id_farmaco;
+    private final double quantita;
+    private final String note;
 
     public RilevazioneFarmaco(int idPaziente, int idFarmaco, Timestamp timestamp, double quantita, String note){
         this(null, idPaziente, idFarmaco, timestamp, quantita, note);
@@ -24,8 +24,7 @@ public class RilevazioneFarmaco extends Rilevazione{
     public String getNote() { return note; }
 
     public String toString(){
-        return "id: " + super.getId() + "; idPaziente: " + super.getIdPaziente() + "; id_farmaco: " + id_farmaco + "; timestamp: " +
-                super.getTimestamp() + "; quantità: " + quantita + "; note: " + note;
+        return super.toString() + "; id_farmaco: " + id_farmaco + "; quantità: " + quantita + "; note: " + note;
     }
 
 }

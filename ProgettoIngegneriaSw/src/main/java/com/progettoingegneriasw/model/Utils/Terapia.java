@@ -1,13 +1,21 @@
 package com.progettoingegneriasw.model.Utils;
 
 public class Terapia {
-    private int id;
-    private int dosiGiornaliere;
-    private double quantitaPerDose;
-    private String note;
-    private Farmaco farmaco;
+    private final Integer id;
+    private final Farmaco farmaco;
+    private final Integer dosiGiornaliere;
+    private final Double quantitaPerDose;
+    private final String note;
 
-    public Terapia(int id, int dosiGiornaliere, double quantitaPerDose, String note, Farmaco farmaco){
+    public Terapia(Integer id){
+        this(id, null, null, null, null);
+    }
+
+    public Terapia(Farmaco farmaco, Integer dosiGiornaliere, Double quantitaPerDose, String note){
+        this(null, farmaco, dosiGiornaliere, quantitaPerDose, note);
+    }
+
+    public Terapia(Integer id, Farmaco farmaco, Integer dosiGiornaliere, Double quantitaPerDose, String note){
         this.id = id;
         this.dosiGiornaliere = dosiGiornaliere;
         this.quantitaPerDose = quantitaPerDose;
@@ -15,15 +23,18 @@ public class Terapia {
         this.farmaco = farmaco;
     }
 
-    public int getId(){ return id; }
-    public int getDosiGiornaliere() { return dosiGiornaliere; }
-    public double getQuantitaPerDose() { return quantitaPerDose; }
-    public String getNote() { return note; }
+    public Integer getId(){ return id; }
     public Farmaco getFarmaco() { return farmaco; }
+    public Integer getDosiGiornaliere() { return dosiGiornaliere; }
+    public Double getQuantitaPerDose() { return quantitaPerDose; }
+    public String getNote() { return note; }
+
 
     public String toString(){
-        return "id: " + id + "; dosiGiornaliere: " + dosiGiornaliere +
-                "; quantiàPerDose: " + quantitaPerDose + "; note: " + note + "; farmaco_id: " + farmaco.getId() + "; codice_aic" + farmaco.getCodice_aic() + "; farmaco_nome: " + farmaco.getNome();
+        return "id: " + id + "; codice_aic" + farmaco.getCodiceAic() + "; farmaco_nome: " + farmaco.getNome() +
+                "; dosiGiornaliere: " + dosiGiornaliere + "; quantitaPerDose: " + quantitaPerDose +
+                "; note: " + note + "; farmaco_id: " + farmaco.getId();
+
     }
 
 }

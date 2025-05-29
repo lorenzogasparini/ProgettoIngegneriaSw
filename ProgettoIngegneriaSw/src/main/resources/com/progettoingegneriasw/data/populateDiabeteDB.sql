@@ -26,6 +26,7 @@ INSERT INTO log (id_paziente, id_diabetologo, azione) VALUES
 INSERT INTO patologia (nome, codice_icd) VALUES
 ('Diabete mellito tipo 2', 'E11'),
 ('Ipertensione', 'I10'),
+('Ipertensione secondaria', 'I15'),
 ('Dislipidemia', 'E78'),
 ('Obesità', 'E66');
 
@@ -47,7 +48,7 @@ INSERT INTO terapia (id_farmaco, dosi_giornaliere, quantita_per_dose, note) VALU
 INSERT INTO patologia_paziente (id_paziente, id_patologia, id_terapia, data_diagnosi, note_patologia) VALUES
 (1, 1, 1, '2021-06-01', 'Controlli regolari'),
 (1, 2, 2, '2020-01-15', NULL),
-(2, 1, 4, '2022-03-12', 'Necessita insulina'),
+(2, 1, NULL, '2022-03-12', 'Necessita insulina'),
 (3, 3, 3, '2021-10-05', 'Stabile'),
 (4, 4, 1, '2019-12-30', NULL);
 
@@ -72,8 +73,6 @@ INSERT INTO rilevazione_farmaco (id_paziente, id_farmaco, quantita, note) VALUES
 (1, 1, 500, 'Dopo cena'),
 (2, 4, 15, 'Insulina serale'),
 (3, 1, 20, 'Routine sera');
-
-
 
 
 -- Alert

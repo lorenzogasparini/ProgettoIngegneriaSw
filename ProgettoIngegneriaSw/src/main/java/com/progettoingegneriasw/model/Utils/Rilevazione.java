@@ -7,13 +7,13 @@ public abstract class Rilevazione {
     /**
      * @implNote rilevazione common parameters
      */
-    private Integer id;
-    private int id_paziente;
-    private Timestamp timestamp;
+    private final Integer id;
+    private final int idPaziente;
+    private final Timestamp timestamp;
 
-    public Rilevazione(Integer id, int id_paziente, Timestamp timestamp){
+    public Rilevazione(Integer id, int idPaziente, Timestamp timestamp){
         this.id = id;
-        this.id_paziente = id_paziente;
+        this.idPaziente = idPaziente;
         this.timestamp = timestamp;
     }
 
@@ -22,10 +22,14 @@ public abstract class Rilevazione {
     }
 
     public int getIdPaziente() {
-        return id_paziente;
+        return idPaziente;
     }
 
     public Timestamp getTimestamp() {
         return timestamp;
+    }
+
+    public String toString(){
+        return "id: " + id + "; idPaziente: " + idPaziente + "; timestamp: " + timestamp;
     }
 }

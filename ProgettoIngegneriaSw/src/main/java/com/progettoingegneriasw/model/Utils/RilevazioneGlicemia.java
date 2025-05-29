@@ -5,9 +5,9 @@ import java.sql.Timestamp;
 // todo: rendi tutte le rilevazioni sottoclasse di Rilevazione (da capire se fare interfaccia o classe Astratta)
 public class RilevazioneGlicemia extends Rilevazione{
 
-    private int valore;
-    private Integer gravita;
-    private boolean prima_pasto;
+    private final int valore;
+    private final Integer gravita;
+    private final boolean prima_pasto;
 
     public RilevazioneGlicemia(int id_paziente, Timestamp timestamp, int valore, boolean prima_pasto){
         this(null, id_paziente, timestamp, valore, prima_pasto);
@@ -25,8 +25,7 @@ public class RilevazioneGlicemia extends Rilevazione{
     public boolean getPrimaPasto() { return prima_pasto; }
 
     public String toString(){
-        return "id: " + super.getId() + "; idPaziente: " + super.getIdPaziente() + "; timestamp: " + super.getTimestamp() +
-               "; valore: " + valore + "; prima_pasto: " + prima_pasto;
+        return super.toString() + "; valore: " + valore + "; gravità: " + gravita + "; primaPasto: " + prima_pasto;
     }
 
     private int getGravitaValoreGlicemia(RilevazioneGlicemia rilevazioneGlicemia) {
