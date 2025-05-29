@@ -15,15 +15,15 @@ public class Terapia {
         this.farmaco = farmaco;
     }
 
-    private int getId(){ return id; }
-    private int getDosiGiornaliere() { return dosiGiornaliere; }
-    private double getQuantitaPerDose() { return quantitaPerDose; }
-    private String getNote() { return note; }
-    private Farmaco getFarmaco() { return farmaco; }
+    public int getId(){ return id; }
+    public int getDosiGiornaliere() { return dosiGiornaliere; }
+    public double getQuantitaPerDose() { return quantitaPerDose; }
+    public String getNote() { return note; }
+    public Farmaco getFarmaco() { return farmaco; }
 
     public String toString(){
         return "id: " + id + "; dosiGiornaliere: " + dosiGiornaliere +
-                "; quantiàPerDose: " + quantitaPerDose + "; note: " + note + "; farmaco_id: " + farmaco.id + "; codice_aic" + farmaco.codice_aic + "; farmaco_nome: " + farmaco.nome;
+                "; quantiàPerDose: " + quantitaPerDose + "; note: " + note + "; farmaco_id: " + farmaco.getId() + "; codice_aic" + farmaco.getCodice_aic() + "; farmaco_nome: " + farmaco.getNome();
     }
 
 }

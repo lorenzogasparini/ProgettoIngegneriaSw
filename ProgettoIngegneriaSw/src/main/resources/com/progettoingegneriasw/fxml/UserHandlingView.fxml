@@ -24,7 +24,7 @@
                     </BorderPane>
                     -->
 
-                    <VBox alignment="CENTER" HBox.hgrow="ALWAYS" prefHeight="300" prefWidth="500" styleClass="card, container" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+                    <VBox alignment="CENTER" HBox.hgrow="ALWAYS" fx:id="boxdatipaziente" prefHeight="300" prefWidth="500" styleClass="card, container" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
                         <children>
                             <Label text="Dati paziente" textAlignment="CENTER">
                                 <font>
@@ -34,18 +34,23 @@
                                     <Insets bottom="20.0" />
                                 </VBox.margin>
                             </Label>
-                            <Label fx:id="prova" text="prova"/>
+                            <Label fx:id="label1" text="" style="font-weight: bold;">
+                                <font>
+                                    <Font name="System Bold" size="18.0" />
+                                </font>
+                            </Label>
+                            <Label fx:id="label2" text="" />
+                            <Label fx:id="label3" text="" />
+                            <Label fx:id="label4" text="" />
 
-                            <!-- Proseguire da qui, costruire correttamente il BorderPane come strutturato, sostituendo i border Pane interni con
-                                dimensione corretta ed ancorati, in maniera da renderli stabili con il cambio di dimensione della finestra
-                             -->
-
+                            <!--
                             <Button defaultButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
                                     onAction="#handleLogin" text="Login">
                                 <VBox.margin>
                                     <Insets bottom="10.0" />
                                 </VBox.margin>
                             </Button>
+                            -->
                         </children>
                         <padding>
                             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -54,7 +59,7 @@
 
                     <VBox alignment="CENTER" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS" prefHeight="300" prefWidth="600" styleClass="card, container" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
                         <children>
-                            <Label text="Rilevazioni" textAlignment="CENTER">
+                            <Label text="Terapie" textAlignment="CENTER">
                                 <font>
                                     <Font name="System Bold" size="24.0" />
                                 </font>
@@ -62,18 +67,19 @@
                                     <Insets bottom="20.0" />
                                 </VBox.margin>
                             </Label>
-
-                            <!-- Proseguire da qui, costruire correttamente il BorderPane come strutturato, sostituendo i border Pane interni con
-                                dimensione corretta ed ancorati, in maniera da renderli stabili con il cambio di dimensione della finestra
-                             -->
-
-                            <Button defaultButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
-                                    onAction="#handleLogin" text="Login">
-                                <VBox.margin>
-                                    <Insets bottom="10.0" />
-                                </VBox.margin>
-                            </Button>
                         </children>
+
+                        <!-- Gestire correttamente onMouseClicked -->
+                        <TableView fx:id="tableViewTerapie" VBox.vgrow="ALWAYS" onMouseClicked="#handleTerapia" >
+                            <columns>
+                                <TableColumn prefWidth="75.0" text="Id" fx:id="id" />
+                                <TableColumn prefWidth="100.0" text="Dosi giornaliere" fx:id="dosiGiornaliere" />
+                                <TableColumn prefWidth="100.0" text="Quantità per dose" fx:id="quantitaPerDose" />
+                                <TableColumn prefWidth="100.0" text="Note" fx:id="note" />
+                                <TableColumn prefWidth="100.0" text="Farmaco" fx:id="Nome_farmaco" />
+                                <TableColumn prefWidth="100.0" text="Codice AIC" fx:id="Codice_aic" />
+                            </columns>
+                        </TableView>
 
                         <padding>
                             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -85,7 +91,7 @@
 
                 <VBox alignment="CENTER" HBox.hgrow="ALWAYS" prefHeight="600" prefWidth="300" styleClass="card, container" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
                     <children>
-                        <Label text="Terapie" textAlignment="CENTER">
+                        <Label text="Rilevazioni" textAlignment="CENTER">
                             <font>
                                 <Font name="System Bold" size="24.0" />
                             </font>
@@ -94,32 +100,55 @@
                             </VBox.margin>
                         </Label>
 
-
                         <!-- Da completare -->
-                        <!--onMouseClicked="#terapiaHandling"-->
-                        <TableView fx:id="tableView" VBox.vgrow="ALWAYS" onMouseClicked="#handleDashboard" >
+                        <!--onMouseClicked="rilevazioniHandling" : pagina dove si può analizzare una tabella delle rilevazioni di quel tipo, e dove è possibile consultare le statistiche delle stesse-->
+                        <TableView fx:id="tableViewRilevazioniFarmaci" VBox.vgrow="ALWAYS" onMouseClicked="#handleRilevazione" >
                             <columns>
-                                <TableColumn prefWidth="75.0" text="UserId" fx:id="Id" />
-                                <TableColumn prefWidth="100.0" text="UserName" fx:id="Username" />
-                                <TableColumn prefWidth="100.0" text="Nome" fx:id="Nome" />
-                                <TableColumn prefWidth="100.0" text="Cognome" fx:id="Cognome" />
-                                <TableColumn prefWidth="100.0" text="Email" fx:id="email" />
-                                <TableColumn prefWidth="100.0" text="Diabetologo" fx:id="idDiabetologo" />
-                                <TableColumn prefWidth="100.0" text="Data nascita" fx:id="dataNascita" />
-                                <TableColumn prefWidth="100.0" text="Peso" fx:id="peso" />
-                                <TableColumn prefWidth="100.0" text="Provincia residenza" fx:id="provinciaResidenza" />
-                                <TableColumn prefWidth="100.0" text="Comune residenza" fx:id="comuneResidenza" />
-                                <TableColumn prefWidth="100.0" text="Note" fx:id="notePaziente" />
+                                <TableColumn prefWidth="75.0" text="UserId" fx:id="Id2" />
+                                <TableColumn prefWidth="100.0" text="UserName" fx:id="Usernam2" />
+                                <TableColumn prefWidth="100.0" text="Nome" fx:id="Nome2" />
+                                <TableColumn prefWidth="100.0" text="Cognome" fx:id="Cognome2" />
+                                <TableColumn prefWidth="100.0" text="Email" fx:id="email2" />
+                                <TableColumn prefWidth="100.0" text="Diabetologo" fx:id="idDiabetologo2" />
+                                <TableColumn prefWidth="100.0" text="Data nascita" fx:id="dataNascita2" />
+                                <TableColumn prefWidth="100.0" text="Peso" fx:id="peso2" />
+                                <TableColumn prefWidth="100.0" text="Provincia residenza" fx:id="provinciaResidenza2" />
+                                <TableColumn prefWidth="100.0" text="Comune residenza" fx:id="comuneResidenza2" />
+                                <TableColumn prefWidth="100.0" text="Note" fx:id="notePaziente2" />
                             </columns>
                         </TableView>
 
+                        <TableView fx:id="tableViewRilevazioniGlicemia" VBox.vgrow="ALWAYS" onMouseClicked="#handleRilevazione" >
+                            <columns>
+                                <TableColumn prefWidth="75.0" text="UserId" fx:id="Id3" />
+                                <TableColumn prefWidth="100.0" text="UserName" fx:id="Username3" />
+                                <TableColumn prefWidth="100.0" text="Nome" fx:id="Nome3" />
+                                <TableColumn prefWidth="100.0" text="Cognome" fx:id="Cognome3" />
+                                <TableColumn prefWidth="100.0" text="Email" fx:id="email3" />
+                                <TableColumn prefWidth="100.0" text="Diabetologo" fx:id="idDiabetologo3" />
+                                <TableColumn prefWidth="100.0" text="Data nascita" fx:id="dataNascita3" />
+                                <TableColumn prefWidth="100.0" text="Peso" fx:id="peso3" />
+                                <TableColumn prefWidth="100.0" text="Provincia residenza" fx:id="provinciaResidenza3" />
+                                <TableColumn prefWidth="100.0" text="Comune residenza" fx:id="comuneResidenza3" />
+                                <TableColumn prefWidth="100.0" text="Note" fx:id="notePaziente3" />
+                            </columns>
+                        </TableView>
 
-                        <Button defaultButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
-                                onAction="#handleLogin" text="Login">
-                            <VBox.margin>
-                                <Insets bottom="10.0" />
-                            </VBox.margin>
-                        </Button>
+                        <TableView fx:id="tableViewRilevazioniSintomi" VBox.vgrow="ALWAYS" onMouseClicked="#handleRilevazione" >
+                            <columns>
+                                <TableColumn prefWidth="75.0" text="UserId" fx:id="Id4" />
+                                <TableColumn prefWidth="100.0" text="UserName" fx:id="Usernam4" />
+                                <TableColumn prefWidth="100.0" text="Nome" fx:id="Nome4" />
+                                <TableColumn prefWidth="100.0" text="Cognome" fx:id="Cognome4" />
+                                <TableColumn prefWidth="100.0" text="Email" fx:id="email4" />
+                                <TableColumn prefWidth="100.0" text="Diabetologo" fx:id="idDiabetologo4" />
+                                <TableColumn prefWidth="100.0" text="Data nascita" fx:id="dataNascita4" />
+                                <TableColumn prefWidth="100.0" text="Peso" fx:id="peso4" />
+                                <TableColumn prefWidth="100.0" text="Provincia residenza" fx:id="provinciaResidenza4" />
+                                <TableColumn prefWidth="100.0" text="Comune residenza" fx:id="comuneResidenza4" />
+                                <TableColumn prefWidth="100.0" text="Note" fx:id="notePaziente4" />
+                            </columns>
+                        </TableView>
                     </children>
 
                     <padding>
