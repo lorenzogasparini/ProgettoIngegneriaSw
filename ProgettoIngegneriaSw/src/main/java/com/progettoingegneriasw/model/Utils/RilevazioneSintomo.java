@@ -21,8 +21,7 @@ public class RilevazioneSintomo extends Rilevazione{
     public int getIntensita() { return intensita; }
 
     public String toString(){
-        return "id: " + super.getId() + "; idPaziente: " + super.getIdPaziente() + "; timestamp: " + super.getTimestamp() +
-                "; sintomo: " + sintomo + "; intensita: " + intensita;
+        return super.toString() + "; sintomo: " + sintomo + "; intensita: " + intensita;
     }
 
 }

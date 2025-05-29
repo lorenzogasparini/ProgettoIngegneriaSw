@@ -24,8 +24,7 @@ public class RilevazioneFarmaco extends Rilevazione{
     public String getNote() { return note; }
 
     public String toString(){
-        return "id: " + super.getId() + "; idPaziente: " + super.getIdPaziente() + "; id_farmaco: " + id_farmaco + "; timestamp: " +
-                super.getTimestamp() + "; quantità: " + quantita + "; note: " + note;
+        return super.toString() + "; id_farmaco: " + id_farmaco + "; quantità: " + quantita + "; note: " + note;
     }
 
 }

@@ -25,8 +25,7 @@ public class RilevazioneGlicemia extends Rilevazione{
     public boolean getPrimaPasto() { return prima_pasto; }
 
     public String toString(){
-        return "id: " + super.getId() + "; idPaziente: " + super.getIdPaziente() + "; timestamp: " + super.getTimestamp() +
-               "; valore: " + valore + "; prima_pasto: " + prima_pasto;
+        return super.toString() + "; valore: " + valore + "; gravità: " + gravita + "; primaPasto: " + prima_pasto;
     }
 
     private int getGravitaValoreGlicemia(RilevazioneGlicemia rilevazioneGlicemia) {

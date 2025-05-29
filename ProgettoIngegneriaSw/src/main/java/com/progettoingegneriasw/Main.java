@@ -17,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -68,6 +69,7 @@ public class Main extends Application {
 
         // todo: si porebbe parametrizzare il nome dell'utente su cui fare i vari test (esempio: "mario.rossi")
 
+
         testUser();
         testAdmin();
         testMedico();
@@ -102,6 +104,16 @@ public class Main extends Application {
         // USER: test inserimento log
         System.out.println("test inserimento Log");
         userDAO.setLog(new Log(1, 1, "test Log", Timestamp.from(Instant.now())));
+
+        // USER: test per apertura app di mail
+        /*
+        pazienteDAO.contattaDiabetologo(
+                "diabetologo@example.com",
+                "Valori glicemia fuori soglia",
+                "Gentile diabetologo,\n\nHo notato valori anomali oggi. Potremmo sentirci?\n\nCordiali saluti."
+        );
+        */
+
 
     }
 
@@ -310,8 +322,12 @@ public class Main extends Application {
 //                new RilevazioneFarmaco(1, 2, Timestamp.from(Instant.now()), 50, "");
 //        pazienteDAO.setRilevazioneFarmaco(rilevazioneFarmaco);
 
+        // PAZIENTE: getMedicoRiferimento
+        System.out.println("Medico di riferimento del paziente mario.rossi: " + pazienteDAO.getMedicoRiferimento("mario.rossi"));
+
+
     }
 
-// test
+
 
 }

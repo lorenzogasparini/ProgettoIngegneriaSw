@@ -2,8 +2,7 @@ package com.progettoingegneriasw.model.Utils;
 
 public enum AlertType {
     farmaco,
-    glicemia,
-    sintomo;
+    glicemia;
 
     public static AlertType fromString(String value) {
         for (AlertType t : AlertType.values()) {

@@ -1,8 +1,13 @@
 package com.progettoingegneriasw.model.Paziente;
 
+import com.progettoingegneriasw.model.Medico.MedicoUser;
 import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.model.Utils.*;
 
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -160,7 +165,7 @@ public class PazienteDAO extends UserDAO {
     }
 
     public void setRilevazioneGlicemia(RilevazioneGlicemia rilevazioneGlicemia){
-        super.getConnection().executeUpdate(
+        Integer rilevazioneGlicemiaId = super.getConnection().executeInsertAndReturnId(
                 "INSERT INTO rilevazione_glicemia (id_paziente, timestamp, valore, gravita, prima_pasto) " +
                         "VALUES (?, ?, ?, ?, ?)",
                 rilevazioneGlicemia.getIdPaziente(),
@@ -169,6 +174,12 @@ public class PazienteDAO extends UserDAO {
                 rilevazioneGlicemia.getGravita(),
                 rilevazioneGlicemia.getPrimaPasto()
         );
+
+        if(rilevazioneGlicemia.getGravita() !=  0){
+            insertAlertGlicemia(new Alert(rilevazioneGlicemia.getIdPaziente(), rilevazioneGlicemiaId,
+                    AlertType.glicemia, rilevazioneGlicemia.getTimestamp(), false));
+        }
+
     }
 
 
@@ -189,13 +200,79 @@ public class PazienteDAO extends UserDAO {
         );
     }
 
-    // todo: funzione getMedicoRiferimento()
+    // funzione getMedicoRiferimento() --> ok!
+    public MedicoUser getMedicoRiferimento(String username){
+        int id_paziente = getIdFromDB(username);
+
+        return getConnection().executeQuery(
+                "SELECT d.* " +
+                        " FROM paziente p " +
+                        " JOIN diabetologo d ON p.id_diabetologo = d.id" +
+                        " WHERE p.id = ?",
+                rs -> {
+                    if (rs.next()) {
+                        return new MedicoUser(
+                                rs.getInt("id"),
+                                rs.getString("username"),
+                                rs.getString("password"),
+                                rs.getString("nome"),
+                                rs.getString("cognome"),
+                                rs.getString("email")
+                        );
+                    }
+                    return null;
+                },
+                id_paziente
+        );
+    }
 
 
-    // todo: funzione per l'inserimento in Alert se ci sono dei dati sballati in rilevazione_glicemia
+    /// funzione per l'inserimento in Alert se ci sono dei dati sballati in rilevazione_glicemia --> ok!
+    public void insertAlertGlicemia(Alert alert){
+        final String alertType = "glicemia";
 
+        super.getConnection().executeUpdate(
+                "INSERT INTO alert (id_paziente, id_rilevazione, tipo_alert, data_alert, letto) " +
+                        "VALUES (?, ?, ?, ?, ?)",
+                alert.getIdPaziente(),
+                alert.getIdRilevazione(),
+                alert.getTipoAlert(),
+                alert.getTimestamp().toString(),
+                alert.getLetto()
+        );
+    }
 
-    // todo: funzione contattaDiabetologo() per inviare una mail al diabetologo
+    /// funzione contattaDiabetologo() per aprire l'app di email di default del dispostivo --> ok!
+    /// per impostarla su Linux: Impostazioni > Applicazioni > App. predefinite > Email e selezionare dal menu a tendina
+    /// (consigliata Tunderbird)
+    public void contattaDiabetologo(String destinatario, String oggetto, String corpo) {
+        String mailto = String.format(
+                "mailto:%s?subject=%s&body=%s",
+                uriEncode(destinatario),
+                uriEncode(oggetto),
+                uriEncode(corpo)
+        );
+
+        try {
+            String os = System.getProperty("os.name").toLowerCase();
+            if (os.contains("win")) {
+                Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + mailto);
+            } else if (os.contains("mac")) {
+                Runtime.getRuntime().exec("open " + mailto);
+            } else if (os.contains("nix") || os.contains("nux")) {
+                Runtime.getRuntime().exec("xdg-open " + mailto);
+            } else {
+                throw new UnsupportedOperationException("Sistema operativo non supportato.");
+            }
+        } catch (Exception e) {
+            System.err.println("Errore apertura email: " + e.getMessage());
+        }
+    }
+
+    private static String uriEncode(String s) {
+        return s.replace(" ", "%20").replace("\n", "%0A").replace("\r", "%0D");
+    }
+
 
 
 }

@@ -8,11 +8,11 @@ import com.progettoingegneriasw.model.Paziente.Paziente;
 import com.progettoingegneriasw.model.Paziente.PazienteDAO;
 
 public class User implements UserInterface{ // todo: rendere questa classe astratta finiti i controller
-    private Integer id;
-    private String username;
-    private String password;
-    private String nome;
-    private String cognome;
+    private final Integer id;
+    private final String username;
+    private final String password;
+    private final String nome;
+    private final String cognome;
 
     public User(String username){
         this(null, username, null, null, null);
@@ -125,7 +125,7 @@ public class User implements UserInterface{ // todo: rendere questa classe astra
                 "; cognome: " + cognome;
     }
 
-    // todo: rimuovere quando si render User stratta
+    // todo: rimuovere quando si rende User stratta
     @Override
     public String getSQLTableName() {
         return "";
