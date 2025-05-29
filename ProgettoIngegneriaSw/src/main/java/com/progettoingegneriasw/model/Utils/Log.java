@@ -3,11 +3,11 @@ package com.progettoingegneriasw.model.Utils;
 import java.sql.Timestamp;
 
 public class Log {
-    private Integer id;
-    private int id_paziente;
-    private int id_diabetologo;
-    private String azione;
-    private Timestamp timestamp;
+    private final  Integer id;
+    private final int id_paziente;
+    private final int id_diabetologo;
+    private final String azione;
+    private final Timestamp timestamp;
 
     public Log(int id_paziente, int id_diabetologo, String azione, Timestamp timestamp){
         this(null, id_paziente, id_diabetologo, azione, timestamp);

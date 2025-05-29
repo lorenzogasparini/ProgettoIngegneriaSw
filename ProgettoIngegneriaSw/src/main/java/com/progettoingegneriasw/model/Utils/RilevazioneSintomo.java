@@ -4,8 +4,8 @@ import java.sql.Timestamp;
 
 public class RilevazioneSintomo extends Rilevazione{
 
-    private String sintomo;
-    private int intensita;
+    private final String sintomo;
+    private final int intensita;
 
     public RilevazioneSintomo(int idPaziente, Timestamp timestamp, String sintomo, int intensita){
         this(null, idPaziente, timestamp, sintomo, intensita);

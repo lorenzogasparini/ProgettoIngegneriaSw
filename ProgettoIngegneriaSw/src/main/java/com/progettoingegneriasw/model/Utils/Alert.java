@@ -3,11 +3,11 @@ package com.progettoingegneriasw.model.Utils;
 import java.sql.Timestamp;
 
 public class Alert {
-    private int idPaziente;
-    private int idRilevazione;
-    private AlertType tipoAlert;
-    private Timestamp timestamp;
-    private boolean letto;
+    private final int idPaziente;
+    private final int idRilevazione;
+    private final AlertType tipoAlert;
+    private final Timestamp timestamp;
+    private final boolean letto;
 
     public Alert(int idPaziente, int idRilevazione, AlertType tipoAlert, Timestamp timestamp, boolean letto){
         this.idPaziente = idPaziente;

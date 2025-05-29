@@ -108,7 +108,35 @@ public class DatabaseManager {
             return false;
         }
     }
-    
+
+    public Integer executeInsertAndReturnId(String sql, Object... params) {
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // Set parameters
+            for (int i = 0; i < params.length; i++) {
+                pstmt.setObject(i + 1, params[i]);
+            }
+
+            pstmt.executeUpdate();
+
+            // Now retrieve the last inserted ID using a second query
+            try (PreparedStatement idStmt = conn.prepareStatement("SELECT last_insert_rowid()");
+                 ResultSet rs = idStmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error executing insert: " + e.getMessage());
+        }
+
+        return null;
+    }
+
+
+
     /**
      * Execute a query and process the results with a ResultSetProcessor
      */

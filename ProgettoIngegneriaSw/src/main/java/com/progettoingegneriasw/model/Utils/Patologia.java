@@ -1,11 +1,19 @@
 package com.progettoingegneriasw.model.Utils;
 
 public class Patologia {
-    private int id;
-    private String nome;
-    private String codiceIcd;
+    private final Integer id;
+    private final String nome;
+    private final String codiceIcd;
 
-    public Patologia(int id, String nome, String codiceIcd){
+    public Patologia(int id){
+        this(id, null, null);
+    }
+
+    public Patologia(String nome, String codiceIcd){
+        this(null, nome, codiceIcd);
+    }
+
+    public Patologia(Integer id, String nome, String codiceIcd){
         this.id = id;
         this.nome = nome;
         this.codiceIcd = codiceIcd;

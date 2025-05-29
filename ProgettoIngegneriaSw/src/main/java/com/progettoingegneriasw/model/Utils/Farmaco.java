@@ -1,17 +1,29 @@
 package com.progettoingegneriasw.model.Utils;
 
 public class Farmaco {
-    int id;
-    String codice_aic;
-    String nome;
+    private final Integer id;
+    private final String codiceAic;
+    private final String nome;
 
-    public Farmaco(int id, String codice_aic, String nome) {
+    public Farmaco(Integer id){
+        this(id, null,null);
+    }
+
+    public Farmaco(String codiceAic, String nome){
+        this(null, codiceAic, nome);
+    }
+
+    public Farmaco(Integer id, String codiceAic, String nome) {
         this.id = id;
-        this.codice_aic = codice_aic;
+        this.codiceAic = codiceAic;
         this.nome = nome;
     }
 
+    public Integer getId(){ return id; }
+    public String getCodiceAic() { return codiceAic; }
+    public String getNome(){ return codiceAic; }
+
     public String toString(){
-        return "id: " + id + "; codice_aic: " + codice_aic + "; nome: " + nome;
+        return "id: " + id + "; codice_aic: " + codiceAic + "; nome: " + nome;
     }
 }
