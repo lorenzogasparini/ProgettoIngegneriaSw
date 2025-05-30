@@ -7,25 +7,25 @@ public class RilevazioneGlicemia extends Rilevazione{
 
     private final int valore;
     private final Integer gravita;
-    private final boolean prima_pasto;
+    private final boolean primaPasto;
 
-    public RilevazioneGlicemia(int id_paziente, Timestamp timestamp, int valore, boolean prima_pasto){
-        this(null, id_paziente, timestamp, valore, prima_pasto);
+    public RilevazioneGlicemia(int id_paziente, Timestamp timestamp, int valore, boolean primaPasto){
+        this(null, id_paziente, timestamp, valore, primaPasto);
     }
 
-    public RilevazioneGlicemia(Integer id, int id_paziente, Timestamp timestamp, int valore, boolean prima_pasto){
+    public RilevazioneGlicemia(Integer id, int id_paziente, Timestamp timestamp, int valore, boolean primaPasto){
         super(id, id_paziente, timestamp);
         this.valore = valore;
         this.gravita = getGravitaValoreGlicemia(this);
-        this.prima_pasto =prima_pasto;
+        this.primaPasto =primaPasto;
     }
 
     public int getValore() { return valore; }
     public Integer getGravita() { return  gravita; }
-    public boolean getPrimaPasto() { return prima_pasto; }
+    public boolean getPrimaPasto() { return primaPasto; }
 
     public String toString(){
-        return super.toString() + "; valore: " + valore + "; gravità: " + gravita + "; primaPasto: " + prima_pasto;
+        return super.toString() + "; valore: " + valore + "; gravità: " + gravita + "; primaPasto: " + primaPasto;
     }
 
     private int getGravitaValoreGlicemia(RilevazioneGlicemia rilevazioneGlicemia) {

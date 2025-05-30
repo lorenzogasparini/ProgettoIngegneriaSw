@@ -3,9 +3,7 @@ package com.progettoingegneriasw.controller;
 
 import com.progettoingegneriasw.model.Medico.MedicoDAO;
 import com.progettoingegneriasw.model.Paziente.Paziente;
-import com.progettoingegneriasw.model.Utils.Farmaco;
-import com.progettoingegneriasw.model.Utils.RilevazioneFarmaco;
-import com.progettoingegneriasw.model.Utils.Terapia;
+import com.progettoingegneriasw.model.Utils.*;
 import com.progettoingegneriasw.view.ViewNavigator;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -53,6 +51,17 @@ public class UserHandlingController {
     @FXML private TableColumn<RilevazioneFarmaco, Double> quantita;
     @FXML private TableColumn<RilevazioneFarmaco, String> noteRilevazione;
 
+    @FXML private TableView<RilevazioneGlicemia> tableViewRilevazioniGlicemia;
+    //  @FXML private TableColumn<RilevazioneGlicemia, Timestamp> timestamp;
+    @FXML private TableColumn<RilevazioneGlicemia, Integer> valore;
+    @FXML private TableColumn<RilevazioneGlicemia, Integer> gravita;
+    @FXML private TableColumn<RilevazioneGlicemia, Boolean> primaPasto;
+
+    @FXML private TableView<RilevazioneSintomo> tableViewRilevazioniSintomi;
+    //  @FXML private TableColumn<RilevazioneSintomo, Timestamp> timestamp;
+    @FXML private TableColumn<RilevazioneSintomo, String> sintomo;
+    @FXML private TableColumn<RilevazioneSintomo, Integer> intensita;
+
     /*
     @FXML private TableView<Paziente> tableViewRilevazioni;
     attributi tabella
@@ -81,16 +90,31 @@ public class UserHandlingController {
         nome.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getFarmaco().getNome()));
 
+        //  timestamp.setCellValueFactory(new PropertyValueFactory<RilevazioneGlicemia, Timestamp>("timestamp"));
+        valore.setCellValueFactory(new PropertyValueFactory<RilevazioneGlicemia, Integer>("valore"));
+        gravita.setCellValueFactory(new PropertyValueFactory<RilevazioneGlicemia, Integer>("gravita"));
+        primaPasto.setCellValueFactory(new PropertyValueFactory<RilevazioneGlicemia, Boolean>("primaPasto"));
+
+        //  timestamp.setCellValueFactory(new PropertyValueFactory<RilevazioneSintomo, Timestamp>("timestamp"));
+        sintomo.setCellValueFactory(new PropertyValueFactory<RilevazioneSintomo, String>("sintomo"));
+        intensita.setCellValueFactory(new PropertyValueFactory<RilevazioneSintomo, Integer>("intensita"));
+
         MedicoDAO medicoDAO = MedicoDAO.getInstance();
         medicoDAO.getUser(ViewNavigator.getAuthenticatedUser());
         Terapia[] terapie = medicoDAO.getTerapiePaziente(TestController.selectedUser.getUsername());
         RilevazioneFarmaco[] rilevazioniFarmaci = medicoDAO.getRilevazioniFarmaco(TestController.selectedUser.getUsername());
+        RilevazioneGlicemia[] rilevazioniGlicemia = medicoDAO.getRilevazioniGlicemia(TestController.selectedUser.getUsername());
+        RilevazioneSintomo[] rilevazioniSintomi = medicoDAO.getRilevazioniSintomo(TestController.selectedUser.getUsername());
 
         ObservableList<Terapia> ter = FXCollections.observableArrayList(terapie);
         ObservableList<RilevazioneFarmaco> rilFarmaci = FXCollections.observableArrayList(rilevazioniFarmaci);
+        ObservableList<RilevazioneGlicemia> rilGlicemia = FXCollections.observableArrayList(rilevazioniGlicemia);
+        ObservableList<RilevazioneSintomo> rilSintomi = FXCollections.observableArrayList(rilevazioniSintomi);
 
         tableViewTerapie.setItems(ter);
         tableViewRilevazioniFarmaci.setItems(rilFarmaci);
+        tableViewRilevazioniGlicemia.setItems(rilGlicemia);
+        tableViewRilevazioniSintomi.setItems(rilSintomi);
     }
 
     @FXML
