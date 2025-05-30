@@ -100,26 +100,15 @@
                             </VBox.margin>
                         </Label>
 
-
-                        private final Farmaco farmaco;
-                        private final double quantita;
-                        private final String note;
-
                         <!-- Da completare -->
                         <!--onMouseClicked="rilevazioniHandling" : pagina dove si può analizzare una tabella delle rilevazioni di quel tipo, e dove è possibile consultare le statistiche delle stesse-->
                         <TableView fx:id="tableViewRilevazioniFarmaci" VBox.vgrow="ALWAYS" onMouseClicked="#handleRilevazione" >
                             <columns>
-                                <TableColumn prefWidth="75.0" text="UserId" fx:id="Id2" />
-                                <TableColumn prefWidth="100.0" text="UserName" fx:id="Usernam2" />
-                                <TableColumn prefWidth="100.0" text="Nome" fx:id="Nome2" />
-                                <TableColumn prefWidth="100.0" text="Cognome" fx:id="Cognome2" />
-                                <TableColumn prefWidth="100.0" text="Email" fx:id="email2" />
-                                <TableColumn prefWidth="100.0" text="Diabetologo" fx:id="idDiabetologo2" />
-                                <TableColumn prefWidth="100.0" text="Data nascita" fx:id="dataNascita2" />
-                                <TableColumn prefWidth="100.0" text="Peso" fx:id="peso2" />
-                                <TableColumn prefWidth="100.0" text="Provincia residenza" fx:id="provinciaResidenza2" />
-                                <TableColumn prefWidth="100.0" text="Comune residenza" fx:id="comuneResidenza2" />
-                                <TableColumn prefWidth="100.0" text="Note" fx:id="notePaziente2" />
+                                <TableColumn prefWidth="100.0" text="Timestamp" fx:id="timestamp" />
+                                <TableColumn prefWidth="100.0" text="Codice AIC" fx:id="codiceAic" />
+                                <TableColumn prefWidth="100.0" text="Nome" fx:id="nome" />
+                                <TableColumn prefWidth="100.0" text="Quantità" fx:id="quantita" />
+                                <TableColumn prefWidth="100.0" text="Note" fx:id="noteRilevazione" />
                             </columns>
                         </TableView>
 

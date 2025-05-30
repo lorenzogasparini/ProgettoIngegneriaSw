@@ -17,7 +17,7 @@ public class Farmaco {
 
     public Integer getId(){ return id; }
     public String getCodiceAic() { return codiceAic; }
-    public String getNome(){ return codiceAic; }
+    public String getNome(){ return nome; }
 
     public String toString(){
         return "id: " + id + "; codice_aic: " + codiceAic + "; nome: " + nome;

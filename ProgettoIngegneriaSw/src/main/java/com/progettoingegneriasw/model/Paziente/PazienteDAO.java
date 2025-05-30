@@ -196,7 +196,7 @@ public class PazienteDAO extends UserDAO {
                 rilevazioneFarmaco.getFarmaco().getId(),
                 rilevazioneFarmaco.getTimestamp().toString(),
                 rilevazioneFarmaco.getQuantita(),
-                rilevazioneFarmaco.getNote()
+                rilevazioneFarmaco.getNoteRilevazione()
         );
     }
 
