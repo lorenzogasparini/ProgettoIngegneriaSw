@@ -162,8 +162,8 @@ public class Main extends Application {
             System.out.println(paziente);
         }
 
-        /* todo: cancellare
-        RilevazioneFarmaco[] rilevazioni_farmaci = medicoDAO.getRilevazioniFarmaci("mario.rossi");
+        /* todo: cancellare*/
+        RilevazioneFarmaco[] rilevazioni_farmaci = medicoDAO.getRilevazioniFarmaco("mario.rossi");
         for(RilevazioneFarmaco rilevazioneFarmaco : rilevazioni_farmaci){
             System.out.println("Rilevazione farmaco: " + rilevazioneFarmaco);
         }
@@ -173,11 +173,11 @@ public class Main extends Application {
             System.out.println("Rilevazione glicemia: " + rilevazioneGlicemia);
         }
 
-        RilevazioneSintomo[] rilevazioni_sintomi = medicoDAO.getRilevazioniSintomi("mario.rossi");
+        RilevazioneSintomo[] rilevazioni_sintomi = medicoDAO.getRilevazioniSintomo("mario.rossi");
         for(RilevazioneSintomo rilevazione : rilevazioni_sintomi){
             System.out.println("Rilevazione : " + rilevazione);
         }
-         */
+
 
         Patologia[] patologie = medicoDAO.getPatologiePaziente("mario.rossi");
         for(Patologia patologia : patologie){

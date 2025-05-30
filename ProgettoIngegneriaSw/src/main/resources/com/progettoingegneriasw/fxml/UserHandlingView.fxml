@@ -100,6 +100,11 @@
                             </VBox.margin>
                         </Label>
 
+
+                        private final Farmaco farmaco;
+                        private final double quantita;
+                        private final String note;
+
                         <!-- Da completare -->
                         <!--onMouseClicked="rilevazioniHandling" : pagina dove si può analizzare una tabella delle rilevazioni di quel tipo, e dove è possibile consultare le statistiche delle stesse-->
                         <TableView fx:id="tableViewRilevazioniFarmaci" VBox.vgrow="ALWAYS" onMouseClicked="#handleRilevazione" >

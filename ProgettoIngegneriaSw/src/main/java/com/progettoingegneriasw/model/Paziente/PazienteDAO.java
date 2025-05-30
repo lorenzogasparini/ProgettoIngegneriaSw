@@ -193,7 +193,7 @@ public class PazienteDAO extends UserDAO {
                 "INSERT INTO rilevazione_farmaco (id_paziente, id_farmaco, timestamp, quantita, note) " +
                         "VALUES (?, ?, ?, ?, ?)",
                 rilevazioneFarmaco.getIdPaziente(),
-                rilevazioneFarmaco.getIdFarmaco(),
+                rilevazioneFarmaco.getFarmaco().getId(),
                 rilevazioneFarmaco.getTimestamp().toString(),
                 rilevazioneFarmaco.getQuantita(),
                 rilevazioneFarmaco.getNote()

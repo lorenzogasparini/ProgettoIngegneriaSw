@@ -483,20 +483,28 @@ public class MedicoDAO extends UserDAO {
     public RilevazioneFarmaco[] getRilevazioniFarmaco(String usernamePaziente) throws SQLException {
         ArrayList<RilevazioneFarmaco> rilevazioniFarmaci = new ArrayList<>();
 
+        /*
         String query =
                 "SELECT rf.* " +
-                        "FROM paziente p " +
-                        "INNER JOIN rilevazione_farmaco rf ON p.id = rf.id_paziente " +
-                        "WHERE (? IS NULL OR p.username = ?)";
+                "FROM paziente p " +
+                "INNER JOIN rilevazione_farmaco rf ON p.id = rf.id_paziente " +
+                "WHERE (? IS NULL OR p.username = ?)";
+         */
 
-        super.getConnection().executeQuery(
+        String query =
+        "SELECT r.id, r.id_paziente, r.timestamp, r.quantita, r.note, f.id AS id_farmaco, f.codice_aic, f.nome " +
+        "FROM rilevazione_farmaco r " +
+        "INNER JOIN farmaco f ON r.id_farmaco = f.id " +
+        "WHERE r.id_paziente = ?";
+
+    super.getConnection().executeQuery(
                 query,
                 rs -> {
                     while (rs.next()) {
                         rilevazioniFarmaci.add(new RilevazioneFarmaco(
                                 rs.getInt("id"),
                                 rs.getInt("id_paziente"),
-                                rs.getInt("id_farmaco"),
+                                new Farmaco(rs.getInt("id_farmaco"), rs.getString("codice_aic"), rs.getString("nome")),
                                 rs.getTimestamp("timestamp"),
                                 rs.getFloat("quantita"),
                                 rs.getString("note")
@@ -504,8 +512,8 @@ public class MedicoDAO extends UserDAO {
                     }
                     return null;
                 },
-                usernamePaziente.isEmpty() ? null : usernamePaziente,  // 1st placeholder
-                usernamePaziente.isEmpty() ? null : usernamePaziente   // 2nd placeholder
+                usernamePaziente.isEmpty() ? null : getIdFromDB(usernamePaziente)  // 1st placeholder
+                //  usernamePaziente.isEmpty() ? null : usernamePaziente   // 2nd placeholder
         );
 
         return rilevazioniFarmaci.toArray(new RilevazioneFarmaco[0]);
