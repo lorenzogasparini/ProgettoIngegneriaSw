@@ -2,7 +2,9 @@ package com.progettoingegneriasw.view;
 
 import com.progettoingegneriasw.Main;
 import com.progettoingegneriasw.controller.MainController;
+import com.progettoingegneriasw.controller.TestController;
 import com.progettoingegneriasw.model.UserDAO;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 
@@ -109,6 +111,27 @@ public class ViewNavigator {
      */
     public static void navigateToUserHandling() {
         loadView("UserHandlingView.fxml");
+    }
+
+    /**
+     * Navigate to the medicine-taking handling view
+     */
+    public static void navigateToHandleRilevazioniFarmaci() {
+        loadView("RilevazioniFarmaciHandlingView.fxml");
+    }
+
+    /**
+     * Navigate to the symptoms detection handling view
+     */
+    public static void navigateToHandleRilevazioniSintomi(){
+        loadView("RilevazioniSintomiHandlingView.fxml");
+    }
+
+    /**
+     * Navigate to the blood-sugar detection handling view
+     */
+    public static void navigateToHandleRilevazioniGlicemia() {
+        loadView("RilevazioniGlicemiaHandlingView.fxml");
     }
     
     /**

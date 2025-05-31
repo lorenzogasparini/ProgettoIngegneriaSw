@@ -37,7 +37,6 @@ public class UserHandlingController {
     private Label label4;
 
     @FXML private TableView<Terapia> tableViewTerapie;
-    @FXML private TableColumn<Terapia, Integer> id;
     @FXML private TableColumn<Terapia, Integer> dosiGiornaliere;
     @FXML private TableColumn<Terapia, Double> quantitaPerDose;
     @FXML private TableColumn<Terapia, String> note;
@@ -73,7 +72,6 @@ public class UserHandlingController {
         label3.setText("Peso: " + TestController.selectedUser.getPeso() + " Kg");
         label4.setText("Note: " + TestController.selectedUser.getNotePaziente());
 
-        id.setCellValueFactory(new PropertyValueFactory<Terapia, Integer>("id"));
         dosiGiornaliere.setCellValueFactory(new PropertyValueFactory<Terapia, Integer>("dosiGiornaliere"));
         quantitaPerDose.setCellValueFactory(new PropertyValueFactory<Terapia, Double>("quantitaPerDose"));
         note.setCellValueFactory(new PropertyValueFactory<Terapia, String>("note"));
@@ -120,13 +118,25 @@ public class UserHandlingController {
     @FXML
     private void handleTerapia() {
         TestController.selectedUser = null;
-        ViewNavigator.navigateToDashboard();    //  Da sostituire con la navigate alla view di gestione della terapia
+        ViewNavigator.navigateToDashboard();
     }
 
     @FXML
-    private void handleRilevazione() {
+    private void handleRilevazioniFarmaci() {
         TestController.selectedUser = null;
-        ViewNavigator.navigateToDashboard();    //  Da sostituire con la navigate alla view di gestione della rilevazione
+        ViewNavigator.navigateToHandleRilevazioniFarmaci();
+    }
+
+    @FXML
+    private void handleRilevazioniSintomi() {
+        TestController.selectedUser = null;
+        ViewNavigator.navigateToHandleRilevazioniSintomi();
+    }
+
+    @FXML
+    private void handleRilevazioniGlicemia() {
+        TestController.selectedUser = null;
+        ViewNavigator.navigateToHandleRilevazioniGlicemia();
     }
 
     @FXML

@@ -72,7 +72,6 @@
                         <!-- Gestire correttamente onMouseClicked -->
                         <TableView fx:id="tableViewTerapie" VBox.vgrow="ALWAYS" onMouseClicked="#handleTerapia" >
                             <columns>
-                                <TableColumn prefWidth="75.0" text="Id" fx:id="id" />
                                 <TableColumn prefWidth="100.0" text="Dosi giornaliere" fx:id="dosiGiornaliere" />
                                 <TableColumn prefWidth="100.0" text="Quantità per dose" fx:id="quantitaPerDose" />
                                 <TableColumn prefWidth="100.0" text="Note" fx:id="note" />
@@ -100,9 +99,7 @@
                             </VBox.margin>
                         </Label>
 
-                        <!-- Da completare -->
-                        <!--onMouseClicked="rilevazioniHandling" : pagina dove si può analizzare una tabella delle rilevazioni di quel tipo, e dove è possibile consultare le statistiche delle stesse-->
-                        <TableView fx:id="tableViewRilevazioniFarmaci" VBox.vgrow="ALWAYS" onMouseClicked="#handleRilevazione" >
+                        <TableView fx:id="tableViewRilevazioniFarmaci" VBox.vgrow="ALWAYS" onMouseClicked="#handleRilevazioniFarmaci" >
                             <columns>
                                 <TableColumn prefWidth="100.0" text="Timestamp" fx:id="timestamp" />
                                 <TableColumn prefWidth="100.0" text="Nome" fx:id="nome" />
@@ -112,7 +109,7 @@
                             </columns>
                         </TableView>
 
-                        <TableView fx:id="tableViewRilevazioniGlicemia" VBox.vgrow="ALWAYS" onMouseClicked="#handleRilevazione" >
+                        <TableView fx:id="tableViewRilevazioniGlicemia" VBox.vgrow="ALWAYS" onMouseClicked="#handleRilevazioniGlicemia" >
                             <columns>
                                 <!-- <TableColumn prefWidth="100.0" text="Timestamp" fx:id="timestamp" /> -->
                                 <TableColumn prefWidth="100.0" text="Valore glicemico" fx:id="valore" />
@@ -121,7 +118,7 @@
                             </columns>
                         </TableView>
 
-                        <TableView fx:id="tableViewRilevazioniSintomi" VBox.vgrow="ALWAYS" onMouseClicked="#handleRilevazione" >
+                        <TableView fx:id="tableViewRilevazioniSintomi" VBox.vgrow="ALWAYS" onMouseClicked="#handleRilevazioniSintomi" >
                             <columns>
                             <!-- <TableColumn prefWidth="100.0" text="Timestamp" fx:id="timestamp" /> -->
                             <TableColumn prefWidth="100.0" text="Sintomo" fx:id="sintomo" />
