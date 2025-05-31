@@ -133,7 +133,14 @@ public class ViewNavigator {
     public static void navigateToHandleRilevazioniGlicemia() {
         loadView("RilevazioniGlicemiaHandlingView.fxml");
     }
-    
+
+    /**
+     * Navigate to the alerts handling view
+     */
+    public static void navigateToHandleVisualizzaAlerts() {
+        loadView("AlertsHandlingView.fxml");
+    }
+
     /**
      * Set the authenticated user and the user role
      * @param username The username of the authenticated user

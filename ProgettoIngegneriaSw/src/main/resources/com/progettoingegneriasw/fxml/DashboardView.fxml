@@ -55,14 +55,15 @@
             <!-- VBox Notifiche -->
             <VBox styleClass="card" HBox.hgrow="ALWAYS" fx:id="pannelloNotifiche">
                <children>
-                  <Label styleClass="card-header" text="Notifications" />
-                  <Label text="This card could list user notifications." wrapText="true">
+                  <Label styleClass="card-header" text="Alerts" />
+                  <Label text="Questa sezione fornisce lo storico delle notifiche di allerta rispetto ai pazienti curati." wrapText="true">
                      <VBox.margin>
                         <Insets bottom="10.0" top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <Button mnemonicParsing="false" text="Clear All" />
+                  <Button mnemonicParsing="false" text="Visualizza" onMouseClicked="#handleVisualizzaAlerts" />
                </children>
+
                <padding>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </padding>

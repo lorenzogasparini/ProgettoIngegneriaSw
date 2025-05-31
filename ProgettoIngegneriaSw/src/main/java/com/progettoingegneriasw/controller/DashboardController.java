@@ -51,6 +51,11 @@ public class DashboardController {
     }
 
     @FXML
+    private void handleVisualizzaAlerts() {
+        ViewNavigator.navigateToHandleVisualizzaAlerts();
+    }
+
+    @FXML
     private void handleGestioneRilevazioni() {
         ViewNavigator.navigateToStats();
     }
