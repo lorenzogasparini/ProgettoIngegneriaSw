@@ -61,11 +61,6 @@ public class UserHandlingController {
     @FXML private TableColumn<RilevazioneSintomo, String> sintomo;
     @FXML private TableColumn<RilevazioneSintomo, Integer> intensita;
 
-    /*
-    @FXML private TableView<Paziente> tableViewRilevazioni;
-    attributi tabella
-    */
-
     public void initialize() throws SQLException {
         label1.setText(TestController.selectedUser.getNome() + ", " + TestController.selectedUser.getCognome() + ", " + TestController.selectedUser.getDataNascita());
         label2.setText(TestController.selectedUser.getEmail());
@@ -123,19 +118,16 @@ public class UserHandlingController {
 
     @FXML
     private void handleRilevazioniFarmaci() {
-        TestController.selectedUser = null;
         ViewNavigator.navigateToHandleRilevazioniFarmaci();
     }
 
     @FXML
     private void handleRilevazioniSintomi() {
-        TestController.selectedUser = null;
         ViewNavigator.navigateToHandleRilevazioniSintomi();
     }
 
     @FXML
     private void handleRilevazioniGlicemia() {
-        TestController.selectedUser = null;
         ViewNavigator.navigateToHandleRilevazioniGlicemia();
     }
 
