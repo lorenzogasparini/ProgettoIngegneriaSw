@@ -520,7 +520,8 @@ public class MedicoDAO extends UserDAO {
         return rilevazioniFarmaci.toArray(new RilevazioneFarmaco[0]);
     }
 
-    // todo: getAlerts() (all and by username) discriminando per tipo di alert (glicemia o farmacoNonAssuntoDa3Giorni)
+    //  IMPORTANTE:
+    // todo: gestire il dato id_paziente correttamente nelle query per gli alert, magari usando il metodo apposito per paziente
 
     public Alert[] getAlert() throws SQLException {
         ArrayList<Alert> alerts = new ArrayList<>();

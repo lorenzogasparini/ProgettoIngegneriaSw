@@ -31,7 +31,18 @@
                             </Label>
                         </children>
 
-                        <!-- Da inserire una lista (ordinabile per data, magari) e con settabile il visto o non visto -->
+                        <!-- Da inserire come lista (ordinabile per data, magari e per tipologia di alert) e con settabile il visto o non visto, da gestire anche l'onClick per ottenere l'effetto letto/non letto -->
+
+                        <TableView fx:id="tableView" VBox.vgrow="ALWAYS" >
+                            <columns>
+                                <TableColumn prefWidth="75.0" text="Id" fx:id="Id" />
+                                <TableColumn prefWidth="100.0" text="Id paziente" fx:id="idPaziente" />
+                                <TableColumn prefWidth="100.0" text="Id rilevazione" fx:id="idRilevazione" />
+                                <TableColumn prefWidth="100.0" text="Tipologia alert" fx:id="tipoAlert" />
+                                <TableColumn prefWidth="100.0" text="Data alert" fx:id="timestamp" />
+                                <TableColumn prefWidth="100.0" text="Visto" fx:id="letto" />
+                            </columns>
+                        </TableView>
 
                         <padding>
                             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

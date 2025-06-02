@@ -2,6 +2,7 @@ package com.progettoingegneriasw.controller;
 
 import com.progettoingegneriasw.model.Medico.MedicoDAO;
 import com.progettoingegneriasw.model.Paziente.Paziente;
+import com.progettoingegneriasw.model.Utils.Alert;
 import com.progettoingegneriasw.view.ViewNavigator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 public class AlertsHandlingController {
     @FXML
@@ -21,41 +23,29 @@ public class AlertsHandlingController {
     @FXML
     private Button registerButton;
 
-    @FXML private TableView<Paziente> tableView;
-    @FXML private TableColumn<Paziente, Integer> Id;
-    @FXML private TableColumn<Paziente, String> Username;
-    @FXML private TableColumn<Paziente, String> Nome;
-    @FXML private TableColumn<Paziente, String> Cognome;
-    @FXML private TableColumn<Paziente, String> email;
-    @FXML private TableColumn<Paziente, Integer> idDiabetologo;
-    @FXML private TableColumn<Paziente, Date> dataNascita;
-    @FXML private TableColumn<Paziente, Double> peso;
-    @FXML private TableColumn<Paziente, String> provinciaResidenza;
-    @FXML private TableColumn<Paziente, String> comuneResidenza;
-    @FXML private TableColumn<Paziente, String> notePaziente;
+    @FXML private TableView<Alert> tableView;
+    @FXML private TableColumn<Alert, Integer> Id;
+    @FXML private TableColumn<Alert, Integer> idPaziente;
+    @FXML private TableColumn<Alert, Integer> idRilevazione;
+    @FXML private TableColumn<Alert, String> tipoAlert;
+    @FXML private TableColumn<Alert, Timestamp> timestamp;
+    @FXML private TableColumn<Alert, Boolean> letto;
 
     public void initialize() throws SQLException {
-        /*
-        Id.setCellValueFactory(new PropertyValueFactory<Paziente, Integer>("Id"));
-        Username.setCellValueFactory(new PropertyValueFactory<Paziente, String>("Username"));
-        Nome.setCellValueFactory(new PropertyValueFactory<Paziente, String>("Nome"));
-        Cognome.setCellValueFactory(new PropertyValueFactory<Paziente, String>("Cognome"));
-        email.setCellValueFactory(new PropertyValueFactory<Paziente, String>("email"));
-        idDiabetologo.setCellValueFactory(new PropertyValueFactory<Paziente, Integer>("idMedico"));
-        dataNascita.setCellValueFactory(new PropertyValueFactory<Paziente, Date>("dataNascita"));
-        peso.setCellValueFactory(new PropertyValueFactory<Paziente, Double>("peso"));
-        provinciaResidenza.setCellValueFactory(new PropertyValueFactory<Paziente, String>("provinciaResidenza"));
-        comuneResidenza.setCellValueFactory(new PropertyValueFactory<Paziente, String>("comuneResidenza"));
-        notePaziente.setCellValueFactory(new PropertyValueFactory<Paziente, String>("notePaziente"));
+        Id.setCellValueFactory(new PropertyValueFactory<Alert, Integer>("Id"));
+        idPaziente.setCellValueFactory(new PropertyValueFactory<Alert, Integer>("idPaziente"));
+        idRilevazione.setCellValueFactory(new PropertyValueFactory<Alert, Integer>("idRilevazione"));
+        tipoAlert.setCellValueFactory(new PropertyValueFactory<Alert, String>("tipoAlert"));
+        timestamp.setCellValueFactory(new PropertyValueFactory<Alert, Timestamp>("timestamp"));
+        letto.setCellValueFactory(new PropertyValueFactory<Alert, Boolean>("letto"));
 
         MedicoDAO medicoDAO = MedicoDAO.getInstance();
         medicoDAO.getUser(ViewNavigator.getAuthenticatedUser());
-        Paziente[] pazienti = medicoDAO.getPazientiFromDB(ViewNavigator.getAuthenticatedUser());
+        Alert[] alerts = medicoDAO.getAlertPazientiCurati();
 
-        ObservableList<Paziente> users = FXCollections.observableArrayList(pazienti);
+        ObservableList<Alert> alert = FXCollections.observableArrayList(alerts);
 
-        tableView.setItems(users);
-        */
+        tableView.setItems(alert);
     }
 
     @FXML
