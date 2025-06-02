@@ -4,6 +4,7 @@ import com.progettoingegneriasw.model.Paziente.Paziente;
 import com.progettoingegneriasw.model.Paziente.PazienteUser;
 import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.model.Utils.*;
+import com.progettoingegneriasw.view.ViewNavigator;
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -520,5 +521,87 @@ public class MedicoDAO extends UserDAO {
     }
 
     // todo: getAlerts() (all and by username) discriminando per tipo di alert (glicemia o farmacoNonAssuntoDa3Giorni)
+
+    public Alert[] getAlert() throws SQLException {
+        ArrayList<Alert> alerts = new ArrayList<>();
+
+        String query =  "SELECT a.id, a.id_paziente, a.id_rilevazione, a.tipo_alert, a.data_alert, a.letto " +
+                        "FROM alert a ";
+
+        super.getConnection().executeQuery(
+                query,
+                rs -> {
+                    while (rs.next()) {
+                        alerts.add(new Alert(
+                                rs.getInt("id"),
+                                rs.getInt("id_paziente"),
+                                rs.getInt("id_rilevazione"),
+                                AlertType.fromString(rs.getString("tipo_alert")),
+                                rs.getTimestamp("data_alert"),
+                                rs.getBoolean("letto")
+                        ));
+                    }
+                    return null;
+                });
+
+        return alerts.toArray(new Alert[0]);
+    }
+
+    public Alert[] getAlertPazientiCurati() throws SQLException {
+        ArrayList<Alert> alerts = new ArrayList<>();
+
+        String query =  "SELECT a.id, a.id_paziente, a.id_rilevazione, a.tipo_alert, a.data_alert, a.letto " +
+                        "FROM alert a " +
+                        "INNER JOIN paziente p ON p.id = a.id_paziente " +
+                        "WHERE p.id_diabetologo = ?";
+
+        super.getConnection().executeQuery(
+                query,
+                rs -> {
+                    while (rs.next()) {
+                        alerts.add(new Alert(
+                                rs.getInt("id"),
+                                rs.getInt("id_paziente"),
+                                rs.getInt("id_rilevazione"),
+                                AlertType.fromString(rs.getString("tipo_alert")),
+                                rs.getTimestamp("data_alert"),
+                                rs.getBoolean("letto")
+                        ));
+                    }
+                    return null;
+                },
+                getIdFromDB(ViewNavigator.getAuthenticatedUser())
+        );
+
+        return alerts.toArray(new Alert[0]);
+    }
+
+    public Alert[] getAlertPaziente(String usernamePaziente) throws SQLException{
+        ArrayList<Alert> alerts = new ArrayList<>();
+
+        String query =  "SELECT * " +
+                        "FROM alert a " +
+                        "WHERE a.id_paziente = ?";
+
+        super.getConnection().executeQuery(
+                query,
+                rs -> {
+                    while (rs.next()) {
+                        alerts.add(new Alert(
+                                rs.getInt("id"),
+                                rs.getInt("id_paziente"),
+                                rs.getInt("id_rilevazione"),
+                                AlertType.fromString(rs.getString("tipo_alert")),
+                                rs.getTimestamp("data_alert"),
+                                rs.getBoolean("letto")
+                        ));
+                    }
+                    return null;
+                },
+                usernamePaziente.isEmpty() ? null : getIdFromDB(usernamePaziente)
+        );
+
+        return alerts.toArray(new Alert[0]);
+    }
 
 }

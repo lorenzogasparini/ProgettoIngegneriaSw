@@ -74,6 +74,7 @@ public class Main extends Application {
         testAdmin();
         testMedico();
         testPaziente();
+        testAlerts();
 
 
     }
@@ -270,6 +271,25 @@ public class Main extends Application {
         medicoDAO.setTerapiaPaziente(new Terapia(
                         new Farmaco(1,"012345678", "Metformina"), 2, 40.0, "dopo i pasti"),
                 "lucia.verdi", new Patologia(4));
+
+    }
+
+    private static void testAlerts() throws SQLException {
+        System.out.println("\n\n\n -- TEST ALERTS -- \n");
+
+        // Ottieni la lista di alerts di un paziente specifico
+        System.out.println("Lista degli alerts di mario.rossi");
+        Alert[] alerts = medicoDAO.getAlertPaziente("mario.rossi");
+        for(Alert al: alerts){
+            System.out.println("Alert: " + al);
+        }
+
+        // Ottieni la lista di alerts di tutti i pazienti
+        System.out.println("\n\nLista degli alerts generale");
+        Alert[] alerts2 = medicoDAO.getAlert();
+        for(Alert al: alerts2){
+            System.out.println("Alert: " + al);
+        }
 
     }
 
