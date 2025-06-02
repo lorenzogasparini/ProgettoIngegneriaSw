@@ -106,8 +106,7 @@ _Per ulteriori informazioni rispetto l'utilizzo del sistema software consultare 
 <!-- ROADMAP -->
 ## Roadmap
 
-- [x] Progettazione
-- [x] Documentazione fase di progettazione
+- [x] Progettazione e documentazione della fase di progettazione
 - [ ] Fase di sviluppo
 - [ ] Documentazione fase di sviluppo
 - [ ] Testing
