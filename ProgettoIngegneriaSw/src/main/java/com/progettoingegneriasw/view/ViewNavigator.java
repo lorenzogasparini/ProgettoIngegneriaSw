@@ -116,9 +116,12 @@ public class ViewNavigator {
     /**
      * Navigate to the medicine-taking handling view
      */
-    public static void navigateToHandleRilevazioniFarmaci() {
-        loadView("RilevazioniFarmaciHandlingView.fxml");
-    }
+    public static void navigateToHandleRilevazioniFarmaci() {loadView("RilevazioniFarmaciHandlingView.fxml");}
+
+    /**
+     * Navigate to the user contact view
+     */
+    public static void navigateToContattaUtente(){loadView("ContattaUtenteView.fxml");}
 
     /**
      * Navigate to the symptoms detection handling view

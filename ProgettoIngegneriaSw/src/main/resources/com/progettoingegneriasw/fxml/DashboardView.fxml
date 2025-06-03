@@ -36,10 +36,10 @@
                </padding>
             </VBox>
 
-            <!-- VBox Attività recenti -->
-            <VBox styleClass="card" HBox.hgrow="ALWAYS" fx:id="pannelloAttivitaRecenti">
+            <!-- VBox Contatta utente -->
+            <VBox styleClass="card" HBox.hgrow="ALWAYS" fx:id="pannelloContattaUtente">
                <children>
-                  <Label styleClass="card-header" text="Recent Activity" />
+                  <Label styleClass="card-header" text="Contatta utente" />
                   <Label text="Visualizzazione utenti paziente e utenti medico (ANALIZZA COMMENTO IN FXML)" wrapText="true">
 
                      <!-- Visualizzazione utenti paziente (con informazione rispetto al medico curante) e utenti medico e rispettivi contatti, con la possibilità di contattare gli
@@ -49,7 +49,7 @@
                         <Insets bottom="10.0" top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <Button mnemonicParsing="false" text="View All" />
+                  <Button mnemonicParsing="false" text="Visualizza" onMouseClicked="#handleContattaUtente" />
                </children>
                <padding>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />

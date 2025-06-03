@@ -12,6 +12,9 @@ import com.progettoingegneriasw.model.Paziente.PazienteUser;
 import com.progettoingegneriasw.model.Utils.Farmaco;
 import com.progettoingegneriasw.model.Utils.Log;
 
+import java.sql.Date;
+import java.util.ArrayList;
+
 public class UserDAO { // todo: è corretto rendere questa classe abstract???
     private final DatabaseManager dbManager;
     private static UserDAO instance;
@@ -320,6 +323,48 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                 log.getAzione(),
                 log.getTimestamp().toString()
         );
+    }
+
+    //  TODO: da modificare con la aggiunta della informazione della email come campo di User generico
+    /**
+     *
+     * @return Tutti gli utenti del sistema: medici e pazienti
+     */
+    public User[] getAllUsers(){
+        ArrayList<User> users = new ArrayList<>();
+        dbManager.executeQuery(
+                "SELECT * FROM paziente",
+                rs -> {
+                    while (rs.next()) {
+                        users.add(new User(
+                                        rs.getInt("id"),
+                                        rs.getString("username"),
+                                        rs.getString("password"),
+                                        rs.getString("nome"),
+                                        rs.getString("cognome")
+                                )
+                        );
+                    }
+                    return null;
+                }
+        );
+        dbManager.executeQuery(
+                "SELECT * FROM diabetologo",
+                rs -> {
+                    while (rs.next()) {
+                        users.add(new User(
+                                        rs.getInt("id"),
+                                        rs.getString("username"),
+                                        rs.getString("password"),
+                                        rs.getString("nome"),
+                                        rs.getString("cognome")
+                                )
+                        );
+                    }
+                    return null;
+                }
+        );
+        return users.toArray(new User[users.size()]);
     }
 
     public Farmaco getFaracoFromId(Integer idFarmaco){

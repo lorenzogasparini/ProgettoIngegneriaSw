@@ -56,6 +56,11 @@ public class DashboardController {
     }
 
     @FXML
+    private void handleContattaUtente() {
+        ViewNavigator.navigateToContattaUtente();
+    }
+
+    @FXML
     private void handleGestioneRilevazioni() {
         ViewNavigator.navigateToStats();
     }
