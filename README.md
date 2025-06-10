@@ -6,13 +6,14 @@
 [![Unlicense License][license-shield]][license-url]
 ![java-shield]
 
+[Funzioni da implementare](https://gist.github.com/AndreaPellizzari/7df0bee0c5017cf846bf2cb3f5d8702c)
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
   <h1 align="center">Progetto ingegneria del software</h1>
 
   <p align="center">
-    Elaborato conclusivo del corso di Ingegneria del Software: Servizio clinico per la gestione di pazienti diabetici
+    Elaborato conclusivo del corso di Ingegneria del Software: Servizio clinico per la gestione di pazienti diabetici.
     <br />
     <br />
     <a href="https://github.com/lorenzogasparini/ProgettoIngegneriaSw/tree/main/doc"><strong>Explore the docs »</strong></a>
