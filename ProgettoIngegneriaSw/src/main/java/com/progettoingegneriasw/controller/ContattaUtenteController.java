@@ -28,14 +28,13 @@ public class ContattaUtenteController {
     @FXML private TableColumn<User, String> username;
     @FXML private TableColumn<User, String> nome;
     @FXML private TableColumn<User, String> cognome;
-    //  @FXML private TableColumn<User, String> email;
+    @FXML private TableColumn<User, String> email;
 
     public void initialize() throws SQLException {
         username.setCellValueFactory(new PropertyValueFactory<User, String>("username"));
         nome.setCellValueFactory(new PropertyValueFactory<User, String>("nome"));
         cognome.setCellValueFactory(new PropertyValueFactory<User, String>("cognome"));
-        //  email.setCellValueFactory(new PropertyValueFactory<User, String>("email"));
-        //  TODO: aggiornare il tipo User al fine di aggiungere il campo email
+        email.setCellValueFactory(new PropertyValueFactory<User, String>("email"));
 
         UserDAO userDAO = UserDAO.getInstance();
         userDAO.getUser(ViewNavigator.getAuthenticatedUser());

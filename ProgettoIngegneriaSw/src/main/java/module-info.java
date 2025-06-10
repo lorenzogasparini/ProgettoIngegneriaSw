@@ -12,6 +12,7 @@ module com.example.progettoingegneriasw {
 
     opens com.progettoingegneriasw.model.Paziente to javafx.base;
     opens com.progettoingegneriasw.model.Utils to javafx.base;
+    opens com.progettoingegneriasw.model.Medico to javafx.base;
 
     exports com.progettoingegneriasw;
     exports com.progettoingegneriasw.controller;

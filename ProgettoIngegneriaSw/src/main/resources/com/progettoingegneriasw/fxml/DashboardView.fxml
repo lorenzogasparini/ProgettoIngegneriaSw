@@ -91,6 +91,22 @@
                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
             </padding>
          </VBox>
+
+         <VBox styleClass="card" HBox.hgrow="ALWAYS" fx:id="pannelloContattaMedico">
+            <children>
+               <Label styleClass="card-header" text="Contatta Medico" />
+               <Label text="Visualizzazione utenti medico e rispettivi contatti." wrapText="true">
+
+                  <VBox.margin>
+                     <Insets bottom="10.0" top="10.0" />
+                  </VBox.margin>
+               </Label>
+               <Button mnemonicParsing="false" text="Visualizza" onMouseClicked="#handleContattaUtente" />
+            </children>
+            <padding>
+               <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+            </padding>
+         </VBox>
       </HBox>
 
       <!--

@@ -11,6 +11,7 @@ import com.progettoingegneriasw.model.Paziente.PazienteDAO;
 import com.progettoingegneriasw.model.Paziente.PazienteUser;
 import com.progettoingegneriasw.model.Utils.Farmaco;
 import com.progettoingegneriasw.model.Utils.Log;
+import com.progettoingegneriasw.view.ViewNavigator;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
     }
 
     // todo: capire quando chiamare questo metodo (probabilmente dopo che l'utente si logga) e metterlo private finiti i test
+    //  forse non è necessario
     public void refreshLoggedUser(User currUser){
         loggedUser = currUser;
     }
@@ -325,39 +327,49 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
         );
     }
 
-    //  TODO: da modificare con la aggiunta della informazione della email come campo di User generico
     /**
      *
      * @return Tutti gli utenti del sistema: medici e pazienti
      */
     public User[] getAllUsers(){
         ArrayList<User> users = new ArrayList<>();
-        dbManager.executeQuery(
-                "SELECT * FROM paziente",
-                rs -> {
-                    while (rs.next()) {
-                        users.add(new User(
-                                        rs.getInt("id"),
-                                        rs.getString("username"),
-                                        rs.getString("password"),
-                                        rs.getString("nome"),
-                                        rs.getString("cognome")
-                                )
-                        );
+
+        if(getUser(ViewNavigator.getAuthenticatedUser()).isMedico()){
+            dbManager.executeQuery(
+                    "SELECT * FROM paziente",
+                    rs -> {
+                        while (rs.next()) {
+                            users.add(new PazienteUser(
+                                            rs.getInt("id"),
+                                            rs.getString("username"),
+                                            rs.getString("password"),
+                                            rs.getString("nome"),
+                                            rs.getString("cognome"),
+                                            rs.getString("email"),
+                                            rs.getInt("id_diabetologo"),
+                                            Date.valueOf(rs.getString("data_nascita")),
+                                            rs.getDouble("peso"),
+                                            rs.getString("provincia_residenza"),
+                                            rs.getString("comune_residenza"),
+                                            rs.getString("note_paziente")
+                                    )
+                            );
+                        }
+                        return null;
                     }
-                    return null;
-                }
-        );
+            );
+        }
         dbManager.executeQuery(
                 "SELECT * FROM diabetologo",
                 rs -> {
                     while (rs.next()) {
-                        users.add(new User(
+                        users.add(new MedicoUser(
                                         rs.getInt("id"),
                                         rs.getString("username"),
                                         rs.getString("password"),
                                         rs.getString("nome"),
-                                        rs.getString("cognome")
+                                        rs.getString("cognome"),
+                                        rs.getString("email")
                                 )
                         );
                     }

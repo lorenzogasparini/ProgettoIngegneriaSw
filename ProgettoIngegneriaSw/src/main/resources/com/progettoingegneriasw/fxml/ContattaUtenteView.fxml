@@ -34,7 +34,6 @@
                         </children>
 
                         <!-- Da inserire come lista sulla quale il click permette di aprire la comunicazione con lo stesso contatto -->
-                        <!--  TODO: aggiornare il tipo User al fine di aggiungere il campo email -->
 
                         <TableView fx:id="tableView" VBox.vgrow="ALWAYS" >
                             <columns>
