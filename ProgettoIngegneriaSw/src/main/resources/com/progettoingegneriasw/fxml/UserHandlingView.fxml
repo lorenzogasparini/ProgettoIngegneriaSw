@@ -70,7 +70,7 @@
                         </children>
 
                         <!-- Gestire correttamente onMouseClicked -->
-                        <TableView fx:id="tableViewTerapie" VBox.vgrow="ALWAYS" onMouseClicked="#handleTerapia" >
+                        <TableView fx:id="tableViewTerapie" VBox.vgrow="ALWAYS" onMouseClicked="#handleTerapie" >
                             <columns>
                                 <TableColumn prefWidth="100.0" text="Dosi giornaliere" fx:id="dosiGiornaliere" />
                                 <TableColumn prefWidth="100.0" text="Quantità per dose" fx:id="quantitaPerDose" />

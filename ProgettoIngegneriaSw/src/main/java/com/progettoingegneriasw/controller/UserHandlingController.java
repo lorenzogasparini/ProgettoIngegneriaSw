@@ -111,9 +111,8 @@ public class UserHandlingController {
     }
 
     @FXML
-    private void handleTerapia() {
-        TestController.selectedUser = null;
-        ViewNavigator.navigateToDashboard();
+    private void handleTerapie() {
+        ViewNavigator.navigateToTerapieHandling();
     }
 
     @FXML

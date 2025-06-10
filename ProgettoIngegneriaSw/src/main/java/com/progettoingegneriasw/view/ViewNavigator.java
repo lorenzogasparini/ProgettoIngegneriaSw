@@ -145,6 +145,11 @@ public class ViewNavigator {
     }
 
     /**
+     * Navigate to the
+     */
+    public static void navigateToTerapieHandling(){loadView("TerapieHandlingView.fxml");}
+
+    /**
      * Set the authenticated user and the user role
      * @param username The username of the authenticated user
      */
