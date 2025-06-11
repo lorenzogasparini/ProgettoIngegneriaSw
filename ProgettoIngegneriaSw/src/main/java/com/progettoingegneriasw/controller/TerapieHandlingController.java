@@ -54,17 +54,17 @@ public class TerapieHandlingController {
     private void handleTerapiaUpdate() {
         tableViewTerapie.setOnMouseClicked(event -> {
             // Per  la riga cliccata:
-            Terapia selecteTerapia = tableViewTerapie.getSelectionModel().getSelectedItem();
-            if (selecteTerapia != null) {
+            Terapia selectedTerapia = tableViewTerapie.getSelectionModel().getSelectedItem();
+            if (selectedTerapia != null) {
                 VBoxUpdate.setVisible(true);
                 VBoxUpdate.setManaged(true);
                 VBoxDosiGiornaliere.setVisible(true);
                 VBoxQuantitaPerDose.setVisible(true);
                 VBoxNote.setVisible(true);
 
-                dosiGiornaliereUpdate.setText(selecteTerapia.getDosiGiornaliere().toString());
-                quantitaPerDoseUpdate.setText(selecteTerapia.getQuantitaPerDose().toString());
-                noteUpdate.setText(selecteTerapia.getNote());
+                dosiGiornaliereUpdate.setText(selectedTerapia.getDosiGiornaliere().toString());
+                quantitaPerDoseUpdate.setText(selectedTerapia.getQuantitaPerDose().toString());
+                noteUpdate.setText(selectedTerapia.getNote());
             }
         });
     }

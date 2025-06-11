@@ -396,6 +396,39 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
         );
     }
 
+    private static String uriEncode(String s) {
+        return s.replace(" ", "%20").replace("\n", "%0A").replace("\r", "%0D");
+    }
+
+    /**
+     * Funzione per gestire l'apertura dell'app di mailing di default del dispositivo, utilizzata nelle riespettive
+     * view di contatto utente di paziente e medico. per impostarla su Linux:
+     * Impostazioni > Applicazioni > App. predefinite > Email e selezionare dal menu a tendina (consigliata Tunderbird)
+     */
+    public void contattaDiabetologo(String destinatario, String oggetto, String corpo) {
+        String mailto = String.format(
+                "mailto:%s?subject=%s&body=%s",
+                uriEncode(destinatario),
+                uriEncode(oggetto),
+                uriEncode(corpo)
+        );
+
+        try {
+            String os = System.getProperty("os.name").toLowerCase();
+            if (os.contains("win")) {
+                Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + mailto);
+            } else if (os.contains("mac")) {
+                Runtime.getRuntime().exec("open " + mailto);
+            } else if (os.contains("nix") || os.contains("nux")) {
+                Runtime.getRuntime().exec("xdg-open " + mailto);
+            } else {
+                throw new UnsupportedOperationException("Sistema operativo non supportato.");
+            }
+        } catch (Exception e) {
+            System.err.println("Errore apertura email: " + e.getMessage());
+        }
+    }
+
     // todo: method to get alerts
     //public ArrayList<Alert> getAllAlerts() // todo: da ridefinire in PazienteDAO perché deve prendere solo gli alert con
 }

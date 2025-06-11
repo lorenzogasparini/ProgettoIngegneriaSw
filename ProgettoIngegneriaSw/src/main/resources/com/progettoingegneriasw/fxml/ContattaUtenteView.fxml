@@ -35,7 +35,7 @@
 
                         <!-- Da inserire come lista sulla quale il click permette di aprire la comunicazione con lo stesso contatto -->
 
-                        <TableView fx:id="tableView" VBox.vgrow="ALWAYS" >
+                        <TableView fx:id="tableView" VBox.vgrow="ALWAYS" onMouseClicked="#setupComunication" >
                             <columns>
                                 <TableColumn prefWidth="100.0" text="Username" fx:id="username" />
                                 <TableColumn prefWidth="100.0" text="Nome" fx:id="nome" />
@@ -49,6 +49,73 @@
                         </padding>
                     </VBox>
 
+                </VBox>
+
+                <VBox alignment="CENTER" HBox.hgrow="ALWAYS" prefHeight="600" prefWidth="300" styleClass="card, container" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:id="VBoxContatta" visible="false" managed="false">
+                    <children>
+                        <Label text="Contatta utente" textAlignment="CENTER">
+                            <font>
+                                <Font name="System Bold" size="24.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets bottom="20.0" />
+                            </VBox.margin>
+                        </Label>
+
+                        <!-- Da utilizzare opportunamente in caso di necessità di comunicazione di scorretto inserimento
+                        di info della terapia-->
+                        <Label fx:id="statusLabel" styleClass="alert-danger" text="Status message goes here"
+                               wrapText="true" visible="false" managed="true">
+                            <VBox.margin>
+                                <Insets bottom="10.0" />
+                            </VBox.margin>
+                        </Label>
+
+                        <VBox spacing="10.0" visible="false" fx:id="VBoxDestinatario">
+                            <children>
+                                <Label styleClass="form-label" text="Email destinatario" />
+                                <TextField fx:id="emailDestinatario" promptText="Inserisci email destinatario" styleClass="form-control" />
+                            </children>
+                            <VBox.margin>
+                                <Insets bottom="10.0" />
+                            </VBox.margin>
+                        </VBox>
+
+                        <VBox spacing="10.0" visible="false" fx:id="VBoxOggetto">
+                            <children>
+                                <Label styleClass="form-label" text="Oggetto" />
+                                <TextField fx:id="emailOggetto" promptText="Inserisci l'oggetto per la email" styleClass="form-control" />
+                            </children>
+                            <VBox.margin>
+                                <Insets bottom="20.0" />
+                            </VBox.margin>
+                        </VBox>
+
+                        <VBox spacing="10.0" visible="false" fx:id="VBoxCorpo">
+                            <children>
+                                <Label styleClass="form-label" text="Corpo" />
+                                <TextArea fx:id="emailCorpo" promptText="Inserisci corpo email" prefHeight="100" styleClass="form-control" />
+                            </children>
+                            <VBox.margin>
+                                <Insets bottom="20.0" />
+                            </VBox.margin>
+                        </VBox>
+
+                        <!--
+                        Inserire ulteriori componenti per la modifica del farmaco della terapia, magari con un menu a
+                        tendina che indichi tutti i farmaci disponibili e che permetta una volta selenzionato quello da inserire
+                        di valorizzare opportunamente il campo id, per effettuare laupdate in maniera coerente con il db
+                        -->
+
+                        <Button defaultButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" fx:id="contactButton" onAction="#handleComunication" text="Contatta">
+                            <VBox.margin>
+                                <Insets bottom="10.0" />
+                            </VBox.margin>
+                        </Button>
+                    </children>
+                    <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                    </padding>
                 </VBox>
             </HBox>
         </center>
