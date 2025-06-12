@@ -62,7 +62,7 @@ public class DashboardController {
 
     @FXML
     private void handleGestioneRilevazioni() {
-        ViewNavigator.navigateToStats();
+        ViewNavigator.navigateToRilevazioniHandling();
     }
 
     @FXML

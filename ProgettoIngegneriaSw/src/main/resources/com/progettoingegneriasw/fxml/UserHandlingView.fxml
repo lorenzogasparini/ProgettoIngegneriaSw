@@ -69,7 +69,6 @@
                             </Label>
                         </children>
 
-                        <!-- Gestire correttamente onMouseClicked -->
                         <TableView fx:id="tableViewTerapie" VBox.vgrow="ALWAYS" onMouseClicked="#handleTerapie" >
                             <columns>
                                 <TableColumn prefWidth="100.0" text="Dosi giornaliere" fx:id="dosiGiornaliere" />
@@ -86,7 +85,6 @@
                     </VBox>
 
                 </VBox>
-
 
                 <VBox alignment="CENTER" HBox.hgrow="ALWAYS" prefHeight="600" prefWidth="300" styleClass="card, container" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
                     <children>

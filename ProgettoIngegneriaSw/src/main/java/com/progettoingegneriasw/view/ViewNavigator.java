@@ -145,9 +145,14 @@ public class ViewNavigator {
     }
 
     /**
-     * Navigate to the
+     * Navigate to the terapie handling view
      */
     public static void navigateToTerapieHandling(){loadView("TerapieHandlingView.fxml");}
+
+    /**
+     * Navigate to the paziente user's rilevazioni handling view
+     */
+    public static void navigateToRilevazioniHandling(){loadView("RilevazioniHandlingView.fxml");}
 
     /**
      * Set the authenticated user and the user role

@@ -76,7 +76,6 @@
       </HBox>
 
       <HBox spacing="20.0" alignment="CENTER" fx:id="handlingPanelPaziente">
-         <!-- VBox inserisci rilevazione -->
          <VBox styleClass="card" HBox.hgrow="ALWAYS" fx:id="pannelloGestisciRilevazioni">
             <children>
                <Label styleClass="card-header" text="Gestione rilevazioni" />
