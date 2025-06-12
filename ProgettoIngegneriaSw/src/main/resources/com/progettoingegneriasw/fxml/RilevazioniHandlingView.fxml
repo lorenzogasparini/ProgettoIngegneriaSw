@@ -10,6 +10,7 @@
 <?import javafx.scene.shape.Rectangle?>
 
 <?import javafx.scene.text.Font?>
+<?import javafx.collections.FXCollections?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.progettoingegneriasw.controller.RilevazioniHandlingController">
     <BorderPane xmlns="http://javafx.com/javafx/17" VBox.vgrow="ALWAYS" xmlns:fx="http://javafx.com/fxml/1">
         <center>
@@ -87,7 +88,19 @@
                             </VBox.margin>
                         </Label>
 
-                        <!--
+                        <ComboBox fx:id="comboBox" onAction="#onComboBoxChanged">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="Rilevazione glicemia" />
+                                    <String fx:value="Rilevazione assunzione farmaco" />
+                                    <String fx:value="Rilevazione sintomo" />
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+
+                        <!-- Da gestire con i campi corretti delle rispettive rilevazioni, permettere l'inserimento sulla base
+                        della scelta nella comboBox definita
+
                         <VBox spacing="10.0" visible="false" fx:id="VBoxDosiGiornaliere">
                             <children>
                                 <Label styleClass="form-label" text="Dosi Giornaliere" />
