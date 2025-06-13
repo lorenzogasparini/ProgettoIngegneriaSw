@@ -106,6 +106,8 @@ public class ViewNavigator {
         }
     }
 
+    public static void navigateToTerapie() {loadView("TerapieView.fxml");}
+
     /**
      * Navigate to the user handling view
      */

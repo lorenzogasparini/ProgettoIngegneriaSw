@@ -84,7 +84,22 @@
                      <Insets bottom="10.0" top="10.0" />
                   </VBox.margin>
                </Label>
-               <Button mnemonicParsing="false" text="Dettagli" fx:id="gestioneRilevazioni" onAction="#handleGestioneRilevazioni" />
+               <Button mnemonicParsing="false" text="Rilevazioni" fx:id="gestioneRilevazioni" onAction="#handleGestioneRilevazioni" />
+            </children>
+            <padding>
+               <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+            </padding>
+         </VBox>
+
+         <VBox styleClass="card" HBox.hgrow="ALWAYS" fx:id="pannelloGestioneTerapie">
+            <children>
+               <Label styleClass="card-header" text="Gestione terapie" />
+               <Label text="Gestisci le terapie assegnate dai medici del sistema." wrapText="true">
+                  <VBox.margin>
+                     <Insets bottom="10.0" top="10.0" />
+                  </VBox.margin>
+               </Label>
+               <Button mnemonicParsing="false" text="Terapie" fx:id="gestioneTerapie" onAction="#handleGestioneTerapie" />
             </children>
             <padding>
                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />

@@ -19,6 +19,9 @@ public class DashboardController {
     @FXML
     private HBox handlingPanelMedico;
 
+    @FXML
+    private Button gestioneTerapie;
+
     private UserDAO userDAO;
     
     @FXML
@@ -64,6 +67,9 @@ public class DashboardController {
     private void handleGestioneRilevazioni() {
         ViewNavigator.navigateToRilevazioniHandling();
     }
+
+    @FXML
+    private void handleGestioneTerapie() {ViewNavigator.navigateToTerapie();}
 
     @FXML
     private void handleViewProfile() {
