@@ -1,6 +1,7 @@
 package com.progettoingegneriasw.controller;
 
 import com.progettoingegneriasw.model.Medico.MedicoDAO;
+import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.model.Utils.RilevazioneFarmaco;
 import com.progettoingegneriasw.model.Utils.RilevazioneGlicemia;
 import com.progettoingegneriasw.model.Utils.RilevazioneSintomo;
@@ -10,10 +11,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 
@@ -40,18 +38,27 @@ public class RilevazioniHandlingController {
     @FXML private TableColumn<RilevazioneSintomo, String> sintomo;
     @FXML private TableColumn<RilevazioneSintomo, Integer> intensita;
 
+    @FXML private ComboBox comboBoxRilevazione;
+
     @FXML private VBox VBoxNuovaRilevazione;
+    @FXML private VBox VBoxIdPaziente;
+    @FXML private TextField idPazienteNuovaRilevazione;
+    @FXML private VBox VBoxTimestamp;
+    @FXML private TextField timestampNuovaRilevazione;
 
-    @FXML private VBox VBoxDosiGiornaliere;
-    @FXML private TextField dosiGiornaliereUpdate;
+    @FXML private VBox VBoxNuovaRilevazioneFarmaco;
+    @FXML private TextField quantitaNuovaRilevazione;
+    @FXML private TextField noteNuovaRilevazione;
 
-    @FXML private VBox VBoxQuantitaPerDose;
-    @FXML private TextField quantitaPerDoseUpdate;
+    @FXML private VBox VBoxNuovaRilevazioneGlicemia;
+    @FXML private TextField valoreNuovaRilevazione;
+    @FXML private TextField primaPastoNuovaRilevazione;
 
-    @FXML private VBox VBoxNote;
-    @FXML private TextField noteUpdate;
+    @FXML private VBox VBoxNuovaRilevazioneSintomo;
+    @FXML private TextField sintomoNuovaRilevazione;
+    @FXML private TextField intensitaNuovaRilevazione;
 
-    @FXML private Button nuovaRilevazioneButton;
+    @FXML private Button inserisciRilevazioneButton;
 
     public void initialize() throws SQLException {
         timestamp.setCellValueFactory(new PropertyValueFactory<RilevazioneFarmaco, Timestamp>("timestamp"));
@@ -84,35 +91,87 @@ public class RilevazioniHandlingController {
         tableViewRilevazioniFarmaci.setItems(rilFarmaci);
         tableViewRilevazioniGlicemia.setItems(rilGlicemia);
         tableViewRilevazioniSintomi.setItems(rilSintomi);
-
-
-
-
-
-
     }
 
     @FXML
     private void onComboBoxChanged() {
         //  gestire il comportamento del menu a tendina e dei campi della pagina di inserimento in maniera dinamica
+        comboBoxRilevazione.setOnAction(e -> {
+            String rilevazioneSelezionata = comboBoxRilevazione.getValue().toString();
+
+            VBoxIdPaziente.setVisible(true);
+            VBoxIdPaziente.setManaged(true);
+            idPazienteNuovaRilevazione.setVisible(true);
+            VBoxTimestamp.setManaged(true);
+            VBoxTimestamp.setVisible(true);
+            timestampNuovaRilevazione.setVisible(true);
+            inserisciRilevazioneButton.setManaged(true);
+            inserisciRilevazioneButton.setVisible(true);
+
+            MedicoDAO medicoDAO = MedicoDAO.getInstance();
+            idPazienteNuovaRilevazione.setText("" + medicoDAO.getIdFromDB(ViewNavigator.getAuthenticatedUser()));
+
+            if(rilevazioneSelezionata.equals("Rilevazione glicemia")){
+                VBoxNuovaRilevazioneFarmaco.setManaged(false);
+                VBoxNuovaRilevazioneFarmaco.setVisible(false);
+                quantitaNuovaRilevazione.setVisible(false);
+                noteNuovaRilevazione.setVisible(false);
+
+                VBoxNuovaRilevazioneGlicemia.setManaged(true);
+                VBoxNuovaRilevazioneGlicemia.setVisible(true);
+                valoreNuovaRilevazione.setVisible(true);
+                primaPastoNuovaRilevazione.setVisible(true);
+
+                VBoxNuovaRilevazioneSintomo.setManaged(false);
+                VBoxNuovaRilevazioneSintomo.setVisible(false);
+                sintomoNuovaRilevazione.setVisible(false);
+                intensitaNuovaRilevazione.setVisible(false);
+            }
+            else if(rilevazioneSelezionata.equals("Rilevazione assunzione farmaco")){
+                VBoxNuovaRilevazioneFarmaco.setManaged(true);
+                VBoxNuovaRilevazioneFarmaco.setVisible(true);
+                quantitaNuovaRilevazione.setVisible(true);
+                noteNuovaRilevazione.setVisible(true);
+
+                VBoxNuovaRilevazioneGlicemia.setManaged(false);
+                VBoxNuovaRilevazioneGlicemia.setVisible(false);
+                valoreNuovaRilevazione.setVisible(false);
+                primaPastoNuovaRilevazione.setVisible(false);
+
+                VBoxNuovaRilevazioneSintomo.setManaged(false);
+                VBoxNuovaRilevazioneSintomo.setVisible(false);
+                sintomoNuovaRilevazione.setVisible(false);
+                intensitaNuovaRilevazione.setVisible(false);
+            }
+            else{
+                VBoxNuovaRilevazioneFarmaco.setManaged(false);
+                VBoxNuovaRilevazioneFarmaco.setVisible(false);
+                quantitaNuovaRilevazione.setVisible(false);
+                noteNuovaRilevazione.setVisible(false);
+
+                VBoxNuovaRilevazioneGlicemia.setManaged(false);
+                VBoxNuovaRilevazioneGlicemia.setVisible(false);
+                valoreNuovaRilevazione.setVisible(false);
+                primaPastoNuovaRilevazione.setVisible(false);
+
+                VBoxNuovaRilevazioneSintomo.setManaged(true);
+                VBoxNuovaRilevazioneSintomo.setVisible(true);
+                sintomoNuovaRilevazione.setVisible(true);
+                intensitaNuovaRilevazione.setVisible(true);
+            }
+        });
     }
 
     @FXML
     private void handleNuovaRilevazione() {
         VBoxNuovaRilevazione.setVisible(true);
         VBoxNuovaRilevazione.setManaged(true);
-        /*
-        VBoxDosiGiornaliere.setVisible(true);
-        VBoxQuantitaPerDose.setVisible(true);
-        VBoxNote.setVisible(true);
-        */
-
-        //  Da gestire
     }
 
     @FXML
     private void handleInserimentoNuovaRilevazione() {
         //  gestire il lancio della query di inserimento della rilevazione sulla base delle info fornite -> Implementare controlli
+
     }
 
     @FXML

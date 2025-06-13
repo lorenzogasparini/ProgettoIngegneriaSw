@@ -88,7 +88,7 @@
                             </VBox.margin>
                         </Label>
 
-                        <ComboBox fx:id="comboBox" onAction="#onComboBoxChanged">
+                        <ComboBox fx:id="comboBoxRilevazione" onAction="#onComboBoxChanged">
                             <items>
                                 <FXCollections fx:factory="observableArrayList">
                                     <String fx:value="Rilevazione glicemia" />
@@ -98,47 +98,67 @@
                             </items>
                         </ComboBox>
 
-                        <!-- Da gestire con i campi corretti delle rispettive rilevazioni, permettere l'inserimento sulla base
-                        della scelta nella comboBox definita
-
-                        <VBox spacing="10.0" visible="false" fx:id="VBoxDosiGiornaliere">
+                        <VBox spacing="10.0" visible="false" fx:id="VBoxIdPaziente" managed="false">
                             <children>
-                                <Label styleClass="form-label" text="Dosi Giornaliere" />
-                                <TextField fx:id="dosiGiornaliereUpdate" promptText="Inserisci dosi giornaliere" styleClass="form-control" />
+                                <Label styleClass="form-label" text="Id paziente" />
+                                <TextField fx:id="idPazienteNuovaRilevazione" promptText="" styleClass="form-control" />
                             </children>
                             <VBox.margin>
                                 <Insets bottom="10.0" />
                             </VBox.margin>
                         </VBox>
 
-                        <VBox spacing="10.0" visible="false" fx:id="VBoxQuantitaPerDose">
+                        <VBox spacing="10.0" visible="false" fx:id="VBoxTimestamp" managed="false">
                             <children>
-                                <Label styleClass="form-label" text="Quantità per dose" />
-                                <TextField fx:id="quantitaPerDoseUpdate" promptText="Inserisci quantità per dose" styleClass="form-control" />
+                                <Label styleClass="form-label" text="Timestamp rilevazione" />
+                                <TextField fx:id="timestampNuovaRilevazione" promptText="Inserisci l'istante della rilevazione" styleClass="form-control" />
                             </children>
                             <VBox.margin>
                                 <Insets bottom="20.0" />
                             </VBox.margin>
                         </VBox>
 
-                        <VBox spacing="10.0" visible="false" fx:id="VBoxNote">
+                        <VBox spacing="10.0" visible="false" fx:id="VBoxNuovaRilevazioneFarmaco" managed="false">
                             <children>
+                                <Label styleClass="form-label" text="Quantità" />
+                                <TextField fx:id="quantitaNuovaRilevazione" promptText="Inserisci la quantità della terapia assunta" styleClass="form-control" />
                                 <Label styleClass="form-label" text="Note" />
-                                <TextField fx:id="noteUpdate" promptText="Inserisci note" styleClass="form-control" />
+                                <TextField fx:id="noteNuovaRilevazione" promptText="Inserisci note" styleClass="form-control" />
                             </children>
                             <VBox.margin>
                                 <Insets bottom="20.0" />
                             </VBox.margin>
                         </VBox>
-                        -->
 
-                        <!-- onAction="#handleUpdate"
-                        <Button defaultButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Inserisci">
+                        <VBox spacing="10.0" visible="false" fx:id="VBoxNuovaRilevazioneGlicemia" managed="false">
+                            <children>
+                                <Label styleClass="form-label" text="Valore glicemico" />
+                                <TextField fx:id="valoreNuovaRilevazione" promptText="Inserisci il valore della glicemia" styleClass="form-control" />
+                                <Label styleClass="form-label" text="Periodo assunzione" />
+                                <TextField fx:id="primaPastoNuovaRilevazione" promptText="La rilevazione è risalente a prima del pasto" styleClass="form-control" />
+                            </children>
+                            <VBox.margin>
+                                <Insets bottom="20.0" />
+                            </VBox.margin>
+                        </VBox>
+
+                        <VBox spacing="10.0" visible="false" fx:id="VBoxNuovaRilevazioneSintomo" managed="false">
+                            <children>
+                                <Label styleClass="form-label" text="Sintomo" />
+                                <TextField fx:id="sintomoNuovaRilevazione" promptText="Inserisci il sintomo" styleClass="form-control" />
+                                <Label styleClass="form-label" text="Intensità" />
+                                <TextField fx:id="intensitaNuovaRilevazione" promptText="Inserire la intensità del sintomo" styleClass="form-control" />
+                            </children>
+                            <VBox.margin>
+                                <Insets bottom="20.0" />
+                            </VBox.margin>
+                        </VBox>
+
+                        <Button defaultButton="true" maxWidth="1.7976931348623157E308" fx:id="inserisciRilevazioneButton" visible="false" managed="false" mnemonicParsing="false" text="Inserisci" onAction="#handleInserimentoNuovaRilevazione">
                             <VBox.margin>
                                 <Insets bottom="10.0" />
                             </VBox.margin>
                         </Button>
-                        -->
                     </children>
                     <padding>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
