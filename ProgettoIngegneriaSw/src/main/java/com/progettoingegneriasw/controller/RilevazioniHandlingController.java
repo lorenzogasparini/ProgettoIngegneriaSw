@@ -1,11 +1,10 @@
 package com.progettoingegneriasw.controller;
 
 import com.progettoingegneriasw.model.Medico.MedicoDAO;
+import com.progettoingegneriasw.model.Paziente.PazienteDAO;
+import com.progettoingegneriasw.model.User;
 import com.progettoingegneriasw.model.UserDAO;
-import com.progettoingegneriasw.model.Utils.RilevazioneFarmaco;
-import com.progettoingegneriasw.model.Utils.RilevazioneGlicemia;
-import com.progettoingegneriasw.model.Utils.RilevazioneSintomo;
-import com.progettoingegneriasw.model.Utils.Terapia;
+import com.progettoingegneriasw.model.Utils.*;
 import com.progettoingegneriasw.view.ViewNavigator;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -17,10 +16,11 @@ import javafx.scene.layout.VBox;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RilevazioniHandlingController {
-    @FXML
-    private TableView<RilevazioneFarmaco> tableViewRilevazioniFarmaci;
+    @FXML private TableView<RilevazioneFarmaco> tableViewRilevazioniFarmaci;
     @FXML private TableColumn<RilevazioneFarmaco, Timestamp> timestamp;
     @FXML private TableColumn<RilevazioneFarmaco, String> codiceAic;
     @FXML private TableColumn<RilevazioneFarmaco, String> nome;
@@ -47,6 +47,7 @@ public class RilevazioniHandlingController {
     @FXML private TextField timestampNuovaRilevazione;
 
     @FXML private VBox VBoxNuovaRilevazioneFarmaco;
+    @FXML private TextField codiceAicNuovaRilevazione;
     @FXML private TextField quantitaNuovaRilevazione;
     @FXML private TextField noteNuovaRilevazione;
 
@@ -59,6 +60,14 @@ public class RilevazioniHandlingController {
     @FXML private TextField intensitaNuovaRilevazione;
 
     @FXML private Button inserisciRilevazioneButton;
+
+    @FXML private Label statusLabel;
+
+    @FXML private ComboBox comboBoxFarmaco;
+
+    private UserDAO userDAO;
+
+    private int idFarmacoSelezionato;
 
     public void initialize() throws SQLException {
         timestamp.setCellValueFactory(new PropertyValueFactory<RilevazioneFarmaco, Timestamp>("timestamp"));
@@ -91,6 +100,15 @@ public class RilevazioniHandlingController {
         tableViewRilevazioniFarmaci.setItems(rilFarmaci);
         tableViewRilevazioniGlicemia.setItems(rilGlicemia);
         tableViewRilevazioniSintomi.setItems(rilSintomi);
+
+        PazienteDAO pazienteDao = PazienteDAO.getInstance();
+
+        Farmaco[] farmaciAssegnati = pazienteDao.getFarmaciPaziente(ViewNavigator.getAuthenticatedUser());
+
+        ObservableList<Farmaco> farmaci = FXCollections.observableArrayList(comboBoxFarmaco.getItems());
+        farmaci.addAll(farmaciAssegnati);
+
+        comboBoxFarmaco.setItems(farmaci);
     }
 
     @FXML
@@ -114,6 +132,7 @@ public class RilevazioniHandlingController {
             if(rilevazioneSelezionata.equals("Rilevazione glicemia")){
                 VBoxNuovaRilevazioneFarmaco.setManaged(false);
                 VBoxNuovaRilevazioneFarmaco.setVisible(false);
+                codiceAicNuovaRilevazione.setVisible(false);
                 quantitaNuovaRilevazione.setVisible(false);
                 noteNuovaRilevazione.setVisible(false);
 
@@ -132,6 +151,7 @@ public class RilevazioniHandlingController {
                 VBoxNuovaRilevazioneFarmaco.setVisible(true);
                 quantitaNuovaRilevazione.setVisible(true);
                 noteNuovaRilevazione.setVisible(true);
+                codiceAicNuovaRilevazione.setVisible(true);
 
                 VBoxNuovaRilevazioneGlicemia.setManaged(false);
                 VBoxNuovaRilevazioneGlicemia.setVisible(false);
@@ -148,6 +168,7 @@ public class RilevazioniHandlingController {
                 VBoxNuovaRilevazioneFarmaco.setVisible(false);
                 quantitaNuovaRilevazione.setVisible(false);
                 noteNuovaRilevazione.setVisible(false);
+                codiceAicNuovaRilevazione.setVisible(true);
 
                 VBoxNuovaRilevazioneGlicemia.setManaged(false);
                 VBoxNuovaRilevazioneGlicemia.setVisible(false);
@@ -172,6 +193,48 @@ public class RilevazioniHandlingController {
     private void handleInserimentoNuovaRilevazione() {
         //  gestire il lancio della query di inserimento della rilevazione sulla base delle info fornite -> Implementare controlli
 
+        if(VBoxNuovaRilevazioneFarmaco.isVisible() && (!idPazienteNuovaRilevazione.getText().equals(null)) && (!timestampNuovaRilevazione.getText().equals(null))) {
+            if (VBoxNuovaRilevazioneFarmaco.isVisible()) {
+                if ((!codiceAicNuovaRilevazione.getText().equals(null)) && (!quantitaNuovaRilevazione.getText().equals(null)) && (!noteNuovaRilevazione.getText().equals(null))) {
+                    if (userDAO.getFarmacoFromAic(codiceAic.getText()) != null) {
+                        //  Query inserimento e controlli --> con farmaco dato dall'id memorizzato nella variabile idFarmacoSelezionato
+                    }
+                    else {
+                        statusLabel.setVisible(true);
+                    }
+                }
+                else {
+                    statusLabel.setVisible(true);
+                }
+
+
+            }
+            else if (VBoxNuovaRilevazioneGlicemia.isVisible()) {
+
+            }
+            else if (VBoxNuovaRilevazioneSintomo.isVisible()) {
+
+            }
+        }
+        else{
+            statusLabel.setVisible(true);
+        }
+    }
+
+    @FXML
+    private void onComboBoxFarmaco() throws SQLException {
+        UserDAO userDao = UserDAO.getInstance();
+        comboBoxFarmaco.setOnAction(e -> {
+            String selezione = comboBoxFarmaco.getValue().toString();
+
+            Pattern pattern = Pattern.compile("id:\\s*(\\d+)");
+            Matcher matcher = pattern.matcher(selezione);
+
+            if (matcher.find()) {
+                int id = Integer.parseInt(matcher.group(1));
+                idFarmacoSelezionato = id;
+            }
+        });
     }
 
     @FXML

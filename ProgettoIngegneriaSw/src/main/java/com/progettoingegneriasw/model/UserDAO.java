@@ -396,6 +396,25 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
         );
     }
 
+    public Farmaco getFarmacoFromAic(String codiceAic){
+        return getConnection().executeQuery(
+                "SELECT f.id, f.codice_aic, f.nome " +
+                    "FROM farmaco f " +
+                    "WHERE f.codice_aic = ?",
+                rs -> {
+                    if (rs.next()) {
+                        return new Farmaco(
+                                rs.getInt("id"),
+                                rs.getString("codice_aic"),
+                                rs.getString("nome")
+                        );
+                    }
+                    return null;
+                },
+                codiceAic
+        );
+    }
+
     private static String uriEncode(String s) {
         return s.replace(" ", "%20").replace("\n", "%0A").replace("\r", "%0D");
     }

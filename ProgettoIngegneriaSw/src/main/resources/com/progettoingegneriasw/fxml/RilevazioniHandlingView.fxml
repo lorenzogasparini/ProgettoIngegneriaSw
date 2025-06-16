@@ -120,6 +120,15 @@
 
                         <VBox spacing="10.0" visible="false" fx:id="VBoxNuovaRilevazioneFarmaco" managed="false">
                             <children>
+                                <Label styleClass="form-label" text="Codice AIC" />
+                                <TextField fx:id="codiceAicNuovaRilevazione" promptText="Inserisci il codice AIC della terapia assunta" styleClass="form-control" />
+                                <ComboBox fx:id="comboBoxFarmaco" onAction="#onComboBoxFarmaco">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="      -- Farmaci --" />
+                                        </FXCollections>
+                                    </items>
+                                </ComboBox>
                                 <Label styleClass="form-label" text="Quantità" />
                                 <TextField fx:id="quantitaNuovaRilevazione" promptText="Inserisci la quantità della terapia assunta" styleClass="form-control" />
                                 <Label styleClass="form-label" text="Note" />
