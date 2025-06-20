@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -53,7 +54,6 @@ public class RilevazioniHandlingController {
 
     @FXML private VBox VBoxNuovaRilevazioneGlicemia;
     @FXML private TextField valoreNuovaRilevazione;
-    @FXML private TextField primaPastoNuovaRilevazione;
 
     @FXML private VBox VBoxNuovaRilevazioneSintomo;
     @FXML private TextField sintomoNuovaRilevazione;
@@ -65,9 +65,13 @@ public class RilevazioniHandlingController {
 
     @FXML private ComboBox comboBoxFarmaco;
 
-    private UserDAO userDAO;
+    private UserDAO userDAO = UserDAO.getInstance();
+    private PazienteDAO pazienteDAO = PazienteDAO.getInstance();
 
     private int idFarmacoSelezionato;
+    private String primaPastoSelezionato;
+
+    @FXML private ComboBox comboBoxPrimaPasto;
 
     public void initialize() throws SQLException {
         timestamp.setCellValueFactory(new PropertyValueFactory<RilevazioneFarmaco, Timestamp>("timestamp"));
@@ -120,6 +124,7 @@ public class RilevazioniHandlingController {
             VBoxIdPaziente.setVisible(true);
             VBoxIdPaziente.setManaged(true);
             idPazienteNuovaRilevazione.setVisible(true);
+            idPazienteNuovaRilevazione.setEditable(false);
             VBoxTimestamp.setManaged(true);
             VBoxTimestamp.setVisible(true);
             timestampNuovaRilevazione.setVisible(true);
@@ -139,7 +144,6 @@ public class RilevazioniHandlingController {
                 VBoxNuovaRilevazioneGlicemia.setManaged(true);
                 VBoxNuovaRilevazioneGlicemia.setVisible(true);
                 valoreNuovaRilevazione.setVisible(true);
-                primaPastoNuovaRilevazione.setVisible(true);
 
                 VBoxNuovaRilevazioneSintomo.setManaged(false);
                 VBoxNuovaRilevazioneSintomo.setVisible(false);
@@ -156,7 +160,6 @@ public class RilevazioniHandlingController {
                 VBoxNuovaRilevazioneGlicemia.setManaged(false);
                 VBoxNuovaRilevazioneGlicemia.setVisible(false);
                 valoreNuovaRilevazione.setVisible(false);
-                primaPastoNuovaRilevazione.setVisible(false);
 
                 VBoxNuovaRilevazioneSintomo.setManaged(false);
                 VBoxNuovaRilevazioneSintomo.setVisible(false);
@@ -173,7 +176,6 @@ public class RilevazioniHandlingController {
                 VBoxNuovaRilevazioneGlicemia.setManaged(false);
                 VBoxNuovaRilevazioneGlicemia.setVisible(false);
                 valoreNuovaRilevazione.setVisible(false);
-                primaPastoNuovaRilevazione.setVisible(false);
 
                 VBoxNuovaRilevazioneSintomo.setManaged(true);
                 VBoxNuovaRilevazioneSintomo.setVisible(true);
@@ -193,30 +195,56 @@ public class RilevazioniHandlingController {
     private void handleInserimentoNuovaRilevazione() {
         //  gestire il lancio della query di inserimento della rilevazione sulla base delle info fornite -> Implementare controlli
 
-        if(VBoxNuovaRilevazioneFarmaco.isVisible() && (!idPazienteNuovaRilevazione.getText().equals(null)) && (!timestampNuovaRilevazione.getText().equals(null))) {
+        if(VBoxNuovaRilevazione.isVisible() && (!idPazienteNuovaRilevazione.getText().equals(null))) {
             if (VBoxNuovaRilevazioneFarmaco.isVisible()) {
                 if ((!codiceAicNuovaRilevazione.getText().equals(null)) && (!quantitaNuovaRilevazione.getText().equals(null)) && (!noteNuovaRilevazione.getText().equals(null))) {
-                    if (userDAO.getFarmacoFromAic(codiceAic.getText()) != null) {
-                        //  Query inserimento e controlli --> con farmaco dato dall'id memorizzato nella variabile idFarmacoSelezionato
+                    if (userDAO.getFarmacoFromAic(codiceAicNuovaRilevazione.getText()) != null) {
+                        RilevazioneFarmaco rilevazioneFarmaco = new RilevazioneFarmaco(Integer.parseInt(idPazienteNuovaRilevazione.getText()), pazienteDAO.getFarmacoFromAic(codiceAicNuovaRilevazione.getText()), Timestamp.from(Instant.now()), Double.parseDouble(quantitaNuovaRilevazione.getText()), noteNuovaRilevazione.getText());
+                        pazienteDAO.setRilevazioneFarmaco(rilevazioneFarmaco);
+                        codiceAicNuovaRilevazione.setText("");
+                        //  Da capire come gestire l'azzeramento con: comboBoxFarmaco.setValue(null);
+                        quantitaNuovaRilevazione.setText("");
+                        noteNuovaRilevazione.setText("");
                     }
                     else {
+                        statusLabel.setText("Inserisci un codice AIC valido.");
                         statusLabel.setVisible(true);
                     }
                 }
                 else {
+                    statusLabel.setText("Informazioni mancanti, completare");
                     statusLabel.setVisible(true);
                 }
-
-
             }
+
             else if (VBoxNuovaRilevazioneGlicemia.isVisible()) {
-
+                if((!valoreNuovaRilevazione.getText().equals(null))) {
+                    RilevazioneGlicemia rilevazioneGlicemia = new RilevazioneGlicemia(Integer.parseInt(idPazienteNuovaRilevazione.getText()), Timestamp.from(Instant.now()), Integer.parseInt(valoreNuovaRilevazione.getText()), primaPastoSelezionato.equals("Vero"));
+                    pazienteDAO.setRilevazioneGlicemia(rilevazioneGlicemia);
+                    valoreNuovaRilevazione.setText("");
+                    primaPastoSelezionato = "";
+                }
+                else {
+                    statusLabel.setText("Informazioni mancanti, completare");
+                    statusLabel.setVisible(true);
+                }
             }
-            else if (VBoxNuovaRilevazioneSintomo.isVisible()) {
 
+            else if (VBoxNuovaRilevazioneSintomo.isVisible()) {
+                if((!sintomoNuovaRilevazione.getText().equals(null)) && (!intensitaNuovaRilevazione.getText().equals(null))) {
+                    RilevazioneSintomo rilevazioneSintomo = new RilevazioneSintomo(Integer.parseInt(idPazienteNuovaRilevazione.getText()), Timestamp.from(Instant.now()), sintomoNuovaRilevazione.getText(), Integer.parseInt(intensitaNuovaRilevazione.getText()));
+                    pazienteDAO.setRilevazioneSintomo(rilevazioneSintomo);
+                    sintomoNuovaRilevazione.setText("");
+                    intensitaNuovaRilevazione.setText("");
+                }
+                else {
+                    statusLabel.setText("Informazioni mancanti, completare");
+                    statusLabel.setVisible(true);
+                }
             }
         }
         else{
+            statusLabel.setText("Informazioni mancanti, completare");
             statusLabel.setVisible(true);
         }
     }
@@ -233,7 +261,17 @@ public class RilevazioniHandlingController {
             if (matcher.find()) {
                 int id = Integer.parseInt(matcher.group(1));
                 idFarmacoSelezionato = id;
+                codiceAicNuovaRilevazione.setText(pazienteDAO.getFaracoFromId(idFarmacoSelezionato).getCodiceAic());
             }
+        });
+    }
+
+    @FXML
+    private void onComboBoxPrimaPasto() {
+        comboBoxPrimaPasto.setOnAction(e -> {
+            String selezione = comboBoxPrimaPasto.getValue().toString();
+
+            primaPastoSelezionato = selezione;
         });
     }
 

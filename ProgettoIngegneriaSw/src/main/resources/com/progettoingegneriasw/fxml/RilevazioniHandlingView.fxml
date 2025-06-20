@@ -144,7 +144,15 @@
                                 <Label styleClass="form-label" text="Valore glicemico" />
                                 <TextField fx:id="valoreNuovaRilevazione" promptText="Inserisci il valore della glicemia" styleClass="form-control" />
                                 <Label styleClass="form-label" text="Periodo assunzione" />
-                                <TextField fx:id="primaPastoNuovaRilevazione" promptText="La rilevazione è risalente a prima del pasto" styleClass="form-control" />
+                                <ComboBox fx:id="comboBoxPrimaPasto" onAction="#onComboBoxPrimaPasto">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="Vero: rilevazione prima del pasto, F: rilevazione dopo il pasto" />
+                                            <String fx:value="Vero" />
+                                            <String fx:value="Falso" />
+                                        </FXCollections>
+                                    </items>
+                                </ComboBox>
                             </children>
                             <VBox.margin>
                                 <Insets bottom="20.0" />

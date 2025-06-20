@@ -219,8 +219,10 @@ public class PazienteDAO extends UserDAO {
         );
     }
 
-
-    /// funzione per l'inserimento in Alert se ci sono dei dati sballati in rilevazione_glicemia --> ok!
+    /**
+     * Funzione per l'inserimento in Alert se ci sono dei dati sballati in rilevazione_glicemia --> ok!
+     * @param alert  parametro che permette di effettuare l'inserimento dell'alert.
+     */
     public void insertAlertGlicemia(Alert alert){
         final String alertType = "glicemia";
 

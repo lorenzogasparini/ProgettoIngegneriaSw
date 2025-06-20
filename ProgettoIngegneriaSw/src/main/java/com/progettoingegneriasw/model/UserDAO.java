@@ -381,7 +381,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
 
     public Farmaco getFaracoFromId(Integer idFarmaco){
         return getConnection().executeQuery(
-                "SELECT id FROM farmaco WHERE id = ?",
+                "SELECT * FROM farmaco WHERE id = ?",
                 rs -> {
                     if (rs.next()) {
                         return new Farmaco(
