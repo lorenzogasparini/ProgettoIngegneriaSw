@@ -74,36 +74,7 @@ public class RilevazioniHandlingController {
     @FXML private ComboBox comboBoxPrimaPasto;
 
     public void initialize() throws SQLException {
-        timestamp.setCellValueFactory(new PropertyValueFactory<RilevazioneFarmaco, Timestamp>("timestamp"));
-        quantita.setCellValueFactory(new PropertyValueFactory<RilevazioneFarmaco, Double>("quantita"));
-        noteRilevazione.setCellValueFactory(new PropertyValueFactory<RilevazioneFarmaco, String>("noteRilevazione"));
-        codiceAic.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getFarmaco().getCodiceAic()));
-        nome.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getFarmaco().getNome()));
-
-        //  timestamp.setCellValueFactory(new PropertyValueFactory<RilevazioneGlicemia, Timestamp>("timestamp"));
-        valore.setCellValueFactory(new PropertyValueFactory<RilevazioneGlicemia, Integer>("valore"));
-        gravita.setCellValueFactory(new PropertyValueFactory<RilevazioneGlicemia, Integer>("gravita"));
-        primaPasto.setCellValueFactory(new PropertyValueFactory<RilevazioneGlicemia, Boolean>("primaPasto"));
-
-        //  timestamp.setCellValueFactory(new PropertyValueFactory<RilevazioneSintomo, Timestamp>("timestamp"));
-        sintomo.setCellValueFactory(new PropertyValueFactory<RilevazioneSintomo, String>("sintomo"));
-        intensita.setCellValueFactory(new PropertyValueFactory<RilevazioneSintomo, Integer>("intensita"));
-
-        MedicoDAO medicoDAO = MedicoDAO.getInstance();
-        medicoDAO.getUser(ViewNavigator.getAuthenticatedUser());
-        RilevazioneFarmaco[] rilevazioniFarmaci = medicoDAO.getRilevazioniFarmaco(ViewNavigator.getAuthenticatedUser());
-        RilevazioneGlicemia[] rilevazioniGlicemia = medicoDAO.getRilevazioniGlicemia(ViewNavigator.getAuthenticatedUser());
-        RilevazioneSintomo[] rilevazioniSintomi = medicoDAO.getRilevazioniSintomo(ViewNavigator.getAuthenticatedUser());
-
-        ObservableList<RilevazioneFarmaco> rilFarmaci = FXCollections.observableArrayList(rilevazioniFarmaci);
-        ObservableList<RilevazioneGlicemia> rilGlicemia = FXCollections.observableArrayList(rilevazioniGlicemia);
-        ObservableList<RilevazioneSintomo> rilSintomi = FXCollections.observableArrayList(rilevazioniSintomi);
-
-        tableViewRilevazioniFarmaci.setItems(rilFarmaci);
-        tableViewRilevazioniGlicemia.setItems(rilGlicemia);
-        tableViewRilevazioniSintomi.setItems(rilSintomi);
+        setup();
 
         PazienteDAO pazienteDao = PazienteDAO.getInstance();
 
@@ -191,8 +162,47 @@ public class RilevazioniHandlingController {
         VBoxNuovaRilevazione.setManaged(true);
     }
 
+    private void setup() throws SQLException {
+        timestamp.setCellValueFactory(new PropertyValueFactory<RilevazioneFarmaco, Timestamp>("timestamp"));
+        quantita.setCellValueFactory(new PropertyValueFactory<RilevazioneFarmaco, Double>("quantita"));
+        noteRilevazione.setCellValueFactory(new PropertyValueFactory<RilevazioneFarmaco, String>("noteRilevazione"));
+        codiceAic.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getFarmaco().getCodiceAic()));
+        nome.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getFarmaco().getNome()));
+
+        //  timestamp.setCellValueFactory(new PropertyValueFactory<RilevazioneGlicemia, Timestamp>("timestamp"));
+        valore.setCellValueFactory(new PropertyValueFactory<RilevazioneGlicemia, Integer>("valore"));
+        gravita.setCellValueFactory(new PropertyValueFactory<RilevazioneGlicemia, Integer>("gravita"));
+        primaPasto.setCellValueFactory(new PropertyValueFactory<RilevazioneGlicemia, Boolean>("primaPasto"));
+
+        //  timestamp.setCellValueFactory(new PropertyValueFactory<RilevazioneSintomo, Timestamp>("timestamp"));
+        sintomo.setCellValueFactory(new PropertyValueFactory<RilevazioneSintomo, String>("sintomo"));
+        intensita.setCellValueFactory(new PropertyValueFactory<RilevazioneSintomo, Integer>("intensita"));
+
+        MedicoDAO medicoDAO = MedicoDAO.getInstance();
+        medicoDAO.getUser(ViewNavigator.getAuthenticatedUser());
+        RilevazioneFarmaco[] rilevazioniFarmaci = medicoDAO.getRilevazioniFarmaco(ViewNavigator.getAuthenticatedUser());
+        RilevazioneGlicemia[] rilevazioniGlicemia = medicoDAO.getRilevazioniGlicemia(ViewNavigator.getAuthenticatedUser());
+        RilevazioneSintomo[] rilevazioniSintomi = medicoDAO.getRilevazioniSintomo(ViewNavigator.getAuthenticatedUser());
+
+        ObservableList<RilevazioneFarmaco> rilFarmaci = FXCollections.observableArrayList(rilevazioniFarmaci);
+        ObservableList<RilevazioneGlicemia> rilGlicemia = FXCollections.observableArrayList(rilevazioniGlicemia);
+        ObservableList<RilevazioneSintomo> rilSintomi = FXCollections.observableArrayList(rilevazioniSintomi);
+
+        tableViewRilevazioniFarmaci.setItems(rilFarmaci);
+        tableViewRilevazioniGlicemia.setItems(rilGlicemia);
+        tableViewRilevazioniSintomi.setItems(rilSintomi);
+    }
+
     @FXML
-    private void handleInserimentoNuovaRilevazione() {
+    private void handleRicarica() throws SQLException {
+        setup();
+    }
+
+
+    @FXML
+    private void handleInserimentoNuovaRilevazione() throws SQLException {
         //  gestire il lancio della query di inserimento della rilevazione sulla base delle info fornite -> Implementare controlli
 
         if(VBoxNuovaRilevazione.isVisible() && (!idPazienteNuovaRilevazione.getText().equals(null))) {
@@ -205,6 +215,7 @@ public class RilevazioniHandlingController {
                         //  Da capire come gestire l'azzeramento con: comboBoxFarmaco.setValue(null);
                         quantitaNuovaRilevazione.setText("");
                         noteNuovaRilevazione.setText("");
+                        handleRicarica();
                     }
                     else {
                         statusLabel.setText("Inserisci un codice AIC valido.");
@@ -223,6 +234,7 @@ public class RilevazioniHandlingController {
                     pazienteDAO.setRilevazioneGlicemia(rilevazioneGlicemia);
                     valoreNuovaRilevazione.setText("");
                     primaPastoSelezionato = "";
+                    handleRicarica();
                 }
                 else {
                     statusLabel.setText("Informazioni mancanti, completare");
@@ -236,6 +248,7 @@ public class RilevazioniHandlingController {
                     pazienteDAO.setRilevazioneSintomo(rilevazioneSintomo);
                     sintomoNuovaRilevazione.setText("");
                     intensitaNuovaRilevazione.setText("");
+                    handleRicarica();
                 }
                 else {
                     statusLabel.setText("Informazioni mancanti, completare");
