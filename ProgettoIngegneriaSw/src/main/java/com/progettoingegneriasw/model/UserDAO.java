@@ -531,6 +531,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                     }
                     return null;
                 }
+
         );
 
         return alerts.toArray(new Alert[alerts.size()]);
