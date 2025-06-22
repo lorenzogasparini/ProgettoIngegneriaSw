@@ -9,12 +9,19 @@ import com.progettoingegneriasw.model.Medico.MedicoUser;
 import com.progettoingegneriasw.model.Paziente.Paziente;
 import com.progettoingegneriasw.model.Paziente.PazienteDAO;
 import com.progettoingegneriasw.model.Paziente.PazienteUser;
+import com.progettoingegneriasw.model.Utils.Alert;
+import com.progettoingegneriasw.model.Utils.AlertType;
 import com.progettoingegneriasw.model.Utils.Farmaco;
 import com.progettoingegneriasw.model.Utils.Log;
 import com.progettoingegneriasw.view.ViewNavigator;
 
 import java.sql.Date;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserDAO { // todo: è corretto rendere questa classe abstract???
     private final DatabaseManager dbManager;
@@ -449,5 +456,98 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
     }
 
     // todo: method to get alerts
-    //public ArrayList<Alert> getAllAlerts() // todo: da ridefinire in PazienteDAO perché deve prendere solo gli alert con
+    //public ArrayList<Alert> getAllAlerts(){} // todo: da ridefinire in PazienteDAO perché deve prendere solo gli alert con
+
+    // todo: verificare se ci sono pazienti che non assumono i farmaci che dovrebbero da più di 3 giorni
+    /// in un sistema CLIENT-SERVER questo metodo verrebbe chiamato ripetutamente dal server (qui per maggiore efficienza
+    /// lo facciamo chiamare da un solo client tramite un file .lck
+    public void updateAlertTable() throws SQLException {
+
+        Alert[] alerts = getAlertFarmaciNonAssuntiDaAlmeno3GiorniENonSegnalati();
+
+        System.out.println("--- Alerts to insert ---");
+        for(Alert a: alerts){
+            System.out.println("Alert: " + a);
+        }
+        System.out.println("\n");
+
+        insertAlerts(alerts);
+
+    }
+
+    public Alert[] getAlertFarmaciNonAssuntiDaAlmeno3GiorniENonSegnalati(){
+
+        ArrayList<Alert> alerts = new ArrayList<>();
+
+        getConnection().executeQuery(
+                "SELECT " +
+                        "   p.id AS id_paziente, " +
+                        "   rf_last.id AS id_rilevazione_farmaco, " +
+                        "   f.id AS id_farmaco, " +
+                        "   f.codice_aic AS codice_aic, " +
+                        "   f.nome AS nome_farmaco " +
+                        " FROM paziente p " +
+                        " INNER JOIN patologia_paziente pp ON p.id = pp.id_paziente " +
+                        " INNER JOIN terapia t ON pp.id_terapia = t.id " +
+                        " INNER JOIN farmaco f ON t.id_farmaco = f.id " +
+                        " INNER JOIN ( " +
+                        "   SELECT rf1.* " +
+                        "   FROM rilevazione_farmaco rf1 " +
+                        "   WHERE rf1.timestamp = ( " +
+                        "       SELECT MAX(rf2.timestamp) " +
+                        "       FROM rilevazione_farmaco rf2 " +
+                        "       WHERE rf2.id_paziente = rf1.id_paziente " +
+                        "           AND rf2.id_farmaco = rf1.id_farmaco " +
+                        "   ) " +
+                        " ) rf_last ON rf_last.id_paziente = p.id AND rf_last.id_farmaco = f.id " +
+
+
+                        " WHERE NOT EXISTS ( " +
+                        "   SELECT 1 " +
+                        "   FROM rilevazione_farmaco rf " +
+                        "   WHERE rf.id_paziente = p.id " +
+                        "       AND rf.id_farmaco = f.id " +
+                        "       AND DATE(rf.timestamp) >= DATE('now', '-2 days') " +
+                        " ) " +
+
+                        " AND NOT EXISTS ( " +
+                        "   SELECT 1 " +
+                        "   FROM alert a " +
+                        "   WHERE a.id_paziente = p.id " +
+                        "       AND a.tipo_alert = 'farmacoNonAssuntoDa3Giorni' " +
+                        "       AND a.id_rilevazione = rf_last.id " +
+                        " )",
+                rs -> {
+                    while (rs.next()) {
+                        alerts.add(
+                                new Alert(
+                                        rs.getInt("id_paziente"),
+                                        rs.getInt("id_rilevazione_farmaco"),
+                                        AlertType.farmacoNonAssuntoDa3Giorni,
+                                        Timestamp.from(Instant.now()),
+                                        false
+                                )
+                        );
+                    }
+                    return null;
+                }
+        );
+
+        return alerts.toArray(new Alert[alerts.size()]);
+    }
+
+    public void insertAlerts(Alert[] alerts){
+        for(Alert alert: alerts){
+            dbManager.executeUpdate(
+                    "INSERT INTO alert (id_paziente, id_rilevazione, tipo_alert, data_alert, letto) VALUES (?, ?, ?, ?, ?)",
+                    alert.getIdPaziente(),
+                    alert.getIdRilevazione(),
+                    alert.getTipoAlert(),
+                    alert.getTimestamp().toString(),
+                    alert.getLetto()
+            );
+        }
+    }
+
+
 }

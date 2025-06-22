@@ -10,29 +10,34 @@ import com.progettoingegneriasw.model.Paziente.PazienteUser;
 import com.progettoingegneriasw.model.User;
 import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.model.Utils.*;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.SubScene;
 import javafx.stage.Stage;
-import javafx.scene.image.Image;
+import javafx.util.Duration;
 
-import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.net.URL;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.Arrays;
 import java.util.Map;
 
 public class Main extends Application {
     
-    private static UserDAO userDAO = UserDAO.getInstance();
-    private static AdminDAO adminDAO = AdminDAO.getInstance();
-    private static MedicoDAO medicoDAO = MedicoDAO.getInstance();
-    private static PazienteDAO pazienteDAO = PazienteDAO.getInstance();
+    private static final UserDAO userDAO = UserDAO.getInstance();
+    private static final AdminDAO adminDAO = AdminDAO.getInstance();
+    private static final MedicoDAO medicoDAO = MedicoDAO.getInstance();
+    private static final PazienteDAO pazienteDAO = PazienteDAO.getInstance();
+    private static FileLock alertLock;
+    private static FileChannel alertChannel;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -64,6 +69,12 @@ public class Main extends Application {
 //    }
 
     public static void main(String[] args) throws SQLException {
+
+        startAlertLockWatcher(1, 5); // update every 1s, retry lock every 5s
+        // todo
+        // getAlerts();
+
+        // JavaFX launch
         launch(args);
 
         // eseguire i test in questa sezione
@@ -79,6 +90,73 @@ public class Main extends Application {
         testAlerts();
 
 
+    }
+
+    public static void startAlertLockWatcher(int updateIntervalSec, int retryIntervalSec) {
+        Timeline retryTimeline = new Timeline(new KeyFrame(Duration.seconds(retryIntervalSec), e -> {
+            if (alertLock == null || !alertLock.isValid()) {
+                if (acquireLockAlertHandler()) {
+                    System.out.println("!!! Starting alert updater !!!");
+                    Runtime.getRuntime().addShutdownHook(new Thread(Main::releaseLockAlertHandler));
+                    startAlertUpdater(updateIntervalSec);
+                }
+            }
+        }));
+        retryTimeline.setCycleCount(Animation.INDEFINITE);
+        retryTimeline.play();
+    }
+
+    public static boolean acquireLockAlertHandler() {
+        File file = new File("lockfile.lck");
+        try {
+            RandomAccessFile raf = new RandomAccessFile(file, "rw");
+            alertChannel = raf.getChannel();
+            alertLock = alertChannel.tryLock(); // hold the lock until the app is closed
+
+            return alertLock != null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * metodo per aggiornare la tabella Alert:
+     * - viene chiamato questo metodo solo da un utente alla volta tramite meccanismo di .lck
+     * - viene eseguito ogni SEC secondi
+     * @throws SQLException
+     */
+    public static void startAlertUpdater(int sec) {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(sec), e -> {
+            try {
+                userDAO.updateAlertTable();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+    }
+
+
+
+    public static void releaseLockAlertHandler(){
+        try {
+            if (alertLock != null && alertLock.isValid()) {
+                alertLock.release();
+            }
+            if (alertChannel != null && alertChannel.isOpen()) {
+                alertChannel.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void getAlerts(){
+        // todo: getAllAlerts() --> controlla ogni SEC se ci sono alert per l'utente loggato
+        // bisogna prima verificare che ci sia un utente loggato
     }
 
     /**
@@ -105,8 +183,8 @@ public class Main extends Application {
         userDAO.saveUser(newAdminUser);
 
         // USER: test inserimento log
-        System.out.println("test inserimento Log");
-        userDAO.setLog(new Log(1, 1, "test Log", Timestamp.from(Instant.now())));
+        // System.out.println("test inserimento Log");
+        // userDAO.setLog(new Log(1, 1, "test Log", Timestamp.from(Instant.now())));
 
         // USER: test per apertura app di mail
         /*
