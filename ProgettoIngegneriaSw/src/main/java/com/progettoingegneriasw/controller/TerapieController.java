@@ -1,6 +1,7 @@
 package com.progettoingegneriasw.controller;
 
 import com.progettoingegneriasw.model.Medico.MedicoDAO;
+import com.progettoingegneriasw.model.Paziente.PazienteDAO;
 import com.progettoingegneriasw.model.Utils.Terapia;
 import com.progettoingegneriasw.view.ViewNavigator;
 import javafx.beans.property.SimpleStringProperty;
@@ -8,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -38,6 +40,31 @@ public class TerapieController {
         ObservableList<Terapia> ter = FXCollections.observableArrayList(terapie);
 
         tableViewTerapie.setItems(ter);
+
+        //  setupTable();
+    }
+
+    /**
+     * Da terminare: si deve fare attenzione al fatto che un farmaco può essere stato assunto ma
+     * essendo potenzialmente presente in più terapie si deve valutare anche la quantità assunta
+     * al fine di stabilire se la terapia è stata assunta e quindi debba essre indicata in grigio nella tabella
+     */
+    @FXML
+    private void setupTable() {
+        PazienteDAO pazienteDAO = PazienteDAO.getInstance();
+        tableViewTerapie.setRowFactory(tv -> new TableRow<Terapia>() {
+            @Override
+            protected void updateItem(Terapia terapia, boolean empty) {
+                super.updateItem(terapia, empty);
+                try {
+                    if (pazienteDAO.getFarmacoAssuntoOggi(terapia.getFarmaco())) {
+                        setStyle("-fx-background-color: #dddddd; -fx-text-fill: #666666;");
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 
     @FXML

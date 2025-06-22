@@ -3,6 +3,7 @@ package com.progettoingegneriasw.model.Paziente;
 import com.progettoingegneriasw.model.Medico.MedicoUser;
 import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.model.Utils.*;
+import com.progettoingegneriasw.view.ViewNavigator;
 
 import java.awt.*;
 import java.io.IOException;
@@ -146,7 +147,13 @@ public class PazienteDAO extends UserDAO {
         return farmaciEAssunzioni;
     }
 
+    public boolean getFarmacoAssuntoOggi(Farmaco farmaco) throws SQLException {
+        int id_paziente = getIdFromDB(ViewNavigator.getAuthenticatedUser());
 
+        Map<Farmaco, Boolean> ril = getFarmaciPazienteEAssunzioni(ViewNavigator.getAuthenticatedUser());
+
+        return ril.get(farmaco).booleanValue();
+    }
 
     public void setRilevazioneSintomo(RilevazioneSintomo rilevazioneSintomo){
         super.getConnection().executeUpdate(
