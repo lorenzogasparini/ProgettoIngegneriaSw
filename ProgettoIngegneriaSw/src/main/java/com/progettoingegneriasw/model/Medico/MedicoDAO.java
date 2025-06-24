@@ -305,10 +305,10 @@ public class MedicoDAO extends UserDAO {
         }
 
         super.getConnection().executeQuery(
-                "SELECT t.id, t.id_farmaco, t.dosi_giornaliere, t.quantita_per_dose, t.note, f.id, f.codice_aic, f.nome"
-                + " FROM terapia t, farmaco f"
-                + " INNER JOIN patologia_paziente pp ON t.id = pp.id_terapia"
-                + " WHERE pp.id_paziente = ?",
+                "SELECT t.id, t.id_farmaco, t.dosi_giornaliere, t.quantita_per_dose, t.note, f.id, f.codice_aic, f.nome " +
+                    "FROM terapia t, farmaco f " +
+                    "INNER JOIN patologia_paziente pp ON t.id = pp.id_terapia " +
+                    "WHERE pp.id_paziente = ? AND t.id_farmaco = f.id",
                 rs -> {
                     while (rs.next()) {
                         terapie.add(new Terapia(rs.getInt("id"),
@@ -395,6 +395,26 @@ public class MedicoDAO extends UserDAO {
             );
         }
 
+    }
+
+    /**
+     * Consente solamente di effettuare la modifica di una terapia esistente sulla base della sola
+     * terapia nota, a differenza della funzione setTerapiaPaziente() che effettua l'inserimento o la modifica
+     * sulla base della presenza o meno della terapia nella tabella patologia_paziente. Di fatto, questa funzione
+     * viene utilizzata nel caso in cui sia necessario modificare una terapia di cui è nota la presenza nella tabella
+     * terapia, sulla base delle sole informazioni note riguardanti terapia e modifiche da attuare.
+     * @param terapia Memorizza la terapia per come è stata inserita nella tabella terapia
+     * @param terapiaNew Memmorizza la nuova terapia da inserire in tabella terapie
+     */
+    public void updateTerapiaPaziente(Terapia terapia, Terapia terapiaNew) {
+        super.getConnection().executeUpdate(
+                "UPDATE terapia SET id_farmaco = ?, dosi_giornaliere = ?, quantita_per_dose = ?, note = ? WHERE id = ?",
+                terapiaNew.getFarmaco().getId(),
+                terapiaNew.getDosiGiornaliere(),
+                terapiaNew.getQuantitaPerDose(),
+                terapiaNew.getNote(),
+                terapia.getId()
+        );
     }
 
 
@@ -546,6 +566,27 @@ public class MedicoDAO extends UserDAO {
                 });
 
         return alerts.toArray(new Alert[0]);
+    }
+
+    public Farmaco[] getFarmaci() throws SQLException {
+        ArrayList<Farmaco> farmaci = new ArrayList<>();
+
+        String query =  "SELECT f.id, f.codice_aic, f.nome " +
+                        "FROM farmaco f";
+
+        super.getConnection().executeQuery(
+                query,
+                rs -> {
+                    while (rs.next()) {
+                        farmaci.add(new Farmaco(
+                                rs.getInt("id"),
+                                rs.getString("codice_aic"),
+                                rs.getString("nome")));
+                    }
+                    return null;
+                });
+
+        return farmaci.toArray(new Farmaco[0]);
     }
 
     public Alert[] getAlertPazientiCurati() throws SQLException {

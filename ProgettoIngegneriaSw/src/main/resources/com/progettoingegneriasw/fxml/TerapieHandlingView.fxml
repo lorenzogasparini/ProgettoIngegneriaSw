@@ -10,6 +10,7 @@
 <?import javafx.scene.shape.Rectangle?>
 
 <?import javafx.scene.text.Font?>
+<?import javafx.collections.FXCollections?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.progettoingegneriasw.controller.TerapieHandlingController">
     <BorderPane xmlns="http://javafx.com/javafx/17" VBox.vgrow="ALWAYS" xmlns:fx="http://javafx.com/fxml/1">
         <center>
@@ -68,6 +69,22 @@
                                 <Insets bottom="10.0" />
                             </VBox.margin>
                         </Label>
+
+                        <VBox spacing="10.0" visible="false" fx:id="VBoxFarmaco">
+                            <children>
+                                <Label styleClass="form-label" text="Farmaco:" />
+                                <ComboBox fx:id="comboBoxFarmaco" onAction="#onComboBoxFarmaco">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="  -- Farmaci --  " />
+                                        </FXCollections>
+                                    </items>
+                                </ComboBox>
+                            </children>
+                            <VBox.margin>
+                                <Insets bottom="10.0" />
+                            </VBox.margin>
+                        </VBox>
 
                         <VBox spacing="10.0" visible="false" fx:id="VBoxDosiGiornaliere">
                             <children>
