@@ -254,6 +254,28 @@ public class MedicoDAO extends UserDAO {
         return getPatologie("");
     }
 
+    public Patologia getPatologiaFromId(int id) throws SQLException {
+        String query =
+                "SELECT p.* " +
+                "FROM patologia p " +
+                "WHERE p.id";
+
+        super.getConnection().executeQuery(
+                query,
+                rs -> {
+                    while (rs.next()) {
+                        return new Patologia(
+                                rs.getInt("id"),
+                                rs.getString("nome"),
+                                rs.getString("codice_icd")
+                        );
+                    }
+                    return null;
+                }
+        );
+        return null;
+    }
+
     public Patologia[] getPatologie(String nomePatologia) throws SQLException {
         ArrayList<Patologia> patologie = new ArrayList<>();
 

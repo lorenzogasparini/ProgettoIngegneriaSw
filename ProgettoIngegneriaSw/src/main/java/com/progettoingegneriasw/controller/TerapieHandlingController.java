@@ -44,25 +44,43 @@ public class TerapieHandlingController {
     @FXML private int idFarmacoSelezionato;
 
     Terapia selectedTerapia = null;
+    Patologia selectedPatologia = null;
 
     private MedicoDAO medicoDAO = MedicoDAO.getInstance();
+
+    @FXML private VBox VBoxInserimento;
+    @FXML private Label statusLabel2;
+    @FXML private VBox VBoxPatologia;
+    @FXML private ComboBox comboBoxPatologia;
+    @FXML private VBox VBoxFarmaci;
+    @FXML private ComboBox comboBoxFarmaci;
+    @FXML private VBox VBoxDoseGiornaliera;
+    @FXML private TextField doseGiornalieraUpdate;
+    @FXML private VBox VBoxQuantita;
+    @FXML private TextField quantitaPerDose2;
+    @FXML private VBox VBoxNote2;
+    @FXML private TextField note2;
 
     public void initialize() throws SQLException {
         setup();
 
         Farmaco[] farmaciAssegnati = medicoDAO.getFarmaci();
-
         ObservableList<Farmaco> farmaci = FXCollections.observableArrayList(comboBoxFarmaco.getItems());
         farmaci.addAll(farmaciAssegnati);
-
         comboBoxFarmaco.setItems(farmaci);
+        comboBoxFarmaci.setItems(farmaci);
+
+        Patologia[] patologie = medicoDAO.getPatologie();
+        ObservableList<Patologia> pat = FXCollections.observableArrayList(comboBoxPatologia.getItems());
+        pat.addAll(patologie);
+        comboBoxPatologia.setItems(pat);
     }
 
     @FXML
     private void handleTerapiaUpdate() {
         tableViewTerapie.setOnMouseClicked(event -> {
             selectedTerapia = tableViewTerapie.getSelectionModel().getSelectedItem();
-            if (selectedTerapia != null) {
+            if (selectedTerapia != null && (!VBoxInserimento.isVisible())) {
                 VBoxUpdate.setVisible(true);
                 VBoxUpdate.setManaged(true);
                 VBoxDosiGiornaliere.setVisible(true);
@@ -71,11 +89,16 @@ public class TerapieHandlingController {
                 VBoxFarmaco.setVisible(true);
                 VBoxFarmaco.setManaged(true);
 
-                System.out.println("ID: " + selectedTerapia.getId());
+                //  System.out.println("ID: " + selectedTerapia.getId());
 
                 dosiGiornaliereUpdate.setText(selectedTerapia.getDosiGiornaliere().toString());
                 quantitaPerDoseUpdate.setText(selectedTerapia.getQuantitaPerDose().toString());
                 noteUpdate.setText(selectedTerapia.getNote());
+            }
+            else {
+                doseGiornalieraUpdate.setText(selectedTerapia.getDosiGiornaliere().toString());
+                quantitaPerDose2.setText(selectedTerapia.getQuantitaPerDose().toString());
+                note2.setText(selectedTerapia.getNote());
             }
         });
     }
@@ -108,6 +131,92 @@ public class TerapieHandlingController {
                 statusLabel.setVisible(true);
             }
         }
+        setup();
+    }
+
+    //  TODO:Capire se togliere la possibilità di effettuare update e inserimento insieme -> in caso effettuare gli
+    //   opportuni setVisible() e setManaged()
+    @FXML
+    private void handleNuovaTerapia() {
+        VBoxInserimento.setVisible(true);
+        VBoxInserimento.setManaged(true);
+        statusLabel2.setVisible(false);
+        statusLabel2.setManaged(false);
+        VBoxPatologia.setVisible(true);
+        VBoxPatologia.setManaged(true);
+        comboBoxPatologia.setVisible(true);
+        comboBoxPatologia.setManaged(true);
+        VBoxFarmaci.setVisible(true);
+        VBoxFarmaci.setManaged(true);
+        comboBoxFarmaci.setVisible(true);
+        comboBoxFarmaci.setManaged(true);
+        VBoxDoseGiornaliera.setVisible(true);
+        VBoxDoseGiornaliera.setManaged(true);
+        doseGiornalieraUpdate.setVisible(true);
+        doseGiornalieraUpdate.setManaged(true);
+        VBoxQuantita.setVisible(true);
+        VBoxQuantita.setManaged(true);
+        quantitaPerDose2.setVisible(true);
+        quantitaPerDose2.setManaged(true);
+        VBoxNote2.setVisible(true);
+        VBoxNote2.setManaged(true);
+        note2.setVisible(true);
+        note2.setManaged(true);
+    }
+
+    @FXML
+    private void onComboBoxPatologia() {
+        MedicoDAO medicoDAO = MedicoDAO.getInstance();
+        comboBoxPatologia.setOnAction(e -> {
+            String selezione = comboBoxPatologia.getValue().toString();
+
+            Pattern pattern = Pattern.compile("id:\\s*(\\d+)");
+            Matcher matcher = pattern.matcher(selezione);
+
+            if (matcher.find()) {
+                int id = Integer.parseInt(matcher.group(1));
+                System.out.println("ID pato: " + id);
+                try {
+                    selectedPatologia = medicoDAO.getPatologiaFromId(id);
+                    System.out.println("\n\n Patologia selezionata: " + selectedPatologia);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+    }
+
+    @FXML
+    private void onComboBoxFarmaci() {
+        UserDAO userDao = UserDAO.getInstance();
+        comboBoxFarmaci.setOnAction(e -> {
+            String selezione = comboBoxFarmaci.getValue().toString();
+
+            Pattern pattern = Pattern.compile("id:\\s*(\\d+)");
+            Matcher matcher = pattern.matcher(selezione);
+
+            if (matcher.find()) {
+                int id = Integer.parseInt(matcher.group(1));
+                idFarmacoSelezionato = id;
+            }
+        });
+    }
+
+    @FXML
+    private void handleInserimento() throws SQLException {
+        Terapia ter = new Terapia(medicoDAO.getFaracoFromId(idFarmacoSelezionato), Integer.parseInt(doseGiornalieraUpdate.getText()), Double.parseDouble(quantitaPerDose2.getText()), note2.getText());
+        Patologia pat = selectedPatologia;
+
+        //  System.out.println("\n\n ID : " + idFarmacoSelezionato + "\n\n");
+
+        System.out.println("\n\nInserimento: \n" + "Farmaco: " + ter.getFarmaco().getNome()
+                + "\n Dosi : " + ter.getDosiGiornaliere()
+                + "\n Quantita : " + ter.getQuantitaPerDose()
+                + "\n Note : " + ter.getNote()
+                + "\n Patologia : " + pat.getNome()
+                );
+
+        //  medicoDAO.setTerapiaPaziente(ter, TestController.selectedUser.getUsername(), pat);
         setup();
     }
 
