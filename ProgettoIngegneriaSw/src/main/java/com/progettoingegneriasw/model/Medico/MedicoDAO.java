@@ -255,25 +255,23 @@ public class MedicoDAO extends UserDAO {
     }
 
     public Patologia getPatologiaFromId(int id) throws SQLException {
-        String query =
-                "SELECT p.* " +
-                "FROM patologia p " +
-                "WHERE p.id";
+        final Patologia[] p = new Patologia[1];
+
+        String query =  "SELECT p.* " +
+                        "FROM patologia p " +
+                        "WHERE p.id";
 
         super.getConnection().executeQuery(
                 query,
                 rs -> {
-                    while (rs.next()) {
-                        return new Patologia(
-                                rs.getInt("id"),
-                                rs.getString("nome"),
-                                rs.getString("codice_icd")
-                        );
-                    }
-                    return null;
+                    //  System.out.println("\n Patologia : " + rs.getInt("id"));
+                    //  System.out.println("\n Nome : " + rs.getString("nome"));
+                    //  System.out.println("\n Codice_icd : " + rs.getString("codice_icd"));
+                    p[0] = new Patologia(rs.getInt("id"), rs.getString("nome"), rs.getString("codice_icd"));
+                    return p[0];
                 }
         );
-        return null;
+        return p[0];
     }
 
     public Patologia[] getPatologie(String nomePatologia) throws SQLException {

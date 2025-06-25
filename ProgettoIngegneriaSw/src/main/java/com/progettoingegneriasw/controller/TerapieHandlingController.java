@@ -214,9 +214,10 @@ public class TerapieHandlingController {
                 + "\n Quantita : " + ter.getQuantitaPerDose()
                 + "\n Note : " + ter.getNote()
                 + "\n Patologia : " + pat.getNome()
-                );
+        );
 
-        //  medicoDAO.setTerapiaPaziente(ter, TestController.selectedUser.getUsername(), pat);
+        medicoDAO.setTerapiaPaziente(ter, TestController.selectedUser.getUsername(), pat);
+
         setup();
     }
 
