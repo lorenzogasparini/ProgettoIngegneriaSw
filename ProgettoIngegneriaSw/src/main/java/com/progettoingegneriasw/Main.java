@@ -80,7 +80,7 @@ public class Main extends Application {
         // eseguire i test in questa sezione
         System.out.println("---- TEST Model ----");
 
-        // todo: si porebbe parametrizzare il nome dell'utente su cui fare i vari test (esempio: "mario.rossi")
+        // todo: si potrebbe parametrizzare il nome dell'utente su cui fare i vari test (esempio: "mario.rossi")
 
 
         testUser();

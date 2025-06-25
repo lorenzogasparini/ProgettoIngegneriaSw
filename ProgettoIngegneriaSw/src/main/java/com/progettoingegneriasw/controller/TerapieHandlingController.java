@@ -125,7 +125,14 @@ public class TerapieHandlingController {
 
         if(VBoxUpdate.isVisible()) {
             if((!dosiGiornaliereUpdate.getText().isEmpty()) && (!quantitaPerDoseUpdate.getText().isEmpty()) && (!noteUpdate.getText().isEmpty())) {
-                medicoDAO.updateTerapiaPaziente(selectedTerapia, new Terapia(selectedTerapia.getId(), medicoDAO.getFaracoFromId(idFarmacoSelezionato), Integer.parseInt(dosiGiornaliereUpdate.getText()), Double.parseDouble(quantitaPerDoseUpdate.getText()), noteUpdate.getText()));
+                medicoDAO.updateTerapiaPaziente(selectedTerapia,
+                        new Terapia(selectedTerapia.getId(),
+                                medicoDAO.getFaracoFromId(idFarmacoSelezionato),
+                                Integer.parseInt(dosiGiornaliereUpdate.getText()),
+                                Double.parseDouble(quantitaPerDoseUpdate.getText()),
+                                noteUpdate.getText()
+                        )
+                );
             }
             else {
                 statusLabel.setVisible(true);
@@ -204,7 +211,16 @@ public class TerapieHandlingController {
 
     @FXML
     private void handleInserimento() throws SQLException {
-        Terapia ter = new Terapia(medicoDAO.getFaracoFromId(idFarmacoSelezionato), Integer.parseInt(doseGiornalieraUpdate.getText()), Double.parseDouble(quantitaPerDose2.getText()), note2.getText());
+
+        // todo: cancellare (usato per test)
+        System.out.println("idFarmacoSelezionato: " + idFarmacoSelezionato + "; doseGiornalieraUpdate: " +
+                doseGiornalieraUpdate.getText() + "; quantitaperDose2.getText " + quantitaPerDose2.getText()
+                + "; note2: "+ note2.getText() + "; patologia: " + selectedPatologia
+        );
+
+        Terapia ter = new Terapia(medicoDAO.getFaracoFromId(idFarmacoSelezionato),
+                Integer.parseInt(doseGiornalieraUpdate.getText()),
+                Double.parseDouble(quantitaPerDose2.getText()), note2.getText());
         Patologia pat = selectedPatologia;
 
         //  System.out.println("\n\n ID : " + idFarmacoSelezionato + "\n\n");

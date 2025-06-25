@@ -465,11 +465,13 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
 
         Alert[] alerts = getAlertFarmaciNonAssuntiDaAlmeno3GiorniENonSegnalati();
 
+        /*
         System.out.println("--- Alerts to insert ---");
         for(Alert a: alerts){
             System.out.println("Alert: " + a);
         }
         System.out.println("\n");
+         */
 
         insertAlerts(alerts);
 
