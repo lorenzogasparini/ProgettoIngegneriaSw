@@ -88,8 +88,6 @@ public class Main extends Application {
         testMedico();
         testPaziente();
         testAlerts();
-
-
     }
 
     public static void startAlertLockWatcher(int updateIntervalSec, int retryIntervalSec) {
@@ -345,12 +343,12 @@ public class Main extends Application {
         System.out.println("\ninserimento terapia ad un paziente");
         medicoDAO.setTerapiaPaziente(new Terapia(
                 new Farmaco(1,"012345678", "Metformina"), 3, 10.0, "pasti"),
-                "lucia.verdi", new Patologia(4));
+                "lucia.verdi", new Patologia(4), "");
 
         System.out.println("\nmodifica terapia già presente");
         medicoDAO.setTerapiaPaziente(new Terapia(
                         new Farmaco(1,"012345678", "Metformina"), 2, 40.0, "dopo i pasti"),
-                "lucia.verdi", new Patologia(4));
+                "lucia.verdi", new Patologia(4), "");
 
     }
 

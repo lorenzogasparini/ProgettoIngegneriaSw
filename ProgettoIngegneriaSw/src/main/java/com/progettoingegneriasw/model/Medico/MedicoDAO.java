@@ -8,6 +8,8 @@ import com.progettoingegneriasw.view.ViewNavigator;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 
 public class MedicoDAO extends UserDAO {
@@ -348,10 +350,10 @@ public class MedicoDAO extends UserDAO {
         return terapie.toArray(new Terapia[terapie.size()]);
     }
 
-    /// consente sia di inserire una terapia sia di modificarla nel caso sia già esistenta.
-    /// Se la patologia non è ancora stata creata è necessario crearne prima una per quel paziente
-    /// tramite setPatologiaPaziente()
-    public void setTerapiaPaziente(Terapia terapia, String username, Patologia patologia) {
+    /// consente sia di inserire una terapia sia di modificarla nel caso sia già esistente.
+    /// Se la patologia non è stata ancora stata assegnata al paziente gli viene assegnata (creazione riga in
+    /// patologia_paziente + creazione terapia)
+    public void setTerapiaPaziente(Terapia terapia, String username, Patologia patologia, String notePatologiaPaziente) {
         int id_paziente = getIdFromDB(username);
         final Integer[] tmp = new Integer[2]; // to be assigned into a lambda it must be a final int[]
         int terapiaId, patologiaPazienteId;
@@ -374,8 +376,18 @@ public class MedicoDAO extends UserDAO {
 
         if(tmp[0] != null)
             patologiaPazienteId = tmp[0];
-        else
-            return; // non è stata ancora assegnata la patologia al paziente
+        else{
+            // assegna la patologia al paziente
+            patologiaPazienteId = super.getConnection().executeInsertAndReturnId(
+                    "INSERT INTO patologia_paziente (id_paziente, id_patologia, id_terapia, " +
+                            "data_diagnosi, note_patologia) VALUES (?, ?, ?, ?, ?)",
+                    id_paziente,
+                    patologia.getId(),
+                    terapia.getId(),
+                    Timestamp.from(Instant.now()).toString(),
+                    notePatologiaPaziente
+            );
+        }
 
         if(tmp[1] != null)
             terapiaId = tmp[1]; // la patologia del paziente ha già una terapia associata
@@ -392,6 +404,7 @@ public class MedicoDAO extends UserDAO {
                     terapia.getQuantitaPerDose(),
                     terapia.getNote()
             );
+
 
             // update patologia paziente fk id_terapia with the one inserted
             if (terapiaId >= 0) {

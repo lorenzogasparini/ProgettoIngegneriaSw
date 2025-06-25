@@ -232,7 +232,7 @@ public class TerapieHandlingController {
                 + "\n Patologia : " + pat.getNome()
         );
 
-        medicoDAO.setTerapiaPaziente(ter, TestController.selectedUser.getUsername(), pat);
+        medicoDAO.setTerapiaPaziente(ter, TestController.selectedUser.getUsername(), pat, "");
 
         setup();
     }
