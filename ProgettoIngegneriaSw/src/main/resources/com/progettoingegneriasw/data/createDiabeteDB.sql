@@ -76,7 +76,8 @@ CREATE TABLE log (
     id_paziente INTEGER NOT NULL,
     id_diabetologo INTEGER NOT NULL,
     azione TEXT NOT NULL,
-    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    timestamp DATETIME DEFAULT CURRE
+    NT_TIMESTAMP,
     FOREIGN KEY(id_paziente) REFERENCES paziente(id),
     FOREIGN KEY(id_diabetologo) REFERENCES diabetologo(id)
 );

@@ -47,8 +47,6 @@
       <HBox spacing="10.0" alignment="CENTER">
          <children>
             <Hyperlink fx:id="loginButton" mnemonicParsing="false" onAction="#handleLogin" text="Log-in" />
-            <!-- <Hyperlink fx:id="registerButton" mnemonicParsing="false" onAction="#handleRegister" text="Sign-up" /> -->
-            <Hyperlink fx:id="testButton" mnemonicParsing="false" onAction="#handleTest" text="Test" />
          </children>
       </HBox>
    </children>

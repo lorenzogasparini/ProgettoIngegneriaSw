@@ -29,16 +29,19 @@ public class NavBar extends HBox {
         this.setSpacing(10);
         this.setPadding(new Insets(10));
         this.setStyle("-fx-background-color: #2a9d8f;");
-        
-        Label brandLabel = new Label("Dash App");
-        brandLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 18px;");
-        this.getChildren().add(brandLabel);
+        this.setAlignment(javafx.geometry.Pos.CENTER);
+
+        //  Label brandLabel = new Label("Dash App");
+        //  brandLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 18px;");
+        //  this.getChildren().add(brandLabel);
         
         // Spacer
+        /*
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
         this.getChildren().add(spacer);
-        
+        */
+
         // Create buttons based on authentication status
         if (isAuthenticated) {
             createAuthenticatedNavButtons();
@@ -55,12 +58,12 @@ public class NavBar extends HBox {
         Button dashboardBtn = createNavButton("Dashboard", e -> ViewNavigator.navigateToDashboard());
         Button profileBtn = createNavButton("Profile", e -> ViewNavigator.navigateToProfile());
         
-        Label userLabel = new Label("Hello, " + username);
-        userLabel.setStyle("-fx-text-fill: white;");
+        //  Label userLabel = new Label("Hello, " + username);
+        //  userLabel.setStyle("-fx-text-fill: white;");
         
         Button logoutBtn = createNavButton("Logout", e -> ViewNavigator.logout());
         
-        this.getChildren().addAll(homeBtn, dashboardBtn, profileBtn, userLabel, logoutBtn);
+        this.getChildren().addAll(homeBtn, dashboardBtn, profileBtn, logoutBtn);
     }
     
     /**
@@ -85,9 +88,16 @@ public class NavBar extends HBox {
         // Hover effect
         button.setOnMouseEntered(e -> 
             button.setStyle("-fx-background-color: #21867a; -fx-text-fill: white; -fx-cursor: hand;"));
-        button.setOnMouseExited(e -> 
+        button.setOnMouseExited(e ->
             button.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-cursor: hand;"));
-        
+
+        //  Completare creando il riquadro ovale come previsto nella gist: deve collegarsi con il hbox bianco e deve avere colore
+        //  bianco di sfondo.
+        /*
+        button.setOnMouseClicked(e ->
+            button.setStyle("-fx-background-color: #f5f5f5; -fx-border-color: #cccccc; -fx-border-width: 1; -fx-border-radius: 5; -fx-padding: 10;"));
+        */
+
         return button;
     }
     
