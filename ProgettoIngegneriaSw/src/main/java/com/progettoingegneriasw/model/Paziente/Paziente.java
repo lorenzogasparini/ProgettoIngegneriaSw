@@ -8,9 +8,9 @@ import java.sql.Timestamp;
 public interface Paziente extends UserInterface {
     // todo: altri metodi esclusivi dei pazienti
     public String getEmail();
-    public int getIdMedico();
+    public Integer getIdMedico();
     public Date getDataNascita();
-    public double getPeso();
+    public Double getPeso();
     public String getProvinciaResidenza();
     public String getComuneResidenza();
     public String getNotePaziente();

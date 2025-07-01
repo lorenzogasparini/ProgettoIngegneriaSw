@@ -25,6 +25,18 @@ public class PazienteUser extends User implements Paziente{
                 null, null, null, null, null);
     }
 
+    public PazienteUser(PazienteUser pazienteUser, String newPassword){
+        this(pazienteUser.getId(), pazienteUser.getUsername(), newPassword, pazienteUser.getNome(),
+                pazienteUser.getCognome(), pazienteUser.getEmail(), pazienteUser.getIdMedico(),
+                pazienteUser.getDataNascita(), pazienteUser.getPeso(), pazienteUser.getProvinciaResidenza(),
+                pazienteUser.getComuneResidenza(), pazienteUser.getNotePaziente());
+    }
+
+    public PazienteUser(String username, String password) {
+        this(null, username, password, null, null, null, null,
+                null, null, null, null, null);
+    }
+
     public PazienteUser(String username, String password, String nome, String cognome, String email,
                         Integer idDiabetologo, Date dataNascita, Double peso, String provinciaResidenza,
                         String comuneResidenza, String notePaziente){
@@ -64,7 +76,7 @@ public class PazienteUser extends User implements Paziente{
     }
 
     @Override
-    public int getIdMedico() {
+    public Integer getIdMedico() {
         return idDiabetologo;
     }
 
@@ -74,7 +86,7 @@ public class PazienteUser extends User implements Paziente{
     }
 
     @Override
-    public double getPeso() {
+    public Double getPeso() {
         return peso;
     }
 

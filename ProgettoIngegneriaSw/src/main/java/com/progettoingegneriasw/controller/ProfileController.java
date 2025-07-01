@@ -1,7 +1,11 @@
 package com.progettoingegneriasw.controller;
 
+import com.progettoingegneriasw.model.Admin.AdminUser;
+import com.progettoingegneriasw.model.Medico.MedicoUser;
+import com.progettoingegneriasw.model.Paziente.PazienteUser;
 import com.progettoingegneriasw.model.User;
 import com.progettoingegneriasw.model.UserDAO;
+import com.progettoingegneriasw.model.UserTypes;
 import com.progettoingegneriasw.view.ViewNavigator;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -54,21 +58,29 @@ public class ProfileController {
         
         // Validation
         if (newPassword.isEmpty() || confirmPassword.isEmpty()) {
-            showError("Please fill out all password fields");
+            showError("Riempi entrambi i campi per la nuova password");
             return;
         }
         
         if (!newPassword.equals(confirmPassword)) {
-            showError("Passwords do not match");
+            showError("Le password non corrispondono");
             return;
         }
-        
-        // Update the user with the new password
-        User currentUser = userDAO.getUser(currentUsername);
-        User updatedUser = new User(currentUsername, newPassword);
-        userDAO.saveUser(updatedUser);
-        
-        showSuccess("Password updated successfully");
+
+        try{
+            // Update the user with the new password
+            User currentUser = userDAO.getUser(currentUsername);
+            switch (currentUser.getUserType()){
+                case UserTypes.Admin -> userDAO.saveUser(new AdminUser((AdminUser) currentUser, newPassword));
+                case UserTypes.Medico -> userDAO.saveUser(new MedicoUser((MedicoUser) currentUser, newPassword));
+                case UserTypes.Paziente -> userDAO.saveUser(new PazienteUser((PazienteUser) currentUser, newPassword));
+            }
+
+            showSuccess("Password aggiornata! ");
+        }catch (Exception e){
+            showError("Errore nell'aggiornamento");
+        }
+
         
         // Clear fields
         newPasswordField.clear();
