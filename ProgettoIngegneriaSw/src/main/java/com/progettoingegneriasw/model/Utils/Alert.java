@@ -39,4 +39,8 @@ public class Alert {
         return "id: " + id + "; idPaziente: " + idPaziente + "; idRilevazione: " + idRilevazione +
                 "; tipoAlert: " + tipoAlert + "; timestamp: " + timestamp + "; letto: " + letto;
     }
+
+    public Boolean isLetto(){
+        return getLetto();
+    }
 }

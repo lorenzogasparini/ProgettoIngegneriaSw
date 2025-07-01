@@ -20,8 +20,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class UserDAO { // todo: è corretto rendere questa classe abstract???
     private final DatabaseManager dbManager;
@@ -461,7 +459,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
     // todo: verificare se ci sono pazienti che non assumono i farmaci che dovrebbero da più di 3 giorni
     /// in un sistema CLIENT-SERVER questo metodo verrebbe chiamato ripetutamente dal server (qui per maggiore efficienza
     /// lo facciamo chiamare da un solo client tramite un file .lck
-    public void updateAlertTable() throws SQLException {
+    public void automaticUpdateAlertTable() throws SQLException {
 
         Alert[] alerts = getAlertFarmaciNonAssuntiDaAlmeno3GiorniENonSegnalati();
 
@@ -550,6 +548,15 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                     alert.getLetto()
             );
         }
+    }
+
+    public void setAlertRead(Alert alert, boolean read){
+            dbManager.executeUpdate(
+                    "UPDATE alert SET letto = ?" +
+                            " WHERE id = ?",
+                    read,
+                    alert.getId()
+            );
     }
 
 

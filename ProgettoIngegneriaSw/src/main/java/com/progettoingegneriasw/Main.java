@@ -127,7 +127,7 @@ public class Main extends Application {
     public static void startAlertUpdater(int sec) {
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(sec), e -> {
             try {
-                userDAO.updateAlertTable();
+                userDAO.automaticUpdateAlertTable();
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
@@ -368,6 +368,10 @@ public class Main extends Application {
         for(Alert al: alerts2){
             System.out.println("Alert: " + al);
         }
+
+        // Imposta un alert come letto
+        System.out.println("Imposta un alert come letto");
+        userDAO.setAlertRead(alerts2[0], false);
 
     }
 
