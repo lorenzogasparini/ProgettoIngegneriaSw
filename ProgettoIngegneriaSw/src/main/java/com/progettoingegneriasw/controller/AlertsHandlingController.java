@@ -1,9 +1,9 @@
 package com.progettoingegneriasw.controller;
 
 import com.progettoingegneriasw.model.Medico.MedicoDAO;
-import com.progettoingegneriasw.model.Paziente.Paziente;
 import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.model.Utils.Alert;
+import com.progettoingegneriasw.model.Utils.AlertFilter;
 import com.progettoingegneriasw.view.ViewNavigator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,7 +12,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 
-import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
@@ -22,6 +21,9 @@ public class AlertsHandlingController {
 
     @FXML
     private Button registerButton;
+    @FXML private ComboBox<String> filtroPazientiCombo;
+    @FXML private ComboBox<String> filtroLettiCombo;
+
 
     @FXML private TableView<Alert> tableView;
     @FXML private TableColumn<Alert, Integer> Id;
@@ -40,19 +42,38 @@ public class AlertsHandlingController {
         letto.setCellValueFactory(new PropertyValueFactory<Alert, Boolean>("letto"));
         handleRead();
 
+        // Imposta valori predefiniti dei filtri
+        filtroPazientiCombo.getSelectionModel().select("Tutti i pazienti");
+        filtroLettiCombo.getSelectionModel().select("Non letti");
+
         refreshTable();
 
     }
 
     private void refreshTable() throws SQLException {
+        boolean soloMieiPazienti = filtroPazientiCombo.getValue() == null ||
+                filtroPazientiCombo.getValue().equals("Solo i miei pazienti");
+
+        String stato = filtroLettiCombo.getValue();
+
+        AlertFilter filtro = switch (stato) {
+            case "Letti" -> AlertFilter.READ;
+            case "Non letti" -> AlertFilter.UNREAD;
+            default -> AlertFilter.ALL;
+        };
+
         MedicoDAO medicoDAO = MedicoDAO.getInstance();
         medicoDAO.getUser(ViewNavigator.getAuthenticatedUser());
 
-        Alert[] alerts = medicoDAO.getAlertPazientiCurati();
-        ObservableList<Alert> alert = FXCollections.observableArrayList(alerts);
-        tableView.setItems(alert);
+        Alert[] alerts = soloMieiPazienti
+                ? medicoDAO.getAlertsPazientiCurati(filtro)
+                : medicoDAO.getAllAlerts(filtro);
 
+        ObservableList<Alert> alertList = FXCollections.observableArrayList(alerts);
+        tableView.setItems(alertList);
     }
+
+
 
     private void handleRead(){
         letto.setCellFactory(new Callback<TableColumn<Alert, Boolean>, TableCell<Alert, Boolean>>() {
@@ -119,6 +140,16 @@ public class AlertsHandlingController {
             }
         });
     }
+
+    @FXML
+    private void applicaFiltri() {
+        try {
+            refreshTable();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
     @FXML

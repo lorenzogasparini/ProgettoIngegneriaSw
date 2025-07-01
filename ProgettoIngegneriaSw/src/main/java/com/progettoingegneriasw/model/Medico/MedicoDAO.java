@@ -622,16 +622,62 @@ public class MedicoDAO extends UserDAO {
         return farmaci.toArray(new Farmaco[0]);
     }
 
-    public Alert[] getAlertPazientiCurati() throws SQLException {
+
+    public Alert[] getAllAlerts(AlertFilter filter) throws SQLException {
         ArrayList<Alert> alerts = new ArrayList<>();
 
-        String query =  "SELECT a.id, a.id_paziente, a.id_rilevazione, a.tipo_alert, a.data_alert, a.letto " +
-                        "FROM alert a " +
-                        "INNER JOIN paziente p ON p.id = a.id_paziente " +
-                        "WHERE p.id_diabetologo = ?";
+        StringBuilder query = new StringBuilder(
+                "SELECT a.id, a.id_paziente, a.id_rilevazione, a.tipo_alert, a.data_alert, a.letto FROM alert a"
+        );
+
+        switch (filter) {
+            case READ -> query.append(" WHERE a.letto = 1");
+            case UNREAD -> query.append(" WHERE a.letto = 0");
+            case ALL -> {
+                // nessuna condizione WHERE
+            }
+        }
 
         super.getConnection().executeQuery(
-                query,
+                query.toString(),
+                rs -> {
+                    while (rs.next()) {
+                        alerts.add(new Alert(
+                                rs.getInt("id"),
+                                rs.getInt("id_paziente"),
+                                rs.getInt("id_rilevazione"),
+                                AlertType.fromString(rs.getString("tipo_alert")),
+                                rs.getTimestamp("data_alert"),
+                                rs.getBoolean("letto")
+                        ));
+                    }
+                    return null;
+                }
+                //getIdFromDB(ViewNavigator.getAuthenticatedUser())
+        );
+
+        return alerts.toArray(new Alert[0]);
+    }
+
+    public Alert[] getAlertsPazientiCurati(AlertFilter filter) throws SQLException {
+        ArrayList<Alert> alerts = new ArrayList<>();
+
+        StringBuilder query = new StringBuilder("SELECT a.id, a.id_paziente, a.id_rilevazione, a.tipo_alert, a.data_alert, a.letto " +
+                        "FROM alert a " +
+                        "INNER JOIN paziente p ON p.id = a.id_paziente " +
+                        "WHERE p.id_diabetologo = ?"
+        );
+
+        switch (filter) {
+            case READ -> query.append(" WHERE a.letto = 1");
+            case UNREAD -> query.append(" WHERE a.letto = 0");
+            case ALL -> {
+                // nessuna condizione WHERE
+            }
+        }
+
+        super.getConnection().executeQuery(
+                query.toString(),
                 rs -> {
                     while (rs.next()) {
                         alerts.add(new Alert(

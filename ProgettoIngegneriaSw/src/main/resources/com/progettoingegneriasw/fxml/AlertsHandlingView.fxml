@@ -10,6 +10,7 @@
 <?import javafx.geometry.Insets?>
 
 <?import javafx.scene.text.Font?>
+<?import javafx.collections.FXCollections?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.progettoingegneriasw.controller.AlertsHandlingController">
     <BorderPane xmlns="http://javafx.com/javafx/17" VBox.vgrow="ALWAYS" xmlns:fx="http://javafx.com/fxml/1">
         <center>
@@ -31,8 +32,32 @@
                             </Label>
                         </children>
 
-                        <!-- Da inserire come lista (ordinabile per data, magari e per tipologia di alert) e con settabile il visto o non visto, da gestire anche l'onClick per ottenere l'effetto letto/non letto -->
+                        <HBox spacing="10" alignment="CENTER_RIGHT" fx:id="filterBar">
+                            <ComboBox fx:id="filtroPazientiCombo" promptText="Filtra pazienti">
+                                <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                        <String fx:value="Tutti i pazienti" />
+                                        <String fx:value="Solo i miei pazienti" />
+                                    </FXCollections>
+                                </items>
+                            </ComboBox>
 
+                            <ComboBox fx:id="filtroLettiCombo" promptText="Stato alert">
+                                <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                        <String fx:value="Non letti" />
+                                        <String fx:value="Letti" />
+                                        <String fx:value="Tutti" />
+                                    </FXCollections>
+                                </items>
+                            </ComboBox>
+
+                            <Button text="Applica filtri" onAction="#applicaFiltri" />
+                        </HBox>
+
+
+
+                        <!-- Da inserire come lista (ordinabile per data, magari e per tipologia di alert) e con settabile il visto o non visto, da gestire anche l'onClick per ottenere l'effetto letto/non letto -->
                         <TableView fx:id="tableView" VBox.vgrow="ALWAYS" >
                             <columns>
                                 <TableColumn prefWidth="75.0" text="Id" fx:id="Id" />
