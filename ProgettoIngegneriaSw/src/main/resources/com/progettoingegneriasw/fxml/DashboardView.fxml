@@ -40,7 +40,7 @@
             <VBox styleClass="card" HBox.hgrow="ALWAYS" fx:id="pannelloContattaUtente">
                <children>
                   <Label styleClass="card-header" text="Contatta utente" />
-                  <Label text="Visualizzazione utenti paziente e utenti medico (ANALIZZA COMMENTO IN FXML)" wrapText="true">
+                  <Label text="Visualizzazione utenti paziente e utenti medico." wrapText="true">
 
                      <!-- Visualizzazione utenti paziente (con informazione rispetto al medico curante) e utenti medico e rispettivi contatti, con la possibilità di contattare gli
                   stessi con la chiamata a servizio mail appositamente predisposta dal sistema. Vi è inoltre la possibilità di fare richiesta (all'admin) di mettere in cura dei pazienti. -->
