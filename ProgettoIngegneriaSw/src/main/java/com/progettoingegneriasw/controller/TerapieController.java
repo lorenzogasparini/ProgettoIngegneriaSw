@@ -2,27 +2,28 @@ package com.progettoingegneriasw.controller;
 
 import com.progettoingegneriasw.model.Medico.MedicoDAO;
 import com.progettoingegneriasw.model.Paziente.PazienteDAO;
+import com.progettoingegneriasw.model.Utils.RilevazioneFarmaco;
 import com.progettoingegneriasw.model.Utils.Terapia;
 import com.progettoingegneriasw.view.ViewNavigator;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.SQLException;
+import java.util.Map;
 
 public class TerapieController {
-    @FXML
-    private TableView<Terapia> tableViewTerapie;
+    @FXML private TableView<Terapia> tableViewTerapie;
     @FXML private TableColumn<Terapia, Integer> dosiGiornaliere;
     @FXML private TableColumn<Terapia, Double> quantitaPerDose;
     @FXML private TableColumn<Terapia, String> note;
     @FXML private TableColumn<Terapia, String> Nome_farmaco;
     @FXML private TableColumn<Terapia, String> Codice_aic;
+    @FXML private TableColumn<Terapia, Boolean> assunto;
 
 
     public void initialize() throws SQLException {
@@ -32,38 +33,131 @@ public class TerapieController {
         Nome_farmaco.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFarmaco().getNome()));
         Codice_aic.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFarmaco().getCodiceAic()));
 
-        MedicoDAO medicoDAO = MedicoDAO.getInstance();
-        Terapia[] terapie = medicoDAO.getTerapiePaziente(ViewNavigator.getAuthenticatedUsername());
 
-        ObservableList<Terapia> ter = FXCollections.observableArrayList(terapie);
+        /*
+        assunto.setCellFactory(column -> new TableCell<Terapia, Boolean>() {
+            @Override
+            protected void updateItem(Boolean item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item ? "✓" : "✗");
+                }
+            }
+        });
+         */
 
-        tableViewTerapie.setItems(ter);
+        refreshAssunzioni();
+        handleAssunzioni();
 
-        //  setupTable();
+
+        //setupTable();
     }
 
     /**
      * Da terminare: si deve fare attenzione al fatto che un farmaco può essere stato assunto ma
      * essendo potenzialmente presente in più terapie si deve valutare anche la quantità assunta
-     * al fine di stabilire se la terapia è stata assunta e quindi debba essre indicata in grigio nella tabella
+     * al fine di stabilire se la terapia è stata assunta e quindi debba essere indicata in grigio nella tabella
      */
-    @FXML
-    private void setupTable() {
-        PazienteDAO pazienteDAO = PazienteDAO.getInstance();
-        tableViewTerapie.setRowFactory(tv -> new TableRow<Terapia>() {
+//    @FXML
+//    private void setupTable() { // todo: da cancellare?
+//        PazienteDAO pazienteDAO = PazienteDAO.getInstance();
+//        tableViewTerapie.setRowFactory(tv -> new TableRow<Terapia>() {
+//            @Override
+//            protected void updateItem(Terapia terapia, boolean empty) {
+//                super.updateItem(terapia, empty);
+//                try {
+//                    if (pazienteDAO.getFarmacoAssuntoOggi(terapia.getFarmaco())) {
+//                        setStyle("-fx-background-color: #dddddd; -fx-text-fill: #666666;");
+//                    }
+//                } catch (SQLException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
+//        });
+//    }
+
+
+
+    private void handleAssunzioni(){
+        assunto.setCellFactory(column -> new TableCell<Terapia, Boolean>() {
+            private final Button confirmButton = new Button("Assumi");
+            private final Label checkLabel = new Label("✓");
+
+            {
+                confirmButton.setStyle("-fx-background-color: orange; -fx-text-fill: white;");
+                confirmButton.setOnAction(event -> {
+                    Terapia terapia = getTableView().getItems().get(getIndex());
+
+                    // Confirm dialog
+                    Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+                    confirmation.setTitle("Conferma Assunzione");
+                    confirmation.setHeaderText("Vuoi confermare l'assunzione del farmaco?");
+                    confirmation.setContentText("Farmaco: " + terapia.getFarmaco().getNome());
+
+                    ButtonType okButton = new ButtonType("Conferma", ButtonBar.ButtonData.OK_DONE);
+                    ButtonType cancelButton = new ButtonType("Annulla", ButtonBar.ButtonData.CANCEL_CLOSE);
+                    confirmation.getButtonTypes().setAll(okButton, cancelButton);
+
+                    confirmation.showAndWait().ifPresent(response -> {
+                        if (response == okButton) {
+                            try {
+
+                                // Costruisci una RilevazioneFarmaco minima (puoi estendere con info reali)
+                                RilevazioneFarmaco rilevazioneFarmaco = new RilevazioneFarmaco(
+                                        MedicoDAO.getInstance().getPazienteFromTerapia(terapia).getId(),
+                                        terapia.getFarmaco(),
+                                        new java.sql.Timestamp(System.currentTimeMillis()),
+                                        terapia.getQuantitaPerDose(),
+                                        ""
+                                );
+
+                                PazienteDAO.getInstance().setRilevazioneFarmaco(rilevazioneFarmaco);
+
+                                // Refresh table
+                                refreshAssunzioni();
+
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                                Alert error = new Alert(Alert.AlertType.ERROR, "Errore durante l'inserimento!");
+                                error.showAndWait();
+                            }
+                        }
+                    });
+                });
+
+                checkLabel.setStyle("-fx-text-fill: green; -fx-font-size: 16px; -fx-font-weight: bold;");
+            }
+
             @Override
-            protected void updateItem(Terapia terapia, boolean empty) {
-                super.updateItem(terapia, empty);
-                try {
-                    if (pazienteDAO.getFarmacoAssuntoOggi(terapia.getFarmaco())) {
-                        setStyle("-fx-background-color: #dddddd; -fx-text-fill: #666666;");
-                    }
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
+            protected void updateItem(Boolean item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(item ? checkLabel : confirmButton);
                 }
             }
         });
     }
+
+    private void refreshAssunzioni() throws SQLException {
+        Map<Terapia, Boolean> terapieEAssunzioni = PazienteDAO.getInstance()
+                .getTerapieEAssunzioniPaziente(ViewNavigator.getAuthenticatedUsername());
+
+        assunto.setCellValueFactory(cellData -> {
+            Terapia terapia = cellData.getValue(); // valore che verrà preso da ter
+            boolean value = terapieEAssunzioni.getOrDefault(terapia, false);
+            return new SimpleBooleanProperty(value);
+        });
+
+        ObservableList<Terapia> lista = FXCollections.observableArrayList(terapieEAssunzioni.keySet());
+        tableViewTerapie.setItems(lista);
+        tableViewTerapie.refresh();
+    }
+
+
 
     @FXML
     private void handleLogin() {

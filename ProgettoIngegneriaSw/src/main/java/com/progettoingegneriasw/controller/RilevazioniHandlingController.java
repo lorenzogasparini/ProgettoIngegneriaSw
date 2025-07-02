@@ -205,10 +205,22 @@ public class RilevazioniHandlingController {
         //  gestire il lancio della query di inserimento della rilevazione sulla base delle info fornite -> Implementare controlli
 
         if(VBoxNuovaRilevazione.isVisible() && (!idPazienteNuovaRilevazione.getText().equals(null))) {
+            // inserisci rilevazione Farmaco
             if (VBoxNuovaRilevazioneFarmaco.isVisible()) {
-                if ((!codiceAicNuovaRilevazione.getText().equals(null)) && (!quantitaNuovaRilevazione.getText().equals(null)) && (!noteNuovaRilevazione.getText().equals(null))) {
+                if ((!codiceAicNuovaRilevazione.getText().equals(null)) &&
+                        (!quantitaNuovaRilevazione.getText().equals(null)) &&
+                        (!noteNuovaRilevazione.getText().equals(null))) {
+
                     if (userDAO.getFarmacoFromAic(codiceAicNuovaRilevazione.getText()) != null) {
-                        RilevazioneFarmaco rilevazioneFarmaco = new RilevazioneFarmaco(Integer.parseInt(idPazienteNuovaRilevazione.getText()), pazienteDAO.getFarmacoFromAic(codiceAicNuovaRilevazione.getText()), Timestamp.from(Instant.now()), Double.parseDouble(quantitaNuovaRilevazione.getText()), noteNuovaRilevazione.getText());
+
+                        RilevazioneFarmaco rilevazioneFarmaco = new RilevazioneFarmaco(
+                                Integer.parseInt(idPazienteNuovaRilevazione.getText()),
+                                pazienteDAO.getFarmacoFromAic(codiceAicNuovaRilevazione.getText()),
+                                Timestamp.from(Instant.now()),
+                                Double.parseDouble(quantitaNuovaRilevazione.getText()),
+                                noteNuovaRilevazione.getText()
+                        );
+
                         pazienteDAO.setRilevazioneFarmaco(rilevazioneFarmaco);
                         codiceAicNuovaRilevazione.setText("");
                         //  Da capire come gestire l'azzeramento con: comboBoxFarmaco.setValue(null);
@@ -227,6 +239,7 @@ public class RilevazioniHandlingController {
                 }
             }
 
+            // Inserisci Rilevazione Glicemia
             else if (VBoxNuovaRilevazioneGlicemia.isVisible()) {
                 if((!valoreNuovaRilevazione.getText().equals(null))) {
                     RilevazioneGlicemia rilevazioneGlicemia = new RilevazioneGlicemia(Integer.parseInt(idPazienteNuovaRilevazione.getText()), Timestamp.from(Instant.now()), Integer.parseInt(valoreNuovaRilevazione.getText()), primaPastoSelezionato.equals("Vero"));
@@ -241,6 +254,7 @@ public class RilevazioniHandlingController {
                 }
             }
 
+            // Inserisci Rilevazione Sintomo
             else if (VBoxNuovaRilevazioneSintomo.isVisible()) {
                 if((!sintomoNuovaRilevazione.getText().equals(null)) && (!intensitaNuovaRilevazione.getText().equals(null))) {
                     RilevazioneSintomo rilevazioneSintomo = new RilevazioneSintomo(Integer.parseInt(idPazienteNuovaRilevazione.getText()), Timestamp.from(Instant.now()), sintomoNuovaRilevazione.getText(), Integer.parseInt(intensitaNuovaRilevazione.getText()));

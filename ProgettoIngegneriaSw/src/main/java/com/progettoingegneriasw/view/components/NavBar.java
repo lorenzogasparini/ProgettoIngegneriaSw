@@ -117,8 +117,6 @@ public class NavBar extends HBox {
 
         if (icon.isError()) {
             System.out.println("Errore nel caricamento dell'immagine: " + icon.getException());
-        } else {
-            System.out.println("Immagine caricata correttamente");
         }
 
         Button button = new Button(text, iconView);

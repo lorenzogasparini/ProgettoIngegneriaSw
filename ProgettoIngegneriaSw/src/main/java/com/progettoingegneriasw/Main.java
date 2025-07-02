@@ -402,9 +402,9 @@ public class Main extends Application {
 
         // Ottieni la lista farmaci di un paziente e indica anche se ogni farmaco è già stato assunto o no di oggi
         System.out.println("Lista dei pazienti di mario.rossi");
-        Map<Farmaco, Boolean> farmaciEAssunzioni = pazienteDAO.getFarmaciPazienteEAssunzioni("mario.rossi");
-        for(Farmaco farmaco: farmaciEAssunzioni.keySet()){
-            System.out.println("Farmaco: " + farmaco + "; assunto: " + farmaciEAssunzioni.get(farmaco));
+        Map<Terapia, Boolean> terapieEAssunzioni = pazienteDAO.getTerapieEAssunzioniPaziente("mario.rossi");
+        for(Terapia terapia: terapieEAssunzioni.keySet()){
+            System.out.println("Farmaco: " + terapia + "; assunto: " + terapieEAssunzioni.get(terapia));
         }
 
         // -- TEST INSERIMENTO RILEVAZIONI --

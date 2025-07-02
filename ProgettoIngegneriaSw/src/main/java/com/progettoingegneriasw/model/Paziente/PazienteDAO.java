@@ -3,7 +3,6 @@ package com.progettoingegneriasw.model.Paziente;
 import com.progettoingegneriasw.model.Medico.MedicoUser;
 import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.model.Utils.*;
-import com.progettoingegneriasw.view.ViewNavigator;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -100,16 +99,16 @@ public class PazienteDAO extends UserDAO {
         INNER JOIN farmaco f ON t.id_farmaco = f.id
         WHERE p.username = 'mario.rossi';
          */
-    public Map<Farmaco, Boolean> getFarmaciPazienteEAssunzioni(String username) throws SQLException {
+    public Map<Terapia, Boolean> getTerapieEAssunzioniPaziente(String username) throws SQLException {
         int id_paziente = getIdFromDB(username);
-        Map<Farmaco, Boolean> farmaciEAssunzioni = new HashMap<>();
+        Map<Terapia, Boolean> terapieEAssunzioni = new HashMap<>();
         if(id_paziente == -1) {
-            throw new SQLException();   //  Verificare se si tratta della giusta eccezione
+            throw new SQLException();   // todo: verificare se si tratta della giusta eccezione
         }
 
         super.getConnection().executeQuery(
                 "SELECT" +
-                        "     f.*," +
+                        "     f.id AS id_farmaco, f.codice_aic, f.nome, t.*," +
                         "     CASE" +
                         "         WHEN EXISTS (" +
                         "              SELECT 1" +
@@ -128,10 +127,16 @@ public class PazienteDAO extends UserDAO {
                         " WHERE p.id = ?",
                 rs -> {
                     while (rs.next()) {
-                        farmaciEAssunzioni.put(
-                                new Farmaco(rs.getInt("id"),
-                                        rs.getString("codice_aic"),
-                                        rs.getString("nome")
+                        terapieEAssunzioni.put( // todo: sistemare
+                                new Terapia(
+                                        rs.getInt("id"),
+                                        new Farmaco(rs.getInt("id_farmaco"),
+                                                rs.getString("codice_aic"),
+                                                rs.getString("nome")
+                                        ),
+                                        rs.getInt("dosi_giornaliere"),
+                                        rs.getDouble("quantita_per_dose"),
+                                        rs.getString("note")
                                 ),
                                 rs.getBoolean("has_taken_today")
                         );
@@ -140,16 +145,18 @@ public class PazienteDAO extends UserDAO {
                 },
                 id_paziente
         );
-        return farmaciEAssunzioni;
+        return terapieEAssunzioni;
     }
 
-    public boolean getFarmacoAssuntoOggi(Farmaco farmaco) throws SQLException {
+    /*
+    public boolean checkFarmacoAssuntoOggi(Farmaco farmaco) throws SQLException {
         int id_paziente = getIdFromDB(ViewNavigator.getAuthenticatedUsername());
 
-        Map<Farmaco, Boolean> ril = getFarmaciPazienteEAssunzioni(ViewNavigator.getAuthenticatedUsername());
+        Map<Terapia, Boolean> farmaciEAssunzioni = getTerapieEAssunzioni(ViewNavigator.getAuthenticatedUsername());
 
-        return ril.get(farmaco).booleanValue();
+        return farmaciEAssunzioni.get(farmaco);
     }
+     */
 
     public void setRilevazioneSintomo(RilevazioneSintomo rilevazioneSintomo){
         super.getConnection().executeUpdate(

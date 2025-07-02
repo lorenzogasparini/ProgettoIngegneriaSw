@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MedicoDAO extends UserDAO {
 
@@ -450,6 +451,45 @@ public class MedicoDAO extends UserDAO {
                 terapia.getId()
         );
     }
+
+    public Paziente getPazienteFromTerapia(Terapia terapia) {
+        AtomicReference<Paziente> pazienteRef = new AtomicReference<>();
+
+        String query =
+                "SELECT p.* " +
+                        "FROM paziente p " +
+                        "INNER JOIN patologia_paziente pp ON p.id = pp.id_paziente " +
+                        "INNER JOIN terapia t ON pp.id_terapia = t.id " +
+                        "WHERE t.id = ?";
+
+        super.getConnection().executeQuery(
+                query,
+                rs -> {
+                    if (rs.next()) {
+                        pazienteRef.set(new PazienteUser(
+                                rs.getInt("id"),
+                                rs.getString("username"),
+                                rs.getString("password"),
+                                rs.getString("nome"),
+                                rs.getString("cognome"),
+                                rs.getString("email"),
+                                rs.getInt("id_diabetologo"),
+                                Date.valueOf(rs.getString("data_nascita")),
+                                rs.getDouble("peso"),
+                                rs.getString("provincia_residenza"),
+                                rs.getString("comune_residenza"),
+                                rs.getString("note_paziente"),
+                                rs.getString("profile_image_name")
+                        ));
+                    }
+                    return null;
+                },
+                terapia.getId()
+        );
+
+        return pazienteRef.get();
+    }
+
 
 
     public RilevazioneSintomo[] getRilevazioniSintomo(){

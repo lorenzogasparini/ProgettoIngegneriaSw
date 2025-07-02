@@ -33,11 +33,12 @@
 
                         <TableView fx:id="tableViewTerapie" VBox.vgrow="ALWAYS">
                             <columns>
-                                <TableColumn prefWidth="100.0" text="Dosi giornaliere" fx:id="dosiGiornaliere" />
-                                <TableColumn prefWidth="100.0" text="Quantità per dose" fx:id="quantitaPerDose" />
-                                <TableColumn prefWidth="100.0" text="Note" fx:id="note" />
+                                <TableColumn prefWidth="120.0" text="Dosi giornaliere" fx:id="dosiGiornaliere" />
+                                <TableColumn prefWidth="120.0" text="Quantità per dose" fx:id="quantitaPerDose" />
+                                <TableColumn prefWidth="140.0" text="Note" fx:id="note" />
                                 <TableColumn prefWidth="100.0" text="Farmaco" fx:id="Nome_farmaco" />
                                 <TableColumn prefWidth="100.0" text="Codice AIC" fx:id="Codice_aic" />
+                                <TableColumn prefWidth="120.0" text="Assunto oggi" fx:id="assunto" />
                             </columns>
                         </TableView>
 

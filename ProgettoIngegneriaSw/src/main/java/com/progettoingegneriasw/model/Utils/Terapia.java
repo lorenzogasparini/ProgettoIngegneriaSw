@@ -1,5 +1,7 @@
 package com.progettoingegneriasw.model.Utils;
 
+import java.util.Objects;
+
 public class Terapia {
     private final Integer id;
     private final Farmaco farmaco;
@@ -36,5 +38,19 @@ public class Terapia {
                 "; note: " + note + "; farmaco_id: " + farmaco.getId();
 
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Terapia terapia = (Terapia) o;
+        return Objects.equals(id, terapia.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
 
 }
