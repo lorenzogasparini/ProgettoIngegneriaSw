@@ -12,6 +12,7 @@
 <?import javafx.scene.text.Font?>
 
 
+<?import javafx.scene.image.ImageView?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.progettoingegneriasw.controller.ContattaUtenteController">
     <BorderPane xmlns="http://javafx.com/javafx/17" VBox.vgrow="ALWAYS" xmlns:fx="http://javafx.com/fxml/1">
         <center>
@@ -63,13 +64,18 @@
                         </Label>
 
                         <!-- Da utilizzare opportunamente in caso di necessità di comunicazione di scorretto inserimento
-                        di info della terapia-->
+                        di info della terapia--> <!-- serve questo alert? -->
                         <Label fx:id="statusLabel" styleClass="alert-danger" text="Status message goes here"
                                wrapText="true" visible="false" managed="true">
                             <VBox.margin>
                                 <Insets bottom="10.0" />
                             </VBox.margin>
                         </Label>
+
+                        <ImageView fx:id="profileImage"
+                                   fitHeight="200" fitWidth="200"
+                                   preserveRatio="true"
+                                   styleClass="profile-image" />
 
                         <VBox spacing="10.0" visible="false" fx:id="VBoxDestinatario">
                             <children>
