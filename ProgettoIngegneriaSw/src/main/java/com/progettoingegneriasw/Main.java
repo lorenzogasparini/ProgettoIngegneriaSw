@@ -1,6 +1,5 @@
 package com.progettoingegneriasw;
 
-import com.progettoingegneriasw.config.AppConfig;
 import com.progettoingegneriasw.model.Admin.AdminDAO;
 import com.progettoingegneriasw.model.Admin.AdminUser;
 import com.progettoingegneriasw.model.Medico.MedicoDAO;
@@ -236,7 +235,7 @@ public class Main extends Application {
         medicoDAO.saveUser(newMedicoUser);
 
         /*  TEST DAO Query : MedicoDAO */
-        Paziente[] pazienti = medicoDAO.getPazientiFromDB("drbianchi");
+        Paziente[] pazienti = medicoDAO.getPazientiAssegnati("drbianchi");
         System.out.print("\nTest query pazienti curati: dal diabetologo: drbianchi \n");
         for(Paziente paziente: pazienti){
             System.out.println(paziente);

@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -15,12 +16,8 @@ import java.sql.Date;
 import java.sql.SQLException;
 
 public class TestController {
-    @FXML
-    private Button loginButton;
 
-    @FXML
-    private Button registerButton;
-
+    @FXML private ComboBox<String> filtroPazientiCombo;
     @FXML private TableView<Paziente> tableView;
     @FXML private TableColumn<Paziente, Integer> Id;
     @FXML private TableColumn<Paziente, String> Username;
@@ -54,11 +51,21 @@ public class TestController {
 
         MedicoDAO medicoDAO = MedicoDAO.getInstance();
         medicoDAO.getUser(ViewNavigator.getAuthenticatedUsername());
-        Paziente[] pazienti = medicoDAO.getPazientiFromDB(ViewNavigator.getAuthenticatedUsername());
 
-        ObservableList<Paziente> users = FXCollections.observableArrayList(pazienti);
+        // Default filter value
+        filtroPazientiCombo.getSelectionModel().select("Solo i miei pazienti");
 
-        tableView.setItems(users);
+        // Listener for automatic refresh
+        filtroPazientiCombo.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            try {
+                updateTableView();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+
+        // Initial load
+        updateTableView();
     }
 
     @FXML
@@ -106,4 +113,20 @@ public class TestController {
     private void handleDashboard() {
         ViewNavigator.navigateToDashboard();
     }
+
+    // called everytime value filter value has changed
+    private void updateTableView() throws SQLException {
+        Paziente[] pazienti;
+        String selectedFilter = filtroPazientiCombo.getValue();
+
+        if ("Tutti i pazienti".equals(selectedFilter)) {
+            pazienti = MedicoDAO.getInstance().getAllPazienti();
+        } else {
+            pazienti = MedicoDAO.getInstance().getPazientiAssegnati(ViewNavigator.getAuthenticatedUsername());
+        }
+
+        ObservableList<Paziente> users = FXCollections.observableArrayList(pazienti);
+        tableView.setItems(users);
+    }
+
 }

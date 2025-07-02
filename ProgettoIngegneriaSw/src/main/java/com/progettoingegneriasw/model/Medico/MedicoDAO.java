@@ -37,8 +37,6 @@ public class MedicoDAO extends UserDAO {
 
 
 
-
-
     // Metodi del medico
     public Paziente[] getAllPazienti(){
         ArrayList<Paziente> pazienti = new ArrayList<>();
@@ -69,13 +67,14 @@ public class MedicoDAO extends UserDAO {
         return pazienti.toArray(new Paziente[pazienti.size()]);
     }
 
+
     /**
-     * @param username The String-value for the username of the intance of MedicoUser
+     * @param medicoUsername The String-value for the medicoUsername of the intance of MedicoUser
      * @return HashMap that contains all the users observed by the intance of MedicoUser
      */
-    public Paziente[] getPazientiFromDB(String username) throws SQLException { // todo: capire se è giusto far ritornare un Paziente
+    public Paziente[] getPazientiAssegnati(String medicoUsername) throws SQLException { // todo: capire se è giusto far ritornare un Paziente
         ArrayList<Paziente> pazienti = new ArrayList<>();
-        int id_diabetologo = getIdFromDB(username);
+        int id_diabetologo = getIdFromDB(medicoUsername);
         if(id_diabetologo == -1) {
             throw new SQLException();   //  Verificare se si tratta della giusta eccezione
         }
