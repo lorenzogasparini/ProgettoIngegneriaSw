@@ -18,7 +18,7 @@ public class User implements UserInterface{ // todo: rendere questa classe astra
         this(null, username, null, null, null);
     }
 
-    public User(String username, String password){ // todo: probabilmente sarà da cancellare questo costruttore e tenere solo gli altri 2
+    public User(String username, String password){
         this(null, username, password, null, null);
     }
 

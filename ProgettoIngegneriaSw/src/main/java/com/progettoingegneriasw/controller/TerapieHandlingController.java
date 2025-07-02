@@ -13,8 +13,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -110,7 +108,7 @@ public class TerapieHandlingController {
         Nome_farmaco.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFarmaco().getNome()));
         Codice_aic.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFarmaco().getCodiceAic()));
 
-        medicoDAO.getUser(ViewNavigator.getAuthenticatedUser());
+        medicoDAO.getUser(ViewNavigator.getAuthenticatedUsername());
         Terapia[] terapie = medicoDAO.getTerapiePaziente(TestController.selectedUser.getUsername());
 
         ObservableList<Terapia> ter = FXCollections.observableArrayList(terapie);

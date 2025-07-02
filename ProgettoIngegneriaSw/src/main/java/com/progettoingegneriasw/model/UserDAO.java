@@ -20,8 +20,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class UserDAO { // todo: è corretto rendere questa classe abstract???
     private final DatabaseManager dbManager;
@@ -82,12 +80,14 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                 Medico medico = (Medico) user;
 
                 success = dbManager.executeUpdate(
-                        "INSERT INTO " + medicoDAO.getSQLTableName() + " (username, password, nome, cognome, email) VALUES (?, ?, ?, ?, ?)",
+                        "INSERT INTO " + medicoDAO.getSQLTableName() + " (username, password, nome, cognome, email," +
+                                "profile_image_path) VALUES (?, ?, ?, ?, ?, ?)",
                         medico.getUsername(),
                         medico.getPassword(),
                         medico.getEmail(),
                         medico.getNome(),
-                        medico.getCognome()
+                        medico.getCognome(),
+                        medico.getProfileImagePath()
                 );
             } else if (user.isPaziente()) {
                 PazienteDAO pazienteDAO = PazienteDAO.getInstance();
@@ -95,9 +95,9 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
 
                 success = dbManager.executeUpdate(
                         "INSERT INTO " + pazienteDAO.getSQLTableName() +
-                                " (username, password, nome, cognome, email, id_diabetologo, " +
-                                "data_nascita, peso, provincia_residenza, comune_residenza, note_paziente) " +
-                                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                                " (username, password, nome, cognome, email, id_diabetologo, data_nascita, peso," +
+                                " provincia_residenza, comune_residenza, note_paziente, profile_image_path) " +
+                                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                         paziente.getUsername(),
                         paziente.getPassword(),
                         paziente.getNome(),
@@ -108,7 +108,8 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                         paziente.getPeso(),
                         paziente.getProvinciaResidenza(),
                         paziente.getComuneResidenza(),
-                        paziente.getNotePaziente()
+                        paziente.getNotePaziente(),
+                        paziente.getProfileImagePath()
                 );
             }
         } catch (Exception e) {
@@ -147,13 +148,14 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
 
                 success = dbManager.executeUpdate(
                         "UPDATE " + medicoDAO.getSQLTableName() + " SET username = ?, password = ?, nome = ?, " +
-                                "cognome = ?, email = ?" +
+                                "cognome = ?, email = ?, profile_image_path = ?" +
                                 "WHERE username = ?",
                         medico.getUsername(),
                         medico.getPassword(),
                         medico.getNome(),
                         medico.getCognome(),
                         medico.getEmail(),
+                        medico.getProfileImagePath(),
                         medico.getUsername()
                 );
 
@@ -164,7 +166,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                 success = dbManager.executeUpdate(
                         "UPDATE " + pazienteDAO.getSQLTableName() + " SET username = ?, password = ?, nome = ?," +
                                 " cognome = ?, email = ?, id_diabetologo = ?, data_nascita = ?, peso = ?, " +
-                                "provincia_residenza = ?, comune_residenza = ?, note_paziente = ?" +
+                                "provincia_residenza = ?, comune_residenza = ?, note_paziente = ?, profile_image_path = ?" +
                                 " WHERE username = ?",
                         paziente.getUsername(),
                         paziente.getPassword(),
@@ -177,6 +179,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                         paziente.getProvinciaResidenza(),
                         paziente.getComuneResidenza(),
                         paziente.getNotePaziente(),
+                        paziente.getProfileImagePath(),
                         paziente.getUsername()
                 );
 
@@ -218,7 +221,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
 
         // Try to get Medico
         user = dbManager.executeQuery(
-                "SELECT id, username, password, nome, cognome, email FROM diabetologo WHERE username = ?",
+                "SELECT * FROM diabetologo WHERE username = ?",
                 rs -> {
                     if (rs.next()) {
                         return new MedicoUser(
@@ -227,7 +230,8 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                                 rs.getString("password"),
                                 rs.getString("nome"),
                                 rs.getString("cognome"),
-                                rs.getString("email")
+                                rs.getString("email"),
+                                rs.getString("profile_image_path")
                         );
                     }
                     return null;
@@ -239,8 +243,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
 
         // Try to get Paziente
         user = dbManager.executeQuery(
-                "SELECT id, username, password, nome, cognome, email, id_diabetologo, data_nascita, peso," +
-                        " provincia_residenza, comune_residenza, note_paziente FROM paziente WHERE username = ?",
+                "SELECT * FROM paziente WHERE username = ?",
                 rs -> {
                     if (rs.next()) {
                         return new PazienteUser(
@@ -255,7 +258,8 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                                 rs.getDouble("peso"),
                                 rs.getString("provincia_residenza"),
                                 rs.getString("comune_residenza"),
-                                rs.getString("note_paziente")
+                                rs.getString("note_paziente"),
+                                rs.getString("profile_image_path")
                         );
                     }
                     return null;
@@ -341,7 +345,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
     public User[] getAllUsers(){
         ArrayList<User> users = new ArrayList<>();
 
-        if(getUser(ViewNavigator.getAuthenticatedUser()).isMedico()){
+        if(getUser(ViewNavigator.getAuthenticatedUsername()).isMedico()){
             dbManager.executeQuery(
                     "SELECT * FROM paziente",
                     rs -> {
@@ -358,7 +362,8 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                                             rs.getDouble("peso"),
                                             rs.getString("provincia_residenza"),
                                             rs.getString("comune_residenza"),
-                                            rs.getString("note_paziente")
+                                            rs.getString("note_paziente"),
+                                            rs.getString("profile_image_path")
                                     )
                             );
                         }
@@ -376,7 +381,8 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                                         rs.getString("password"),
                                         rs.getString("nome"),
                                         rs.getString("cognome"),
-                                        rs.getString("email")
+                                        rs.getString("email"),
+                                        rs.getString("profile_image_path")
                                 )
                         );
                     }
@@ -461,7 +467,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
     // todo: verificare se ci sono pazienti che non assumono i farmaci che dovrebbero da più di 3 giorni
     /// in un sistema CLIENT-SERVER questo metodo verrebbe chiamato ripetutamente dal server (qui per maggiore efficienza
     /// lo facciamo chiamare da un solo client tramite un file .lck
-    public void updateAlertTable() throws SQLException {
+    public void automaticUpdateAlertTable() throws SQLException {
 
         Alert[] alerts = getAlertFarmaciNonAssuntiDaAlmeno3GiorniENonSegnalati();
 
@@ -550,6 +556,15 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                     alert.getLetto()
             );
         }
+    }
+
+    public void setAlertRead(Alert alert, boolean read){
+            dbManager.executeUpdate(
+                    "UPDATE alert SET letto = ?" +
+                            " WHERE id = ?",
+                    read,
+                    alert.getId()
+            );
     }
 
 

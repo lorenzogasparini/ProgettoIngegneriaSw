@@ -1,10 +1,8 @@
 package com.progettoingegneriasw.controller;
 
 import com.progettoingegneriasw.model.Medico.MedicoDAO;
-import com.progettoingegneriasw.model.Paziente.Paziente;
 import com.progettoingegneriasw.model.Utils.*;
 import com.progettoingegneriasw.view.ViewNavigator;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,8 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javax.swing.text.View;
-import java.sql.Date;
+
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
@@ -54,7 +51,7 @@ public class RilevazioniSintomiHandlingController {
         intensita.setCellValueFactory(new PropertyValueFactory<RilevazioneSintomo, String>("intensita"));
 
         MedicoDAO medicoDAO = MedicoDAO.getInstance();
-        medicoDAO.getUser(ViewNavigator.getAuthenticatedUser());
+        medicoDAO.getUser(ViewNavigator.getAuthenticatedUsername());
         RilevazioneSintomo[] rilevazioniSintomi = medicoDAO.getRilevazioniSintomo(TestController.selectedUser.getUsername());
 
         ObservableList<RilevazioneSintomo> rilSintomi = FXCollections.observableArrayList(rilevazioniSintomi);

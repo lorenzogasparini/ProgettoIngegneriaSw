@@ -13,6 +13,7 @@ public class PazienteUser extends User implements Paziente{
     private final String provinciaResidenza;
     private final String comuneResidenza;
     private final String notePaziente;
+    private String profileImagePath;
 
 
     /**
@@ -25,16 +26,28 @@ public class PazienteUser extends User implements Paziente{
                 null, null, null, null, null);
     }
 
+    public PazienteUser(PazienteUser pazienteUser, String newPassword){
+        this(pazienteUser.getId(), pazienteUser.getUsername(), newPassword, pazienteUser.getNome(),
+                pazienteUser.getCognome(), pazienteUser.getEmail(), pazienteUser.getIdMedico(),
+                pazienteUser.getDataNascita(), pazienteUser.getPeso(), pazienteUser.getProvinciaResidenza(),
+                pazienteUser.getComuneResidenza(), pazienteUser.getNotePaziente(), pazienteUser.getProfileImagePath());
+    }
+
+    public PazienteUser(String username, String password) {
+        this(null, username, password, null, null, null, null,
+                null, null, null, null, null, null);
+    }
+
     public PazienteUser(String username, String password, String nome, String cognome, String email,
                         Integer idDiabetologo, Date dataNascita, Double peso, String provinciaResidenza,
-                        String comuneResidenza, String notePaziente){
+                        String comuneResidenza, String notePaziente, String profileImagePath){
         this(null, username, password, nome, cognome, email, idDiabetologo, dataNascita, peso, provinciaResidenza,
-                comuneResidenza, notePaziente);
+                comuneResidenza, notePaziente, profileImagePath);
     }
 
     public PazienteUser(Integer id, String username, String password, String nome, String cognome, String email,
                         Integer idDiabetologo, Date dataNascita, Double peso, String provinciaResidenza,
-                        String comuneResidenza, String notePaziente){
+                        String comuneResidenza, String notePaziente, String profileImagePath){
         super(id, username, password, nome, cognome);
         this.email = email;
         this.idDiabetologo = idDiabetologo;
@@ -43,12 +56,14 @@ public class PazienteUser extends User implements Paziente{
         this.provinciaResidenza = provinciaResidenza;
         this.comuneResidenza = comuneResidenza;
         this.notePaziente = notePaziente;
+        this.profileImagePath = profileImagePath;
     }
 
     public String toString(){
         return super.toString() + "; email: " + email + "; idDiabetologo: " + idDiabetologo + "; dataNascita: " +
                 dataNascita + "; peso: " + peso + "; provinciaResidenza: " + provinciaResidenza +
-                "; comuneResidenza: " + comuneResidenza + "; notePaziente: " + notePaziente;
+                "; comuneResidenza: " + comuneResidenza + "; notePaziente: " + notePaziente
+                + "; profileImagePath: " + profileImagePath;
     }
 
     @Override
@@ -64,7 +79,7 @@ public class PazienteUser extends User implements Paziente{
     }
 
     @Override
-    public int getIdMedico() {
+    public Integer getIdMedico() {
         return idDiabetologo;
     }
 
@@ -74,7 +89,7 @@ public class PazienteUser extends User implements Paziente{
     }
 
     @Override
-    public double getPeso() {
+    public Double getPeso() {
         return peso;
     }
 
@@ -91,5 +106,15 @@ public class PazienteUser extends User implements Paziente{
     @Override
     public String getNotePaziente() {
         return notePaziente;
+    }
+
+    @Override
+    public String getProfileImagePath() {
+        return profileImagePath;
+    }
+
+    @Override
+    public void setProfileImagePath(String newProfileImagePath) {
+        this.profileImagePath = newProfileImagePath;
     }
 }

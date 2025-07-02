@@ -49,7 +49,8 @@ CREATE TABLE diabetologo (
 	cognome VARCHAR(50) NOT NULL,
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    email VARCHAR(100) NOT NULL
+    email VARCHAR(100) NOT NULL,
+    profile_image_path TEXT
 );
 
 -- Tabella paziente
@@ -66,6 +67,7 @@ CREATE TABLE paziente (
     provincia_residenza VARCHAR(2),
     comune_residenza VARCHAR(100),
     note_paziente TEXT,
+    profile_image_path TEXT,
     FOREIGN KEY(id_diabetologo) REFERENCES diabetologo(id)
 );
 
@@ -76,8 +78,7 @@ CREATE TABLE log (
     id_paziente INTEGER NOT NULL,
     id_diabetologo INTEGER NOT NULL,
     azione TEXT NOT NULL,
-    timestamp DATETIME DEFAULT CURRE
-    NT_TIMESTAMP,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(id_paziente) REFERENCES paziente(id),
     FOREIGN KEY(id_diabetologo) REFERENCES diabetologo(id)
 );

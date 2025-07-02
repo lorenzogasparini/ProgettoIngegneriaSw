@@ -9,6 +9,12 @@ public class AdminUser extends User implements Admin{
         this(null, username, null, null, null);
     }
 
+
+    public AdminUser(AdminUser adminUser, String newPassword){
+        this(adminUser.getId(), adminUser.getUsername(), newPassword,
+                adminUser.getNome(), adminUser.getCognome());
+    }
+
     /**
      * Constructor for creating a user with username and password
      *

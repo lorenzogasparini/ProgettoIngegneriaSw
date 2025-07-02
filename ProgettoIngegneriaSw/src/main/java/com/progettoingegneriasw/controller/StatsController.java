@@ -34,7 +34,7 @@ public class StatsController {
     @FXML
     public void initialize() {
         userDAO = UserDAO.getLoggedUserDAO();
-        currentUsername = ViewNavigator.getAuthenticatedUser();
+        currentUsername = ViewNavigator.getAuthenticatedUsername();
         user = userDAO.getUser(currentUsername);
         
         if (user.isAdmin()) {

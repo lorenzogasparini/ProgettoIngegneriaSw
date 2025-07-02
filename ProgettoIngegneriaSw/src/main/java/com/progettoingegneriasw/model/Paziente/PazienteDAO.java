@@ -5,10 +5,6 @@ import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.model.Utils.*;
 import com.progettoingegneriasw.view.ViewNavigator;
 
-import java.awt.*;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -148,9 +144,9 @@ public class PazienteDAO extends UserDAO {
     }
 
     public boolean getFarmacoAssuntoOggi(Farmaco farmaco) throws SQLException {
-        int id_paziente = getIdFromDB(ViewNavigator.getAuthenticatedUser());
+        int id_paziente = getIdFromDB(ViewNavigator.getAuthenticatedUsername());
 
-        Map<Farmaco, Boolean> ril = getFarmaciPazienteEAssunzioni(ViewNavigator.getAuthenticatedUser());
+        Map<Farmaco, Boolean> ril = getFarmaciPazienteEAssunzioni(ViewNavigator.getAuthenticatedUsername());
 
         return ril.get(farmaco).booleanValue();
     }
@@ -217,7 +213,8 @@ public class PazienteDAO extends UserDAO {
                                 rs.getString("password"),
                                 rs.getString("nome"),
                                 rs.getString("cognome"),
-                                rs.getString("email")
+                                rs.getString("email"),
+                                rs.getString("profile_image_path")
                         );
                     }
                     return null;

@@ -7,8 +7,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 
-import javax.swing.text.View;
-
 public class DashboardController {
     @FXML
     private Label welcomeLabel;
@@ -27,17 +25,17 @@ public class DashboardController {
     @FXML
     public void initialize() {
         // This is a protected view, so we should always have an authenticated user
-        String username = ViewNavigator.getAuthenticatedUser();
+        String username = ViewNavigator.getAuthenticatedUsername();
         userDAO = UserDAO.getInstance();
-        welcomeLabel.setText("Benvenuto nella tua dashboard, " + (userDAO.getUser(ViewNavigator.getAuthenticatedUser()).isMedico() ? "dott. " : " ") + username + "!");
+        welcomeLabel.setText("Benvenuto nella tua dashboard, " + (userDAO.getUser(ViewNavigator.getAuthenticatedUsername()).isMedico() ? "dott. " : " ") + username + "!");
 
         userDAO = UserDAO.getInstance();
-        if(userDAO.getUser(ViewNavigator.getAuthenticatedUser()).isMedico()) {
+        if(userDAO.getUser(ViewNavigator.getAuthenticatedUsername()).isMedico()) {
             handlingPanelPaziente.setManaged(false);
             handlingPanelPaziente.setVisible(false);
             handlingPanelMedico.setManaged(true);
         }
-        else if(userDAO.getUser(ViewNavigator.getAuthenticatedUser()).isPaziente()){
+        else if(userDAO.getUser(ViewNavigator.getAuthenticatedUsername()).isPaziente()){
             handlingPanelPaziente.setManaged(true);
             handlingPanelMedico.setManaged(false);
             handlingPanelMedico.setVisible(false);

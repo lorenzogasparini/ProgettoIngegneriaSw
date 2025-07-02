@@ -3,20 +3,20 @@ package com.progettoingegneriasw.controller;
 
 import com.progettoingegneriasw.model.Medico.MedicoDAO;
 import com.progettoingegneriasw.model.Paziente.Paziente;
+import com.progettoingegneriasw.model.Paziente.PazienteUser;
+import com.progettoingegneriasw.model.User;
+import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.model.Utils.*;
 import com.progettoingegneriasw.view.ViewNavigator;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.control.Alert;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 
-import javax.swing.text.View;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
@@ -27,14 +27,20 @@ public class UserHandlingController {
     @FXML
     private Button registerButton;
 
-    @FXML
-    private Label label1;
-    @FXML
-    private Label label2;
-    @FXML
-    private Label label3;
-    @FXML
-    private Label label4;
+    @FXML private VBox datiViewBox;
+    @FXML private Label label1;
+    @FXML private Label label2;
+    @FXML private Label label3;
+    @FXML private Label label4;
+
+    @FXML private VBox datiEditBox;
+    @FXML private TextField nomeField;
+    @FXML private TextField cognomeField;
+    @FXML private TextField emailField;
+    @FXML private TextField pesoField;
+    @FXML private TextArea noteArea;
+
+
 
     @FXML private TableView<Terapia> tableViewTerapie;
     @FXML private TableColumn<Terapia, Integer> dosiGiornaliere;
@@ -67,6 +73,16 @@ public class UserHandlingController {
         label3.setText("Peso: " + TestController.selectedUser.getPeso() + " Kg");
         label4.setText("Note: " + TestController.selectedUser.getNotePaziente());
 
+        // Popola i campi modificabili con i dati del paziente selezionato
+        Paziente paziente = TestController.selectedUser;
+
+        nomeField.setText(paziente.getNome());
+        cognomeField.setText(paziente.getCognome());
+        emailField.setText(paziente.getEmail());
+        pesoField.setText(String.valueOf(paziente.getPeso()));
+        noteArea.setText(paziente.getNotePaziente());
+
+
         dosiGiornaliere.setCellValueFactory(new PropertyValueFactory<Terapia, Integer>("dosiGiornaliere"));
         quantitaPerDose.setCellValueFactory(new PropertyValueFactory<Terapia, Double>("quantitaPerDose"));
         note.setCellValueFactory(new PropertyValueFactory<Terapia, String>("note"));
@@ -93,7 +109,7 @@ public class UserHandlingController {
         intensita.setCellValueFactory(new PropertyValueFactory<RilevazioneSintomo, Integer>("intensita"));
 
         MedicoDAO medicoDAO = MedicoDAO.getInstance();
-        medicoDAO.getUser(ViewNavigator.getAuthenticatedUser());
+        medicoDAO.getUser(ViewNavigator.getAuthenticatedUsername());
         Terapia[] terapie = medicoDAO.getTerapiePaziente(TestController.selectedUser.getUsername());
         RilevazioneFarmaco[] rilevazioniFarmaci = medicoDAO.getRilevazioniFarmaco(TestController.selectedUser.getUsername());
         RilevazioneGlicemia[] rilevazioniGlicemia = medicoDAO.getRilevazioniGlicemia(TestController.selectedUser.getUsername());
@@ -147,4 +163,79 @@ public class UserHandlingController {
         TestController.selectedUser = null;
         ViewNavigator.navigateToDashboard();
     }
+
+
+    @FXML
+    private void showDatiEditBox() {
+        datiViewBox.setVisible(false);
+        datiViewBox.setManaged(false);
+
+        datiEditBox.setVisible(true);
+        datiEditBox.setManaged(true);
+
+        // Popola i campi editabili con i dati attuali
+        Paziente user = TestController.selectedUser;
+        nomeField.setText(user.getNome());
+        cognomeField.setText(user.getCognome());
+        emailField.setText(user.getEmail());
+        pesoField.setText(String.valueOf(user.getPeso()));
+        noteArea.setText(user.getNotePaziente());
+    }
+
+    @FXML
+    private void showDatiViewBox(Paziente paziente){
+        // Aggiorna la visualizzazione
+        label1.setText(paziente.getNome() + ", " + paziente.getCognome() + ", " + paziente.getDataNascita());
+        label2.setText(paziente.getEmail());
+        label3.setText("Peso: " + paziente.getPeso() + " Kg");
+        label4.setText("Note: " + paziente.getNotePaziente());
+
+        // Torna alla vista iniziale
+        datiEditBox.setVisible(false);
+        datiEditBox.setManaged(false);
+        datiViewBox.setVisible(true);
+        datiViewBox.setManaged(true);
+    }
+
+    @FXML
+    private void handleSalvaDatiPaziente() {
+        try {
+            Paziente paziente = TestController.selectedUser;
+
+            //todo: consentire la modifica di altri campi?
+            Paziente pazienteUpdated = new PazienteUser(
+                    TestController.selectedUser.getId(),
+                    TestController.selectedUser.getUsername(),
+                    TestController.selectedUser.getPassword(),
+                    nomeField.getText(),
+                    cognomeField.getText(),
+                    emailField.getText(),
+                    TestController.selectedUser.getIdMedico(),
+                    TestController.selectedUser.getDataNascita(),
+                    Double.parseDouble(pesoField.getText()),
+                    TestController.selectedUser.getProvinciaResidenza(),
+                    TestController.selectedUser.getComuneResidenza(),
+                    noteArea.getText(),
+                    TestController.selectedUser.getProfileImagePath()
+            );
+
+            UserDAO.getInstance().saveUser((User) pazienteUpdated);
+
+            showDatiViewBox(pazienteUpdated);
+
+
+        } catch (Exception e) {
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Errore");
+            errorAlert.setHeaderText("Errore durante il salvataggio");
+            errorAlert.setContentText("Verifica che i campi siano corretti");
+            errorAlert.showAndWait();
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
 }
