@@ -59,7 +59,7 @@ public class MedicoDAO extends UserDAO {
                                         rs.getString("provincia_residenza"),
                                         rs.getString("comune_residenza"),
                                         rs.getString("note_paziente"),
-                                        rs.getString("profile_image_path")
+                                        rs.getString("profile_image_name")
                                 )
                         );
                     }
@@ -97,7 +97,7 @@ public class MedicoDAO extends UserDAO {
                                     rs.getString("provincia_residenza"),
                                     rs.getString("comune_residenza"),
                                     rs.getString("note_paziente"),
-                                    rs.getString("profile_image_path")
+                                    rs.getString("profile_image_name")
                                 )
                         );
                     }

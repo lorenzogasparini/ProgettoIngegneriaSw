@@ -1,4 +1,5 @@
 package com.progettoingegneriasw.controller;
+import com.progettoingegneriasw.config.AppConfig;
 import com.progettoingegneriasw.model.Medico.MedicoUser;
 import com.progettoingegneriasw.model.Paziente.PazienteUser;
 import com.progettoingegneriasw.model.User;
@@ -9,8 +10,11 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
+import java.io.File;
 import java.sql.SQLException;
 
 public class ContattaUtenteController {
@@ -29,8 +33,8 @@ public class ContattaUtenteController {
     @FXML private VBox VBoxContatta;
 
     @FXML private VBox VBoxDestinatario;
+    @FXML private ImageView profileImage;
     @FXML private TextField emailDestinatario;
-
     @FXML private VBox VBoxOggetto;
     @FXML private TextField emailOggetto;
 
@@ -74,10 +78,12 @@ public class ContattaUtenteController {
             if (selectedUser != null) {
                 if(selectedUser.isMedico()) {
                     MedicoUser medico = (MedicoUser) userDAO.getUser(selectedUser.getUsername());
+                    loadProfileImage(medico.getProfileImageName());
                     emailDestinatario.setText(medico.getEmail());
                 }
                 else if(selectedUser.isPaziente()){
                     PazienteUser paziente = (PazienteUser) userDAO.getUser(selectedUser.getUsername());
+                    loadProfileImage(paziente.getProfileImageName());
                     emailDestinatario.setText(paziente.getEmail());
                 }
                 else{
@@ -108,5 +114,16 @@ public class ContattaUtenteController {
     @FXML
     private void handleDashboard() {
         ViewNavigator.navigateToDashboard();
+    }
+
+    private void loadProfileImage(String profileImageName){
+        String imagePath = AppConfig.IMAGE_DIR + profileImageName;
+
+        if (imagePath != null && !imagePath.isEmpty()) {
+            File file = new File(imagePath);
+            if (file.exists()) {
+                profileImage.setImage(new Image(file.toURI().toString()));
+            }
+        }
     }
 }

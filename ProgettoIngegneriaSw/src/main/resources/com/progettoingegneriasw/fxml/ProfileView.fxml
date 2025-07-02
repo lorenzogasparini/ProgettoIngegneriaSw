@@ -37,7 +37,7 @@
             <!-- Image container -->
             <VBox alignment="CENTER" spacing="10">
                <ImageView fx:id="profileImage"
-                          fitHeight="160" fitWidth="160"
+                          fitHeight="400" fitWidth="400"
                           preserveRatio="true"
                           styleClass="profile-image" />
                <Button text="Cambia immagine profilo" onAction="#handleCambiaImmagine" />
@@ -69,14 +69,11 @@
 
       <VBox styleClass="card">
          <children>
-            <Label styleClass="card-header" text="Change Password" />
+            <Label styleClass="card-header" text="Cambia Password" />
             <Label fx:id="statusLabel" styleClass="alert-success" text="Status message" 
-                   wrapText="true" visible="false" managed="true">
-               <VBox.margin>
-                  <Insets bottom="10.0" top="10.0" />
-               </VBox.margin>
+                   wrapText="true" visible="false" managed="false">
             </Label>
-            <VBox spacing="10.0">
+            <VBox>
                <children>
                   <Label styleClass="form-label" text="New Password" />
                   <PasswordField fx:id="newPasswordField" promptText="Enter new password" 

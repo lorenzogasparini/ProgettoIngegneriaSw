@@ -19,7 +19,7 @@ public class MedicoUser extends User implements Medico{
 
     public MedicoUser(MedicoUser medicoUser, String newPassword){
         this(medicoUser.getId(), medicoUser.getUsername(), newPassword, medicoUser.getNome(),
-                medicoUser.getCognome(), medicoUser.getEmail(), medicoUser.getProfileImagePath());
+                medicoUser.getCognome(), medicoUser.getEmail(), medicoUser.getProfileImageName());
     }
 
     public MedicoUser(String username, String password) {
@@ -35,7 +35,7 @@ public class MedicoUser extends User implements Medico{
         super(id, username, password, nome, cognome);
         this.email = email;
         this.profileImagePath = (profileImagePath == null || profileImagePath.isEmpty())
-                ? AppConfig.DEFAULT_IMAGE_PATH
+                ? AppConfig.DEFAULT_IMAGE
                 : profileImagePath;
     }
 
@@ -55,12 +55,12 @@ public class MedicoUser extends User implements Medico{
     }
 
     @Override
-    public String getProfileImagePath() {
+    public String getProfileImageName() {
         return profileImagePath;
     }
 
     @Override
-    public void setProfileImagePath(String newProfileImagePath) {
-        this.profileImagePath = newProfileImagePath;
+    public void setProfileImageName(String newProfileImageName) {
+        this.profileImagePath = newProfileImageName;
     }
 }

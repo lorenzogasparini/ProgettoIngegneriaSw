@@ -1,11 +1,14 @@
 package com.progettoingegneriasw.controller;
 
 
+import com.progettoingegneriasw.config.AppConfig;
+import com.progettoingegneriasw.model.Medico.Medico;
 import com.progettoingegneriasw.model.Medico.MedicoDAO;
 import com.progettoingegneriasw.model.Paziente.Paziente;
 import com.progettoingegneriasw.model.Paziente.PazienteUser;
 import com.progettoingegneriasw.model.User;
 import com.progettoingegneriasw.model.UserDAO;
+import com.progettoingegneriasw.model.UserTypes;
 import com.progettoingegneriasw.model.Utils.*;
 import com.progettoingegneriasw.view.ViewNavigator;
 import javafx.beans.property.SimpleStringProperty;
@@ -15,8 +18,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
@@ -28,6 +34,7 @@ public class UserHandlingController {
     private Button registerButton;
 
     @FXML private VBox datiViewBox;
+    @FXML private ImageView profileImage;
     @FXML private Label label1;
     @FXML private Label label2;
     @FXML private Label label3;
@@ -68,6 +75,7 @@ public class UserHandlingController {
     @FXML private TableColumn<RilevazioneSintomo, Integer> intensita;
 
     public void initialize() throws SQLException {
+        loadProfileImage(TestController.selectedUser.getProfileImageName());
         label1.setText(TestController.selectedUser.getNome() + ", " + TestController.selectedUser.getCognome() + ", " + TestController.selectedUser.getDataNascita());
         label2.setText(TestController.selectedUser.getEmail());
         label3.setText("Peso: " + TestController.selectedUser.getPeso() + " Kg");
@@ -216,7 +224,7 @@ public class UserHandlingController {
                     TestController.selectedUser.getProvinciaResidenza(),
                     TestController.selectedUser.getComuneResidenza(),
                     noteArea.getText(),
-                    TestController.selectedUser.getProfileImagePath()
+                    TestController.selectedUser.getProfileImageName()
             );
 
             UserDAO.getInstance().saveUser((User) pazienteUpdated);
@@ -234,7 +242,16 @@ public class UserHandlingController {
         }
     }
 
+    private void loadProfileImage(String profileImageName){
+        String imagePath = AppConfig.IMAGE_DIR + profileImageName;
 
+        if (imagePath != null && !imagePath.isEmpty()) {
+            File file = new File(imagePath);
+            if (file.exists()) {
+                profileImage.setImage(new Image(file.toURI().toString()));
+            }
+        }
+    }
 
 
 

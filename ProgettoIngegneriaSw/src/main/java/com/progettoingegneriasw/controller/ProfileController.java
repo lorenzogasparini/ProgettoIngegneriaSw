@@ -53,6 +53,7 @@ public class ProfileController {
         
         // Hide the status label initially
         statusLabel.setVisible(false);
+        statusLabel.setManaged(false);
     }
     
     /**
@@ -124,17 +125,17 @@ public class ProfileController {
                 */
                 File destDir = new File(AppConfig.IMAGE_DIR);
 
-                // Copia l'immagine con un nome unico --> todo: da capiare se è necessario
+
                 String fileName = selectedFile.getName();
                 File destFile = new File(destDir, fileName);
                 Files.copy(selectedFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
                 if(currentUser instanceof Medico m){
                     // update medico profile image
-                    m.setProfileImagePath(destFile.getPath());
+                    m.setProfileImageName(fileName);
                 }else if(currentUser instanceof Paziente p){
                     // update paziente profile image
-                    p.setProfileImagePath(destFile.getPath());
+                    p.setProfileImageName(fileName);
                 }
 
                 // Salva nel DB
@@ -157,10 +158,11 @@ public class ProfileController {
      */
     private void showError(String message) {
         statusLabel.setText(message);
-        statusLabel.setStyle("-fx-text-fill: red;");
+        statusLabel.setStyle("-fx-text-fill: red;"); // todo: il bordo resta verde in caso di errore
         statusLabel.setVisible(true);
+        statusLabel.setManaged(true);
     }
-    
+
     /**
      * Show a success message in the status label.
      * 
@@ -170,6 +172,7 @@ public class ProfileController {
         statusLabel.setText(message);
         statusLabel.setStyle("-fx-text-fill: green;");
         statusLabel.setVisible(true);
+        statusLabel.setManaged(true);
     }
 
     private void loadProfileImage(String currentUsername){
@@ -179,11 +182,11 @@ public class ProfileController {
         switch (currentUser.getUserType()){
             case UserTypes.Medico -> {
                 if (currentUser instanceof Medico m)
-                    imagePath = m.getProfileImagePath();
+                    imagePath = AppConfig.IMAGE_DIR + m.getProfileImageName();
             }
             case UserTypes.Paziente -> {
                 if (currentUser instanceof Paziente p){
-                    imagePath = p.getProfileImagePath();
+                    imagePath = AppConfig.IMAGE_DIR+ p.getProfileImageName();
                 }
             }
         }

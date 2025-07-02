@@ -3,7 +3,6 @@ package com.progettoingegneriasw.model.Paziente;
 import com.progettoingegneriasw.model.UserInterface;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 
 public interface Paziente extends UserInterface {
     // todo: altri metodi esclusivi dei pazienti
@@ -14,6 +13,6 @@ public interface Paziente extends UserInterface {
     public String getProvinciaResidenza();
     public String getComuneResidenza();
     public String getNotePaziente();
-    public String getProfileImagePath();
-    public void setProfileImagePath(String newProfileImagePath);
+    public String getProfileImageName();
+    public void setProfileImageName(String newProfileImageName);
 }
