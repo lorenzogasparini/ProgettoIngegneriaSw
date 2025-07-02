@@ -54,7 +54,7 @@ public class NavBar extends HBox {
      * Create navigation buttons for authenticated users
      */
     private void createAuthenticatedNavButtons() {
-        Button homeBtn = createNavButton("Home", e -> ViewNavigator.navigateToHome());
+        //  Button homeBtn = createNavButton("Home", e -> ViewNavigator.navigateToHome());
         Button dashboardBtn = createNavButton("Dashboard", e -> ViewNavigator.navigateToDashboard());
         Button profileBtn = createNavButton("Profile", e -> ViewNavigator.navigateToProfile());
         
@@ -63,7 +63,7 @@ public class NavBar extends HBox {
         
         Button logoutBtn = createNavButton("Logout", e -> ViewNavigator.logout());
         
-        this.getChildren().addAll(homeBtn, dashboardBtn, profileBtn, logoutBtn);
+        this.getChildren().addAll(dashboardBtn, profileBtn, logoutBtn);
     }
     
     /**
@@ -86,16 +86,14 @@ public class NavBar extends HBox {
         button.setOnAction(handler);
         
         // Hover effect
-        button.setOnMouseEntered(e -> 
-            button.setStyle("-fx-background-color: #21867a; -fx-text-fill: white; -fx-cursor: hand;"));
+        button.setOnMouseEntered(e ->
+            button.setStyle("-fx-background-color: #21867a; -fx-border-width: 1; -fx-background-radius: 50 50 50 50; -fx-text-fill: white; -fx-cursor: hand;"));
         button.setOnMouseExited(e ->
             button.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-cursor: hand;"));
 
-        //  Completare creando il riquadro ovale come previsto nella gist: deve collegarsi con il hbox bianco e deve avere colore
-        //  bianco di sfondo.
         /*
         button.setOnMouseClicked(e ->
-            button.setStyle("-fx-background-color: #f5f5f5; -fx-border-color: #cccccc; -fx-border-width: 1; -fx-border-radius: 5; -fx-padding: 10;"));
+            button.setStyle("-fx-background-color: #f5f5f5; -fx-text-fill: #21867a; -fx-border-width: 1; -fx-background-radius: 20 20 0 0; -fx-padding: 8;"));
         */
 
         return button;

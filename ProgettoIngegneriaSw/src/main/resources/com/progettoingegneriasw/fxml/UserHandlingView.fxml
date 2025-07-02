@@ -78,7 +78,7 @@
 
                 </VBox>
 
-                <VBox alignment="CENTER" HBox.hgrow="ALWAYS" prefHeight="600" prefWidth="300" styleClass="card, container" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+                <VBox alignment="CENTER" HBox.hgrow="ALWAYS" prefHeight="600" prefWidth="400" styleClass="card, container" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
                     <children>
                         <Label text="Rilevazioni" textAlignment="CENTER">
                             <font>
