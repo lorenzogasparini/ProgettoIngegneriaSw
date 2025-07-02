@@ -8,8 +8,19 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox spacing="20.0" styleClass="container" xmlns="http://javafx.com/javafx/16" 
-      xmlns:fx="http://javafx.com/fxml/1" 
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+
+<VBox spacing="20.0" styleClass="container" xmlns="http://javafx.com/javafx/16"
+      xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.progettoingegneriasw.controller.ProfileController">
    <children>
       <Label text="User Profile" textAlignment="CENTER">
@@ -19,27 +30,43 @@
       </Label>
       <Label text="This is a protected profile page. Only logged-in users can see this." 
              wrapText="true" />
-      <VBox styleClass="card">
+      <VBox styleClass="card" spacing="15" alignment="CENTER">
          <children>
-            <Label styleClass="card-header" text="Personal Information" />
-            <VBox spacing="10.0">
-               <padding>
-                  <Insets top="10.0" />
-               </padding>
-               <children>
-                  <HBox alignment="CENTER_LEFT" spacing="10.0">
-                     <children>
-                        <Label styleClass="form-label" text="Username:" />
-                        <Label fx:id="usernameLabel" text="username" />
-                     </children>
-                  </HBox>
-               </children>
+            <Label styleClass="card-header" text="Informazioni personali" />
+
+            <!-- Image container -->
+            <VBox alignment="CENTER" spacing="10">
+               <ImageView fx:id="profileImage"
+                          fitHeight="160" fitWidth="160"
+                          preserveRatio="true"
+                          styleClass="profile-image" />
+               <Button text="Cambia immagine profilo" onAction="#handleCambiaImmagine" />
             </VBox>
+
+            <!-- Username and other info -->
+            <GridPane hgap="10" vgap="5">
+               <columnConstraints>
+                  <ColumnConstraints halignment="RIGHT" />
+                  <ColumnConstraints halignment="LEFT" />
+               </columnConstraints>
+
+               <rowConstraints>
+                  <RowConstraints valignment="CENTER" />
+               </rowConstraints>
+
+               <children>
+                  <Label text="Username:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                  <Label fx:id="usernameLabel" text="username" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+               </children>
+            </GridPane>
+
          </children>
+
          <padding>
-            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+            <Insets top="20" right="20" bottom="20" left="20"/>
          </padding>
       </VBox>
+
       <VBox styleClass="card">
          <children>
             <Label styleClass="card-header" text="Change Password" />

@@ -1,5 +1,6 @@
 package com.progettoingegneriasw;
 
+import com.progettoingegneriasw.config.AppConfig;
 import com.progettoingegneriasw.model.Admin.AdminDAO;
 import com.progettoingegneriasw.model.Admin.AdminUser;
 import com.progettoingegneriasw.model.Medico.MedicoDAO;
@@ -230,8 +231,8 @@ public class Main extends Application {
             System.out.println(pazienteUser.toString());
         }
 
-        MedicoUser newMedicoUser = new MedicoUser("drdestri", "12345", "Mario",
-                "Destri", "mario.destri@gmail.it");
+        MedicoUser newMedicoUser = new MedicoUser("drdestri", "123456", "Mario",
+                "Destri", "mario.destri@gmail.it", AppConfig.IMAGE_DIR + "/drdestri.png"); // todo: mettere le immagini reali
         medicoDAO.saveUser(newMedicoUser);
 
         /*  TEST DAO Query : MedicoDAO */
@@ -387,7 +388,7 @@ public class Main extends Application {
         PazienteUser newPazienteUser = new PazienteUser("rebonato.mattia", "1234", "Mattia",
                 "Rebonato", "mattia.rebonato@gmail.com", 1,
                 Date.valueOf("2004-05-01"), 65.0, "VR",
-                "Angiari","non assume regolarmente i farmaci e ha spesso problemi!");
+                "Angiari","non assume regolarmente i farmaci e ha spesso problemi!", AppConfig.IMAGE_DIR + "/rebonato.mattia.png");
         pazienteDAO.saveUser(newPazienteUser);
 
 

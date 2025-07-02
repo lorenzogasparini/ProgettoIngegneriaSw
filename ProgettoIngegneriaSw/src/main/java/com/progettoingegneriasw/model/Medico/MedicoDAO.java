@@ -58,7 +58,8 @@ public class MedicoDAO extends UserDAO {
                                         rs.getDouble("peso"),
                                         rs.getString("provincia_residenza"),
                                         rs.getString("comune_residenza"),
-                                        rs.getString("note_paziente")
+                                        rs.getString("note_paziente"),
+                                        rs.getString("profile_image_path")
                                 )
                         );
                     }
@@ -95,7 +96,8 @@ public class MedicoDAO extends UserDAO {
                                     rs.getDouble("peso"),
                                     rs.getString("provincia_residenza"),
                                     rs.getString("comune_residenza"),
-                                    rs.getString("note_paziente")
+                                    rs.getString("note_paziente"),
+                                    rs.getString("profile_image_path")
                                 )
                         );
                     }
@@ -691,7 +693,7 @@ public class MedicoDAO extends UserDAO {
                     }
                     return null;
                 },
-                getIdFromDB(ViewNavigator.getAuthenticatedUser())
+                getIdFromDB(ViewNavigator.getAuthenticatedUsername())
         );
 
         return alerts.toArray(new Alert[0]);

@@ -9,6 +9,8 @@ public class AppConfig {
     // Data storage settings
     public static final String DATA_DIR = System.getProperty("user.dir") + "/src/main/resources/com/progettoingegneriasw/data";
     public static final String DATABASE_PATH = DATA_DIR + "/DiabeteDB.db";
+    public static final String IMAGE_DIR = System.getProperty("user.dir") + "/src/main/resources/images";
+    public static final String DEFAULT_IMAGE_PATH = IMAGE_DIR + "default.png";
 
 //    public static final String DATA_DIR = "src/resources/data";
 //    public static final String DATABASE_PATH = DATA_DIR + "/Diabete.db";

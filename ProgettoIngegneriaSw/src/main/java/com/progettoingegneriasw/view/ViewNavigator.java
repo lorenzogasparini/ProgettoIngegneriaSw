@@ -2,9 +2,6 @@ package com.progettoingegneriasw.view;
 
 import com.progettoingegneriasw.Main;
 import com.progettoingegneriasw.controller.MainController;
-import com.progettoingegneriasw.controller.TestController;
-import com.progettoingegneriasw.model.UserDAO;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 
@@ -173,7 +170,7 @@ public class ViewNavigator {
      * Get the authenticated user
      * @return The username of the authenticated user, or null if not authenticated
      */
-    public static String getAuthenticatedUser() {
+    public static String getAuthenticatedUsername() {
         return authenticatedUser;
     }
     

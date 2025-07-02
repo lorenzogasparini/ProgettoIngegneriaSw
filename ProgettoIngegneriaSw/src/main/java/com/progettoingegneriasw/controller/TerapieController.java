@@ -11,9 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.VBox;
 
 import java.sql.SQLException;
 
@@ -35,7 +33,7 @@ public class TerapieController {
         Codice_aic.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFarmaco().getCodiceAic()));
 
         MedicoDAO medicoDAO = MedicoDAO.getInstance();
-        Terapia[] terapie = medicoDAO.getTerapiePaziente(ViewNavigator.getAuthenticatedUser());
+        Terapia[] terapie = medicoDAO.getTerapiePaziente(ViewNavigator.getAuthenticatedUsername());
 
         ObservableList<Terapia> ter = FXCollections.observableArrayList(terapie);
 

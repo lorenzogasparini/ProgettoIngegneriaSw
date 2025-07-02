@@ -2,20 +2,14 @@ package com.progettoingegneriasw.controller;
 
 import com.progettoingegneriasw.model.Medico.MedicoDAO;
 import com.progettoingegneriasw.model.Paziente.Paziente;
-import com.progettoingegneriasw.model.User;
-import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.view.ViewNavigator;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -59,8 +53,8 @@ public class TestController {
         notePaziente.setCellValueFactory(new PropertyValueFactory<Paziente, String>("notePaziente"));
 
         MedicoDAO medicoDAO = MedicoDAO.getInstance();
-        medicoDAO.getUser(ViewNavigator.getAuthenticatedUser());
-        Paziente[] pazienti = medicoDAO.getPazientiFromDB(ViewNavigator.getAuthenticatedUser());
+        medicoDAO.getUser(ViewNavigator.getAuthenticatedUsername());
+        Paziente[] pazienti = medicoDAO.getPazientiFromDB(ViewNavigator.getAuthenticatedUsername());
 
         ObservableList<Paziente> users = FXCollections.observableArrayList(pazienti);
 

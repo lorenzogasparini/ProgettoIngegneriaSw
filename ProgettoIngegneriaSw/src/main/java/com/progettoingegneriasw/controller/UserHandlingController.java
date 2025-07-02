@@ -109,7 +109,7 @@ public class UserHandlingController {
         intensita.setCellValueFactory(new PropertyValueFactory<RilevazioneSintomo, Integer>("intensita"));
 
         MedicoDAO medicoDAO = MedicoDAO.getInstance();
-        medicoDAO.getUser(ViewNavigator.getAuthenticatedUser());
+        medicoDAO.getUser(ViewNavigator.getAuthenticatedUsername());
         Terapia[] terapie = medicoDAO.getTerapiePaziente(TestController.selectedUser.getUsername());
         RilevazioneFarmaco[] rilevazioniFarmaci = medicoDAO.getRilevazioniFarmaco(TestController.selectedUser.getUsername());
         RilevazioneGlicemia[] rilevazioniGlicemia = medicoDAO.getRilevazioniGlicemia(TestController.selectedUser.getUsername());
@@ -215,7 +215,8 @@ public class UserHandlingController {
                     Double.parseDouble(pesoField.getText()),
                     TestController.selectedUser.getProvinciaResidenza(),
                     TestController.selectedUser.getComuneResidenza(),
-                    noteArea.getText()
+                    noteArea.getText(),
+                    TestController.selectedUser.getProfileImagePath()
             );
 
             UserDAO.getInstance().saveUser((User) pazienteUpdated);

@@ -2,7 +2,6 @@ package com.progettoingegneriasw.controller;
 
 import com.progettoingegneriasw.model.Medico.MedicoDAO;
 import com.progettoingegneriasw.model.Paziente.PazienteDAO;
-import com.progettoingegneriasw.model.User;
 import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.model.Utils.*;
 import com.progettoingegneriasw.view.ViewNavigator;
@@ -78,7 +77,7 @@ public class RilevazioniHandlingController {
 
         PazienteDAO pazienteDao = PazienteDAO.getInstance();
 
-        Farmaco[] farmaciAssegnati = pazienteDao.getFarmaciPaziente(ViewNavigator.getAuthenticatedUser());
+        Farmaco[] farmaciAssegnati = pazienteDao.getFarmaciPaziente(ViewNavigator.getAuthenticatedUsername());
 
         ObservableList<Farmaco> farmaci = FXCollections.observableArrayList(comboBoxFarmaco.getItems());
         farmaci.addAll(farmaciAssegnati);
@@ -103,7 +102,7 @@ public class RilevazioniHandlingController {
             inserisciRilevazioneButton.setVisible(true);
 
             MedicoDAO medicoDAO = MedicoDAO.getInstance();
-            idPazienteNuovaRilevazione.setText("" + medicoDAO.getIdFromDB(ViewNavigator.getAuthenticatedUser()));
+            idPazienteNuovaRilevazione.setText("" + medicoDAO.getIdFromDB(ViewNavigator.getAuthenticatedUsername()));
 
             if(rilevazioneSelezionata.equals("Rilevazione glicemia")){
                 VBoxNuovaRilevazioneFarmaco.setManaged(false);
@@ -181,10 +180,10 @@ public class RilevazioniHandlingController {
         intensita.setCellValueFactory(new PropertyValueFactory<RilevazioneSintomo, Integer>("intensita"));
 
         MedicoDAO medicoDAO = MedicoDAO.getInstance();
-        medicoDAO.getUser(ViewNavigator.getAuthenticatedUser());
-        RilevazioneFarmaco[] rilevazioniFarmaci = medicoDAO.getRilevazioniFarmaco(ViewNavigator.getAuthenticatedUser());
-        RilevazioneGlicemia[] rilevazioniGlicemia = medicoDAO.getRilevazioniGlicemia(ViewNavigator.getAuthenticatedUser());
-        RilevazioneSintomo[] rilevazioniSintomi = medicoDAO.getRilevazioniSintomo(ViewNavigator.getAuthenticatedUser());
+        medicoDAO.getUser(ViewNavigator.getAuthenticatedUsername());
+        RilevazioneFarmaco[] rilevazioniFarmaci = medicoDAO.getRilevazioniFarmaco(ViewNavigator.getAuthenticatedUsername());
+        RilevazioneGlicemia[] rilevazioniGlicemia = medicoDAO.getRilevazioniGlicemia(ViewNavigator.getAuthenticatedUsername());
+        RilevazioneSintomo[] rilevazioniSintomi = medicoDAO.getRilevazioniSintomo(ViewNavigator.getAuthenticatedUsername());
 
         ObservableList<RilevazioneFarmaco> rilFarmaci = FXCollections.observableArrayList(rilevazioniFarmaci);
         ObservableList<RilevazioneGlicemia> rilGlicemia = FXCollections.observableArrayList(rilevazioniGlicemia);

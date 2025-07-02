@@ -14,5 +14,6 @@ public interface Paziente extends UserInterface {
     public String getProvinciaResidenza();
     public String getComuneResidenza();
     public String getNotePaziente();
-
+    public String getProfileImagePath();
+    public void setProfileImagePath(String newProfileImagePath);
 }

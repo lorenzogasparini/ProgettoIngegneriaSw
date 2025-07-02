@@ -1,12 +1,8 @@
 package com.progettoingegneriasw.controller;
-import com.progettoingegneriasw.model.Medico.MedicoDAO;
 import com.progettoingegneriasw.model.Medico.MedicoUser;
-import com.progettoingegneriasw.model.Paziente.Paziente;
 import com.progettoingegneriasw.model.Paziente.PazienteUser;
 import com.progettoingegneriasw.model.User;
 import com.progettoingegneriasw.model.UserDAO;
-import com.progettoingegneriasw.model.Utils.Alert;
-import com.progettoingegneriasw.model.Utils.Terapia;
 import com.progettoingegneriasw.view.ViewNavigator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,10 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 
-import java.awt.event.ActionEvent;
-import java.sql.Date;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 
 public class ContattaUtenteController {
     @FXML
@@ -55,7 +48,7 @@ public class ContattaUtenteController {
         email.setCellValueFactory(new PropertyValueFactory<User, String>("email"));
 
         UserDAO userDAO = UserDAO.getInstance();
-        userDAO.getUser(ViewNavigator.getAuthenticatedUser());
+        userDAO.getUser(ViewNavigator.getAuthenticatedUsername());
         User[] user = userDAO.getAllUsers();
 
         ObservableList<User> users = FXCollections.observableArrayList(user);

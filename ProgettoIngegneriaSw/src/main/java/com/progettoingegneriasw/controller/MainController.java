@@ -7,8 +7,6 @@ import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
-import javax.swing.text.View;
-
 public class MainController {
     @FXML
     private BorderPane mainContainer;
@@ -42,7 +40,7 @@ public class MainController {
      * Update the navigation bar based on authentication status
      */
     public void updateNavBar(boolean isAuthenticated) {
-        navBar.updateAuthStatus(isAuthenticated, ViewNavigator.getAuthenticatedUser());
+        navBar.updateAuthStatus(isAuthenticated, ViewNavigator.getAuthenticatedUsername());
     }
 
 //    public void checkAndShowAlerts(){
