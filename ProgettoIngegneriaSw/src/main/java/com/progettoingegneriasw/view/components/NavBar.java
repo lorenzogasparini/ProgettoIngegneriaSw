@@ -20,6 +20,8 @@ public class NavBar extends HBox {
     private String username;
 
     //  Creazione icone per i bottoni
+    // todo: imgBack è uguale all'icona di Logout
+    private Image imgBack = new Image("file:" + System.getProperty("user.dir") + "/src/main/java/com/progettoingegneriasw/view/components/buttonIcons/backIcon.png");
     private Image imgDashboard = new Image("file:" + System.getProperty("user.dir") + "/src/main/java/com/progettoingegneriasw/view/components/buttonIcons/dashboardIcon.png");
     private Image imgProfile = new Image("file:" + System.getProperty("user.dir") + "/src/main/java/com/progettoingegneriasw/view/components/buttonIcons/profileIcon.png");
     private Image imgLogout = new Image("file:" + System.getProperty("user.dir") + "/src/main/java/com/progettoingegneriasw/view/components/buttonIcons/logoutIcon.png");
@@ -75,6 +77,7 @@ public class NavBar extends HBox {
 
 
         //  Button homeBtn = createNavButton("Home", e -> ViewNavigator.navigateToHome());
+        Button backbutton = createNavButton("Back", e -> ViewNavigator.navigateBack(), imgBack);
         Button dashboardBtn = createNavButton("Dashboard", e -> ViewNavigator.navigateToDashboard(), imgDashboard);
         Button profileBtn = createNavButton("Profile", e -> ViewNavigator.navigateToProfile(), imgProfile);
         
@@ -89,7 +92,7 @@ public class NavBar extends HBox {
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        this.getChildren().addAll(dashboardBtn, profileBtn, logoutBtn, spacer, userBtn);
+        this.getChildren().addAll(backbutton, dashboardBtn, profileBtn, logoutBtn, spacer, userBtn);
     }
     
     /**

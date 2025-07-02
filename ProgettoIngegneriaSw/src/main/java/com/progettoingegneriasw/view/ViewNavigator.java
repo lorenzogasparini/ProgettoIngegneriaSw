@@ -7,6 +7,7 @@ import javafx.scene.Node;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Stack;
 
 /**
  * This class handles navigation between different views in the application.
@@ -15,10 +16,14 @@ import java.net.URL;
 public class ViewNavigator {
     // Reference to the main controller
     private static MainController mainController;
-    
     // Current authenticated username
     private static String authenticatedUser = null;
-    
+    private static final String VIEW_BASE_PATH = "/com/progettoingegneriasw/fxml/";
+
+    ///  stack per il meccanismo che consente di tornare alla pagina precedente
+    private static final Stack<String> viewHistory = new Stack<>();
+    private static String currentView = null;
+
     /**
      * Set the main controller reference
      * @param controller The MainController instance
@@ -33,7 +38,8 @@ public class ViewNavigator {
      */
     public static void loadView(String fxml) {
         try {
-            URL fxmlUrl = Main.class.getResource("/com/progettoingegneriasw/fxml/" + fxml);
+            saveHistory(fxml);
+            URL fxmlUrl = Main.class.getResource( VIEW_BASE_PATH + fxml);
             FXMLLoader loader = new FXMLLoader(fxmlUrl);
             Node view = loader.load();
             mainController.setContent(view);
@@ -42,7 +48,26 @@ public class ViewNavigator {
             System.err.println("Error loading view: " + fxml);
         }
     }
-    
+
+
+    private static void saveHistory(String fxml){
+        if (currentView != null && !currentView.equals(fxml)) {
+            viewHistory.push(currentView);
+        }
+        currentView = fxml;
+    }
+
+    public static void navigateBack() {
+        if (!viewHistory.isEmpty()) {
+            String previousView = viewHistory.pop();
+            currentView = previousView;
+            if(currentView.equals("HomeView.fxml") || currentView.equals("LoginView.fxml"))
+                logout();
+            else
+                loadView(previousView);
+        }
+    }
+
     /**
      * Navigate to the home view
      */

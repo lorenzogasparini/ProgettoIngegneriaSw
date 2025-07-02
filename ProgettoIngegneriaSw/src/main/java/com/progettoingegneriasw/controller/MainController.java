@@ -8,11 +8,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 public class MainController {
-    @FXML
-    private BorderPane mainContainer;
-    
-    @FXML
-    private VBox navBarContainer;
+
+    @FXML private BorderPane mainContainer;
+    @FXML private VBox navBarContainer;
     
     private NavBar navBar;
     
