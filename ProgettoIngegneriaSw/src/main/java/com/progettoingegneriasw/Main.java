@@ -232,7 +232,7 @@ public class Main extends Application {
         }
 
         MedicoUser newMedicoUser = new MedicoUser("drdestri", "123456", "Mario",
-                "Destri", "mario.destri@gmail.it", AppConfig.IMAGE_DIR + "/drdestri.png"); // todo: mettere le immagini reali
+                "Destri", "mario.destri@gmail.it", "drdestri.png");
         medicoDAO.saveUser(newMedicoUser);
 
         /*  TEST DAO Query : MedicoDAO */
@@ -388,7 +388,9 @@ public class Main extends Application {
         PazienteUser newPazienteUser = new PazienteUser("rebonato.mattia", "1234", "Mattia",
                 "Rebonato", "mattia.rebonato@gmail.com", 1,
                 Date.valueOf("2004-05-01"), 65.0, "VR",
-                "Angiari","non assume regolarmente i farmaci e ha spesso problemi!", AppConfig.IMAGE_DIR + "/rebonato.mattia.png");
+                "Angiari","non assume regolarmente i farmaci e ha spesso problemi!",
+                "rebonato.mattia.png");
+
         pazienteDAO.saveUser(newPazienteUser);
 
 

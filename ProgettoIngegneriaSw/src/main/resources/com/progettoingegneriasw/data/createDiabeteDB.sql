@@ -50,7 +50,7 @@ CREATE TABLE diabetologo (
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     email VARCHAR(100) NOT NULL,
-    profile_image_path TEXT
+    profile_image_name TEXT
 );
 
 -- Tabella paziente
@@ -67,7 +67,7 @@ CREATE TABLE paziente (
     provincia_residenza VARCHAR(2),
     comune_residenza VARCHAR(100),
     note_paziente TEXT,
-    profile_image_path TEXT,
+    profile_image_name TEXT,
     FOREIGN KEY(id_diabetologo) REFERENCES diabetologo(id)
 );
 

@@ -1,5 +1,6 @@
 package com.progettoingegneriasw.model.Paziente;
 
+import com.progettoingegneriasw.config.AppConfig;
 import com.progettoingegneriasw.model.User;
 import java.sql.Date;
 
@@ -30,7 +31,7 @@ public class PazienteUser extends User implements Paziente{
         this(pazienteUser.getId(), pazienteUser.getUsername(), newPassword, pazienteUser.getNome(),
                 pazienteUser.getCognome(), pazienteUser.getEmail(), pazienteUser.getIdMedico(),
                 pazienteUser.getDataNascita(), pazienteUser.getPeso(), pazienteUser.getProvinciaResidenza(),
-                pazienteUser.getComuneResidenza(), pazienteUser.getNotePaziente(), pazienteUser.getProfileImagePath());
+                pazienteUser.getComuneResidenza(), pazienteUser.getNotePaziente(), pazienteUser.getProfileImageName());
     }
 
     public PazienteUser(String username, String password) {
@@ -56,7 +57,9 @@ public class PazienteUser extends User implements Paziente{
         this.provinciaResidenza = provinciaResidenza;
         this.comuneResidenza = comuneResidenza;
         this.notePaziente = notePaziente;
-        this.profileImagePath = profileImagePath;
+        this.profileImagePath = (profileImagePath == null || profileImagePath.isEmpty())
+                ? AppConfig.DEFAULT_IMAGE
+                : profileImagePath;
     }
 
     public String toString(){
@@ -109,12 +112,12 @@ public class PazienteUser extends User implements Paziente{
     }
 
     @Override
-    public String getProfileImagePath() {
+    public String getProfileImageName() {
         return profileImagePath;
     }
 
     @Override
-    public void setProfileImagePath(String newProfileImagePath) {
-        this.profileImagePath = newProfileImagePath;
+    public void setProfileImageName(String newProfileImageName) {
+        this.profileImagePath = newProfileImageName;
     }
 }

@@ -214,7 +214,7 @@ public class PazienteDAO extends UserDAO {
                                 rs.getString("nome"),
                                 rs.getString("cognome"),
                                 rs.getString("email"),
-                                rs.getString("profile_image_path")
+                                rs.getString("profile_image_name")
                         );
                     }
                     return null;

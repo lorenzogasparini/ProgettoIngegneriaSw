@@ -131,7 +131,7 @@ public class AlertsHandlingController {
                         if (empty || isLetto == null) {
                             setGraphic(null);
                         } else if (isLetto) {
-                            setGraphic(checkLabel); // Clickabile
+                            setGraphic(checkLabel);
                         } else {
                             setGraphic(markAsReadButton);
                         }

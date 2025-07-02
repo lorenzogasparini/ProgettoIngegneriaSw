@@ -216,7 +216,7 @@ public class UserHandlingController {
                     TestController.selectedUser.getProvinciaResidenza(),
                     TestController.selectedUser.getComuneResidenza(),
                     noteArea.getText(),
-                    TestController.selectedUser.getProfileImagePath()
+                    TestController.selectedUser.getProfileImageName()
             );
 
             UserDAO.getInstance().saveUser((User) pazienteUpdated);

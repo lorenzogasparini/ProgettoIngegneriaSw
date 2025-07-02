@@ -81,13 +81,13 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
 
                 success = dbManager.executeUpdate(
                         "INSERT INTO " + medicoDAO.getSQLTableName() + " (username, password, nome, cognome, email," +
-                                "profile_image_path) VALUES (?, ?, ?, ?, ?, ?)",
+                                "profile_image_name) VALUES (?, ?, ?, ?, ?, ?)",
                         medico.getUsername(),
                         medico.getPassword(),
                         medico.getEmail(),
                         medico.getNome(),
                         medico.getCognome(),
-                        medico.getProfileImagePath()
+                        medico.getProfileImageName()
                 );
             } else if (user.isPaziente()) {
                 PazienteDAO pazienteDAO = PazienteDAO.getInstance();
@@ -96,7 +96,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                 success = dbManager.executeUpdate(
                         "INSERT INTO " + pazienteDAO.getSQLTableName() +
                                 " (username, password, nome, cognome, email, id_diabetologo, data_nascita, peso," +
-                                " provincia_residenza, comune_residenza, note_paziente, profile_image_path) " +
+                                " provincia_residenza, comune_residenza, note_paziente, profile_image_name) " +
                                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                         paziente.getUsername(),
                         paziente.getPassword(),
@@ -109,7 +109,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                         paziente.getProvinciaResidenza(),
                         paziente.getComuneResidenza(),
                         paziente.getNotePaziente(),
-                        paziente.getProfileImagePath()
+                        paziente.getProfileImageName()
                 );
             }
         } catch (Exception e) {
@@ -148,14 +148,14 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
 
                 success = dbManager.executeUpdate(
                         "UPDATE " + medicoDAO.getSQLTableName() + " SET username = ?, password = ?, nome = ?, " +
-                                "cognome = ?, email = ?, profile_image_path = ?" +
+                                "cognome = ?, email = ?, profile_image_name = ?" +
                                 "WHERE username = ?",
                         medico.getUsername(),
                         medico.getPassword(),
                         medico.getNome(),
                         medico.getCognome(),
                         medico.getEmail(),
-                        medico.getProfileImagePath(),
+                        medico.getProfileImageName(),
                         medico.getUsername()
                 );
 
@@ -166,7 +166,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                 success = dbManager.executeUpdate(
                         "UPDATE " + pazienteDAO.getSQLTableName() + " SET username = ?, password = ?, nome = ?," +
                                 " cognome = ?, email = ?, id_diabetologo = ?, data_nascita = ?, peso = ?, " +
-                                "provincia_residenza = ?, comune_residenza = ?, note_paziente = ?, profile_image_path = ?" +
+                                "provincia_residenza = ?, comune_residenza = ?, note_paziente = ?, profile_image_name = ?" +
                                 " WHERE username = ?",
                         paziente.getUsername(),
                         paziente.getPassword(),
@@ -179,7 +179,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                         paziente.getProvinciaResidenza(),
                         paziente.getComuneResidenza(),
                         paziente.getNotePaziente(),
-                        paziente.getProfileImagePath(),
+                        paziente.getProfileImageName(),
                         paziente.getUsername()
                 );
 
@@ -231,7 +231,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                                 rs.getString("nome"),
                                 rs.getString("cognome"),
                                 rs.getString("email"),
-                                rs.getString("profile_image_path")
+                                rs.getString("profile_image_name")
                         );
                     }
                     return null;
@@ -259,7 +259,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                                 rs.getString("provincia_residenza"),
                                 rs.getString("comune_residenza"),
                                 rs.getString("note_paziente"),
-                                rs.getString("profile_image_path")
+                                rs.getString("profile_image_name")
                         );
                     }
                     return null;
@@ -363,7 +363,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                                             rs.getString("provincia_residenza"),
                                             rs.getString("comune_residenza"),
                                             rs.getString("note_paziente"),
-                                            rs.getString("profile_image_path")
+                                            rs.getString("profile_image_name")
                                     )
                             );
                         }
@@ -382,7 +382,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                                         rs.getString("nome"),
                                         rs.getString("cognome"),
                                         rs.getString("email"),
-                                        rs.getString("profile_image_path")
+                                        rs.getString("profile_image_name")
                                 )
                         );
                     }
