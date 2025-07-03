@@ -7,6 +7,7 @@ import com.progettoingegneriasw.model.Paziente.PazienteUser;
 import com.progettoingegneriasw.model.User;
 import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.model.Utils.Log;
+import com.progettoingegneriasw.model.Utils.LogAction;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class AdminDAO extends UserDAO {
 
     /*
     /**
-     * Delete a user from the DB (just the Admin is allowed to do peform this operation)
+     * Delete a user from the DB (just the Admin is allowed to do perform this operation)
      */
     public void deleteUser(String username) { // todo: da testare
 
@@ -58,12 +59,14 @@ public class AdminDAO extends UserDAO {
                             "DELETE FROM " + medicoDAO.getSQLTableName() + " WHERE username = ?",
                             username
                     );
+                    setLog(new Log(null, UserDAO.getInstance().getIdFromDB(username), LogAction.DeleteUser, null));
                 } else if (user.isPaziente()) {
                     PazienteDAO pazienteDAO = PazienteDAO.getInstance();
                     super.getConnection().executeUpdate(
                             "DELETE FROM " + pazienteDAO.getSQLTableName() + " WHERE username = ?",
                             username
                     );
+                    setLog(new Log(UserDAO.getInstance().getIdFromDB(username), null, LogAction.DeleteUser, null));
                 }
             } catch (Exception e) {
                 System.err.println("Error deleting user: " + e.getMessage());
@@ -82,7 +85,7 @@ public class AdminDAO extends UserDAO {
                                         rs.getInt("id"),
                                         rs.getInt("id_paziente"),
                                         rs.getInt("id_diabetologo"),
-                                        rs.getString("azione"),
+                                        LogAction.fromString(rs.getString("azione")),
                                         rs.getTimestamp("timestamp")
                                 )
                         );

@@ -109,108 +109,6 @@ public class MedicoDAO extends UserDAO {
         return pazienti.toArray(new Paziente[pazienti.size()]);
     }
 
-    /*
-    public RilevazioneFarmaco[] getRilevazioniFarmaci(String username) throws SQLException {
-        int id_paziente = getIdFromDB(username);
-        ArrayList<RilevazioneFarmaco> rilevazioniFarmaci = new ArrayList<>();
-        if(id_paziente == -1) {
-            throw new SQLException();   //  Verificare se si tratta della giusta eccezione
-        }
-
-        super.getConnection().executeQuery(
-                "SELECT r.id AS r_id, r.id_paziente AS r_id_paziente, r.id_farmaco AS r_id_farmaco, " +
-                        "r.timestamp AS r_timestamp, r.quantita AS r_quantita, r.note AS r_note, f.id AS f_id, " +
-                        "f.codice_aic AS f_codice_aic, f.nome AS f_nome " +
-                        "FROM rilevazione_farmaco r " +
-                        "INNER JOIN farmaco f ON r.id_farmaco = f.id " +
-                        "WHERE r.id_paziente = ?",
-                rs -> {
-                    while (rs.next()) {
-                        rilevazioniFarmaci.add(
-                          new RilevazioneFarmaco(
-                                    rs.getInt("r_id"),
-                                    rs.getInt("r_id_paziente"),
-                                    rs.getInt("r_id_farmaco"),
-                                    rs.getTimestamp("r_timestamp"),
-                                    rs.getDouble("r_quantita"),
-                                    rs.getString("r_note")
-                                  )
-                          );
-                    }
-                    return null;
-                },
-                id_paziente
-        );
-        return rilevazioniFarmaci.toArray(new RilevazioneFarmaco[rilevazioniFarmaci.size()]);
-    }
-     */
-
-    /*
-    public RilevazioneGlicemia[] getRilevazioniGlicemia(String username) throws SQLException {
-        int id_paziente = getIdFromDB(username);
-        ArrayList<RilevazioneGlicemia> rilevazioniGlicemia = new ArrayList<>();
-        if(id_paziente == -1) {
-            throw new SQLException();   //  Verificare se si tratta della giusta eccezione
-        }
-
-        super.getConnection().executeQuery(
-                "SELECT *"
-                        + "FROM rilevazione_glicemia r "
-                        + "WHERE r.id_paziente = ?",
-                rs -> {
-                    while (rs.next()) {
-                        rilevazioniGlicemia.add(
-                                new RilevazioneGlicemia(
-                                        rs.getInt("id"),
-                                        rs.getInt("id_paziente"),
-                                        rs.getTimestamp("timestamp"),
-                                        rs.getInt("valore"),
-                                        rs.getBoolean("prima_pasto")
-                                )
-                        );
-                    }
-                    return null;
-                },
-                id_paziente
-        );
-        return rilevazioniGlicemia.toArray(new RilevazioneGlicemia[rilevazioniGlicemia.size()]);
-    }
-     */
-
-    /*
-    public RilevazioneSintomo[] getRilevazioniSintomi(String username) throws SQLException {
-        int id_paziente = getIdFromDB(username);
-        ArrayList<RilevazioneSintomo> rilevazioniSintomo = new ArrayList<>();
-
-        if(id_paziente == -1) {
-            throw new SQLException();   //  Verificare se si tratta della giusta eccezione
-        }
-
-
-        super.getConnection().executeQuery(
-                    "SELECT * "
-                        + " FROM rilevazione_sintomo r"
-                        + " WHERE r.id_paziente = ?",
-                rs -> {
-                    while (rs.next()) {
-                        rilevazioniSintomo.add(
-                                    new RilevazioneSintomo(
-                                            rs.getInt("id"),
-                                            rs.getInt("id_paziente"),
-                                            rs.getTimestamp("timestamp"),
-                                            rs.getString("sintomo"),
-                                            rs.getInt("intensita")
-                                    )
-                                );
-                    }
-                    return null;
-                },
-                id_paziente
-        );
-        return rilevazioniSintomo.toArray(new RilevazioneSintomo[rilevazioniSintomo.size()]);
-    }
-    */
-
     public Patologia[] getPatologiePaziente(String username) throws SQLException {
         int id_paziente = getIdFromDB(username);
         ArrayList<Patologia> patologie = new ArrayList<>();
@@ -240,6 +138,7 @@ public class MedicoDAO extends UserDAO {
         return patologie.toArray(new Patologia[patologie.size()]);
     }
 
+    // todo: non è chiamata da nessuno, è corretto? In teoria viene fatto tutto dalla terapia?
     public void setPatologiaPaziente(Patologia patologia, String username, Terapia terapia, Date dataDiagnosi, String notePatologia){
         int id_paziente = getIdFromDB(username);
         super.getConnection().executeUpdate(
@@ -251,6 +150,7 @@ public class MedicoDAO extends UserDAO {
                 dataDiagnosi.toString(),
                 notePatologia
         );
+        setLog(new Log(id_paziente, null, LogAction.SetPatologiaPaziente, null));
     }
 
     /// getPatologie() (tutte oppure facendo una ricerca della patologia per nome)
@@ -316,9 +216,8 @@ public class MedicoDAO extends UserDAO {
                 patologia.getNome(),
                 patologia.getCodiceIcd()
         );
+        setLog(new Log(null, null, LogAction.AddPatologia, null));
     }
-
-
 
 
     public Terapia[] getTerapiePaziente(String username) throws SQLException {   //  Verificare il risultato fornito
@@ -355,8 +254,8 @@ public class MedicoDAO extends UserDAO {
     /// consente sia di inserire una terapia sia di modificarla nel caso sia già esistente.
     /// Se la patologia non è stata ancora stata assegnata al paziente gli viene assegnata (creazione riga in
     /// patologia_paziente + creazione terapia)
-    public void setTerapiaPaziente(Terapia terapia, String username, Patologia patologia, String notePatologiaPaziente) {
-        int id_paziente = getIdFromDB(username);
+    public void setTerapiaPaziente(Terapia terapia, String usernamePaziente, Patologia patologia, String notePatologiaPaziente) {
+        int id_paziente = getIdFromDB(usernamePaziente);
         final Integer[] tmp = new Integer[2]; // to be assigned into a lambda it must be a final int[]
         int terapiaId, patologiaPazienteId;
 
@@ -429,7 +328,7 @@ public class MedicoDAO extends UserDAO {
                     terapiaId
             );
         }
-
+        setLog(new Log(id_paziente, null, LogAction.SetTerapiaPaziente, null)); // todo: prendersi l'id_diabetologo dalla terapia
     }
 
     /**
@@ -450,6 +349,7 @@ public class MedicoDAO extends UserDAO {
                 terapiaNew.getNote(),
                 terapia.getId()
         );
+        setLog(new Log(getPazienteFromTerapia(terapia).getId(), null, LogAction.UpdateTerapiaPaziente, null)); // todo: prendersi id_diabetologo da terapia
     }
 
     public void deleteTerapia(Terapia terapia) throws SQLException {
@@ -457,6 +357,7 @@ public class MedicoDAO extends UserDAO {
                 "DELETE FROM terapia WHERE id = ?",
                 terapia.getId()
         );
+        setLog(new Log(getPazienteFromTerapia(terapia).getId(), null, LogAction.DeleteTerapia, null)); // todo: prendersi id_diabetologo da terapia
     }
 
 

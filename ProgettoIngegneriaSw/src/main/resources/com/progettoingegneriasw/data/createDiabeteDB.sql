@@ -75,8 +75,8 @@ CREATE TABLE paziente (
 -- Tabella log
 CREATE TABLE log (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    id_paziente INTEGER NOT NULL,
-    id_diabetologo INTEGER NOT NULL,
+    id_paziente INTEGER,
+    id_diabetologo INTEGER,
     azione TEXT NOT NULL,
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(id_paziente) REFERENCES paziente(id),

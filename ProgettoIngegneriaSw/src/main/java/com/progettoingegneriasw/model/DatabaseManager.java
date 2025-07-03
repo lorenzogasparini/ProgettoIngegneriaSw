@@ -2,12 +2,8 @@ package com.progettoingegneriasw.model;
 
 import com.progettoingegneriasw.config.AppConfig;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DatabaseManager {
     private final String dbUrl;
@@ -27,11 +23,12 @@ public class DatabaseManager {
         //initializeDatabase(); // commented (not used)
     }
 
-
+    // todo: da cancellare: non utilizzata
     /**
      * Funzione che permette di eseguire query SQL direttamente da file fornito in input
      * @param path : parametro "percorso" in cui si trova il file SQL da eseguire
      */
+    /*
     public void executeFile(String path) { // da testare
         try (FileReader reader = new FileReader(path);
              // Wrap the FileReader in a BufferedReader for efficient reading.
@@ -79,6 +76,7 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+    */
     
     /**
      * Get a database connection

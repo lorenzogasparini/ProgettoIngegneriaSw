@@ -166,6 +166,7 @@ public class PazienteDAO extends UserDAO {
                 rilevazioneSintomo.getSintomo(),
                 rilevazioneSintomo.getIntensita()
         );
+        setLog(new Log(rilevazioneSintomo.getIdPaziente(), null, LogAction.SetRilevazioneSintomo, null));
     }
 
     public void setRilevazioneGlicemia(RilevazioneGlicemia rilevazioneGlicemia){
@@ -180,10 +181,15 @@ public class PazienteDAO extends UserDAO {
         );
 
         if(rilevazioneGlicemia.getGravita() !=  0){
-            insertAlertGlicemia(new Alert(rilevazioneGlicemia.getIdPaziente(), rilevazioneGlicemiaId,
-                    AlertType.glicemia, rilevazioneGlicemia.getTimestamp(), false));
+            insertAlerts(new Alert[]{
+                    new Alert(rilevazioneGlicemia.getIdPaziente(),
+                            rilevazioneGlicemiaId,
+                            AlertType.glicemia,
+                            rilevazioneGlicemia.getTimestamp(),
+                            false)
+            });
         }
-
+        setLog(new Log(rilevazioneGlicemia.getIdPaziente(), null, LogAction.SetRilevazioneGlicemia, null));
     }
 
 
@@ -202,6 +208,7 @@ public class PazienteDAO extends UserDAO {
                 rilevazioneFarmaco.getQuantita(),
                 rilevazioneFarmaco.getNoteRilevazione()
         );
+        setLog(new Log(rilevazioneFarmaco.getIdPaziente(), null, LogAction.SetRilevazioneFarmaco, null));
     }
 
     public MedicoUser getMedicoRiferimento(String username){
@@ -234,6 +241,7 @@ public class PazienteDAO extends UserDAO {
      * Funzione per l'inserimento in Alert se ci sono dei dati sballati in rilevazione_glicemia --> ok!
      * @param alert  parametro che permette di effettuare l'inserimento dell'alert.
      */
+    /* todo: cancellare: è già presente UserDAO.insertAlerts()
     public void insertAlertGlicemia(Alert alert){
         final String alertType = "glicemia";
 
@@ -246,7 +254,8 @@ public class PazienteDAO extends UserDAO {
                 alert.getTimestamp().toString(),
                 alert.getLetto()
         );
+        setLog(new Log(alert.getIdPaziente(), null, LogAction.InsertAlertGlicemia, null));
     }
-
+    */
 
 }

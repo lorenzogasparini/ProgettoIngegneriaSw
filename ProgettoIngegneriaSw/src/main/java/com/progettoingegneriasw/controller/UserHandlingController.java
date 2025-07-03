@@ -208,7 +208,6 @@ public class UserHandlingController {
     @FXML
     private void handleSalvaDatiPaziente() {
         try {
-            Paziente paziente = TestController.selectedUser;
 
             //todo: consentire la modifica di altri campi?
             Paziente pazienteUpdated = new PazienteUser(

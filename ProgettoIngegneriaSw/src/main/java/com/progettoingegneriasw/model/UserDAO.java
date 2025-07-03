@@ -9,10 +9,7 @@ import com.progettoingegneriasw.model.Medico.MedicoUser;
 import com.progettoingegneriasw.model.Paziente.Paziente;
 import com.progettoingegneriasw.model.Paziente.PazienteDAO;
 import com.progettoingegneriasw.model.Paziente.PazienteUser;
-import com.progettoingegneriasw.model.Utils.Alert;
-import com.progettoingegneriasw.model.Utils.AlertType;
-import com.progettoingegneriasw.model.Utils.Farmaco;
-import com.progettoingegneriasw.model.Utils.Log;
+import com.progettoingegneriasw.model.Utils.*;
 import com.progettoingegneriasw.view.ViewNavigator;
 
 import java.sql.Date;
@@ -56,7 +53,6 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
      * Save a user to the right table
      */
     public void saveUser(User user) { // Funzionante!
-        boolean success = false;
 
         if(userExists(user.getUsername())){
             updateUser(user);
@@ -68,7 +64,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                 AdminDAO adminDAO = AdminDAO.getInstance();
                 Admin admin = (Admin) user;
 
-                success = dbManager.executeUpdate(
+                dbManager.executeUpdate(
                         "INSERT INTO " + adminDAO.getSQLTableName() + " (username, password, nome, cognome) VALUES (?, ?, ?, ?)",
                         admin.getUsername(),
                         admin.getPassword(),
@@ -79,7 +75,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                 MedicoDAO medicoDAO = MedicoDAO.getInstance();
                 Medico medico = (Medico) user;
 
-                success = dbManager.executeUpdate(
+                Integer medicoId = dbManager.executeInsertAndReturnId(
                         "INSERT INTO " + medicoDAO.getSQLTableName() + " (username, password, nome, cognome, email," +
                                 "profile_image_name) VALUES (?, ?, ?, ?, ?, ?)",
                         medico.getUsername(),
@@ -89,11 +85,12 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                         medico.getCognome(),
                         medico.getProfileImageName()
                 );
+                setLog(new Log(null, medicoId, LogAction.SaveUser, null));
             } else if (user.isPaziente()) {
                 PazienteDAO pazienteDAO = PazienteDAO.getInstance();
                 Paziente paziente = (Paziente) user;
 
-                success = dbManager.executeUpdate(
+                Integer pazienteId = dbManager.executeInsertAndReturnId(
                         "INSERT INTO " + pazienteDAO.getSQLTableName() +
                                 " (username, password, nome, cognome, email, id_diabetologo, data_nascita, peso," +
                                 " provincia_residenza, comune_residenza, note_paziente, profile_image_name) " +
@@ -111,19 +108,19 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                         paziente.getNotePaziente(),
                         paziente.getProfileImageName()
                 );
+                setLog(new Log(pazienteId, null, LogAction.SaveUser, null));
             }
+
+
         } catch (Exception e) {
-            success = false;
             System.err.println("Error saving user: " + e.getMessage());
             e.printStackTrace();
         }
 
+
     }
 
     private void updateUser(User user){
-        // todo: implementa l'UPDATE se l'utente è già esistente
-        boolean success = false;
-
         /*UPDATE paziente SET note_paziente = 'dieta poco sana', peso = 74.5 WHERE username = 'giulia.bianchi'*/
 
         try {
@@ -131,7 +128,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                 AdminDAO adminDAO = AdminDAO.getInstance();
                 Admin admin = (Admin) user;
 
-                success = dbManager.executeUpdate(
+                dbManager.executeUpdate(
                         "UPDATE " + adminDAO.getSQLTableName() + " SET username = ?, password = ?, nome = ?," +
                                 " cognome = ?" +
                                 " WHERE username = ?",
@@ -146,7 +143,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                 MedicoDAO medicoDAO = MedicoDAO.getInstance();
                 Medico medico = (Medico) user;
 
-                success = dbManager.executeUpdate(
+                dbManager.executeUpdate(
                         "UPDATE " + medicoDAO.getSQLTableName() + " SET username = ?, password = ?, nome = ?, " +
                                 "cognome = ?, email = ?, profile_image_name = ?" +
                                 "WHERE username = ?",
@@ -158,12 +155,13 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                         medico.getProfileImageName(),
                         medico.getUsername()
                 );
+                setLog(new Log(null, getIdFromDB(medico.getUsername()), LogAction.UpdateUser, null));
 
             } else if (user.isPaziente()) {
                 PazienteDAO pazienteDAO = PazienteDAO.getInstance();
                 Paziente paziente = (Paziente) user;
 
-                success = dbManager.executeUpdate(
+                dbManager.executeUpdate(
                         "UPDATE " + pazienteDAO.getSQLTableName() + " SET username = ?, password = ?, nome = ?," +
                                 " cognome = ?, email = ?, id_diabetologo = ?, data_nascita = ?, peso = ?, " +
                                 "provincia_residenza = ?, comune_residenza = ?, note_paziente = ?, profile_image_name = ?" +
@@ -182,10 +180,10 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                         paziente.getProfileImageName(),
                         paziente.getUsername()
                 );
+                setLog(new Log(getIdFromDB(paziente.getUsername()), null, LogAction.UpdateUser, null));
 
             }
         } catch (Exception e) {
-            success = false;
             System.err.println("Error saving user: " + e.getMessage());
             e.printStackTrace();
         }
@@ -326,17 +324,16 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
         );
     }
 
-    // todo: chiamare questa funzione in ogni altra funzione e probabilmente creare un metodo intermediario
-    // todo: per generare l'oggetto Log a seconda del contesto che poi chiami questa funzione
+    /// NB: la tabella di log è sporcata dai test del main
     public void setLog(Log log){
         dbManager.executeUpdate(
-                "INSERT INTO log (id_paziente, id_diabetologo, azione, timestamp) VALUES (?, ?, ?, ?)",
+                "INSERT INTO log (id_paziente, id_diabetologo, azione) VALUES (?, ?, ?)", // non viene passato appositamente timestamp
                 log.getIdPaziente(),
                 log.getIdDiabetologo(),
-                log.getAzione(),
-                log.getTimestamp().toString()
+                log.getAzione()
         );
     }
+
 
     /**
      *
@@ -555,6 +552,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                     alert.getTimestamp().toString(),
                     alert.getLetto()
             );
+            setLog(new Log(alert.getIdPaziente(), null, LogAction.InsertAlert, null));
         }
     }
 
