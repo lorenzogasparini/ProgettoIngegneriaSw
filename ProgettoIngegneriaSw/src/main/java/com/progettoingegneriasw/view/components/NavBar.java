@@ -1,5 +1,6 @@
 package com.progettoingegneriasw.view.components;
 
+import com.progettoingegneriasw.config.AppConfig;
 import com.progettoingegneriasw.view.ViewNavigator;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -21,11 +22,11 @@ public class NavBar extends HBox {
 
     //  Creazione icone per i bottoni
     // todo: imgBack è uguale all'icona di Logout
-    private Image imgBack = new Image("file:" + System.getProperty("user.dir") + "/src/main/java/com/progettoingegneriasw/view/components/buttonIcons/backIcon.png");
-    private Image imgDashboard = new Image("file:" + System.getProperty("user.dir") + "/src/main/java/com/progettoingegneriasw/view/components/buttonIcons/dashboardIcon.png");
-    private Image imgProfile = new Image("file:" + System.getProperty("user.dir") + "/src/main/java/com/progettoingegneriasw/view/components/buttonIcons/profileIcon.png");
-    private Image imgLogout = new Image("file:" + System.getProperty("user.dir") + "/src/main/java/com/progettoingegneriasw/view/components/buttonIcons/logoutIcon.png");
-    private Image imgLogin = new Image("file:" + System.getProperty("user.dir") + "/src/main/java/com/progettoingegneriasw/view/components/buttonIcons/loginIcon.png");
+    private Image imgBack = new Image("file:" + AppConfig.ICON_DIR + "buttonIcons/backIcon.png");
+    private Image imgDashboard = new Image("file:" + AppConfig.ICON_DIR + "buttonIcons/dashboardIcon.png");
+    private Image imgProfile = new Image("file:" + AppConfig.ICON_DIR + "buttonIcons/profileIcon.png");
+    private Image imgLogout = new Image("file:" + AppConfig.ICON_DIR + "buttonIcons/logoutIcon.png");
+    private Image imgLogin = new Image("file:" + AppConfig.ICON_DIR + "buttonIcons/loginIcon.png");
 
     public NavBar() {
         this(false, null);

@@ -55,14 +55,27 @@
 
                 <VBox alignment="CENTER" HBox.hgrow="ALWAYS" prefHeight="600" prefWidth="300" styleClass="card, container" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:id="VBoxUpdate" visible="false" managed="false">
                     <children>
-                        <Label text="Update" textAlignment="CENTER">
-                            <font>
-                                <Font name="System Bold" size="24.0" />
-                            </font>
-                            <VBox.margin>
-                                <Insets bottom="20.0" />
-                            </VBox.margin>
-                        </Label>
+
+                        <HBox alignment="CENTER_LEFT" spacing="10" HBox.hgrow="ALWAYS">
+                            <Label text="Update" textAlignment="CENTER">
+                                <font>
+                                    <Font name="System Bold" size="24.0" />
+                                </font>
+                            </Label>
+
+                            <Region HBox.hgrow="ALWAYS" />
+
+
+                            <Button fx:id="deleteButton"
+                                    onAction="#handleDeleteTerapia"
+                                    style="-fx-background-color: #d9534f; -fx-text-fill: white;"
+                                    prefHeight="20" prefWidth="20">
+                                <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                </VBox.margin>
+                            </Button>
+                        </HBox>
+
 
                         <!-- Da utilizzare opportunamente in caso di necessità di comunicazione di scorretto inserimento
                         di info della terapia-->

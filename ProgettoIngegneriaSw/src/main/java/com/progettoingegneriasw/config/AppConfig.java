@@ -10,6 +10,7 @@ public class AppConfig {
     public static final String DATA_DIR = System.getProperty("user.dir") + "/src/main/resources/com/progettoingegneriasw/data";
     public static final String DATABASE_PATH = DATA_DIR + "/DiabeteDB.db";
     public static final String IMAGE_DIR = System.getProperty("user.dir") + "/src/main/resources/images/";
+    public static final String ICON_DIR = System.getProperty("user.dir") + "/src/main/resources/icons/";
     public static final String DEFAULT_IMAGE = "default.png";
 
 //    public static final String DATA_DIR = "src/resources/data";

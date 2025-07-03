@@ -452,6 +452,14 @@ public class MedicoDAO extends UserDAO {
         );
     }
 
+    public void deleteTerapia(Terapia terapia) throws SQLException {
+        super.getConnection().executeUpdate(
+                "DELETE FROM terapia WHERE id = ?",
+                terapia.getId()
+        );
+    }
+
+
     public Paziente getPazienteFromTerapia(Terapia terapia) {
         AtomicReference<Paziente> pazienteRef = new AtomicReference<>();
 

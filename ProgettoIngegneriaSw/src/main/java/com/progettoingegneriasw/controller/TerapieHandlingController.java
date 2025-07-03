@@ -1,5 +1,6 @@
 package com.progettoingegneriasw.controller;
 
+import com.progettoingegneriasw.config.AppConfig;
 import com.progettoingegneriasw.model.Medico.MedicoDAO;
 import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.model.Utils.*;
@@ -9,10 +10,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
 import java.sql.SQLException;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,6 +30,8 @@ public class TerapieHandlingController {
     @FXML private TableColumn<Terapia, String> Codice_aic;
 
     @FXML private VBox VBoxUpdate;
+    @FXML private Button deleteButton;
+    @FXML private Terapia selectedTerapia;
 
     @FXML private VBox VBoxDosiGiornaliere;
     @FXML private TextField dosiGiornaliereUpdate;
@@ -41,7 +48,7 @@ public class TerapieHandlingController {
     @FXML private ComboBox comboBoxFarmaco;
     @FXML private int idFarmacoSelezionato;
 
-    Terapia selectedTerapia = null;
+
     Patologia selectedPatologia = null;
 
     private MedicoDAO medicoDAO = MedicoDAO.getInstance();
@@ -61,6 +68,7 @@ public class TerapieHandlingController {
 
     public void initialize() throws SQLException {
         setup();
+        setupDeleteButton();
 
         Farmaco[] farmaciAssegnati = medicoDAO.getFarmaci();
         ObservableList<Farmaco> farmaci = FXCollections.observableArrayList(comboBoxFarmaco.getItems());
@@ -72,6 +80,7 @@ public class TerapieHandlingController {
         ObservableList<Patologia> pat = FXCollections.observableArrayList(comboBoxPatologia.getItems());
         pat.addAll(patologie);
         comboBoxPatologia.setItems(pat);
+
     }
 
     @FXML
@@ -108,12 +117,25 @@ public class TerapieHandlingController {
         Nome_farmaco.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFarmaco().getNome()));
         Codice_aic.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFarmaco().getCodiceAic()));
 
+        refreshTable();
+    }
+
+    private void refreshTable() throws SQLException {
         medicoDAO.getUser(ViewNavigator.getAuthenticatedUsername());
         Terapia[] terapie = medicoDAO.getTerapiePaziente(TestController.selectedUser.getUsername());
 
         ObservableList<Terapia> ter = FXCollections.observableArrayList(terapie);
 
         tableViewTerapie.setItems(ter);
+    }
+
+    private void setupDeleteButton(){
+        Image image = new Image("file:" + AppConfig.ICON_DIR + "buttonIcons/deleteIcon.png");
+        ImageView icon = new ImageView(image);
+        icon.setFitWidth(16);
+        icon.setFitHeight(16);
+        deleteButton.setGraphic(icon);
+        deleteButton.setContentDisplay(ContentDisplay.LEFT);
     }
 
     @FXML
@@ -250,6 +272,48 @@ public class TerapieHandlingController {
             }
         });
     }
+
+
+    @FXML
+    private void handleDeleteTerapia() {
+        if (selectedTerapia == null) {
+            statusLabel.setText("Nessuna terapia selezionata.");
+            statusLabel.setVisible(true);
+            return;
+        }
+
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Conferma eliminazione");
+        confirm.setHeaderText("Vuoi davvero eliminare questa terapia?");
+
+        ButtonType okButton = new ButtonType("Elimina", ButtonBar.ButtonData.OK_DONE);
+        ButtonType cancelButton = new ButtonType("Annulla", ButtonBar.ButtonData.CANCEL_CLOSE);
+        confirm.getButtonTypes().setAll(okButton, cancelButton);
+
+        confirm.showAndWait().ifPresent(response -> {
+            if (response == okButton) {
+                try {
+                    MedicoDAO.getInstance().deleteTerapia(selectedTerapia);
+
+                    statusLabel.setText("Terapia eliminata con successo.");
+                    statusLabel.setStyle("-fx-text-fill: green;");
+                    statusLabel.setVisible(true);
+
+                    VBoxUpdate.setVisible(false);
+                    VBoxUpdate.setManaged(false);
+
+                    refreshTable(); // todo: verificare se è corretto
+
+                } catch (SQLException e) {
+                    statusLabel.setText("Errore durante l'eliminazione.");
+                    statusLabel.setStyle("-fx-text-fill: red;");
+                    statusLabel.setVisible(true);
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
 
     @FXML
     private void handleLogin() {
