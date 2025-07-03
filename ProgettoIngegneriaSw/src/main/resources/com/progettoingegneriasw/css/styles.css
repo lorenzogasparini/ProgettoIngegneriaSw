@@ -158,6 +158,15 @@
     -fx-text-fill: -tertiary;
 }
 
+.table-row-cell:filled:selected {
+    -fx-background-color: #128ca888;
+    -fx-text-fill: white;
+}
+
+.table-row-cell:filled:selected:hover {
+    -fx-background-color: #0d6b8899;
+}
+
 .table-row-cell:odd {
     -fx-background-color: #93f9b911;
     -fx-background-insets: 0, 0 0 1 0;
