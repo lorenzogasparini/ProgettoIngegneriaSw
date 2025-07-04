@@ -11,9 +11,9 @@ CREATE TABLE IF NOT EXISTS "amministratore" (
 
 CREATE TABLE IF NOT EXISTS "diabetologo" (
 	"id"	INTEGER,
+	"username"	VARCHAR(50) NOT NULL UNIQUE,
 	"nome"	VARCHAR(50) NOT NULL,
 	"cognome"	VARCHAR(50) NOT NULL,
-	"username"	VARCHAR(50) NOT NULL UNIQUE,
 	"password"	VARCHAR(255) NOT NULL,
 	"email"	VARCHAR(100) NOT NULL,
 	"profile_image_name"	TEXT,
@@ -145,9 +145,9 @@ INSERT INTO "amministratore" VALUES (1,'Lorenzo','Gasparini','admin1','hashed_pw
 INSERT INTO "amministratore" VALUES (2,'Andrea','Pellizzari','admin2','hashed_pw2');
 INSERT INTO "amministratore" VALUES (3,'Pietro','Corsi','admin3','admin3');
 
-INSERT INTO "diabetologo" VALUES (1,'Luca','Rossi','drrossi','1234','rossi@asl.it','drrossi.png', false);
-INSERT INTO "diabetologo" VALUES (2,'Pietro','Bianchi','drbianchi','hashed_pw4','bianchi@asl.it','default.png', false);
-INSERT INTO "diabetologo" VALUES (3,'Mario','Destri','drdestri','123456','mario.destri@gmail.it','drdestri.png', false);
+INSERT INTO "diabetologo" VALUES (1,'drrossi','Luca','Rossi','1234','rossi@asl.it','drrossi.png', false);
+INSERT INTO "diabetologo" VALUES (2,'drbianchi','Pietro','Bianchi','hashed_pw4','bianchi@asl.it','default.png', false);
+INSERT INTO "diabetologo" VALUES (3,'drdestri','Mario','Destri','123456','mario.destri@gmail.it','drdestri.png', false);
 
 
 INSERT INTO "paziente" VALUES (1,'Mario','Rossi','mario.rossi','1234','mario.rossi@gmail.com',1,'1980-05-12',87.0,'RM','Roma','Segue dieta bilanciata con carboidrati, frutta e verdura','mario.rossi.png', false);

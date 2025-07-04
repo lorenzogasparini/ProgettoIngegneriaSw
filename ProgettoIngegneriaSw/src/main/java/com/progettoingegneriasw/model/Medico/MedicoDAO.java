@@ -156,24 +156,28 @@ public class MedicoDAO extends UserDAO {
         return getPatologie("");
     }
 
-    public Patologia getPatologiaFromId(int id) throws SQLException {
-        final Patologia[] p = new Patologia[1];
+    public Patologia getPatologiaFromId(int idPatologia) throws SQLException {
+        AtomicReference<Patologia> patologiaRef = new AtomicReference<>();
 
         String query =  "SELECT p.* " +
                         "FROM patologia p " +
-                        "WHERE p.id";
+                        "WHERE p.id = ?";
 
         super.getConnection().executeQuery(
                 query,
                 rs -> {
-                    //  System.out.println("\n Patologia : " + rs.getInt("id"));
-                    //  System.out.println("\n Nome : " + rs.getString("nome"));
-                    //  System.out.println("\n Codice_icd : " + rs.getString("codice_icd"));
-                    p[0] = new Patologia(rs.getInt("id"), rs.getString("nome"), rs.getString("codice_icd"));
-                    return p[0];
-                }
+                    while (rs.next()) {
+                        patologiaRef.set(new Patologia(
+                                rs.getInt("id"),
+                                rs.getString("nome"),
+                                rs.getString("codice_icd")
+                        ));
+                    }
+                    return null;
+                },
+                idPatologia
         );
-        return p[0];
+        return patologiaRef.get();
     }
 
     public Patologia[] getPatologie(String nomePatologia) throws SQLException {

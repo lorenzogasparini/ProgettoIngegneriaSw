@@ -28,7 +28,7 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <Label text="This is a protected profile page. Only logged-in users can see this." 
+      <Label text="This is a protected profile page. Only logged-in users can see this."
              wrapText="true" />
       <VBox styleClass="card" spacing="15" alignment="CENTER">
          <children>
@@ -70,13 +70,13 @@
       <VBox styleClass="card">
          <children>
             <Label styleClass="card-header" text="Cambia Password" />
-            <Label fx:id="statusLabel" styleClass="alert-success" text="Status message" 
+            <Label fx:id="statusLabel" styleClass="alert-success" text="Status message"
                    wrapText="true" visible="false" managed="false">
             </Label>
             <VBox>
                <children>
                   <Label styleClass="form-label" text="New Password" />
-                  <PasswordField fx:id="newPasswordField" promptText="Enter new password" 
+                  <PasswordField fx:id="newPasswordField" promptText="Enter new password"
                                  styleClass="form-control" />
                </children>
                <padding>
@@ -86,7 +86,7 @@
             <VBox spacing="10.0">
                <children>
                   <Label styleClass="form-label" text="Confirm New Password" />
-                  <PasswordField fx:id="confirmPasswordField" promptText="Confirm new password" 
+                  <PasswordField fx:id="confirmPasswordField" promptText="Confirm new password"
                                  styleClass="form-control" />
                </children>
                <padding>
@@ -96,7 +96,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </VBox>
-            <Button mnemonicParsing="false" onAction="#handleUpdatePassword" styleClass="button-success" 
+            <Button mnemonicParsing="false" onAction="#handleUpdatePassword" styleClass="button-success"
                     text="Update Password" />
          </children>
          <padding>

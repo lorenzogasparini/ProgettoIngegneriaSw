@@ -37,6 +37,7 @@
 
                         <TableView fx:id="tableViewTerapie" VBox.vgrow="ALWAYS" onMouseClicked="#handleTerapiaUpdate" >
                             <columns>
+                                <TableColumn prefWidth="100.0" text="Medico" fx:id="usernameMedico"/>
                                 <TableColumn prefWidth="100.0" text="Dosi giornaliere" fx:id="dosiGiornaliere" />
                                 <TableColumn prefWidth="100.0" text="Quantità per dose" fx:id="quantitaPerDose" />
                                 <TableColumn prefWidth="100.0" text="Note" fx:id="note" />
@@ -86,10 +87,20 @@
                             </VBox.margin>
                         </Label>
 
+                        <VBox spacing="10.0" fx:id="VBoxMedicoUpdate">
+                            <children>
+                                <Label styleClass="form-label" text="Medico di riferimento" />
+                                <TextField fx:id="medicoTextFieldUpdate" styleClass="form-control" />
+                            </children>
+                            <VBox.margin>
+                                <Insets bottom="20.0" />
+                            </VBox.margin>
+                        </VBox>
+
                         <VBox spacing="10.0" visible="false" fx:id="VBoxFarmaco">
                             <children>
                                 <Label styleClass="form-label" text="Farmaco:" />
-                                <ComboBox fx:id="comboBoxFarmaco" onAction="#onComboBoxFarmaco">
+                                <ComboBox fx:id="comboBoxFarmacoUpdate" onAction="#onComboBoxFarmaco">
                                     <items>
                                         <FXCollections fx:factory="observableArrayList">
                                             <String fx:value="  -- Farmaci --  " />
@@ -170,10 +181,11 @@
                             </VBox.margin>
                         </Label>
 
+
                         <VBox spacing="10.0" visible="false" fx:id="VBoxPatologia">
                             <children>
                                 <Label styleClass="form-label" text="Patologia:" />
-                                <ComboBox fx:id="comboBoxPatologia" onAction="#onComboBoxPatologia">
+                                <ComboBox fx:id="comboBoxPatologiaInsert">
                                     <items>
                                         <FXCollections fx:factory="observableArrayList">
                                             <String fx:value="  -- Patologie --  " />
@@ -189,7 +201,7 @@
                         <VBox spacing="10.0" visible="false" fx:id="VBoxFarmaci">
                             <children>
                                 <Label styleClass="form-label" text="Farmaco:" />
-                                <ComboBox fx:id="comboBoxFarmaci" onAction="#onComboBoxFarmaci">
+                                <ComboBox fx:id="comboBoxFarmacoInsert">
                                     <items>
                                         <FXCollections fx:factory="observableArrayList">
                                             <String fx:value="  -- Farmaci --  " />
