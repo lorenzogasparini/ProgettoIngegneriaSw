@@ -1,16 +1,20 @@
 package com.progettoingegneriasw.controller;
 
+import com.progettoingegneriasw.config.AppConfig;
 import com.progettoingegneriasw.model.Medico.MedicoDAO;
 import com.progettoingegneriasw.model.Paziente.PazienteDAO;
 import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.model.Utils.*;
 import com.progettoingegneriasw.view.ViewNavigator;
+import com.progettoingegneriasw.view.components.NavBar;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
 import java.sql.SQLException;
@@ -72,6 +76,9 @@ public class RilevazioniHandlingController {
 
     @FXML private ComboBox comboBoxPrimaPasto;
 
+    @FXML private Button nuovaRilevazioneButton;
+    @FXML private Button ricaricaButton;
+
     public void initialize() throws SQLException {
         setup();
 
@@ -83,6 +90,17 @@ public class RilevazioniHandlingController {
         farmaci.addAll(farmaciAssegnati);
 
         comboBoxFarmaco.setItems(farmaci);
+
+        ImageView iconViewNuovaRilevazione = new ImageView(new Image("file:" + AppConfig.ICON_DIR + "buttonIcons/addIcon.png"));
+        ImageView iconViewRicarica = new ImageView(new Image("file:" + AppConfig.ICON_DIR + "buttonIcons/reloadIcon.png"));
+        iconViewNuovaRilevazione.setFitHeight(24);
+        iconViewNuovaRilevazione.setFitWidth(24);
+        iconViewNuovaRilevazione.setPreserveRatio(true);
+        iconViewRicarica.setFitHeight(24);
+        iconViewRicarica.setFitWidth(24);
+        iconViewRicarica.setPreserveRatio(true);
+        nuovaRilevazioneButton.setGraphic(iconViewNuovaRilevazione);
+        ricaricaButton.setGraphic(iconViewRicarica);
     }
 
     @FXML

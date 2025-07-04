@@ -33,6 +33,8 @@ public class NavBar extends HBox {
     private Image imgAlert = new Image("file:" + AppConfig.ICON_DIR + "buttonIcons/alertIcon.png");
     private Image imgLogout = new Image("file:" + AppConfig.ICON_DIR + "buttonIcons/logoutIcon.png");
     private Image imgLogin = new Image("file:" + AppConfig.ICON_DIR + "buttonIcons/loginIcon.png");
+    private Image imgAdd = new Image("file:" + AppConfig.ICON_DIR + "buttonIcons/addIcon.png");
+    private Image imgReload = new Image("file:" + AppConfig.ICON_DIR + "buttonIcons/reloadIcon.png");
 
     private Button backbutton;
     private Button dashboardBtn;

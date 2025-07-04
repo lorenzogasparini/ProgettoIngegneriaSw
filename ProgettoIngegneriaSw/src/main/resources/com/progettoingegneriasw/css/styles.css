@@ -322,3 +322,20 @@ CSS VECCHIO:
 
 }
 */
+
+/*  Da terminare    */
+
+.combo-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #2a9d8f;
+    -fx-border-radius: 50 50 50 50;
+    -fx-background-radius: 50 50 50 50;
+    -fx-padding: 5 5 5 5;
+}
+
+/* Stile per il menu a tendina */
+.combo-box-popup {
+    -fx-background-color: white;
+    -fx-border-color: #2a9d8f;
+    -fx-border-radius: 0 0 50 50;
+}
