@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS "diabetologo" (
 	"password"	VARCHAR(255) NOT NULL,
 	"email"	VARCHAR(100) NOT NULL,
 	"profile_image_name"	TEXT,
+	"deleted" BOOLEAN DEFAULT 0,
 	PRIMARY KEY("id" AUTOINCREMENT)
 );
 
@@ -34,6 +35,7 @@ CREATE TABLE IF NOT EXISTS "paziente" (
 	"comune_residenza"	VARCHAR(100),
 	"note_paziente"	TEXT,
 	"profile_image_name"	TEXT,
+	"deleted" BOOLEAN DEFAULT 0,
 	PRIMARY KEY("id" AUTOINCREMENT),
 	FOREIGN KEY("id_diabetologo") REFERENCES "diabetologo"("id")
 );
@@ -71,7 +73,7 @@ CREATE TABLE IF NOT EXISTS "terapia" (
 	"quantita_per_dose"	REAL,
 	"note"	TEXT,
 	PRIMARY KEY("id" AUTOINCREMENT),
-	FOREIGN KEY("id_diabetologo") REFERENCES "diabetologo"("id"),
+	FOREIGN KEY("id_diabetologo") REFERENCES "diabetologo"("id") ,
 	FOREIGN KEY("id_farmaco") REFERENCES "farmaco"("id")
 );
 
@@ -84,9 +86,9 @@ CREATE TABLE IF NOT EXISTS "patologia_paziente" (
 	"note_patologia"	TEXT,
 	PRIMARY KEY("id" AUTOINCREMENT),
 	UNIQUE("id_paziente","id_patologia"),
-	FOREIGN KEY("id_patologia") REFERENCES "patologia"("id"),
-	FOREIGN KEY("id_paziente") REFERENCES "paziente"("id"),
-	FOREIGN KEY("id_terapia") REFERENCES "terapia"("id")
+	FOREIGN KEY("id_patologia") REFERENCES "patologia"("id") ON DELETE CASCADE,
+	FOREIGN KEY("id_paziente") REFERENCES "paziente"("id") ON DELETE CASCADE,
+	FOREIGN KEY("id_terapia") REFERENCES "terapia"("id") ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS "rilevazione_farmaco" (
@@ -143,16 +145,16 @@ INSERT INTO "amministratore" VALUES (1,'Lorenzo','Gasparini','admin1','hashed_pw
 INSERT INTO "amministratore" VALUES (2,'Andrea','Pellizzari','admin2','hashed_pw2');
 INSERT INTO "amministratore" VALUES (3,'Pietro','Corsi','admin3','admin3');
 
-INSERT INTO "diabetologo" VALUES (1,'Luca','Rossi','drrossi','1234','rossi@asl.it','drrossi.png');
-INSERT INTO "diabetologo" VALUES (2,'Pietro','Bianchi','drbianchi','hashed_pw4','bianchi@asl.it','default.png');
-INSERT INTO "diabetologo" VALUES (3,'Mario','Destri','drdestri','123456','mario.destri@gmail.it','drdestri.png');
+INSERT INTO "diabetologo" VALUES (1,'Luca','Rossi','drrossi','1234','rossi@asl.it','drrossi.png', false);
+INSERT INTO "diabetologo" VALUES (2,'Pietro','Bianchi','drbianchi','hashed_pw4','bianchi@asl.it','default.png', false);
+INSERT INTO "diabetologo" VALUES (3,'Mario','Destri','drdestri','123456','mario.destri@gmail.it','drdestri.png', false);
 
 
-INSERT INTO "paziente" VALUES (1,'Mario','Rossi','mario.rossi','1234','mario.rossi@gmail.com',1,'1980-05-12',87.0,'RM','Roma','Segue dieta bilanciata con carboidrati, frutta e verdura','mario.rossi.png');
-INSERT INTO "paziente" VALUES (2,'Lucia','Verdi','lucia.verdi','1234','lucia.verdi@gmail.com',1,'1975-11-23',67.0,'MI','Milano','Allergica a penicillina','lucia.verdi.png');
-INSERT INTO "paziente" VALUES (3,'Giulia','Bianchi','giulia.bianchi','hashed_pw7','giulia.bianchi@gmail.com',2,'1990-02-08',72.3,'TO','Torino',NULL,'default.png');
-INSERT INTO "paziente" VALUES (4,'Andrea','Neri','andrea.neri','hashed_pw8','andrea.neri@gmail.com',2,'2000-07-30',78.0,'FI','Firenze','Sportivo, non fumatore','andrea.neri.png');
-INSERT INTO "paziente" VALUES (5,'Mattia','Rebonato','rebonato.mattia','1234','mattia.rebonato@gmail.com',1,'2004-05-01',65.0,'VR','Angiari','non assume regolarmente i farmaci e ha spesso problemi!','rebonato.mattia.png');
+INSERT INTO "paziente" VALUES (1,'Mario','Rossi','mario.rossi','1234','mario.rossi@gmail.com',1,'1980-05-12',87.0,'RM','Roma','Segue dieta bilanciata con carboidrati, frutta e verdura','mario.rossi.png', false);
+INSERT INTO "paziente" VALUES (2,'Lucia','Verdi','lucia.verdi','1234','lucia.verdi@gmail.com',1,'1975-11-23',67.0,'MI','Milano','Allergica a penicillina','lucia.verdi.png', false);
+INSERT INTO "paziente" VALUES (3,'Giulia','Bianchi','giulia.bianchi','hashed_pw7','giulia.bianchi@gmail.com',2,'1990-02-08',72.3,'TO','Torino',NULL,'default.png', false);
+INSERT INTO "paziente" VALUES (4,'Andrea','Neri','andrea.neri','hashed_pw8','andrea.neri@gmail.com',2,'2000-07-30',78.0,'FI','Firenze','Sportivo, non fumatore','andrea.neri.png', true);
+INSERT INTO "paziente" VALUES (5,'Mattia','Rebonato','rebonato.mattia','1234','mattia.rebonato@gmail.com',1,'2004-05-01',65.0,'VR','Angiari','non assume regolarmente i farmaci e ha spesso problemi!','rebonato.mattia.png', false);
 
 
 INSERT INTO "farmaco" VALUES (1,'012345678','Metformina');

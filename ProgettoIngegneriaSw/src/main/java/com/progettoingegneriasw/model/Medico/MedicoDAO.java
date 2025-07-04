@@ -6,9 +6,7 @@ import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.model.Utils.*;
 import com.progettoingegneriasw.view.ViewNavigator;
 
-import java.sql.Date;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
@@ -219,6 +217,53 @@ public class MedicoDAO extends UserDAO {
         setLog(new Log(null, null, LogAction.AddPatologia, null));
     }
 
+    public Terapia getTerapiaFromId(Integer idTerapia){
+        AtomicReference<Terapia> terapiaRef = new AtomicReference<>();
+
+        String query =  "SELECT a.id, a.id_paziente, a.id_rilevazione, a.tipo_alert, a.data_alert, a.letto " +
+                "FROM alert a ";
+
+        super.getConnection().executeQuery(
+                " SELECT t.id, t.id_farmaco, t.dosi_giornaliere, t.quantita_per_dose, t.note, f.id, f.codice_aic, f.nome," +
+                        " d.id AS id_diabetologo, d.nome AS nome_diabetologo, d.cognome AS cognome_diabetologo, " +
+                        " d.username AS username_diabetologo, d.password AS password_diabetologo, " +
+                        " d.email AS email_diabetologo, d.profile_image_name AS profile_image_name_diabetologo " +
+                        " FROM terapia t, farmaco f " +
+                        " INNER JOIN patologia_paziente pp ON t.id = pp.id_terapia " +
+                        " INNER JOIN diabetologo d ON d.id = t.id_diabetologo " +
+                        " WHERE t.id = ? ",
+                rs -> {
+                    while (rs.next()) {
+                        terapiaRef.set(new Terapia(
+                                rs.getInt("id"),
+                                new MedicoUser(
+                                        rs.getInt("id_diabetologo"),
+                                        rs.getString("nome_diabetologo"),
+                                        rs.getString("cognome_diabetologo"),
+                                        rs.getString("username_diabetologo"),
+                                        rs.getString("password_diabetologo"),
+                                        rs.getString("email_diabetologo"),
+                                        rs.getString("profile_image_name_diabetologo")
+                                ),
+                                new Farmaco(
+                                        rs.getInt("id_farmaco"),
+                                        rs.getString("codice_aic"),
+                                        rs.getString("nome")
+                                ),
+                                rs.getInt("dosi_giornaliere"),
+                                rs.getDouble("quantita_per_dose"),
+                                rs.getString("note")
+                        ));
+
+                    }
+                    return null;
+                },
+                idTerapia
+        );
+
+        return terapiaRef.get();
+    }
+
 
     public Terapia[] getTerapiePaziente(String username) throws SQLException {   //  Verificare il risultato fornito
         int id_paziente = getIdFromDB(username);
@@ -347,7 +392,7 @@ public class MedicoDAO extends UserDAO {
                     terapiaId
             );
         }
-        setLog(new Log(id_paziente, null, LogAction.SetTerapiaPaziente, null)); // todo: prendersi l'id_diabetologo dalla terapia
+        setLog(new Log(id_paziente, getDiabetologoFromTerapia(getTerapiaFromId(terapiaId)).getId(), LogAction.SetTerapiaPaziente, null));
     }
 
     /**
@@ -369,16 +414,29 @@ public class MedicoDAO extends UserDAO {
                 terapia.getNote(),
                 terapia.getId()
         );
-        setLog(new Log(getPazienteFromTerapia(terapia).getId(), null, LogAction.UpdateTerapiaPaziente, null)); // todo: prendersi id_diabetologo da terapia
+        setLog(new Log(getPazienteFromTerapia(terapia).getId(), getDiabetologoFromTerapia(terapia).getId(),
+                LogAction.UpdateTerapiaPaziente, null));
     }
 
     public void deleteTerapia(Terapia terapia) throws SQLException {
-        super.getConnection().executeUpdate(
-                "DELETE FROM terapia WHERE id = ?",
-                terapia.getId()
-        );
-        setLog(new Log(getPazienteFromTerapia(terapia).getId(), null, LogAction.DeleteTerapia, null)); // todo: prendersi id_diabetologo da terapia
+        try (Connection conn = super.getConnection().getConnection()) {
+            // Enable foreign key constraints for this connection
+            try (Statement stmt = conn.createStatement()) {
+                stmt.execute("PRAGMA foreign_keys = ON"); // to apply ON DELETE CASCADE of terapia in patologia_paziente
+            }
+
+            Integer pazienteId = getPazienteFromTerapia(terapia).getId();
+
+            // Now run the DELETE statement
+            try (PreparedStatement pstmt = conn.prepareStatement("DELETE FROM terapia WHERE id = ?")) {
+                pstmt.setInt(1, terapia.getId());
+                pstmt.executeUpdate();
+            }
+
+            setLog(new Log(pazienteId, terapia.getMedico().getId(), LogAction.DeleteTerapia, null));
+        }
     }
+
 
 
     public Paziente getPazienteFromTerapia(Terapia terapia) {
@@ -417,6 +475,37 @@ public class MedicoDAO extends UserDAO {
         );
 
         return pazienteRef.get();
+    }
+
+    public Medico getDiabetologoFromTerapia(Terapia terapia) {
+        AtomicReference<Medico> medicoRef = new AtomicReference<>();
+
+        String query =
+                "SELECT d.* " +
+                        "FROM diabetologo d " +
+                        "INNER JOIN terapia t ON t.id_diabetologo = d.id " +
+                        "WHERE t.id = ?";
+
+        super.getConnection().executeQuery(
+                query,
+                rs -> {
+                    if (rs.next()) {
+                        medicoRef.set(new MedicoUser(
+                                rs.getInt("id"),
+                                rs.getString("username"),
+                                rs.getString("password"),
+                                rs.getString("nome"),
+                                rs.getString("cognome"),
+                                rs.getString("email"),
+                                rs.getString("profile_image_name")
+                        ));
+                    }
+                    return null;
+                },
+                terapia.getId()
+        );
+
+        return medicoRef.get();
     }
 
 

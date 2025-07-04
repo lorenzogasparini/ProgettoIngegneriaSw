@@ -76,7 +76,7 @@ public class Main extends Application {
         // getAlerts();
 
         // JavaFX launch
-        // launch(args);
+        launch(args);
 
         // eseguire i test in questa sezione
         System.out.println("---- TEST Model ----");

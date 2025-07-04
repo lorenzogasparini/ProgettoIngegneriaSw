@@ -256,12 +256,7 @@ public class TerapieHandlingController {
 
         //  System.out.println("\n\n ID : " + idFarmacoSelezionato + "\n\n");
 
-        System.out.println("\n\nInserimento: \n" + "Farmaco: " + ter.getFarmaco().getNome()
-                + "\n Dosi : " + ter.getDosiGiornaliere()
-                + "\n Quantita : " + ter.getQuantitaPerDose()
-                + "\n Note : " + ter.getNote()
-                + "\n Patologia : " + pat.getNome()
-        );
+
 
         medicoDAO.setTerapiaPaziente(ter, TestController.selectedUser.getUsername(), pat, "");
 
@@ -313,7 +308,7 @@ public class TerapieHandlingController {
                     VBoxUpdate.setVisible(false);
                     VBoxUpdate.setManaged(false);
 
-                    refreshTable(); // todo: verificare se è corretto
+                    refreshTable();
 
                 } catch (SQLException e) {
                     statusLabel.setText("Errore durante l'eliminazione.");
