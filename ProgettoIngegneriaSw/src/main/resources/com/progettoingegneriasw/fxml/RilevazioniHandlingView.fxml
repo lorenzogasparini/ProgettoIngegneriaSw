@@ -34,7 +34,7 @@
                             </Label>
                             <HBox alignment="CENTER_RIGHT" spacing="10.0" fx:id="">
                                 <Button text="Nuova" fx:id="nuovaRilevazioneButton" onMouseClicked="#handleNuovaRilevazione" />
-                                <Button text="Ricarica" fx:id="ricaricaButton" onMouseClicked="#handleRicarica" />
+                                <Button text="" fx:id="ricaricaButton" onMouseClicked="#handleRicarica" />
                             </HBox>
                         </children>
 
