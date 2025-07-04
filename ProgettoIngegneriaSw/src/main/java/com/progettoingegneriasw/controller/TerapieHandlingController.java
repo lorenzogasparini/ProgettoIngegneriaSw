@@ -1,6 +1,7 @@
 package com.progettoingegneriasw.controller;
 
 import com.progettoingegneriasw.config.AppConfig;
+import com.progettoingegneriasw.model.Medico.Medico;
 import com.progettoingegneriasw.model.Medico.MedicoDAO;
 import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.model.Utils.*;
@@ -142,11 +143,13 @@ public class TerapieHandlingController {
     private void handleUpdate() throws SQLException {
         //  gestire il lancio della query di update della terapia sulla base delle info fornite -> Implementare controlli
         MedicoDAO medicoDAO = MedicoDAO.getInstance();
+        Medico loggedMedico = (Medico) UserDAO.getInstance().getUser(ViewNavigator.getAuthenticatedUsername());
 
         if(VBoxUpdate.isVisible()) {
             if((!dosiGiornaliereUpdate.getText().isEmpty()) && (!quantitaPerDoseUpdate.getText().isEmpty()) && (!noteUpdate.getText().isEmpty())) {
-                medicoDAO.updateTerapiaPaziente(selectedTerapia,
+                medicoDAO.updateTerapiaPaziente(
                         new Terapia(selectedTerapia.getId(),
+                                loggedMedico, // si prende il medico loggato che sta eseguendo la modifica
                                 medicoDAO.getFaracoFromId(idFarmacoSelezionato),
                                 Integer.parseInt(dosiGiornaliereUpdate.getText()),
                                 Double.parseDouble(quantitaPerDoseUpdate.getText()),
@@ -232,15 +235,23 @@ public class TerapieHandlingController {
     @FXML
     private void handleInserimento() throws SQLException {
 
+        Medico loggedMedico = (Medico) UserDAO.getInstance().getUser(ViewNavigator.getAuthenticatedUsername());
+
         // todo: cancellare (usato per test)
+        /*
         System.out.println("idFarmacoSelezionato: " + idFarmacoSelezionato + "; doseGiornalieraUpdate: " +
                 doseGiornalieraUpdate.getText() + "; quantitaperDose2.getText " + quantitaPerDose2.getText()
                 + "; note2: "+ note2.getText() + "; patologia: " + selectedPatologia
         );
+         */
 
-        Terapia ter = new Terapia(medicoDAO.getFaracoFromId(idFarmacoSelezionato),
+        Terapia ter = new Terapia(
+                loggedMedico,
+                medicoDAO.getFaracoFromId(idFarmacoSelezionato),
                 Integer.parseInt(doseGiornalieraUpdate.getText()),
-                Double.parseDouble(quantitaPerDose2.getText()), note2.getText());
+                Double.parseDouble(quantitaPerDose2.getText()),
+                note2.getText()
+        );
         Patologia pat = selectedPatologia;
 
         //  System.out.println("\n\n ID : " + idFarmacoSelezionato + "\n\n");

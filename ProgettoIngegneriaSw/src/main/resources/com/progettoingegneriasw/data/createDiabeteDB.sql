@@ -148,10 +148,12 @@ CREATE TABLE farmaco (
 -- Tabella terapia
 CREATE TABLE terapia (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_diabetologo INTEGER NOT NULL,
     id_farmaco INTEGER NOT NULL,
     dosi_giornaliere INTEGER, -- numero di dosi al giorno
     quantita_per_dose REAL, -- in g
     note TEXT,
+    FOREIGN KEY(id_diabetologo) REFERENCES diabetologo(id)
     FOREIGN KEY(id_farmaco) REFERENCES farmaco(id)
 );
 

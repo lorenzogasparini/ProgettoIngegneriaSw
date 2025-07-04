@@ -6,7 +6,7 @@ import com.progettoingegneriasw.model.User;
 public class MedicoUser extends User implements Medico{
 
     private final String email;
-    private String profileImagePath;
+    private String profileImageName;
 
     /**
      * Constructor for creating a user with username and password
@@ -26,21 +26,21 @@ public class MedicoUser extends User implements Medico{
         this(null, username, password, null, null, null, null);
     }
 
-    public MedicoUser(String username, String password, String nome, String cognome, String email, String profileImagePath){
-        this(null, username, password, nome, cognome, email, profileImagePath);
+    public MedicoUser(String username, String password, String nome, String cognome, String email, String profileImageName){
+        this(null, username, password, nome, cognome, email, profileImageName);
     }
 
     public MedicoUser(Integer id, String username, String password, String nome, String cognome,
-                      String email, String profileImagePath){
+                      String email, String profileImageName){
         super(id, username, password, nome, cognome);
         this.email = email;
-        this.profileImagePath = (profileImagePath == null || profileImagePath.isEmpty())
+        this.profileImageName = (profileImageName == null || profileImageName.isEmpty())
                 ? AppConfig.DEFAULT_IMAGE
-                : profileImagePath;
+                : profileImageName;
     }
 
     public String toString(){
-        return super.toString() + "; email: " + email + "; profileImagePath: " + profileImagePath;
+        return super.toString() + "; email: " + email + "; profileImagePath: " + profileImageName;
     }
 
     @Override
@@ -56,11 +56,11 @@ public class MedicoUser extends User implements Medico{
 
     @Override
     public String getProfileImageName() {
-        return profileImagePath;
+        return profileImageName;
     }
 
     @Override
     public void setProfileImageName(String newProfileImageName) {
-        this.profileImagePath = newProfileImageName;
+        this.profileImageName = newProfileImageName;
     }
 }

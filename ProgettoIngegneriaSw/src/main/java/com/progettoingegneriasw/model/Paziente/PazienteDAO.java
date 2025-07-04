@@ -107,30 +107,44 @@ public class PazienteDAO extends UserDAO {
         }
 
         super.getConnection().executeQuery(
-                "SELECT" +
-                        "     f.id AS id_farmaco, f.codice_aic, f.nome, t.*," +
-                        "     CASE" +
-                        "         WHEN EXISTS (" +
-                        "              SELECT 1" +
-                        "              FROM rilevazione_farmaco rf" +
-                        "              WHERE rf.id_paziente = p.id" +
-                        "                 AND rf.id_farmaco = f.id" +
-                        "                 AND DATE(rf.timestamp) = DATE('now')" +
-                        "         )" +
-                        "         THEN 1" +
-                        "         ELSE 0" +
-                        "     END AS has_taken_today" +
-                        " FROM paziente p" +
-                        " INNER JOIN patologia_paziente pp ON p.id = pp.id_paziente" +
-                        " INNER JOIN terapia t ON pp.id_terapia = t.id" +
-                        " INNER JOIN farmaco f ON t.id_farmaco = f.id" +
-                        " WHERE p.id = ?",
+                " SELECT " +
+                        "     f.id AS id_farmaco, f.codice_aic, f.nome, t.*, " +
+                        "     d.id AS id_diabetologo, d.nome AS nome_diabetologo, d.cognome AS cognome_diabetologo, "+
+                        "     d.username AS username_diabetologo, d.password AS password_diabetologo, " +
+                        "     d.email AS email_diabetologo, d.profile_image_name AS profile_image_name_diabetologo, " +
+                        "     CASE " +
+                        "         WHEN EXISTS ( " +
+                        "              SELECT 1 " +
+                        "              FROM rilevazione_farmaco rf " +
+                        "              WHERE rf.id_paziente = p.id " +
+                        "                 AND rf.id_farmaco = f.id " +
+                        "                 AND DATE(rf.timestamp) = DATE('now') " +
+                        "         ) " +
+                        "         THEN 1 " +
+                        "         ELSE 0 " +
+                        "     END AS has_taken_today " +
+                        " FROM paziente p " +
+                        " INNER JOIN patologia_paziente pp ON p.id = pp.id_paziente " +
+                        " INNER JOIN terapia t ON pp.id_terapia = t.id " +
+                        " INNER JOIN diabetologo d ON d.id = t.id_diabetologo " +
+                        " INNER JOIN farmaco f ON t.id_farmaco = f.id " +
+                        " WHERE p.id = ? ",
                 rs -> {
                     while (rs.next()) {
                         terapieEAssunzioni.put( // todo: sistemare
                                 new Terapia(
                                         rs.getInt("id"),
-                                        new Farmaco(rs.getInt("id_farmaco"),
+                                        new MedicoUser(
+                                                rs.getInt("id_diabetologo"),
+                                                rs.getString("nome_diabetologo"),
+                                                rs.getString("cognome_diabetologo"),
+                                                rs.getString("username_diabetologo"),
+                                                rs.getString("password_diabetologo"),
+                                                rs.getString("email_diabetologo"),
+                                                rs.getString("profile_image_name_diabetologo")
+                                        ),
+                                        new Farmaco(
+                                                rs.getInt("id_farmaco"),
                                                 rs.getString("codice_aic"),
                                                 rs.getString("nome")
                                         ),

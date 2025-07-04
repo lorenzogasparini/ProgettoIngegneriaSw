@@ -1,31 +1,37 @@
 package com.progettoingegneriasw.model.Utils;
 
+import com.progettoingegneriasw.model.Medico.Medico;
+import com.progettoingegneriasw.model.Medico.MedicoUser;
+
 import java.util.Objects;
 
 public class Terapia {
     private final Integer id;
+    private final Medico medico;
     private final Farmaco farmaco;
     private final Integer dosiGiornaliere;
     private final Double quantitaPerDose;
     private final String note;
 
     public Terapia(Integer id){
-        this(id, null, null, null, null);
+        this(id, null, null, null, null, null);
     }
 
-    public Terapia(Farmaco farmaco, Integer dosiGiornaliere, Double quantitaPerDose, String note){
-        this(null, farmaco, dosiGiornaliere, quantitaPerDose, note);
+    public Terapia(Medico medico, Farmaco farmaco, Integer dosiGiornaliere, Double quantitaPerDose, String note){
+        this(null, medico, farmaco, dosiGiornaliere, quantitaPerDose, note);
     }
 
-    public Terapia(Integer id, Farmaco farmaco, Integer dosiGiornaliere, Double quantitaPerDose, String note){
+    public Terapia(Integer id, Medico medico, Farmaco farmaco, Integer dosiGiornaliere, Double quantitaPerDose, String note){
         this.id = id;
+        this.medico = medico;
+        this.farmaco = farmaco;
         this.dosiGiornaliere = dosiGiornaliere;
         this.quantitaPerDose = quantitaPerDose;
         this.note = note;
-        this.farmaco = farmaco;
     }
 
     public Integer getId(){ return id; }
+    public Medico getMedico(){ return medico; }
     public Farmaco getFarmaco() { return farmaco; }
     public Integer getDosiGiornaliere() { return dosiGiornaliere; }
     public Double getQuantitaPerDose() { return quantitaPerDose; }
@@ -33,7 +39,10 @@ public class Terapia {
 
 
     public String toString(){
-        return "id: " + id + "; codice_aic" + farmaco.getCodiceAic() + "; farmaco_nome: " + farmaco.getNome() +
+        return "id: " + id + "; medicoId: " + medico.getId() + "; medicoUsername: " + medico.getUsername() +
+                "; medicoNome: " + medico.getNome() + "; medicoCognome: " + medico.getCognome() +
+                "; medicoEmail: " + medico.getEmail() + "; medicoProfileImageName: " + medico.getProfileImageName() +
+                "; codice_aic" + farmaco.getCodiceAic() + "; farmaco_nome: " + farmaco.getNome() +
                 "; dosiGiornaliere: " + dosiGiornaliere + "; quantitaPerDose: " + quantitaPerDose +
                 "; note: " + note + "; farmaco_id: " + farmaco.getId();
 

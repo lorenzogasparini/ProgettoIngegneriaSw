@@ -227,15 +227,30 @@ public class MedicoDAO extends UserDAO {
             throw new SQLException();   //  Verificare se si tratta della giusta eccezione
         }
 
-        super.getConnection().executeQuery(
-                "SELECT t.id, t.id_farmaco, t.dosi_giornaliere, t.quantita_per_dose, t.note, f.id, f.codice_aic, f.nome " +
-                    "FROM terapia t, farmaco f " +
-                    "INNER JOIN patologia_paziente pp ON t.id = pp.id_terapia " +
-                    "WHERE pp.id_paziente = ? AND t.id_farmaco = f.id",
+        super.getConnection().executeQuery( // todo: testare il funzionamento corretto
+                " SELECT t.id, t.id_farmaco, t.dosi_giornaliere, t.quantita_per_dose, t.note, f.id, f.codice_aic, f.nome," +
+                        "d.id AS id_diabetologo, d.nome AS nome_diabetologo, d.cognome AS cognome_diabetologo, " +
+                        "d.username AS username_diabetologo, d.password AS password_diabetologo, " +
+                        "d.email AS email_diabetologo, d.profile_image_name AS profile_image_name_diabetologo " +
+                    " FROM terapia t, farmaco f " +
+                    " INNER JOIN patologia_paziente pp ON t.id = pp.id_terapia " +
+                    " INNER JOIN diabetologo d ON d.id = t.id_diabetologo " +
+                    " WHERE pp.id_paziente = ? AND t.id_farmaco = f.id",
                 rs -> {
                     while (rs.next()) {
-                        terapie.add(new Terapia(rs.getInt("id"),
-                                new Farmaco(rs.getInt("id_farmaco"),
+                        terapie.add(new Terapia(
+                                rs.getInt("id"),
+                                new MedicoUser(
+                                        rs.getInt("id_diabetologo"),
+                                        rs.getString("nome_diabetologo"),
+                                        rs.getString("cognome_diabetologo"),
+                                        rs.getString("username_diabetologo"),
+                                        rs.getString("password_diabetologo"),
+                                        rs.getString("email_diabetologo"),
+                                        rs.getString("profile_image_name_diabetologo")
+                                ),
+                                new Farmaco(
+                                        rs.getInt("id_farmaco"),
                                         rs.getString("codice_aic"),
                                         rs.getString("nome")
                                 ),
@@ -299,7 +314,9 @@ public class MedicoDAO extends UserDAO {
         if (terapiaId <= 0) {
             // Insert a new terapia
             terapiaId = super.getConnection().executeInsertAndReturnId(
-                    "INSERT INTO terapia (id_farmaco, dosi_giornaliere, quantita_per_dose, note) VALUES (?, ?, ?, ?)",
+                    "INSERT INTO terapia (id_diabetologo, id_farmaco, dosi_giornaliere," +
+                            " quantita_per_dose, note) VALUES (?, ?, ?, ?, ?)",
+                    terapia.getMedico().getId(),
                     terapia.getFarmaco().getId(),
                     terapia.getDosiGiornaliere(),
                     terapia.getQuantitaPerDose(),
@@ -320,7 +337,9 @@ public class MedicoDAO extends UserDAO {
         } else {
             // Update existing terapia
             super.getConnection().executeUpdate(
-                    "UPDATE terapia SET id_farmaco = ?, dosi_giornaliere = ?, quantita_per_dose = ?, note = ? WHERE id = ?",
+                    "UPDATE terapia SET id_diabetologo = ?, id_farmaco = ?, dosi_giornaliere = ?, " +
+                            "quantita_per_dose = ?, note = ? WHERE id = ?",
+                    terapia.getMedico().getId(),
                     terapia.getFarmaco().getId(),
                     terapia.getDosiGiornaliere(),
                     terapia.getQuantitaPerDose(),
@@ -337,16 +356,17 @@ public class MedicoDAO extends UserDAO {
      * sulla base della presenza o meno della terapia nella tabella patologia_paziente. Di fatto, questa funzione
      * viene utilizzata nel caso in cui sia necessario modificare una terapia di cui è nota la presenza nella tabella
      * terapia, sulla base delle sole informazioni note riguardanti terapia e modifiche da attuare.
-     * @param terapia Memorizza la terapia per come è stata inserita nella tabella terapia
-     * @param terapiaNew Memmorizza la nuova terapia da inserire in tabella terapie
+     * @param terapia terapia esistente da modificare in tabella terapie
      */
-    public void updateTerapiaPaziente(Terapia terapia, Terapia terapiaNew) {
+    public void updateTerapiaPaziente(Terapia terapia) {
         super.getConnection().executeUpdate(
-                "UPDATE terapia SET id_farmaco = ?, dosi_giornaliere = ?, quantita_per_dose = ?, note = ? WHERE id = ?",
-                terapiaNew.getFarmaco().getId(),
-                terapiaNew.getDosiGiornaliere(),
-                terapiaNew.getQuantitaPerDose(),
-                terapiaNew.getNote(),
+                "UPDATE terapia SET id_diabetologo = ?, id_farmaco = ?, dosi_giornaliere = ?, " +
+                        "quantita_per_dose = ?, note = ? WHERE id = ?",
+                terapia.getMedico().getId(),
+                terapia.getFarmaco().getId(),
+                terapia.getDosiGiornaliere(),
+                terapia.getQuantitaPerDose(),
+                terapia.getNote(),
                 terapia.getId()
         );
         setLog(new Log(getPazienteFromTerapia(terapia).getId(), null, LogAction.UpdateTerapiaPaziente, null)); // todo: prendersi id_diabetologo da terapia

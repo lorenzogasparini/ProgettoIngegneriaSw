@@ -65,7 +65,7 @@ public class User implements UserInterface{ // todo: rendere questa classe astra
      * 
      * @return The user's ID (same as username in this implementation)
      */
-    public int getId() {
+    public Integer getId() {
         return id;
     }
     
@@ -108,7 +108,7 @@ public class User implements UserInterface{ // todo: rendere questa classe astra
             throw new UserTypeNotFoundException("This user type is not found");
     }
 
-    public boolean isAdmin() {
+    public Boolean isAdmin() {
         return this.getUserType().equals(UserTypes.Admin);
     }
 

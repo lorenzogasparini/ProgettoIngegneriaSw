@@ -2,6 +2,7 @@ package com.progettoingegneriasw;
 
 import com.progettoingegneriasw.model.Admin.AdminDAO;
 import com.progettoingegneriasw.model.Admin.AdminUser;
+import com.progettoingegneriasw.model.Medico.Medico;
 import com.progettoingegneriasw.model.Medico.MedicoDAO;
 import com.progettoingegneriasw.model.Medico.MedicoUser;
 import com.progettoingegneriasw.model.Paziente.Paziente;
@@ -75,7 +76,7 @@ public class Main extends Application {
         // getAlerts();
 
         // JavaFX launch
-        launch(args);
+        // launch(args);
 
         // eseguire i test in questa sezione
         System.out.println("---- TEST Model ----");
@@ -342,36 +343,17 @@ public class Main extends Application {
         // MEDICO: setTerapiaPaziente() --> ok!
         System.out.println("\ninserimento terapia ad un paziente");
         medicoDAO.setTerapiaPaziente(new Terapia(
-                new Farmaco(1,"012345678", "Metformina"), 3, 10.0, "pasti"),
-                "lucia.verdi", new Patologia(4), "");
+                (Medico) UserDAO.getInstance().getUser("drdestri"),
+                UserDAO.getInstance().getFarmacoFromAic("012345678"),
+                3, 10.0, "pasti"), "lucia.verdi",
+                new Patologia(4), "");
 
         System.out.println("\nmodifica terapia già presente");
         medicoDAO.setTerapiaPaziente(new Terapia(
-                        new Farmaco(1,"012345678", "Metformina"), 2, 40.0, "dopo i pasti"),
+                        (Medico) UserDAO.getInstance().getUser("drdestri"),
+                        new Farmaco(1,"012345678", "Metformina"),
+                        2, 40.0, "dopo i pasti"),
                 "lucia.verdi", new Patologia(4), "");
-
-    }
-
-    private static void testAlerts() throws SQLException {
-        System.out.println("\n\n\n -- TEST ALERTS -- \n");
-
-        // Ottieni la lista di alerts di un paziente specifico
-        System.out.println("Lista degli alerts di mario.rossi");
-        Alert[] alerts = medicoDAO.getAlertPaziente("mario.rossi");
-        for(Alert al: alerts){
-            System.out.println("Alert: " + al);
-        }
-
-        // Ottieni la lista di alerts di tutti i pazienti
-        System.out.println("\n\nLista degli alerts generale");
-        Alert[] alerts2 = medicoDAO.getAlert();
-        for(Alert al: alerts2){
-            System.out.println("Alert: " + al);
-        }
-
-        // Imposta un alert come letto
-        System.out.println("Imposta un alert come letto");
-        userDAO.setAlertRead(alerts2[0], false);
 
     }
 
@@ -401,11 +383,13 @@ public class Main extends Application {
         }
 
         // Ottieni la lista farmaci di un paziente e indica anche se ogni farmaco è già stato assunto o no di oggi
+
         System.out.println("Lista dei pazienti di mario.rossi");
         Map<Terapia, Boolean> terapieEAssunzioni = pazienteDAO.getTerapieEAssunzioniPaziente("mario.rossi");
         for(Terapia terapia: terapieEAssunzioni.keySet()){
             System.out.println("Farmaco: " + terapia + "; assunto: " + terapieEAssunzioni.get(terapia));
         }
+
 
         // -- TEST INSERIMENTO RILEVAZIONI --
         // PAZIENTE: inserimento di una rilevazione sintomo --> FUNZIONA!
@@ -431,5 +415,31 @@ public class Main extends Application {
 
 
     }
+
+    private static void testAlerts() throws SQLException {
+
+        System.out.println("\n\n\n -- TEST ALERTS -- \n");
+
+        // Ottieni la lista di alerts di un paziente specifico
+        System.out.println("Lista degli alerts di mario.rossi");
+        Alert[] alerts = medicoDAO.getAlertPaziente("mario.rossi");
+        for(Alert al: alerts){
+            System.out.println("Alert: " + al);
+        }
+
+        // Ottieni la lista di alerts di tutti i pazienti
+        System.out.println("\n\nLista degli alerts generale");
+        Alert[] alerts2 = medicoDAO.getAlert();
+        for(Alert al: alerts2){
+            System.out.println("Alert: " + al);
+        }
+
+        // Imposta un alert come letto
+        System.out.println("Imposta un alert come letto");
+        userDAO.setAlertRead(alerts2[0], false);
+
+    }
+
+
 
 }
