@@ -3,6 +3,7 @@ package com.progettoingegneriasw.model.Paziente;
 import com.progettoingegneriasw.model.Medico.MedicoUser;
 import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.model.Utils.*;
+import com.progettoingegneriasw.view.ViewNavigator;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -251,25 +252,17 @@ public class PazienteDAO extends UserDAO {
         );
     }
 
-    /**
-     * Funzione per l'inserimento in Alert se ci sono dei dati sballati in rilevazione_glicemia --> ok!
-     * @param alert  parametro che permette di effettuare l'inserimento dell'alert.
-     */
-    /* todo: cancellare: è già presente UserDAO.insertAlerts()
-    public void insertAlertGlicemia(Alert alert){
-        final String alertType = "glicemia";
+    @Override
+    public int countAlerts() throws SQLException {
+        Map<Terapia, Boolean> terapieEAssunzioni = getTerapieEAssunzioniPaziente(ViewNavigator.getAuthenticatedUsername());
+        int count = 0;
 
-        super.getConnection().executeUpdate(
-                "INSERT INTO alert (id_paziente, id_rilevazione, tipo_alert, data_alert, letto) " +
-                        "VALUES (?, ?, ?, ?, ?)",
-                alert.getIdPaziente(),
-                alert.getIdRilevazione(),
-                alert.getTipoAlert(),
-                alert.getTimestamp().toString(),
-                alert.getLetto()
-        );
-        setLog(new Log(alert.getIdPaziente(), null, LogAction.InsertAlertGlicemia, null));
+        for (Terapia t: terapieEAssunzioni.keySet()){
+            if (!terapieEAssunzioni.get(t))
+                count++;
+        }
+
+        return count;
     }
-    */
 
 }

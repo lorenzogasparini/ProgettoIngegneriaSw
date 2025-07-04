@@ -155,8 +155,8 @@ public class StatsController {
         if (userToPromote != null) {
             // Create a new user with admin privileges
             //User promotedUser = new User(username, userToPromote.getPassword(), true); // admin
-            User promotedUser = new User(username, userToPromote.getPassword());
-            userDAO.saveUser(promotedUser);
+            //User promotedUser = new User(username, userToPromote.getPassword());
+            //userDAO.saveUser(promotedUser);
             
             // Refresh the user list
             populateUserList();

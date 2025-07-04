@@ -458,8 +458,10 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
         }
     }
 
-    // todo: method to get alerts
-    //public ArrayList<Alert> getAllAlerts(){} // todo: da ridefinire in PazienteDAO perché deve prendere solo gli alert con
+    // todo: questo metodo andrebbe reso astratto e ridefinito solo in PazienteDAO e MedicoDAO
+    public int countAlerts() throws SQLException { // todo: da ridefinire in PazienteDAO perché deve prendere solo gli alert con
+        return 0;
+    }
 
     // todo: verificare se ci sono pazienti che non assumono i farmaci che dovrebbero da più di 3 giorni
     /// in un sistema CLIENT-SERVER questo metodo verrebbe chiamato ripetutamente dal server (qui per maggiore efficienza
@@ -564,6 +566,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                     alert.getId()
             );
     }
+
 
 
 }

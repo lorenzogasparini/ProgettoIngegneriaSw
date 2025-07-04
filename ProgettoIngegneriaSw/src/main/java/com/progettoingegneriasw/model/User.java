@@ -7,7 +7,7 @@ import com.progettoingegneriasw.model.Medico.MedicoDAO;
 import com.progettoingegneriasw.model.Paziente.Paziente;
 import com.progettoingegneriasw.model.Paziente.PazienteDAO;
 
-public class User implements UserInterface{ // todo: rendere questa classe astratta finiti i controller
+public abstract class User implements UserInterface{
     private final Integer id;
     private final String username;
     private final String password;

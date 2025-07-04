@@ -638,7 +638,7 @@ public class MedicoDAO extends UserDAO {
 
     //  IMPORTANTE:
     // todo: gestire il dato id_paziente correttamente nelle query per gli alert, magari usando il metodo apposito per paziente
-
+    // todo: a cosa serve?
     public Alert[] getAlert() throws SQLException {
         ArrayList<Alert> alerts = new ArrayList<>();
 
@@ -686,6 +686,7 @@ public class MedicoDAO extends UserDAO {
     }
 
 
+    ///  prende tutti gli alerts presenti nella tabella e quindi solamente quelli per i medici (gli alert degli utenti non vanno nella tabella alert)
     public Alert[] getAllAlerts(AlertFilter filter) throws SQLException {
         ArrayList<Alert> alerts = new ArrayList<>();
 
@@ -786,6 +787,11 @@ public class MedicoDAO extends UserDAO {
         );
 
         return alerts.toArray(new Alert[0]);
+    }
+
+    @Override
+    public int countAlerts() throws SQLException {
+        return getAllAlerts(AlertFilter.UNREAD).length;
     }
 
 }

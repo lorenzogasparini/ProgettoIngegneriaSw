@@ -2,6 +2,9 @@ package com.progettoingegneriasw.view;
 
 import com.progettoingegneriasw.Main;
 import com.progettoingegneriasw.controller.MainController;
+import com.progettoingegneriasw.model.Medico.Medico;
+import com.progettoingegneriasw.model.Paziente.Paziente;
+import com.progettoingegneriasw.model.UserDAO;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 
@@ -103,6 +106,19 @@ public class ViewNavigator {
     public static void navigateToDashboard() {
         if (isAuthenticated()) {
             loadView("DashboardView.fxml");
+        } else {
+            navigateToLogin();
+        }
+    }
+
+    public static void navigateToAlerts() {
+        if (isAuthenticated()) {
+            if (UserDAO.getInstance().getUser(ViewNavigator.getAuthenticatedUsername()) instanceof Medico medico){
+                loadView("AlertsHandlingView.fxml");
+            }else if (UserDAO.getInstance().getUser(ViewNavigator.getAuthenticatedUsername()) instanceof Paziente paziente){
+                loadView("TerapieView.fxml");
+            }
+
         } else {
             navigateToLogin();
         }
