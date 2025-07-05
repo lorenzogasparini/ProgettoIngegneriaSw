@@ -199,8 +199,8 @@ public class Main extends Application {
 
 
         // ADMIN: cancellazione utente
-        AdminUser newAdminUser = new AdminUser("admin3", "admin3", "Pietro", "Corsi");
-        adminDAO.deleteUser(newAdminUser.getUsername());
+        User userToDelete = UserDAO.getInstance().getUser("andrea.neri");
+        adminDAO.deleteUser(userToDelete.getUsername());
 
         // ADMIN: metodo per ottenere i Log
         /*

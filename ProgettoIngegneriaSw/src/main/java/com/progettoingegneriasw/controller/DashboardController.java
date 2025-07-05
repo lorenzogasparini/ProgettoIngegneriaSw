@@ -4,21 +4,15 @@ import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.view.ViewNavigator;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 
 public class DashboardController {
-    @FXML
-    private Label welcomeLabel;
+    @FXML private Label welcomeLabel;
 
-    @FXML
-    private HBox handlingPanelPaziente;
+    @FXML private HBox handlingPanelPaziente;
+    @FXML private HBox handlingPanelMedico;
+    @FXML private HBox handlingPanelAdmin;
 
-    @FXML
-    private HBox handlingPanelMedico;
-
-    @FXML
-    private Button gestioneTerapie;
 
     private UserDAO userDAO;
     
@@ -27,22 +21,37 @@ public class DashboardController {
         // This is a protected view, so we should always have an authenticated user
         String username = ViewNavigator.getAuthenticatedUsername();
         userDAO = UserDAO.getInstance();
-        welcomeLabel.setText("Benvenuto nella tua dashboard, " + (userDAO.getUser(ViewNavigator.getAuthenticatedUsername()).isMedico() ? "dott. " : " ") + username + "!");
+        welcomeLabel.setText("Benvenuto nella tua dashboard, " +
+                (userDAO.getUser(ViewNavigator.getAuthenticatedUsername()).isMedico() ? "dott. " : " ") + username + "!");
+        showUserTypePanel();
 
+    }
+
+    private void showUserTypePanel(){
         userDAO = UserDAO.getInstance();
         if(userDAO.getUser(ViewNavigator.getAuthenticatedUsername()).isMedico()) {
             handlingPanelPaziente.setManaged(false);
             handlingPanelPaziente.setVisible(false);
+            handlingPanelAdmin.setManaged(false);
+            handlingPanelAdmin.setVisible(false);
             handlingPanelMedico.setManaged(true);
+            handlingPanelMedico.setVisible(true);
         }
         else if(userDAO.getUser(ViewNavigator.getAuthenticatedUsername()).isPaziente()){
-            handlingPanelPaziente.setManaged(true);
             handlingPanelMedico.setManaged(false);
             handlingPanelMedico.setVisible(false);
+            handlingPanelAdmin.setManaged(false);
+            handlingPanelAdmin.setVisible(false);
+            handlingPanelPaziente.setManaged(true);
+            handlingPanelPaziente.setVisible(true);
         }
-        else{
+        else if (userDAO.getUser(ViewNavigator.getAuthenticatedUsername()).isAdmin()){
             handlingPanelPaziente.setManaged(false);
-            handlingPanelMedico.setManaged(true);
+            handlingPanelPaziente.setVisible(false);
+            handlingPanelMedico.setManaged(false);
+            handlingPanelMedico.setVisible(false);
+            handlingPanelAdmin.setManaged(true);
+            handlingPanelAdmin.setVisible(true);
         }
     }
 
@@ -68,6 +77,22 @@ public class DashboardController {
 
     @FXML
     private void handleGestioneTerapie() {ViewNavigator.navigateToTerapie();}
+
+    @FXML
+    private void handleApriRegisterView() {
+        ViewNavigator.navigateToRegister();  // già esistente
+    }
+
+    @FXML
+    private void handleApriGestioneUtenti() {
+        ViewNavigator.navigateToGestioneUtenti(); // da creare
+    }
+
+    @FXML
+    private void handleApriVisualizzazioneLog() {
+        ViewNavigator.navigateToVisualizzazioneLog(); // da creare
+    }
+
 
     @FXML
     private void handleViewProfile() {

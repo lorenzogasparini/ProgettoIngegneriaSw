@@ -1,6 +1,8 @@
 package com.progettoingegneriasw.model.Admin;
 
+import com.progettoingegneriasw.model.Medico.Medico;
 import com.progettoingegneriasw.model.Medico.MedicoDAO;
+import com.progettoingegneriasw.model.Medico.MedicoUser;
 import com.progettoingegneriasw.model.Paziente.Paziente;
 import com.progettoingegneriasw.model.Paziente.PazienteDAO;
 import com.progettoingegneriasw.model.Paziente.PazienteUser;
@@ -8,6 +10,7 @@ import com.progettoingegneriasw.model.User;
 import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.model.Utils.Log;
 import com.progettoingegneriasw.model.Utils.LogAction;
+import com.progettoingegneriasw.view.ViewNavigator;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -54,16 +57,16 @@ public class AdminDAO extends UserDAO {
         if (user != null && !user.isAdmin()) {
             try {
                 if (user.isMedico()) {
-                    MedicoDAO medicoDAO = MedicoDAO.getInstance();
                     super.getConnection().executeUpdate(
-                            "DELETE FROM " + medicoDAO.getSQLTableName() + " WHERE username = ?",
+                            "UPDATE diabetologo SET deleted = ? WHERE username = ?",
+                            true,
                             username
                     );
                     setLog(new Log(null, UserDAO.getInstance().getIdFromDB(username), LogAction.DeleteUser, null));
                 } else if (user.isPaziente()) {
-                    PazienteDAO pazienteDAO = PazienteDAO.getInstance();
                     super.getConnection().executeUpdate(
-                            "DELETE FROM " + pazienteDAO.getSQLTableName() + " WHERE username = ?",
+                            "UPDATE paziente SET deleted = ? WHERE username = ?",
+                            true,
                             username
                     );
                     setLog(new Log(UserDAO.getInstance().getIdFromDB(username), null, LogAction.DeleteUser, null));
@@ -75,24 +78,49 @@ public class AdminDAO extends UserDAO {
         }
     }
 
-    public Log[] getLogs(){
+    public Log[] getLogsPaged(int offset, int limit) {
         ArrayList<Log> logs = new ArrayList<>();
         super.getConnection().executeQuery(
-                "SELECT * FROM log",
+                "SELECT * FROM log ORDER BY timestamp DESC LIMIT ? OFFSET ?",
                 rs -> {
                     while (rs.next()) {
                         logs.add(new Log(
+                                rs.getInt("id"),
+                                rs.getInt("id_paziente"),
+                                rs.getInt("id_diabetologo"),
+                                LogAction.fromString(rs.getString("azione")),
+                                rs.getTimestamp("timestamp")
+                        ));
+                    }
+                    return null;
+                },
+                limit, offset
+        );
+        return logs.toArray(new Log[0]);
+    }
+
+    public Medico[] getAllMedici(){
+        ArrayList<User> medici = new ArrayList<>();
+
+        super.getConnection().executeQuery(
+                "SELECT * FROM diabetologo",
+                rs -> {
+                    while (rs.next()) {
+                        medici.add(new MedicoUser(
                                         rs.getInt("id"),
-                                        rs.getInt("id_paziente"),
-                                        rs.getInt("id_diabetologo"),
-                                        LogAction.fromString(rs.getString("azione")),
-                                        rs.getTimestamp("timestamp")
+                                        rs.getString("username"),
+                                        rs.getString("password"),
+                                        rs.getString("nome"),
+                                        rs.getString("cognome"),
+                                        rs.getString("email"),
+                                        rs.getString("profile_image_name")
                                 )
                         );
                     }
                     return null;
                 }
         );
-        return logs.toArray(new Log[logs.size()]);
+        return medici.toArray(new Medico[medici.size()]);
     }
+
 }

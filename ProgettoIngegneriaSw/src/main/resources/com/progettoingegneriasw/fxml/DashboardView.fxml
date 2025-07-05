@@ -123,6 +123,49 @@
          </VBox>
       </HBox>
 
+      <HBox spacing="20.0" alignment="CENTER" fx:id="handlingPanelAdmin">
+         <children>
+
+            <!-- Inserisci utente -->
+            <VBox styleClass="card" HBox.hgrow="ALWAYS" fx:id="pannelloInserisciUtenti">
+               <children>
+                  <Label styleClass="card-header" text="Inserisci nuovo utente" />
+                  <Label text="Accedi alla schermata per registrare un nuovo utente." wrapText="true">
+                     <VBox.margin><Insets top="10.0" bottom="10.0"/></VBox.margin>
+                  </Label>
+                  <Button text="Registra" onAction="#handleApriRegisterView" />
+               </children>
+               <padding><Insets top="15.0" bottom="15.0" left="15.0" right="15.0"/></padding>
+            </VBox>
+
+            <!-- Gestione utenti -->
+            <VBox styleClass="card" HBox.hgrow="ALWAYS" fx:id="pannelloGestioneUtenti">
+               <children>
+                  <Label styleClass="card-header" text="Gestione utenti" />
+                  <Label text="Visualizza, modifica o elimina gli utenti esistenti." wrapText="true">
+                     <VBox.margin><Insets top="10.0" bottom="10.0"/></VBox.margin>
+                  </Label>
+                  <Button text="Visualizza" onAction="#handleApriGestioneUtenti" />
+               </children>
+               <padding><Insets top="15.0" bottom="15.0" left="15.0" right="15.0"/></padding>
+            </VBox>
+
+            <!-- Log sistema -->
+            <VBox styleClass="card" HBox.hgrow="ALWAYS" fx:id="pannelloVisualizzaLog">
+               <children>
+                  <Label styleClass="card-header" text="Log di sistema" />
+                  <Label text="Consulta i log delle azioni eseguite dagli utenti." wrapText="true">
+                     <VBox.margin><Insets top="10.0" bottom="10.0"/></VBox.margin>
+                  </Label>
+                  <Button text="Visualizza log" onAction="#handleApriVisualizzazioneLog" />
+               </children>
+               <padding><Insets top="15.0" bottom="15.0" left="15.0" right="15.0"/></padding>
+            </VBox>
+
+         </children>
+      </HBox>
+
+
       <!--
       <HBox spacing="10.0">
          <children>

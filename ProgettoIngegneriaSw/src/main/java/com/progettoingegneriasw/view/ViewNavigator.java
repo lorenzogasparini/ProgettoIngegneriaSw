@@ -98,6 +98,14 @@ public class ViewNavigator {
     public static void navigateToRegister() {
         loadView("RegisterView.fxml");
     }
+
+    public static void navigateToGestioneUtenti(){
+        loadView("GestioneUtentiView.fxml");
+    }
+
+    public static void navigateToVisualizzazioneLog(){
+        loadView("VisualizzazioneLogView.fxml");
+    }
     
     /**
      * Navigate to the dashboard view (protected)
