@@ -41,11 +41,4 @@ public class MainController {
         navBar.updateAuthStatus(isAuthenticated, ViewNavigator.getAuthenticatedUsername());
     }
 
-//    public void checkAndShowAlerts(){
-//        if(!ViewNavigator.isAuthenticated()){ // todo: in UserDAO è presente un'altra funzione per verificare se l'utente è loggato
-//            return; // teoricamente non dovrebbe mai entrare qui
-//        }
-//
-//
-//    }
 }
