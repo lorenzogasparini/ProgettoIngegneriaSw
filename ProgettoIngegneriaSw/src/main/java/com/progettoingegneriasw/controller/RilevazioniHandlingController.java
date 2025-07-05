@@ -6,9 +6,11 @@ import com.progettoingegneriasw.model.Paziente.PazienteDAO;
 import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.model.Utils.*;
 import com.progettoingegneriasw.view.ViewNavigator;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -178,40 +180,56 @@ public class RilevazioniHandlingController {
         VBoxNuovaRilevazione.setManaged(true);
     }
 
-    private void setup() throws SQLException {
-        timestampRilFarmaco.setCellValueFactory(new PropertyValueFactory<RilevazioneFarmaco, Timestamp>("timestamp"));
-        quantita.setCellValueFactory(new PropertyValueFactory<RilevazioneFarmaco, Double>("quantita"));
-        noteRilevazione.setCellValueFactory(new PropertyValueFactory<RilevazioneFarmaco, String>("noteRilevazione"));
-        codiceAic.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getFarmaco().getCodiceAic()));
-        nome.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getFarmaco().getNome()));
+    private void setup() {
+        ///  performo DB and heavy operations in background avoiding UI freezing
+        Task<Void> loadDataTask = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
 
-        timestampRilGlicemia.setCellValueFactory(new PropertyValueFactory<RilevazioneGlicemia, Timestamp>("timestamp"));
-        valore.setCellValueFactory(new PropertyValueFactory<RilevazioneGlicemia, Integer>("valore"));
-        gravita.setCellValueFactory(new PropertyValueFactory<RilevazioneGlicemia, Integer>("gravita"));
-        primaPasto.setCellValueFactory(new PropertyValueFactory<RilevazioneGlicemia, Boolean>("primaPasto"));
+                // get Data from DB
+                MedicoDAO medicoDAO = MedicoDAO.getInstance();
+                medicoDAO.getUser(ViewNavigator.getAuthenticatedUsername());
+                RilevazioneFarmaco[] rilevazioniFarmaci = medicoDAO.getRilevazioniFarmaco(ViewNavigator.getAuthenticatedUsername());
+                RilevazioneGlicemia[] rilevazioniGlicemia = medicoDAO.getRilevazioniGlicemia(ViewNavigator.getAuthenticatedUsername());
+                RilevazioneSintomo[] rilevazioniSintomi = medicoDAO.getRilevazioniSintomo(ViewNavigator.getAuthenticatedUsername());
 
-        timestampRilSintomo.setCellValueFactory(new PropertyValueFactory<RilevazioneSintomo, Timestamp>("timestamp"));
-        sintomo.setCellValueFactory(new PropertyValueFactory<RilevazioneSintomo, String>("sintomo"));
-        intensita.setCellValueFactory(new PropertyValueFactory<RilevazioneSintomo, Integer>("intensita"));
+                ObservableList<RilevazioneFarmaco> rilFarmaci = FXCollections.observableArrayList(rilevazioniFarmaci);
+                ObservableList<RilevazioneGlicemia> rilGlicemia = FXCollections.observableArrayList(rilevazioniGlicemia);
+                ObservableList<RilevazioneSintomo> rilSintomi = FXCollections.observableArrayList(rilevazioniSintomi);
 
-        setTimestampFormat();
+                // esegue su JavaFX thread mettendo gli update dell'UI in coda
+                Platform.runLater(() -> {
+                    setTimestampFormat();
 
-        MedicoDAO medicoDAO = MedicoDAO.getInstance();
-        medicoDAO.getUser(ViewNavigator.getAuthenticatedUsername());
-        RilevazioneFarmaco[] rilevazioniFarmaci = medicoDAO.getRilevazioniFarmaco(ViewNavigator.getAuthenticatedUsername());
-        RilevazioneGlicemia[] rilevazioniGlicemia = medicoDAO.getRilevazioniGlicemia(ViewNavigator.getAuthenticatedUsername());
-        RilevazioneSintomo[] rilevazioniSintomi = medicoDAO.getRilevazioniSintomo(ViewNavigator.getAuthenticatedUsername());
+                    timestampRilFarmaco.setCellValueFactory(new PropertyValueFactory<>("timestamp"));
+                    quantita.setCellValueFactory(new PropertyValueFactory<>("quantita"));
+                    noteRilevazione.setCellValueFactory(new PropertyValueFactory<>("noteRilevazione"));
+                    codiceAic.setCellValueFactory(cellData ->
+                            new SimpleStringProperty(cellData.getValue().getFarmaco().getCodiceAic()));
+                    nome.setCellValueFactory(cellData ->
+                            new SimpleStringProperty(cellData.getValue().getFarmaco().getNome()));
 
-        ObservableList<RilevazioneFarmaco> rilFarmaci = FXCollections.observableArrayList(rilevazioniFarmaci);
-        ObservableList<RilevazioneGlicemia> rilGlicemia = FXCollections.observableArrayList(rilevazioniGlicemia);
-        ObservableList<RilevazioneSintomo> rilSintomi = FXCollections.observableArrayList(rilevazioniSintomi);
+                    timestampRilGlicemia.setCellValueFactory(new PropertyValueFactory<>("timestamp"));
+                    valore.setCellValueFactory(new PropertyValueFactory<>("valore"));
+                    gravita.setCellValueFactory(new PropertyValueFactory<>("gravita"));
+                    primaPasto.setCellValueFactory(new PropertyValueFactory<>("primaPasto"));
 
-        tableViewRilevazioniFarmaci.setItems(rilFarmaci);
-        tableViewRilevazioniGlicemia.setItems(rilGlicemia);
-        tableViewRilevazioniSintomi.setItems(rilSintomi);
+                    timestampRilSintomo.setCellValueFactory(new PropertyValueFactory<>("timestamp"));
+                    sintomo.setCellValueFactory(new PropertyValueFactory<>("sintomo"));
+                    intensita.setCellValueFactory(new PropertyValueFactory<>("intensita"));
+
+                    tableViewRilevazioniFarmaci.setItems(rilFarmaci);
+                    tableViewRilevazioniGlicemia.setItems(rilGlicemia);
+                    tableViewRilevazioniSintomi.setItems(rilSintomi);
+                });
+
+                return null;
+            }
+        };
+
+        new Thread(loadDataTask).start(); // run the background task
     }
+
 
     @FXML
     private void handleRicarica() throws SQLException {

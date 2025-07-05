@@ -11,6 +11,8 @@ import com.progettoingegneriasw.model.User;
 import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.model.UserTypes;
 import com.progettoingegneriasw.view.ViewNavigator;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -48,13 +50,12 @@ public class ProfileController {
         userDAO = UserDAO.getLoggedUserDAO();
         currentUsername = ViewNavigator.getAuthenticatedUsername();
 
-        loadProfileImage(currentUsername);
-        setContactDoctorIcon();
         usernameLabel.setText(currentUsername);
-        
-        // Hide the status label initially
+        setContactDoctorIcon();
         statusLabel.setVisible(false);
         statusLabel.setManaged(false);
+
+        loadProfileImageAsync(currentUsername);
     }
     
     /**
@@ -65,38 +66,44 @@ public class ProfileController {
     private void handleUpdatePassword() {
         String newPassword = newPasswordField.getText();
         String confirmPassword = confirmPasswordField.getText();
-        
-        // Validation
+
         if (newPassword.isEmpty() || confirmPassword.isEmpty()) {
             showError("Riempi entrambi i campi per la nuova password");
             return;
         }
-        
+
         if (!newPassword.equals(confirmPassword)) {
             showError("Le password non corrispondono");
             return;
         }
 
-        try{
-            // Update the user with the new password
-            User currentUser = userDAO.getUser(currentUsername);
-            switch (currentUser.getUserType()){
-                case UserTypes.Admin -> userDAO.saveUser(new AdminUser((AdminUser) currentUser, newPassword));
-                case UserTypes.Medico -> userDAO.saveUser(new MedicoUser((MedicoUser) currentUser, newPassword));
-                case UserTypes.Paziente -> userDAO.saveUser(new PazienteUser((PazienteUser) currentUser, newPassword));
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() {
+                try {
+                    User currentUser = userDAO.getUser(currentUsername);
+                    switch (currentUser.getUserType()) {
+                        case UserTypes.Admin -> userDAO.saveUser(new AdminUser((AdminUser) currentUser, newPassword));
+                        case UserTypes.Medico -> userDAO.saveUser(new MedicoUser((MedicoUser) currentUser, newPassword));
+                        case UserTypes.Paziente -> userDAO.saveUser(new PazienteUser((PazienteUser) currentUser, newPassword));
+                    }
+
+                    Platform.runLater(() -> {
+                        showSuccess("Password aggiornata! ");
+                        newPasswordField.clear();
+                        confirmPasswordField.clear();
+                    });
+                } catch (Exception e) {
+                    Platform.runLater(() -> showError("Errore nell'aggiornamento"));
+                }
+                return null;
             }
+        };
 
-            showSuccess("Password aggiornata! ");
-        }catch (Exception e){
-            showError("Errore nell'aggiornamento");
-        }
-
-        
-        // Clear fields
-        newPasswordField.clear();
-        confirmPasswordField.clear();
+        new Thread(task).start();
     }
-    
+
+
     /**
      * Handle navigating back to the dashboard.
      * This method is called when the user clicks the "Back to Dashboard" button.
@@ -108,48 +115,43 @@ public class ProfileController {
 
     @FXML
     private void handleCambiaImmagine() {
-        String currentUsername = ViewNavigator.getAuthenticatedUsername();
-        User currentUser = UserDAO.getInstance().getUser(currentUsername);
-
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Seleziona immagine profilo");
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("Immagini", "*.png", "*.jpg", "*.jpeg")
         );
+
         File selectedFile = fileChooser.showOpenDialog(profileImage.getScene().getWindow());
-        if (selectedFile != null) {
-            try {
-                /*
-                // Crea cartella immagini locale se non esiste
-                File destDir = new File("images");
-                if (!destDir.exists()) destDir.mkdirs();
-                */
-                File destDir = new File(AppConfig.IMAGE_DIR);
+        if (selectedFile == null) return;
 
-
+        Task<Image> task = new Task<>() {
+            @Override
+            protected Image call() throws Exception {
+                String currentUsername = ViewNavigator.getAuthenticatedUsername();
+                User currentUser = UserDAO.getInstance().getUser(currentUsername);
                 String fileName = selectedFile.getName();
+
+                File destDir = new File(AppConfig.IMAGE_DIR);
                 File destFile = new File(destDir, fileName);
                 Files.copy(selectedFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-                if(currentUser instanceof Medico m){
-                    // update medico profile image
+                if (currentUser instanceof Medico m)
                     m.setProfileImageName(fileName);
-                }else if(currentUser instanceof Paziente p){
-                    // update paziente profile image
+                else if (currentUser instanceof Paziente p)
                     p.setProfileImageName(fileName);
-                }
 
-                // Salva nel DB
-                UserDAO.getInstance().saveUser(currentUser); // aggiorna anche il path
+                UserDAO.getInstance().saveUser(currentUser);
 
-                // Mostra l'immagine aggiornata
-                profileImage.setImage(new Image(destFile.toURI().toString()));
-            } catch (IOException e) {
-                e.printStackTrace();
-                new Alert(Alert.AlertType.ERROR, "Errore nel caricamento immagine.").showAndWait();
+                return new Image(destFile.toURI().toString());
             }
-        }
+        };
+
+        task.setOnSucceeded(e -> profileImage.setImage(task.getValue()));
+        task.setOnFailed(e -> new Alert(Alert.AlertType.ERROR, "Errore nel caricamento immagine.").showAndWait());
+
+        new Thread(task).start();
     }
+
 
 
     /**
@@ -176,28 +178,31 @@ public class ProfileController {
         statusLabel.setManaged(true);
     }
 
-    private void loadProfileImage(String currentUsername){
-        String imagePath = "";
-        User currentUser = UserDAO.getInstance().getUser(currentUsername);
-
-        switch (currentUser.getUserType()){
-            case UserTypes.Medico -> {
-                if (currentUser instanceof Medico m)
+    private void loadProfileImageAsync(String username) {
+        Task<Image> task = new Task<>() {
+            @Override
+            protected Image call() {
+                User user = UserDAO.getInstance().getUser(username);
+                String imagePath = "";
+                if (user instanceof Medico m)
                     imagePath = AppConfig.IMAGE_DIR + m.getProfileImageName();
-            }
-            case UserTypes.Paziente -> {
-                if (currentUser instanceof Paziente p){
-                    imagePath = AppConfig.IMAGE_DIR+ p.getProfileImageName();
-                }
-            }
-        }
+                else if (user instanceof Paziente p)
+                    imagePath = AppConfig.IMAGE_DIR + p.getProfileImageName();
 
-        if (imagePath != null && !imagePath.isEmpty()) {
-            File file = new File(imagePath);
-            if (file.exists()) {
-                profileImage.setImage(new Image(file.toURI().toString()));
+                File file = new File(imagePath);
+                if (file.exists()) {
+                    return new Image(file.toURI().toString());
+                }
+                return null;
             }
-        }
+        };
+
+        task.setOnSucceeded(e -> {
+            Image img = task.getValue();
+            if (img != null) profileImage.setImage(img);
+        });
+
+        new Thread(task).start();
     }
 
     private void setContactDoctorIcon(){
@@ -210,12 +215,19 @@ public class ProfileController {
 
     @FXML
     private void handleContattaDiabetologo() {
-
-        String currentUsername = ViewNavigator.getAuthenticatedUsername();
-        UserDAO.getInstance().contattaDiabetologo(
-                PazienteDAO.getInstance().getMedicoRiferimento(currentUsername).getEmail(),"", "");
-
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() {
+                String email = PazienteDAO.getInstance()
+                        .getMedicoRiferimento(currentUsername)
+                        .getEmail();
+                UserDAO.getInstance().contattaDiabetologo(email, "", "");
+                return null;
+            }
+        };
+        new Thread(task).start();
     }
+
 
 
 

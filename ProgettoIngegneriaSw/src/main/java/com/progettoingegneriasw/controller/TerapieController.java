@@ -9,6 +9,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -34,21 +35,6 @@ public class TerapieController {
         note.setCellValueFactory(new PropertyValueFactory<Terapia, String>("note"));
         Nome_farmaco.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFarmaco().getNome()));
         Codice_aic.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFarmaco().getCodiceAic()));
-
-
-        /*
-        assunto.setCellFactory(column -> new TableCell<Terapia, Boolean>() {
-            @Override
-            protected void updateItem(Boolean item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(item ? "✓" : "✗");
-                }
-            }
-        });
-         */
 
         refreshAssunzioni();
         handleAssunzioni();
@@ -88,11 +74,9 @@ public class TerapieController {
             private final Label checkLabel = new Label("✓");
 
             {
-                confirmButton.setStyle("-fx-background-color: orange; -fx-text-fill: white;");
                 confirmButton.setOnAction(event -> {
                     Terapia terapia = getTableView().getItems().get(getIndex());
 
-                    // Confirm dialog
                     Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
                     confirmation.setTitle("Conferma Assunzione");
                     confirmation.setHeaderText("Vuoi confermare l'assunzione del farmaco?");
@@ -104,30 +88,35 @@ public class TerapieController {
 
                     confirmation.showAndWait().ifPresent(response -> {
                         if (response == okButton) {
-                            try {
+                            Task<Void> task = new Task<>() {
+                                @Override
+                                protected Void call() throws Exception {
+                                    RilevazioneFarmaco rilevazioneFarmaco = new RilevazioneFarmaco(
+                                            MedicoDAO.getInstance().getPazienteFromTerapia(terapia).getId(),
+                                            terapia.getFarmaco(),
+                                            Timestamp.valueOf(LocalDateTime.now().withNano(0)),
+                                            terapia.getQuantitaPerDose(),
+                                            ""
+                                    );
+                                    PazienteDAO.getInstance().setRilevazioneFarmaco(rilevazioneFarmaco);
+                                    return null;
+                                }
+                            };
 
-                                // Costruisci una RilevazioneFarmaco minima (puoi estendere con info reali)
-                                RilevazioneFarmaco rilevazioneFarmaco = new RilevazioneFarmaco(
-                                        MedicoDAO.getInstance().getPazienteFromTerapia(terapia).getId(),
-                                        terapia.getFarmaco(),
-                                        Timestamp.valueOf(LocalDateTime.now().withNano(0)),
-                                        terapia.getQuantitaPerDose(),
-                                        ""
-                                );
-
-                                PazienteDAO.getInstance().setRilevazioneFarmaco(rilevazioneFarmaco);
-
-                                // Refresh table
+                            task.setOnSucceeded(e -> {
                                 refreshAssunzioni();
+                            });
 
-                            } catch (SQLException e) {
-                                e.printStackTrace();
-                                Alert error = new Alert(Alert.AlertType.ERROR, "Errore durante l'inserimento!");
-                                error.showAndWait();
-                            }
+                            task.setOnFailed(e -> {
+                                new Alert(Alert.AlertType.ERROR, "Errore durante l'inserimento!").showAndWait();
+                                task.getException().printStackTrace();
+                            });
+
+                            new Thread(task).start();
                         }
                     });
                 });
+
 
                 checkLabel.setStyle("-fx-text-fill: green; -fx-font-size: 16px; -fx-font-weight: bold;");
             }
@@ -144,39 +133,35 @@ public class TerapieController {
         });
     }
 
-    private void refreshAssunzioni() throws SQLException {
-        Map<Terapia, Boolean> terapieEAssunzioni = PazienteDAO.getInstance()
-                .getTerapieEAssunzioniPaziente(ViewNavigator.getAuthenticatedUsername());
+    private void refreshAssunzioni() {
+        Task<Map<Terapia, Boolean>> task = new Task<>() {
+            @Override
+            protected Map<Terapia, Boolean> call() throws Exception {
+                return PazienteDAO.getInstance()
+                        .getTerapieEAssunzioniPaziente(ViewNavigator.getAuthenticatedUsername());
+            }
+        };
 
-        assunto.setCellValueFactory(cellData -> {
-            Terapia terapia = cellData.getValue(); // valore che verrà preso da ter
-            boolean value = terapieEAssunzioni.getOrDefault(terapia, false);
-            return new SimpleBooleanProperty(value);
+        task.setOnSucceeded(e -> {
+            Map<Terapia, Boolean> data = task.getValue();
+
+            assunto.setCellValueFactory(cellData -> {
+                Terapia terapia = cellData.getValue();
+                boolean value = data.getOrDefault(terapia, false);
+                return new SimpleBooleanProperty(value);
+            });
+
+            ObservableList<Terapia> lista = FXCollections.observableArrayList(data.keySet());
+            tableViewTerapie.setItems(lista);
+            tableViewTerapie.refresh();
         });
 
-        ObservableList<Terapia> lista = FXCollections.observableArrayList(terapieEAssunzioni.keySet());
-        tableViewTerapie.setItems(lista);
-        tableViewTerapie.refresh();
+        task.setOnFailed(e -> task.getException().printStackTrace());
+
+        new Thread(task).start();
     }
 
 
 
-    @FXML
-    private void handleLogin() {
-        TestController.selectedUser = null;
-        ViewNavigator.navigateToLogin();
-    }
-
-    @FXML
-    private void handleRegister() {
-        TestController.selectedUser = null;
-        ViewNavigator.navigateToRegister();
-    }
-
-    @FXML
-    private void handleDashboard() {
-        TestController.selectedUser = null;
-        ViewNavigator.navigateToDashboard();
-    }
 
 }
