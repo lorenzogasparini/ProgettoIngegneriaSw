@@ -153,10 +153,6 @@ public class Main extends Application {
     }
 
 
-    public void getAlerts(){
-        // todo: getAllAlerts() --> controlla ogni SEC se ci sono alert per l'utente loggato
-        // bisogna prima verificare che ci sia un utente loggato
-    }
 
     /**
      * metodo per testare le funzionalità generali degli utenti
@@ -207,11 +203,13 @@ public class Main extends Application {
         adminDAO.deleteUser(newAdminUser.getUsername());
 
         // ADMIN: metodo per ottenere i Log
+        /*
         System.out.println("Lista Logs:");
         Log[] logs = adminDAO.getLogs();
         for(Log log: logs){
             System.out.println("Log: " + log);
         }
+         */
 
     }
 

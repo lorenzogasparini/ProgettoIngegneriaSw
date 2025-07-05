@@ -49,7 +49,6 @@ public class RilevazioniHandlingController {
     @FXML private VBox VBoxIdPaziente;
     @FXML private TextField idPazienteNuovaRilevazione;
     @FXML private VBox VBoxTimestamp;
-    @FXML private TextField timestampNuovaRilevazione;
 
     @FXML private VBox VBoxNuovaRilevazioneFarmaco;
     @FXML private TextField codiceAicNuovaRilevazione;
@@ -61,7 +60,6 @@ public class RilevazioniHandlingController {
 
     @FXML private VBox VBoxNuovaRilevazioneSintomo;
     @FXML private TextField sintomoNuovaRilevazione;
-    @FXML private TextField intensitaNuovaRilevazione;
 
     @FXML private Button inserisciRilevazioneButton;
 
@@ -73,106 +71,52 @@ public class RilevazioniHandlingController {
     private PazienteDAO pazienteDAO = PazienteDAO.getInstance();
 
     private int idFarmacoSelezionato;
-    private String primaPastoSelezionato;
+    private Boolean isPrimaPasto;
 
-    @FXML private ComboBox comboBoxPrimaPasto;
 
     @FXML private Button nuovaRilevazioneButton;
     @FXML private Button ricaricaButton;
 
+    @FXML private RadioButton radioPrimaPasto;
+    @FXML private RadioButton radioDopoPasto;
+    private ToggleGroup pastoToggleGroup;
+    @FXML private DatePicker datePickerRilevazione;
+    @FXML private Spinner<Integer> hourSpinner;
+    @FXML private Spinner<Integer> minuteSpinner;
+    @FXML private Slider intensitaSlider;
+
     public void initialize() throws SQLException {
         setup();
 
-        PazienteDAO pazienteDao = PazienteDAO.getInstance();
+        pastoToggleGroup = new ToggleGroup();
+        radioPrimaPasto.setToggleGroup(pastoToggleGroup);
+        radioDopoPasto.setToggleGroup(pastoToggleGroup);
+        radioPrimaPasto.setSelected(true); // default value
 
-        Farmaco[] farmaciAssegnati = pazienteDao.getFarmaciPaziente(ViewNavigator.getAuthenticatedUsername());
-
-        ObservableList<Farmaco> farmaci = FXCollections.observableArrayList(comboBoxFarmaco.getItems());
-        farmaci.addAll(farmaciAssegnati);
-
-        comboBoxFarmaco.setItems(farmaci);
-
-        ImageView iconViewNuovaRilevazione = new ImageView(new Image("file:" + AppConfig.ICON_DIR + "buttonIcons/addIcon.png"));
-        ImageView iconViewRicarica = new ImageView(new Image("file:" + AppConfig.ICON_DIR + "buttonIcons/reloadIcon.png"));
-        iconViewNuovaRilevazione.setFitHeight(24);
-        iconViewNuovaRilevazione.setFitWidth(24);
-        iconViewNuovaRilevazione.setPreserveRatio(true);
-        iconViewRicarica.setFitHeight(24);
-        iconViewRicarica.setFitWidth(24);
-        iconViewRicarica.setPreserveRatio(true);
-        nuovaRilevazioneButton.setGraphic(iconViewNuovaRilevazione);
-        ricaricaButton.setGraphic(iconViewRicarica);
-    }
-
-    @FXML
-    private void onComboBoxChanged() {
-        //  gestire il comportamento del menu a tendina e dei campi della pagina di inserimento in maniera dinamica
-        comboBoxRilevazione.setOnAction(e -> {
-            String rilevazioneSelezionata = comboBoxRilevazione.getValue().toString();
-
-            VBoxIdPaziente.setVisible(true);
-            VBoxIdPaziente.setManaged(true);
-            idPazienteNuovaRilevazione.setVisible(true);
-            idPazienteNuovaRilevazione.setEditable(false);
-            VBoxTimestamp.setManaged(true);
-            VBoxTimestamp.setVisible(true);
-            timestampNuovaRilevazione.setVisible(true);
-            inserisciRilevazioneButton.setManaged(true);
-            inserisciRilevazioneButton.setVisible(true);
-
-            MedicoDAO medicoDAO = MedicoDAO.getInstance();
-            idPazienteNuovaRilevazione.setText("" + medicoDAO.getIdFromDB(ViewNavigator.getAuthenticatedUsername()));
-
-            if(rilevazioneSelezionata.equals("Rilevazione glicemia")){
-                VBoxNuovaRilevazioneFarmaco.setManaged(false);
-                VBoxNuovaRilevazioneFarmaco.setVisible(false);
-                codiceAicNuovaRilevazione.setVisible(false);
-                quantitaNuovaRilevazione.setVisible(false);
-                noteNuovaRilevazione.setVisible(false);
-
-                VBoxNuovaRilevazioneGlicemia.setManaged(true);
-                VBoxNuovaRilevazioneGlicemia.setVisible(true);
-                valoreNuovaRilevazione.setVisible(true);
-
-                VBoxNuovaRilevazioneSintomo.setManaged(false);
-                VBoxNuovaRilevazioneSintomo.setVisible(false);
-                sintomoNuovaRilevazione.setVisible(false);
-                intensitaNuovaRilevazione.setVisible(false);
-            }
-            else if(rilevazioneSelezionata.equals("Rilevazione assunzione farmaco")){
-                VBoxNuovaRilevazioneFarmaco.setManaged(true);
-                VBoxNuovaRilevazioneFarmaco.setVisible(true);
-                quantitaNuovaRilevazione.setVisible(true);
-                noteNuovaRilevazione.setVisible(true);
-                codiceAicNuovaRilevazione.setVisible(true);
-
-                VBoxNuovaRilevazioneGlicemia.setManaged(false);
-                VBoxNuovaRilevazioneGlicemia.setVisible(false);
-                valoreNuovaRilevazione.setVisible(false);
-
-                VBoxNuovaRilevazioneSintomo.setManaged(false);
-                VBoxNuovaRilevazioneSintomo.setVisible(false);
-                sintomoNuovaRilevazione.setVisible(false);
-                intensitaNuovaRilevazione.setVisible(false);
-            }
-            else{
-                VBoxNuovaRilevazioneFarmaco.setManaged(false);
-                VBoxNuovaRilevazioneFarmaco.setVisible(false);
-                quantitaNuovaRilevazione.setVisible(false);
-                noteNuovaRilevazione.setVisible(false);
-                codiceAicNuovaRilevazione.setVisible(true);
-
-                VBoxNuovaRilevazioneGlicemia.setManaged(false);
-                VBoxNuovaRilevazioneGlicemia.setVisible(false);
-                valoreNuovaRilevazione.setVisible(false);
-
-                VBoxNuovaRilevazioneSintomo.setManaged(true);
-                VBoxNuovaRilevazioneSintomo.setVisible(true);
-                sintomoNuovaRilevazione.setVisible(true);
-                intensitaNuovaRilevazione.setVisible(true);
-            }
+        // round intensità to an integer value
+        intensitaSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
+            intensitaSlider.setValue(Math.round(newVal.doubleValue()));
         });
+
+
+        comboBoxRilevazione.setOnAction(e -> handleTipoRilevazioneSelected());
+        comboBoxFarmaco.setOnAction(e -> handleFarmacoSelected());
+
+        Task<Farmaco[]> loadFarmaciTask = new Task<>() {
+            @Override
+            protected Farmaco[] call() throws Exception {
+                return pazienteDAO.getFarmaciPaziente(ViewNavigator.getAuthenticatedUsername());
+            }
+        };
+
+        loadFarmaciTask.setOnSucceeded(e -> {
+            ObservableList<Farmaco> farmaci = FXCollections.observableArrayList(loadFarmaciTask.getValue());
+            comboBoxFarmaco.setItems(farmaci);
+        });
+
+        new Thread(loadFarmaciTask).start();
     }
+
 
     @FXML
     private void handleNuovaRilevazione() {
@@ -200,6 +144,13 @@ public class RilevazioniHandlingController {
                 // esegue su JavaFX thread mettendo gli update dell'UI in coda
                 Platform.runLater(() -> {
                     setTimestampFormat();
+                    setupButtonsIcon();
+                    setupTimeSpinners();
+
+                    idPazienteNuovaRilevazione.setDisable(true);
+                    idPazienteNuovaRilevazione.setEditable(false);
+                    codiceAicNuovaRilevazione.setDisable(true);
+                    codiceAicNuovaRilevazione.setEditable(false);
 
                     timestampRilFarmaco.setCellValueFactory(new PropertyValueFactory<>("timestamp"));
                     quantita.setCellValueFactory(new PropertyValueFactory<>("quantita"));
@@ -230,6 +181,26 @@ public class RilevazioniHandlingController {
         new Thread(loadDataTask).start(); // run the background task
     }
 
+    private void setupButtonsIcon(){
+        ImageView iconViewNuovaRilevazione = new ImageView(new Image("file:" + AppConfig.ICON_DIR + "buttonIcons/addIcon.png"));
+        ImageView iconViewRicarica = new ImageView(new Image("file:" + AppConfig.ICON_DIR + "buttonIcons/reloadIcon.png"));
+        iconViewNuovaRilevazione.setFitHeight(24);
+        iconViewNuovaRilevazione.setFitWidth(24);
+        iconViewNuovaRilevazione.setPreserveRatio(true);
+        iconViewRicarica.setFitHeight(24);
+        iconViewRicarica.setFitWidth(24);
+        iconViewRicarica.setPreserveRatio(true);
+        nuovaRilevazioneButton.setGraphic(iconViewNuovaRilevazione);
+        ricaricaButton.setGraphic(iconViewRicarica);
+    }
+
+    private void setupTimeSpinners() {
+        hourSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 12)); // Default 12h
+        minuteSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 0)); // Default 0m
+
+        hourSpinner.setEditable(true);
+        minuteSpinner.setEditable(true);
+    }
 
     @FXML
     private void handleRicarica() throws SQLException {
@@ -278,11 +249,17 @@ public class RilevazioniHandlingController {
 
             // Inserisci Rilevazione Glicemia
             else if (VBoxNuovaRilevazioneGlicemia.isVisible()) {
+                isPrimaPasto = radioPrimaPasto.isSelected();
                 if((!valoreNuovaRilevazione.getText().equals(null))) {
-                    RilevazioneGlicemia rilevazioneGlicemia = new RilevazioneGlicemia(Integer.parseInt(idPazienteNuovaRilevazione.getText()), Timestamp.from(Instant.now()), Integer.parseInt(valoreNuovaRilevazione.getText()), primaPastoSelezionato.equals("Vero"));
+                    RilevazioneGlicemia rilevazioneGlicemia = new RilevazioneGlicemia(
+                            Integer.parseInt(idPazienteNuovaRilevazione.getText()),
+                            Timestamp.from(Instant.now()),
+                            Integer.parseInt(valoreNuovaRilevazione.getText()),
+                            isPrimaPasto
+                    );
+
                     pazienteDAO.setRilevazioneGlicemia(rilevazioneGlicemia);
                     valoreNuovaRilevazione.setText("");
-                    primaPastoSelezionato = "";
                     handleRicarica();
                 }
                 else {
@@ -293,14 +270,18 @@ public class RilevazioniHandlingController {
 
             // Inserisci Rilevazione Sintomo
             else if (VBoxNuovaRilevazioneSintomo.isVisible()) {
-                if((!sintomoNuovaRilevazione.getText().equals(null)) && (!intensitaNuovaRilevazione.getText().equals(null))) {
-                    RilevazioneSintomo rilevazioneSintomo = new RilevazioneSintomo(Integer.parseInt(idPazienteNuovaRilevazione.getText()), Timestamp.from(Instant.now()), sintomoNuovaRilevazione.getText(), Integer.parseInt(intensitaNuovaRilevazione.getText()));
+                if (sintomoNuovaRilevazione.getText() != null && !sintomoNuovaRilevazione.getText().isBlank()) {
+                    RilevazioneSintomo rilevazioneSintomo = new RilevazioneSintomo(
+                            Integer.parseInt(idPazienteNuovaRilevazione.getText()),
+                            Timestamp.from(Instant.now()),
+                            sintomoNuovaRilevazione.getText(),
+                            (int) intensitaSlider.getValue()
+                    );
                     pazienteDAO.setRilevazioneSintomo(rilevazioneSintomo);
                     sintomoNuovaRilevazione.setText("");
-                    intensitaNuovaRilevazione.setText("");
+                    intensitaSlider.setValue(1); // reset to default in-range
                     handleRicarica();
-                }
-                else {
+                } else {
                     statusLabel.setText("Informazioni mancanti, completare");
                     statusLabel.setVisible(true);
                 }
@@ -310,32 +291,187 @@ public class RilevazioniHandlingController {
             statusLabel.setText("Informazioni mancanti, completare");
             statusLabel.setVisible(true);
         }
+
+        clearInputFields();
     }
 
+
+
     @FXML
-    private void onComboBoxFarmaco() throws SQLException {
-        UserDAO userDao = UserDAO.getInstance();
-        comboBoxFarmaco.setOnAction(e -> {
-            String selezione = comboBoxFarmaco.getValue().toString();
+    private void onComboBoxChanged() {
+        //  gestire il comportamento del menu a tendina e dei campi della pagina di inserimento in maniera dinamica
+        comboBoxRilevazione.setOnAction(e -> {
+            String rilevazioneSelezionata = comboBoxRilevazione.getValue().toString();
 
-            Pattern pattern = Pattern.compile("id:\\s*(\\d+)");
-            Matcher matcher = pattern.matcher(selezione);
+            VBoxIdPaziente.setVisible(true);
+            VBoxIdPaziente.setManaged(true);
+            idPazienteNuovaRilevazione.setVisible(true);
+            VBoxTimestamp.setManaged(true);
+            VBoxTimestamp.setVisible(true);
 
-            if (matcher.find()) {
-                int id = Integer.parseInt(matcher.group(1));
-                idFarmacoSelezionato = id;
-                codiceAicNuovaRilevazione.setText(pazienteDAO.getFaracoFromId(idFarmacoSelezionato).getCodiceAic());
+            // view timestamp
+            if (datePickerRilevazione != null && hourSpinner != null && minuteSpinner != null) {
+                datePickerRilevazione.setVisible(true);
+                hourSpinner.setVisible(true);
+                minuteSpinner.setVisible(true);
+
+                datePickerRilevazione.setManaged(true);
+                hourSpinner.setManaged(true);
+                minuteSpinner.setManaged(true);
+            }
+
+            inserisciRilevazioneButton.setManaged(true);
+            inserisciRilevazioneButton.setVisible(true);
+
+            MedicoDAO medicoDAO = MedicoDAO.getInstance();
+            idPazienteNuovaRilevazione.setText("" + medicoDAO.getIdFromDB(ViewNavigator.getAuthenticatedUsername()));
+
+            if(rilevazioneSelezionata.equals("Rilevazione glicemia")){
+                VBoxNuovaRilevazioneFarmaco.setManaged(false);
+                VBoxNuovaRilevazioneFarmaco.setVisible(false);
+                codiceAicNuovaRilevazione.setVisible(false);
+                quantitaNuovaRilevazione.setVisible(false);
+                noteNuovaRilevazione.setVisible(false);
+
+                VBoxNuovaRilevazioneGlicemia.setManaged(true);
+                VBoxNuovaRilevazioneGlicemia.setVisible(true);
+                valoreNuovaRilevazione.setVisible(true);
+
+                VBoxNuovaRilevazioneSintomo.setManaged(false);
+                VBoxNuovaRilevazioneSintomo.setVisible(false);
+                sintomoNuovaRilevazione.setVisible(false);
+                intensitaSlider.setVisible(false);
+            }
+            else if(rilevazioneSelezionata.equals("Rilevazione assunzione farmaco")){
+                VBoxNuovaRilevazioneFarmaco.setManaged(true);
+                VBoxNuovaRilevazioneFarmaco.setVisible(true);
+                quantitaNuovaRilevazione.setVisible(true);
+                noteNuovaRilevazione.setVisible(true);
+                codiceAicNuovaRilevazione.setVisible(true);
+
+                VBoxNuovaRilevazioneGlicemia.setManaged(false);
+                VBoxNuovaRilevazioneGlicemia.setVisible(false);
+                valoreNuovaRilevazione.setVisible(false);
+
+                VBoxNuovaRilevazioneSintomo.setManaged(false);
+                VBoxNuovaRilevazioneSintomo.setVisible(false);
+                sintomoNuovaRilevazione.setVisible(false);
+                intensitaSlider.setVisible(false);
+            }
+            else{
+                VBoxNuovaRilevazioneFarmaco.setManaged(false);
+                VBoxNuovaRilevazioneFarmaco.setVisible(false);
+                quantitaNuovaRilevazione.setVisible(false);
+                noteNuovaRilevazione.setVisible(false);
+                codiceAicNuovaRilevazione.setVisible(true);
+
+                VBoxNuovaRilevazioneGlicemia.setManaged(false);
+                VBoxNuovaRilevazioneGlicemia.setVisible(false);
+                valoreNuovaRilevazione.setVisible(false);
+
+                VBoxNuovaRilevazioneSintomo.setManaged(true);
+                VBoxNuovaRilevazioneSintomo.setVisible(true);
+                sintomoNuovaRilevazione.setVisible(true);
+                intensitaSlider.setVisible(true);
             }
         });
     }
 
-    @FXML
-    private void onComboBoxPrimaPasto() {
-        comboBoxPrimaPasto.setOnAction(e -> {
-            String selezione = comboBoxPrimaPasto.getValue().toString();
 
-            primaPastoSelezionato = selezione;
-        });
+    private void handleTipoRilevazioneSelected() {
+
+        clearInputFields();
+
+        Object selected = comboBoxRilevazione.getValue();
+        if (selected == null) return;
+        String rilevazioneSelezionata = selected.toString();
+
+        VBoxIdPaziente.setVisible(true);
+        VBoxIdPaziente.setManaged(true);
+        idPazienteNuovaRilevazione.setVisible(true);
+        idPazienteNuovaRilevazione.setEditable(false);
+        VBoxTimestamp.setManaged(true);
+        VBoxTimestamp.setVisible(true);
+        inserisciRilevazioneButton.setManaged(true);
+        inserisciRilevazioneButton.setVisible(true);
+
+        Task<Integer> task = new Task<>() {
+            @Override
+            protected Integer call() {
+                return MedicoDAO.getInstance().getIdFromDB(ViewNavigator.getAuthenticatedUsername());
+            }
+        };
+        task.setOnSucceeded(e -> idPazienteNuovaRilevazione.setText(String.valueOf(task.getValue())));
+        new Thread(task).start();
+
+        switch (rilevazioneSelezionata) {
+            case "Rilevazione glicemia" -> hideSection(true, false, false);
+            case "Rilevazione assunzione farmaco" -> hideSection(false, true, false);
+            default -> hideSection(false, false, true);
+        }
+    }
+
+    private void clearInputFields() {
+        if (valoreNuovaRilevazione != null) valoreNuovaRilevazione.clear();
+        if (sintomoNuovaRilevazione != null) sintomoNuovaRilevazione.clear();
+        if (noteNuovaRilevazione != null) noteNuovaRilevazione.clear();
+        if (quantitaNuovaRilevazione != null) quantitaNuovaRilevazione.clear();
+        if (comboBoxFarmaco != null) comboBoxFarmaco.getSelectionModel().clearSelection();
+        if (codiceAicNuovaRilevazione != null) codiceAicNuovaRilevazione.clear();
+
+        // Reset default for radio
+        if (radioPrimaPasto != null) radioPrimaPasto.setSelected(true);
+
+        // Reset slider to valid value
+        if (intensitaSlider != null) intensitaSlider.setValue(1);
+
+        // Reset timestamp fields
+        if (datePickerRilevazione != null) datePickerRilevazione.setValue(null);
+        if (hourSpinner != null && hourSpinner.getValueFactory() != null) hourSpinner.getValueFactory().setValue(12);
+        if (minuteSpinner != null && minuteSpinner.getValueFactory() != null) minuteSpinner.getValueFactory().setValue(0);
+    }
+
+
+    private void handleFarmacoSelected() {
+        Object selected = comboBoxFarmaco.getValue();
+        if (selected == null) return;
+        String selectedText = selected.toString();
+
+        Pattern pattern = Pattern.compile("id:\\s*(\\d+)");
+        Matcher matcher = pattern.matcher(selectedText);
+
+        if (matcher.find()) {
+            int id = Integer.parseInt(matcher.group(1));
+            idFarmacoSelezionato = id;
+
+            Task<String> task = new Task<>() {
+                @Override
+                protected String call() throws Exception {
+                    return pazienteDAO.getFaracoFromId(id).getCodiceAic();
+                }
+            };
+            task.setOnSucceeded(e -> codiceAicNuovaRilevazione.setText(task.getValue()));
+            new Thread(task).start();
+        }
+    }
+
+
+    private void hideSection(boolean glicemia, boolean farmaco, boolean sintomo) {
+        VBoxNuovaRilevazioneGlicemia.setVisible(glicemia);
+        VBoxNuovaRilevazioneGlicemia.setManaged(glicemia);
+        valoreNuovaRilevazione.setVisible(glicemia);
+
+        VBoxNuovaRilevazioneFarmaco.setVisible(farmaco);
+        VBoxNuovaRilevazioneFarmaco.setManaged(farmaco);
+        quantitaNuovaRilevazione.setVisible(farmaco);
+        noteNuovaRilevazione.setVisible(farmaco);
+        codiceAicNuovaRilevazione.setVisible(farmaco);
+
+        VBoxNuovaRilevazioneSintomo.setVisible(sintomo);
+        VBoxNuovaRilevazioneSintomo.setManaged(sintomo);
+        sintomoNuovaRilevazione.setVisible(sintomo);
+        intensitaSlider.setVisible(sintomo);
+        intensitaSlider.setManaged(sintomo);
     }
 
     ///  this method set the timestamp format to 2025-05-17 08:00 instead of 2025-05-17 08:00:00.0
@@ -381,41 +517,5 @@ public class RilevazioniHandlingController {
         });
     }
 
-    @FXML
-    private void handleTerapie() {
-        ViewNavigator.navigateToTerapieHandling();
-    }
 
-    @FXML
-    private void handleRilevazioniFarmaci() {
-        ViewNavigator.navigateToHandleRilevazioniFarmaci();
-    }
-
-    @FXML
-    private void handleRilevazioniSintomi() {
-        ViewNavigator.navigateToHandleRilevazioniSintomi();
-    }
-
-    @FXML
-    private void handleRilevazioniGlicemia() {
-        ViewNavigator.navigateToHandleRilevazioniGlicemia();
-    }
-
-    @FXML
-    private void handleLogin() {
-        TestController.selectedUser = null;
-        ViewNavigator.navigateToLogin();
-    }
-
-    @FXML
-    private void handleRegister() {
-        TestController.selectedUser = null;
-        ViewNavigator.navigateToRegister();
-    }
-
-    @FXML
-    private void handleDashboard() {
-        TestController.selectedUser = null;
-        ViewNavigator.navigateToDashboard();
-    }
 }

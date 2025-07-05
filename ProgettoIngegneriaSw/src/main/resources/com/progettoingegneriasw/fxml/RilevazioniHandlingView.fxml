@@ -113,8 +113,11 @@
 
                         <VBox spacing="10.0" visible="false" fx:id="VBoxTimestamp" managed="false">
                             <children>
-                                <Label styleClass="form-label" text="Timestamp rilevazione" />
-                                <TextField fx:id="timestampNuovaRilevazione" promptText="Inserisci l'istante della rilevazione" styleClass="form-control" />
+                                <Label styleClass="form-label" text="Data rilevazione" />
+                                <DatePicker fx:id="datePickerRilevazione" />
+                                <Label styleClass="form-label" text="Ora rilevazione" />
+                                <Spinner fx:id="hourSpinner" editable="true" />
+                                <Spinner fx:id="minuteSpinner" editable="true" />
                             </children>
                             <VBox.margin>
                                 <Insets bottom="20.0" />
@@ -125,7 +128,7 @@
                             <children>
                                 <Label styleClass="form-label" text="Codice AIC" />
                                 <TextField fx:id="codiceAicNuovaRilevazione" promptText="Inserisci il codice AIC della terapia assunta" styleClass="form-control" />
-                                <ComboBox fx:id="comboBoxFarmaco" onAction="#onComboBoxFarmaco">
+                                <ComboBox fx:id="comboBoxFarmaco">
                                     <items>
                                         <FXCollections fx:factory="observableArrayList">
                                             <String fx:value="      -- Farmaci --" />
@@ -147,15 +150,14 @@
                                 <Label styleClass="form-label" text="Valore glicemico" />
                                 <TextField fx:id="valoreNuovaRilevazione" promptText="Inserisci il valore della glicemia" styleClass="form-control" />
                                 <Label styleClass="form-label" text="Periodo assunzione" />
-                                <ComboBox fx:id="comboBoxPrimaPasto" onAction="#onComboBoxPrimaPasto">
-                                    <items>
-                                        <FXCollections fx:factory="observableArrayList">
-                                            <String fx:value="Vero: rilevazione prima del pasto, F: rilevazione dopo il pasto" />
-                                            <String fx:value="Vero" />
-                                            <String fx:value="Falso" />
-                                        </FXCollections>
-                                    </items>
-                                </ComboBox>
+
+                                <HBox spacing="10.0">
+                                    <children>
+                                        <RadioButton fx:id="radioPrimaPasto" text="Prima del pasto" />
+                                        <RadioButton fx:id="radioDopoPasto" text="Dopo il pasto" />
+                                    </children>
+                                </HBox>
+
                             </children>
                             <VBox.margin>
                                 <Insets bottom="20.0" />
@@ -167,7 +169,18 @@
                                 <Label styleClass="form-label" text="Sintomo" />
                                 <TextField fx:id="sintomoNuovaRilevazione" promptText="Inserisci il sintomo" styleClass="form-control" />
                                 <Label styleClass="form-label" text="Intensità" />
-                                <TextField fx:id="intensitaNuovaRilevazione" promptText="Inserire la intensità del sintomo" styleClass="form-control" />
+                                <Slider fx:id="intensitaSlider"
+                                        min="1"
+                                        max="10"
+                                        value="1"
+                                        majorTickUnit="1"
+                                        minorTickCount="0"
+                                        blockIncrement="1"
+                                        snapToTicks="true"
+                                        showTickMarks="true"
+                                        showTickLabels="true"
+                                        styleClass="custom-slider" />
+
                             </children>
                             <VBox.margin>
                                 <Insets bottom="20.0" />

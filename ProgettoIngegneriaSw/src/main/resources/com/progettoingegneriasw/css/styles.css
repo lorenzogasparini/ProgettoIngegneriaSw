@@ -339,3 +339,51 @@ CSS VECCHIO:
     -fx-border-color: #2a9d8f;
     -fx-border-radius: 0 0 50 50;
 }
+
+/* SLIDER */
+/* SLIDER */
+.custom-slider .thumb {
+    -fx-background-color: #4285f4;
+    -fx-background-radius: 100%;
+    -fx-pref-width: 16px;
+    -fx-pref-height: 16px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 2, 0.0, 0, 1);
+}
+
+.custom-slider .track {
+    -fx-background-color: #ccc;
+    -fx-background-insets: 0;
+    -fx-padding: 0.25em;
+    -fx-pref-height: 4px;
+}
+
+.custom-slider .tick-mark {
+    -fx-stroke: #666;
+}
+
+.custom-slider .tick-label {
+    -fx-text-fill: #333;
+    -fx-font-size: 12px;
+}
+
+/* SPINNER */
+.spinner {
+    -fx-border-color: #ccc;
+    -fx-border-radius: 4;
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+    -fx-background-color: white;
+}
+
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button {
+    -fx-background-color: #eaeaea;
+}
+
+/* DATEPICKER */
+.date-picker {
+    -fx-border-color: #ccc;
+    -fx-border-radius: 4;
+    -fx-background-color: white;
+    -fx-padding: 4px;
+}
