@@ -2,7 +2,6 @@ package com.progettoingegneriasw.controller;
 
 import com.progettoingegneriasw.model.Medico.MedicoDAO;
 import com.progettoingegneriasw.model.Utils.*;
-import com.progettoingegneriasw.model.Utils.Alert;
 import com.progettoingegneriasw.view.ViewNavigator;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -58,7 +57,7 @@ public class RilevazioniFarmaciHandlingController {
 
         MedicoDAO medicoDAO = MedicoDAO.getInstance();
         medicoDAO.getUser(ViewNavigator.getAuthenticatedUsername());
-        RilevazioneFarmaco[] rilevazioniFarmaci = medicoDAO.getRilevazioniFarmaco(TestController.selectedUser.getUsername());
+        RilevazioneFarmaco[] rilevazioniFarmaci = medicoDAO.getRilevazioniFarmaco(PazientiController.selectedUser.getUsername());
 
         ObservableList<RilevazioneFarmaco> rilFarmaci = FXCollections.observableArrayList(rilevazioniFarmaci);
 
@@ -85,19 +84,19 @@ public class RilevazioniFarmaciHandlingController {
 
     @FXML
     private void handleLogin() {
-        TestController.selectedUser = null;
+        PazientiController.selectedUser = null;
         ViewNavigator.navigateToLogin();
     }
 
     @FXML
     private void handleRegister() {
-        TestController.selectedUser = null;
+        PazientiController.selectedUser = null;
         ViewNavigator.navigateToRegister();
     }
 
     @FXML
     private void handleDashboard() {
-        TestController.selectedUser = null;
+        PazientiController.selectedUser = null;
         ViewNavigator.navigateToDashboard();
     }
 }

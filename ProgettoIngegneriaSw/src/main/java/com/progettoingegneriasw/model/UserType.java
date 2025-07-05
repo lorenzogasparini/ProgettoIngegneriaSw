@@ -1,6 +1,6 @@
 package com.progettoingegneriasw.model;
 
-public enum UserTypes {
+public enum UserType {
     Admin,
     Medico,
     Paziente

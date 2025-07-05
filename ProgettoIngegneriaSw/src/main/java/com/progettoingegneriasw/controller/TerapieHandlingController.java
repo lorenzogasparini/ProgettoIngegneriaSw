@@ -92,7 +92,7 @@ public class TerapieHandlingController {
 
     private void refreshTable() throws SQLException {
         medicoDAO.getUser(ViewNavigator.getAuthenticatedUsername());
-        Terapia[] terapie = medicoDAO.getTerapiePaziente(TestController.selectedUser.getUsername());
+        Terapia[] terapie = medicoDAO.getTerapiePaziente(PazientiController.selectedUser.getUsername());
 
         ObservableList<Terapia> ter = FXCollections.observableArrayList(terapie);
 
@@ -259,7 +259,7 @@ public class TerapieHandlingController {
         );
         Patologia pat = selectedPatologia;
 
-        medicoDAO.setTerapiaPaziente(ter, TestController.selectedUser.getUsername(), pat, "");
+        medicoDAO.setTerapiaPaziente(ter, PazientiController.selectedUser.getUsername(), pat, "");
 
         setup();
     }

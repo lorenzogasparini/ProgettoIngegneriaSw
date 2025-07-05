@@ -15,7 +15,6 @@ import com.progettoingegneriasw.view.ViewNavigator;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -268,6 +267,80 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
 
         if (user == null)
             System.out.println(username + " not found!");
+        return user; // potrebbe essere null (verificarlo quando si chiama il metodo)
+    }
+
+    public User getUser(Integer idUtente, UserType userType) { // Funziona!
+        // Try to get Admin
+        User user = null;
+
+        if(userType.equals(UserType.Admin)){
+            user = dbManager.executeQuery(
+                    "SELECT id, username, password, nome, cognome FROM amministratore WHERE id = ?",
+                    rs -> {
+                        if (rs.next()) {
+                            return new AdminUser(
+                                    rs.getInt("id"),
+                                    rs.getString("username"),
+                                    rs.getString("password"),
+                                    rs.getString("nome"),
+                                    rs.getString("cognome")
+                            );
+                        }
+                        return null;
+                    },
+                    idUtente
+            );
+        } else if (userType.equals(UserType.Medico)){
+            // Try to get Medico
+            user = dbManager.executeQuery(
+                    "SELECT * FROM diabetologo WHERE id = ?",
+                    rs -> {
+                        if (rs.next()) {
+                            return new MedicoUser(
+                                    rs.getInt("id"),
+                                    rs.getString("username"),
+                                    rs.getString("password"),
+                                    rs.getString("nome"),
+                                    rs.getString("cognome"),
+                                    rs.getString("email"),
+                                    rs.getString("profile_image_name")
+                            );
+                        }
+                        return null;
+                    },
+                    idUtente
+            );
+        } else if (userType.equals(UserType.Paziente)){
+            // Try to get Paziente
+            user = dbManager.executeQuery(
+                    "SELECT * FROM paziente WHERE id = ?",
+                    rs -> {
+                        if (rs.next()) {
+                            return new PazienteUser(
+                                    rs.getInt("id"),
+                                    rs.getString("username"),
+                                    rs.getString("password"),
+                                    rs.getString("nome"),
+                                    rs.getString("cognome"),
+                                    rs.getString("email"),
+                                    rs.getInt("id_diabetologo"),
+                                    java.sql.Date.valueOf(rs.getString("data_nascita")),
+                                    rs.getDouble("peso"),
+                                    rs.getString("provincia_residenza"),
+                                    rs.getString("comune_residenza"),
+                                    rs.getString("note_paziente"),
+                                    rs.getString("profile_image_name")
+                            );
+                        }
+                        return null;
+                    },
+                    idUtente
+            );
+        }
+
+        if (user == null)
+            System.out.println(idUtente + " not found!");
         return user; // potrebbe essere null (verificarlo quando si chiama il metodo)
     }
 

@@ -11,7 +11,7 @@
 
 <?import javafx.scene.text.Font?>
 <?import javafx.collections.FXCollections?>
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.progettoingegneriasw.controller.TestController">
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.progettoingegneriasw.controller.PazientiController">
 <BorderPane xmlns="http://javafx.com/javafx/17" VBox.vgrow="ALWAYS" xmlns:fx="http://javafx.com/fxml/1">
     <center>
         <HBox alignment="CENTER" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS" spacing="10">

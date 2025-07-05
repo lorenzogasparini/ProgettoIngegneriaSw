@@ -6,7 +6,6 @@ import com.progettoingegneriasw.view.ViewNavigator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -15,7 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.sql.Date;
 import java.sql.SQLException;
 
-public class TestController {
+public class PazientiController {
 
     @FXML private ComboBox<String> filtroPazientiCombo;
     @FXML private TableView<Paziente> tableView;
@@ -68,30 +67,18 @@ public class TestController {
         updateTableView();
     }
 
+    /// condivide il proprio utente alle altre pagine tramite la variabile condivisa selectedUser a cui accedono
+    /// UserHandlingController e le pagine derivate da essa
     @FXML
     private void clickHandling(){
         tableView.setOnMouseClicked(event -> {
-            /* Codice di prova, che permette di gestire il numero di click
-            if (event.getClickCount() == 1) {
-                System.out.println("1 click");
-            } else if (event.getClickCount() == 2) {
-                System.out.println("2 click TableView");
-
-                Object selectedItem = tableView.getSelectionModel().getSelectedItem();
-                if (selectedItem != null) {
-                    System.out.println("Hai cliccato: " + selectedItem.toString());
-                }
-            }
-            */
 
             // Per  la riga cliccata:
             selectedUser = tableView.getSelectionModel().getSelectedItem();
             if (selectedUser != null) {
-                //  System.out.println("Hai cliccato: " + (pazienteSelezionato.getUsername()));
                 handleUserHandling();
             }
         });
-
     }
 
     @FXML

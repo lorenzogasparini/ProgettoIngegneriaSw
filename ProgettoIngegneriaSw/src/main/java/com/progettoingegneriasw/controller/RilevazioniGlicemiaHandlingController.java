@@ -54,7 +54,7 @@ public class RilevazioniGlicemiaHandlingController {
 
         MedicoDAO medicoDAO = MedicoDAO.getInstance();
         medicoDAO.getUser(ViewNavigator.getAuthenticatedUsername());
-        RilevazioneGlicemia[] rilevazioniGlicemia = medicoDAO.getRilevazioniGlicemia(TestController.selectedUser.getUsername());
+        RilevazioneGlicemia[] rilevazioniGlicemia = medicoDAO.getRilevazioniGlicemia(PazientiController.selectedUser.getUsername());
 
         rilglicemia = FXCollections.observableArrayList(rilevazioniGlicemia);
 
@@ -118,7 +118,7 @@ public class RilevazioniGlicemiaHandlingController {
                     if (node != null) {
                         node.setOnMouseClicked(event -> {
                             pannelloVisualizzaRisultato.setVisible(true);
-                            labelRisultato.setText("Rilevazione glicemia nel sangue: " + TestController.selectedUser.getNome() + ", " + TestController.selectedUser.getCognome() + "   ->   " + data.getYValue() + ", " + data.getXValue());
+                            labelRisultato.setText("Rilevazione glicemia nel sangue: " + PazientiController.selectedUser.getNome() + ", " + PazientiController.selectedUser.getCognome() + "   ->   " + data.getYValue() + ", " + data.getXValue());
                         });
                     }
                 }
@@ -146,19 +146,19 @@ public class RilevazioniGlicemiaHandlingController {
 
     @FXML
     private void handleLogin() {
-        TestController.selectedUser = null;
+        PazientiController.selectedUser = null;
         ViewNavigator.navigateToLogin();
     }
 
     @FXML
     private void handleRegister() {
-        TestController.selectedUser = null;
+        PazientiController.selectedUser = null;
         ViewNavigator.navigateToRegister();
     }
 
     @FXML
     private void handleDashboard() {
-        TestController.selectedUser = null;
+        PazientiController.selectedUser = null;
         ViewNavigator.navigateToDashboard();
     }
 }

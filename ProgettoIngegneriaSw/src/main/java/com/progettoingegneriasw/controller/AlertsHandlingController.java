@@ -1,10 +1,14 @@
 package com.progettoingegneriasw.controller;
 
 import com.progettoingegneriasw.model.Medico.MedicoDAO;
+import com.progettoingegneriasw.model.Paziente.Paziente;
+import com.progettoingegneriasw.model.User;
 import com.progettoingegneriasw.model.UserDAO;
+import com.progettoingegneriasw.model.UserType;
 import com.progettoingegneriasw.model.Utils.Alert;
 import com.progettoingegneriasw.model.Utils.AlertFilter;
 import com.progettoingegneriasw.view.ViewNavigator;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -27,7 +31,7 @@ public class AlertsHandlingController {
 
     @FXML private TableView<Alert> tableView;
     @FXML private TableColumn<Alert, Integer> Id;
-    @FXML private TableColumn<Alert, Integer> idPaziente;
+    @FXML private TableColumn<Alert, String> usernamePaziente;
     @FXML private TableColumn<Alert, Integer> idRilevazione;
     @FXML private TableColumn<Alert, String> tipoAlert;
     @FXML private TableColumn<Alert, Timestamp> timestamp;
@@ -35,7 +39,9 @@ public class AlertsHandlingController {
 
     public void initialize() throws SQLException {
         Id.setCellValueFactory(new PropertyValueFactory<Alert, Integer>("Id"));
-        idPaziente.setCellValueFactory(new PropertyValueFactory<Alert, Integer>("idPaziente"));
+        usernamePaziente.setCellValueFactory(cellData -> new SimpleStringProperty(
+                UserDAO.getInstance().getUser(cellData.getValue().getIdPaziente(), UserType.Paziente).getUsername()
+        ));
         idRilevazione.setCellValueFactory(new PropertyValueFactory<Alert, Integer>("idRilevazione"));
         tipoAlert.setCellValueFactory(new PropertyValueFactory<Alert, String>("tipoAlert"));
         timestamp.setCellValueFactory(new PropertyValueFactory<Alert, Timestamp>("timestamp"));
@@ -169,20 +175,26 @@ public class AlertsHandlingController {
         }
     }
 
-
-
     @FXML
-    private void handleLogin() {
-        ViewNavigator.navigateToLogin();
+    private void clickHandling(){
+        tableView.setOnMouseClicked(event -> {
+        User selectedUserInAlert = UserDAO.getInstance().getUser(
+                tableView.getSelectionModel().getSelectedItem().getIdPaziente(),
+                UserType.Paziente);
+
+        if(selectedUserInAlert == null)
+            return;
+
+            // Per  la riga cliccata:
+            PazientiController.selectedUser = (Paziente) selectedUserInAlert;
+            handleUserHandling();
+        });
     }
 
     @FXML
-    private void handleRegister() {
-        ViewNavigator.navigateToRegister();
+    private void handleUserHandling(){
+        ViewNavigator.navigateToUserHandling();
     }
 
-    @FXML
-    private void handleDashboard() {
-        ViewNavigator.navigateToDashboard();
-    }
+
 }

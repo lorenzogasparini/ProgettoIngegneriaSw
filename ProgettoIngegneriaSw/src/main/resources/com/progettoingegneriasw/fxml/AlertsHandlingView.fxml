@@ -58,10 +58,10 @@
 
 
                         <!-- Da inserire come lista (ordinabile per data, magari e per tipologia di alert) e con settabile il visto o non visto, da gestire anche l'onClick per ottenere l'effetto letto/non letto -->
-                        <TableView fx:id="tableView" VBox.vgrow="ALWAYS" >
+                        <TableView fx:id="tableView" VBox.vgrow="ALWAYS" onMouseClicked="#clickHandling">
                             <columns>
-                                <TableColumn prefWidth="75.0" text="Id" fx:id="Id" />
-                                <TableColumn prefWidth="100.0" text="Id paziente" fx:id="idPaziente" />
+                                <TableColumn prefWidth="55.0" text="Id" fx:id="Id" />
+                                <TableColumn prefWidth="120.0" text="Paziente" fx:id="usernamePaziente" />
                                 <TableColumn prefWidth="100.0" text="Id rilevazione" fx:id="idRilevazione" />
                                 <TableColumn prefWidth="100.0" text="Tipologia alert" fx:id="tipoAlert" />
                                 <TableColumn prefWidth="100.0" text="Data alert" fx:id="timestamp" />

@@ -50,7 +50,7 @@ public class RilevazioniSintomiHandlingController {
 
         MedicoDAO medicoDAO = MedicoDAO.getInstance();
         medicoDAO.getUser(ViewNavigator.getAuthenticatedUsername());
-        RilevazioneSintomo[] rilevazioniSintomi = medicoDAO.getRilevazioniSintomo(TestController.selectedUser.getUsername());
+        RilevazioneSintomo[] rilevazioniSintomi = medicoDAO.getRilevazioniSintomo(PazientiController.selectedUser.getUsername());
 
         ObservableList<RilevazioneSintomo> rilSintomi = FXCollections.observableArrayList(rilevazioniSintomi);
 
@@ -77,19 +77,19 @@ public class RilevazioniSintomiHandlingController {
 
     @FXML
     private void handleLogin() {
-        TestController.selectedUser = null;
+        PazientiController.selectedUser = null;
         ViewNavigator.navigateToLogin();
     }
 
     @FXML
     private void handleRegister() {
-        TestController.selectedUser = null;
+        PazientiController.selectedUser = null;
         ViewNavigator.navigateToRegister();
     }
 
     @FXML
     private void handleDashboard() {
-        TestController.selectedUser = null;
+        PazientiController.selectedUser = null;
         ViewNavigator.navigateToDashboard();
     }
 }

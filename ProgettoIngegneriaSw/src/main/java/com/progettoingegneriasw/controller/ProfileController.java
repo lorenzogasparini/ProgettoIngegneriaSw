@@ -9,7 +9,7 @@ import com.progettoingegneriasw.model.Paziente.PazienteDAO;
 import com.progettoingegneriasw.model.Paziente.PazienteUser;
 import com.progettoingegneriasw.model.User;
 import com.progettoingegneriasw.model.UserDAO;
-import com.progettoingegneriasw.model.UserTypes;
+import com.progettoingegneriasw.model.UserType;
 import com.progettoingegneriasw.view.ViewNavigator;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -20,7 +20,6 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
@@ -83,9 +82,9 @@ public class ProfileController {
                 try {
                     User currentUser = userDAO.getUser(currentUsername);
                     switch (currentUser.getUserType()) {
-                        case UserTypes.Admin -> userDAO.saveUser(new AdminUser((AdminUser) currentUser, newPassword));
-                        case UserTypes.Medico -> userDAO.saveUser(new MedicoUser((MedicoUser) currentUser, newPassword));
-                        case UserTypes.Paziente -> userDAO.saveUser(new PazienteUser((PazienteUser) currentUser, newPassword));
+                        case UserType.Admin -> userDAO.saveUser(new AdminUser((AdminUser) currentUser, newPassword));
+                        case UserType.Medico -> userDAO.saveUser(new MedicoUser((MedicoUser) currentUser, newPassword));
+                        case UserType.Paziente -> userDAO.saveUser(new PazienteUser((PazienteUser) currentUser, newPassword));
                     }
 
                     Platform.runLater(() -> {

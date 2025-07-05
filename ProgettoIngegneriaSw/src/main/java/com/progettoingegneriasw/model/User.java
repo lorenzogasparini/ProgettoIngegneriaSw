@@ -1,11 +1,8 @@
 package com.progettoingegneriasw.model;
 
 import com.progettoingegneriasw.model.Admin.Admin;
-import com.progettoingegneriasw.model.Admin.AdminDAO;
 import com.progettoingegneriasw.model.Medico.Medico;
-import com.progettoingegneriasw.model.Medico.MedicoDAO;
 import com.progettoingegneriasw.model.Paziente.Paziente;
-import com.progettoingegneriasw.model.Paziente.PazienteDAO;
 
 public abstract class User implements UserInterface{
     private final Integer id;
@@ -97,27 +94,27 @@ public abstract class User implements UserInterface{
         return cognome;
     }
 
-    public UserTypes getUserType(){
+    public UserType getUserType(){
         if (this instanceof Admin)
-            return UserTypes.Admin;
+            return UserType.Admin;
         else if(this instanceof Medico)
-            return UserTypes.Medico;
+            return UserType.Medico;
         else if(this instanceof Paziente)
-            return UserTypes.Paziente;
+            return UserType.Paziente;
         else
             throw new UserTypeNotFoundException("This user type is not found");
     }
 
     public Boolean isAdmin() {
-        return this.getUserType().equals(UserTypes.Admin);
+        return this.getUserType().equals(UserType.Admin);
     }
 
     public boolean isMedico() {
-        return this.getUserType().equals(UserTypes.Medico);
+        return this.getUserType().equals(UserType.Medico);
     }
 
     public boolean isPaziente() {
-        return this.getUserType().equals(UserTypes.Paziente);
+        return this.getUserType().equals(UserType.Paziente);
     }
 
     public String toString(){
