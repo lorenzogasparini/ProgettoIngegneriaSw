@@ -193,14 +193,12 @@ INSERT INTO "terapia" VALUES (20,1,2,3,40.0,'da assumere alle 8.00, 14.00, 20.00
 
 
 INSERT INTO "patologia_paziente" VALUES (1,1,3,2,'2021-06-01','Controlli regolari');
-INSERT INTO "patologia_paziente" VALUES (2,1,2,2,'2020-01-15',NULL);
 INSERT INTO "patologia_paziente" VALUES (3,2,2,17,'2022-03-12','Necessita insulina');
 INSERT INTO "patologia_paziente" VALUES (4,3,3,3,'2021-10-05','Stabile');
 INSERT INTO "patologia_paziente" VALUES (5,4,4,4,'2019-12-30',NULL);
 INSERT INTO "patologia_paziente" VALUES (7,2,4,16,'2025-05-29','');
 INSERT INTO "patologia_paziente" VALUES (9,1,1,19,'2025-06-25 20:45:58.0','');
 INSERT INTO "patologia_paziente" VALUES (10,2,1,20,'2025-06-25 20:50:20.0','');
-INSERT INTO "patologia_paziente" VALUES (11,5,2,NULL,'2025-07-03 18:41:19.0','');
 
 
 INSERT INTO "rilevazione_farmaco" VALUES (1,4,1,'2025-05-28 17:36:20',500.0,'Dopo colazione');

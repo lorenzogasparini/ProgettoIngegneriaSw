@@ -601,14 +601,6 @@ public class MedicoDAO extends UserDAO {
     public RilevazioneFarmaco[] getRilevazioniFarmaco(String usernamePaziente) throws SQLException {
         ArrayList<RilevazioneFarmaco> rilevazioniFarmaci = new ArrayList<>();
 
-        /*
-        String query =
-                "SELECT rf.* " +
-                "FROM paziente p " +
-                "INNER JOIN rilevazione_farmaco rf ON p.id = rf.id_paziente " +
-                "WHERE (? IS NULL OR p.username = ?)";
-         */
-
         String query =
         "SELECT r.id, r.id_paziente, r.timestamp, r.quantita, r.note, f.id AS id_farmaco, f.codice_aic, f.nome " +
         "FROM rilevazione_farmaco r " +
@@ -630,8 +622,8 @@ public class MedicoDAO extends UserDAO {
                     }
                     return null;
                 },
-                usernamePaziente.isEmpty() ? null : getIdFromDB(usernamePaziente)  // 1st placeholder
-                //  usernamePaziente.isEmpty() ? null : usernamePaziente   // 2nd placeholder
+                usernamePaziente.isEmpty() ? null : getIdFromDB(usernamePaziente)
+                //  usernamePaziente.isEmpty() ? null : usernamePaziente
         );
 
         return rilevazioniFarmaci.toArray(new RilevazioneFarmaco[0]);
