@@ -198,29 +198,29 @@ INSERT INTO "patologia_paziente" VALUES (3,2,2,17,'2022-03-12','Necessita insuli
 INSERT INTO "patologia_paziente" VALUES (4,3,3,3,'2021-10-05','Stabile');
 INSERT INTO "patologia_paziente" VALUES (5,4,4,4,'2019-12-30',NULL);
 INSERT INTO "patologia_paziente" VALUES (7,2,4,16,'2025-05-29','');
-INSERT INTO "patologia_paziente" VALUES (9,1,1,19,'2025-06-25 20:45:58.246732684','');
-INSERT INTO "patologia_paziente" VALUES (10,2,1,20,'2025-06-25 20:50:20.67619997','');
-INSERT INTO "patologia_paziente" VALUES (11,5,2,NULL,'2025-07-03 18:41:19.516703372','');
+INSERT INTO "patologia_paziente" VALUES (9,1,1,19,'2025-06-25 20:45:58.0','');
+INSERT INTO "patologia_paziente" VALUES (10,2,1,20,'2025-06-25 20:50:20.0','');
+INSERT INTO "patologia_paziente" VALUES (11,5,2,NULL,'2025-07-03 18:41:19.0','');
 
 
 INSERT INTO "rilevazione_farmaco" VALUES (1,4,1,'2025-05-28 17:36:20',500.0,'Dopo colazione');
 INSERT INTO "rilevazione_farmaco" VALUES (2,3,3,'2025-05-28 17:36:20',500.0,'Dopo cena');
 INSERT INTO "rilevazione_farmaco" VALUES (3,2,1,'2025-05-28 17:36:20',15.0,'Insulina serale');
 INSERT INTO "rilevazione_farmaco" VALUES (4,3,1,'2025-05-28 17:36:20',20.0,'Routine sera');
-INSERT INTO "rilevazione_farmaco" VALUES (5,1,2,'2025-05-29 13:28:45.93308055',50.0,'');
-INSERT INTO "rilevazione_farmaco" VALUES (6,1,1,'2025-06-20 20:10:00.973677828',500.0,'Farmaco assunto correttamente.');
-INSERT INTO "rilevazione_farmaco" VALUES (7,1,2,'2025-06-20 21:03:50.781730179',50.0,'');
-INSERT INTO "rilevazione_farmaco" VALUES (8,1,2,'2025-06-20 21:07:27.93552956',50.0,'');
-INSERT INTO "rilevazione_farmaco" VALUES (9,1,1,'2025-06-20 21:15:43.09777634',500.0,'Tutte le rilevazioni nella norma.');
-INSERT INTO "rilevazione_farmaco" VALUES (10,1,2,'2025-06-20 21:19:17.160642452',100.0,'');
-INSERT INTO "rilevazione_farmaco" VALUES (11,1,2,'2025-06-20 21:21:04.473612705',50.0,'Tutte le rilevazioni corrette.');
-INSERT INTO "rilevazione_farmaco" VALUES (12,1,1,'2025-07-02 16:57:30.555',1.0,'');
-INSERT INTO "rilevazione_farmaco" VALUES (13,1,1,'2025-07-02 16:58:03.263',1.0,'');
-INSERT INTO "rilevazione_farmaco" VALUES (14,1,2,'2025-07-02 17:45:10.272',10.0,'');
-INSERT INTO "rilevazione_farmaco" VALUES (20,1,3,'2025-07-02 18:59:55.647',1.0,'');
-INSERT INTO "rilevazione_farmaco" VALUES (21,2,2,'2025-07-02 19:00:11.725',40.0,'');
-INSERT INTO "rilevazione_farmaco" VALUES (22,2,3,'2025-07-02 19:00:14.17',6.0,'');
-INSERT INTO "rilevazione_farmaco" VALUES (23,1,1,'2025-07-03 17:24:23.7',1.0,'');
+INSERT INTO "rilevazione_farmaco" VALUES (5,1,2,'2025-05-29 13:28:45.0',50.0,'');
+INSERT INTO "rilevazione_farmaco" VALUES (6,1,1,'2025-06-20 20:10:00.0',500.0,'Farmaco assunto correttamente.');
+INSERT INTO "rilevazione_farmaco" VALUES (7,1,2,'2025-06-20 21:03:50.0',50.0,'');
+INSERT INTO "rilevazione_farmaco" VALUES (8,1,2,'2025-06-20 21:07:27.0',50.0,'');
+INSERT INTO "rilevazione_farmaco" VALUES (9,1,1,'2025-06-20 21:15:43.0',500.0,'Tutte le rilevazioni nella norma.');
+INSERT INTO "rilevazione_farmaco" VALUES (10,1,2,'2025-06-20 21:19:17.0',100.0,'');
+INSERT INTO "rilevazione_farmaco" VALUES (11,1,2,'2025-06-20 21:21:04.0',50.0,'Tutte le rilevazioni corrette.');
+INSERT INTO "rilevazione_farmaco" VALUES (12,1,1,'2025-07-02 16:57:30.0',1.0,'');
+INSERT INTO "rilevazione_farmaco" VALUES (13,1,1,'2025-07-02 16:58:03.0',1.0,'');
+INSERT INTO "rilevazione_farmaco" VALUES (14,1,2,'2025-07-02 17:45:10.0',10.0,'');
+INSERT INTO "rilevazione_farmaco" VALUES (20,1,3,'2025-07-02 18:59:55.0',1.0,'');
+INSERT INTO "rilevazione_farmaco" VALUES (21,2,2,'2025-07-02 19:00:11.0',40.0,'');
+INSERT INTO "rilevazione_farmaco" VALUES (22,2,3,'2025-07-02 19:00:14.0',6.0,'');
+INSERT INTO "rilevazione_farmaco" VALUES (23,1,1,'2025-07-03 17:24:23.0',1.0,'');
 
 
 INSERT INTO "rilevazione_glicemia" VALUES (1,1,'2025-05-28 17:36:20',145,1,1);
@@ -228,19 +228,19 @@ INSERT INTO "rilevazione_glicemia" VALUES (2,1,'2025-05-28 17:36:20',140,0,0);
 INSERT INTO "rilevazione_glicemia" VALUES (3,2,'2025-05-28 17:36:20',230,2,0);
 INSERT INTO "rilevazione_glicemia" VALUES (4,3,'2025-05-28 17:36:20',60,2,1);
 INSERT INTO "rilevazione_glicemia" VALUES (5,4,'2025-05-28 17:36:20',95,0,1);
-INSERT INTO "rilevazione_glicemia" VALUES (6,1,'2025-05-29 13:28:45.924121088',270,3,1);
-INSERT INTO "rilevazione_glicemia" VALUES (7,1,'2025-06-20 20:54:25.227097475',150,0,0);
-INSERT INTO "rilevazione_glicemia" VALUES (8,1,'2025-06-20 21:10:49.646989162',160,0,1);
-INSERT INTO "rilevazione_glicemia" VALUES (9,1,'2025-06-20 21:14:58.028944484',150,0,0);
+INSERT INTO "rilevazione_glicemia" VALUES (6,1,'2025-05-29 13:28:45.0',270,3,1);
+INSERT INTO "rilevazione_glicemia" VALUES (7,1,'2025-06-20 20:54:25.0',150,0,0);
+INSERT INTO "rilevazione_glicemia" VALUES (8,1,'2025-06-20 21:10:49.0',160,0,1);
+INSERT INTO "rilevazione_glicemia" VALUES (9,1,'2025-06-20 21:14:58.0',150,0,0);
 
 
 INSERT INTO "rilevazione_sintomo" VALUES (1,1,'2025-05-28 17:36:20','Mal di testa',3);
 INSERT INTO "rilevazione_sintomo" VALUES (2,2,'2025-05-28 17:36:20','Stanchezza',6);
 INSERT INTO "rilevazione_sintomo" VALUES (3,3,'2025-05-28 17:36:20','Nausea',2);
 INSERT INTO "rilevazione_sintomo" VALUES (4,4,'2025-05-28 17:36:20','Capogiri',5);
-INSERT INTO "rilevazione_sintomo" VALUES (5,1,'2025-06-20 20:57:04.794586386','Mal di testa',2);
-INSERT INTO "rilevazione_sintomo" VALUES (6,1,'2025-06-20 21:10:02.436314589','Mal di pancia',3);
-INSERT INTO "rilevazione_sintomo" VALUES (7,1,'2025-07-03 17:24:50.483117717','mal di testa',3);
+INSERT INTO "rilevazione_sintomo" VALUES (5,1,'2025-06-20 20:57:04.0','Mal di testa',2);
+INSERT INTO "rilevazione_sintomo" VALUES (6,1,'2025-06-20 21:10:02.0','Mal di pancia',3);
+INSERT INTO "rilevazione_sintomo" VALUES (7,1,'2025-07-03 17:24:50.0','mal di testa',3);
 
 
 INSERT INTO "alert" VALUES (1,2,3,'glicemia','2025-05-17 08:00:00',0);
@@ -250,10 +250,10 @@ INSERT INTO "alert" VALUES (4,2,3,'farmacoNonAssuntoDa3Giorni','2025-05-16 22:00
 INSERT INTO "alert" VALUES (5,4,5,'glicemia','2025-05-17 07:00:00',0);
 INSERT INTO "alert" VALUES (6,3,4,'promemoriaFarmaco','2025-05-16 08:00:00',0);
 INSERT INTO "alert" VALUES (7,1,6,'glicemia','2025-05-29 13:28:45.924121088',1);
-INSERT INTO "alert" VALUES (14,4,1,'farmacoNonAssuntoDa3Giorni','2025-06-22 12:02:25.453617668',1);
-INSERT INTO "alert" VALUES (16,3,2,'farmacoNonAssuntoDa3Giorni','2025-06-22 12:03:03.447333542',0);
-INSERT INTO "alert" VALUES (17,1,9,'farmacoNonAssuntoDa3Giorni','2025-06-24 18:42:00.462858865',1);
-INSERT INTO "alert" VALUES (18,1,11,'farmacoNonAssuntoDa3Giorni','2025-06-24 18:42:00.463649488',0);
+INSERT INTO "alert" VALUES (14,4,1,'farmacoNonAssuntoDa3Giorni','2025-06-22 12:02:25.0',1);
+INSERT INTO "alert" VALUES (16,3,2,'farmacoNonAssuntoDa3Giorni','2025-06-22 12:03:03.0',0);
+INSERT INTO "alert" VALUES (17,1,9,'farmacoNonAssuntoDa3Giorni','2025-06-24 18:42:00.0',1);
+INSERT INTO "alert" VALUES (18,1,11,'farmacoNonAssuntoDa3Giorni','2025-06-24 18:42:00.0',0);
 
 
 COMMIT;

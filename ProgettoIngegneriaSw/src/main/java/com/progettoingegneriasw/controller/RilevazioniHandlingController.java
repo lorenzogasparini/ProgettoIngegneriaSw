@@ -6,7 +6,6 @@ import com.progettoingegneriasw.model.Paziente.PazienteDAO;
 import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.model.Utils.*;
 import com.progettoingegneriasw.view.ViewNavigator;
-import com.progettoingegneriasw.view.components.NavBar;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,20 +24,20 @@ import java.util.regex.Pattern;
 
 public class RilevazioniHandlingController {
     @FXML private TableView<RilevazioneFarmaco> tableViewRilevazioniFarmaci;
-    @FXML private TableColumn<RilevazioneFarmaco, Timestamp> timestamp;
+    @FXML private TableColumn<RilevazioneFarmaco, Timestamp> timestampRilFarmaco;
     @FXML private TableColumn<RilevazioneFarmaco, String> codiceAic;
     @FXML private TableColumn<RilevazioneFarmaco, String> nome;
     @FXML private TableColumn<RilevazioneFarmaco, Double> quantita;
     @FXML private TableColumn<RilevazioneFarmaco, String> noteRilevazione;
 
     @FXML private TableView<RilevazioneGlicemia> tableViewRilevazioniGlicemia;
-    //  @FXML private TableColumn<RilevazioneGlicemia, Timestamp> timestamp;
+    @FXML private TableColumn<RilevazioneGlicemia, Timestamp> timestampRilGlicemia;
     @FXML private TableColumn<RilevazioneGlicemia, Integer> valore;
     @FXML private TableColumn<RilevazioneGlicemia, Integer> gravita;
     @FXML private TableColumn<RilevazioneGlicemia, Boolean> primaPasto;
 
     @FXML private TableView<RilevazioneSintomo> tableViewRilevazioniSintomi;
-    //  @FXML private TableColumn<RilevazioneSintomo, Timestamp> timestamp;
+    @FXML private TableColumn<RilevazioneSintomo, Timestamp> timestampRilSintomo;
     @FXML private TableColumn<RilevazioneSintomo, String> sintomo;
     @FXML private TableColumn<RilevazioneSintomo, Integer> intensita;
 
@@ -180,7 +179,7 @@ public class RilevazioniHandlingController {
     }
 
     private void setup() throws SQLException {
-        timestamp.setCellValueFactory(new PropertyValueFactory<RilevazioneFarmaco, Timestamp>("timestamp"));
+        timestampRilFarmaco.setCellValueFactory(new PropertyValueFactory<RilevazioneFarmaco, Timestamp>("timestamp"));
         quantita.setCellValueFactory(new PropertyValueFactory<RilevazioneFarmaco, Double>("quantita"));
         noteRilevazione.setCellValueFactory(new PropertyValueFactory<RilevazioneFarmaco, String>("noteRilevazione"));
         codiceAic.setCellValueFactory(cellData ->
@@ -188,14 +187,16 @@ public class RilevazioniHandlingController {
         nome.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getFarmaco().getNome()));
 
-        //  timestamp.setCellValueFactory(new PropertyValueFactory<RilevazioneGlicemia, Timestamp>("timestamp"));
+        timestampRilGlicemia.setCellValueFactory(new PropertyValueFactory<RilevazioneGlicemia, Timestamp>("timestamp"));
         valore.setCellValueFactory(new PropertyValueFactory<RilevazioneGlicemia, Integer>("valore"));
         gravita.setCellValueFactory(new PropertyValueFactory<RilevazioneGlicemia, Integer>("gravita"));
         primaPasto.setCellValueFactory(new PropertyValueFactory<RilevazioneGlicemia, Boolean>("primaPasto"));
 
-        //  timestamp.setCellValueFactory(new PropertyValueFactory<RilevazioneSintomo, Timestamp>("timestamp"));
+        timestampRilSintomo.setCellValueFactory(new PropertyValueFactory<RilevazioneSintomo, Timestamp>("timestamp"));
         sintomo.setCellValueFactory(new PropertyValueFactory<RilevazioneSintomo, String>("sintomo"));
         intensita.setCellValueFactory(new PropertyValueFactory<RilevazioneSintomo, Integer>("intensita"));
+
+        setTimestampFormat();
 
         MedicoDAO medicoDAO = MedicoDAO.getInstance();
         medicoDAO.getUser(ViewNavigator.getAuthenticatedUsername());
@@ -316,6 +317,49 @@ public class RilevazioniHandlingController {
             String selezione = comboBoxPrimaPasto.getValue().toString();
 
             primaPastoSelezionato = selezione;
+        });
+    }
+
+    ///  this method set the timestamp format to 2025-05-17 08:00 instead of 2025-05-17 08:00:00.0
+    private void setTimestampFormat(){
+
+        final java.time.format.DateTimeFormatter formatter =
+                java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        timestampRilGlicemia.setCellFactory(column -> new TableCell<RilevazioneGlicemia, Timestamp>() {
+            @Override
+            protected void updateItem(Timestamp item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.toLocalDateTime().format(formatter));
+                }
+            }
+        });
+
+        timestampRilFarmaco.setCellFactory(column -> new TableCell<RilevazioneFarmaco, Timestamp>() {
+            @Override
+            protected void updateItem(Timestamp item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.toLocalDateTime().format(formatter));
+                }
+            }
+        });
+
+        timestampRilSintomo.setCellFactory(column -> new TableCell<RilevazioneSintomo, Timestamp>() {
+            @Override
+            protected void updateItem(Timestamp item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.toLocalDateTime().format(formatter));
+                }
+            }
         });
     }
 

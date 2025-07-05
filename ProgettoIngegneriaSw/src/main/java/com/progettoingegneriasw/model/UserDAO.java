@@ -16,6 +16,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class UserDAO { // todo: è corretto rendere questa classe abstract???
@@ -278,6 +279,20 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
         return getUser(username) != null;
     }
 
+    public boolean isUserDeleted(String username) {
+        String tableName = getUser(username).getSQLTableName();
+        String query = "SELECT 1 FROM " + tableName + " WHERE username = ? AND deleted = true";
+
+        Boolean result = getConnection().executeQuery(
+                query,
+                rs -> rs.next(),
+                username
+        );
+
+        return result != null && result;
+    }
+
+
 
     //todo: quando UserDAO sarà astratto togliere il codice da qui e definire questa funzione solo nei figli
     public String getSQLTableName(){
@@ -311,9 +326,9 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
      */
     public int getIdFromDB(String username) {   //  Funzionamento corretto
 
-        String query = "SELECT id FROM " + getUser(username).getSQLTableName() + " WHERE username = ";
+        String query = "SELECT id FROM " + getUser(username).getSQLTableName() + " WHERE username = ?";
         return getConnection().executeQuery(
-                query + " ?",
+                query,
                 rs -> {
                     if (rs.next()) {
                         return rs.getInt("id");
@@ -531,7 +546,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                                         rs.getInt("id_paziente"),
                                         rs.getInt("id_rilevazione_farmaco"),
                                         AlertType.farmacoNonAssuntoDa3Giorni,
-                                        Timestamp.from(Instant.now()),
+                                        Timestamp.valueOf(LocalDateTime.now().withNano(0)),
                                         false
                                 )
                         );
@@ -551,7 +566,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                     alert.getIdPaziente(),
                     alert.getIdRilevazione(),
                     alert.getTipoAlert(),
-                    alert.getTimestamp().toString(),
+                    Timestamp.valueOf(alert.getTimestamp().toLocalDateTime().withNano(0)).toString(),
                     alert.getLetto()
             );
             setLog(new Log(alert.getIdPaziente(), null, LogAction.InsertAlert, null));

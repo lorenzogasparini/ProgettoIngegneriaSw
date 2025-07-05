@@ -40,6 +40,7 @@ public class AlertsHandlingController {
         tipoAlert.setCellValueFactory(new PropertyValueFactory<Alert, String>("tipoAlert"));
         timestamp.setCellValueFactory(new PropertyValueFactory<Alert, Timestamp>("timestamp"));
         letto.setCellValueFactory(new PropertyValueFactory<Alert, Boolean>("letto"));
+        setTimestampFormat();
         handleRead();
 
         // Imposta valori predefiniti dei filtri
@@ -48,6 +49,24 @@ public class AlertsHandlingController {
 
         refreshTable();
 
+    }
+
+    ///  this method set the timestamp format to 2025-05-17 08:00 instead of 2025-05-17 08:00:00.0
+    private void setTimestampFormat(){
+        timestamp.setCellFactory(column -> new TableCell<Alert, Timestamp>() {
+            private final java.time.format.DateTimeFormatter formatter =
+                    java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+            @Override
+            protected void updateItem(Timestamp item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.toLocalDateTime().format(formatter));
+                }
+            }
+        });
     }
 
     private void refreshTable() throws SQLException {

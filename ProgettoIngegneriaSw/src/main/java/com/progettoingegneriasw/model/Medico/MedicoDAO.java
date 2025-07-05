@@ -8,6 +8,7 @@ import com.progettoingegneriasw.view.ViewNavigator;
 
 import java.sql.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -349,7 +350,7 @@ public class MedicoDAO extends UserDAO {
                     id_paziente,
                     patologia.getId(),
                     terapia.getId(),
-                    Timestamp.from(Instant.now()).toString(),
+                    Timestamp.valueOf(LocalDateTime.now().withNano(0)).toString(),
                     notePatologiaPaziente
             );
         }

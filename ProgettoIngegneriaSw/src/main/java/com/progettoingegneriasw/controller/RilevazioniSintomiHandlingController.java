@@ -6,10 +6,7 @@ import com.progettoingegneriasw.view.ViewNavigator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.SQLException;
@@ -47,6 +44,7 @@ public class RilevazioniSintomiHandlingController {
 
         id.setCellValueFactory(new PropertyValueFactory<RilevazioneSintomo, Integer>("id"));
         timestamp.setCellValueFactory(new PropertyValueFactory<RilevazioneSintomo, Timestamp>("timestamp"));
+        setTimestampFormat();
         sintomo.setCellValueFactory(new PropertyValueFactory<RilevazioneSintomo, String>("sintomo"));
         intensita.setCellValueFactory(new PropertyValueFactory<RilevazioneSintomo, String>("intensita"));
 
@@ -57,6 +55,24 @@ public class RilevazioniSintomiHandlingController {
         ObservableList<RilevazioneSintomo> rilSintomi = FXCollections.observableArrayList(rilevazioniSintomi);
 
         tableViewRilevazioni.setItems(rilSintomi);
+    }
+
+    ///  this method set the timestamp format to 2025-05-17 08:00 instead of 2025-05-17 08:00:00.0
+    private void setTimestampFormat(){
+        timestamp.setCellFactory(column -> new TableCell<RilevazioneSintomo, Timestamp>() {
+            private final java.time.format.DateTimeFormatter formatter =
+                    java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+            @Override
+            protected void updateItem(Timestamp item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.toLocalDateTime().format(formatter));
+                }
+            }
+        });
     }
 
     @FXML

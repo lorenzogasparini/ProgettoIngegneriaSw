@@ -40,7 +40,7 @@
 
                         <TableView fx:id="tableViewRilevazioniFarmaci" VBox.vgrow="ALWAYS">
                             <columns>
-                                <TableColumn prefWidth="100.0" text="Timestamp" fx:id="timestamp" />
+                                <TableColumn prefWidth="100.0" text="Timestamp" fx:id="timestampRilFarmaco" />
                                 <TableColumn prefWidth="100.0" text="Nome" fx:id="nome" />
                                 <TableColumn prefWidth="100.0" text="Codice AIC" fx:id="codiceAic" />
                                 <TableColumn prefWidth="100.0" text="Quantità" fx:id="quantita" />
@@ -50,7 +50,7 @@
 
                         <TableView fx:id="tableViewRilevazioniGlicemia" VBox.vgrow="ALWAYS">
                             <columns>
-                                <!-- <TableColumn prefWidth="100.0" text="Timestamp" fx:id="timestamp" /> -->
+                                <TableColumn prefWidth="100.0" text="Timestamp" fx:id="timestampRilGlicemia" />
                                 <TableColumn prefWidth="100.0" text="Valore glicemico" fx:id="valore" />
                                 <TableColumn prefWidth="100.0" text="Livello di allerta" fx:id="gravita" />
                                 <TableColumn prefWidth="100.0" text="Prima del pasto" fx:id="primaPasto" />
@@ -59,7 +59,7 @@
 
                         <TableView fx:id="tableViewRilevazioniSintomi" VBox.vgrow="ALWAYS">
                             <columns>
-                                <!-- <TableColumn prefWidth="100.0" text="Timestamp" fx:id="timestamp" /> -->
+                                <TableColumn prefWidth="100.0" text="Timestamp" fx:id="timestampRilSintomo" />
                                 <TableColumn prefWidth="100.0" text="Sintomo" fx:id="sintomo" />
                                 <TableColumn prefWidth="100.0" text="Intensità sintomo" fx:id="intensita" />
                             </columns>

@@ -6,6 +6,7 @@ import com.progettoingegneriasw.model.Utils.*;
 import com.progettoingegneriasw.view.ViewNavigator;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -177,7 +178,7 @@ public class PazienteDAO extends UserDAO {
         super.getConnection().executeUpdate(
                 "INSERT INTO rilevazione_sintomo (id_paziente, timestamp, sintomo, intensita) VALUES (?, ?, ?, ?)",
                 rilevazioneSintomo.getIdPaziente(),
-                rilevazioneSintomo.getTimestamp().toString(),
+                Timestamp.valueOf(rilevazioneSintomo.getTimestamp().toLocalDateTime().withNano(0)).toString(),
                 rilevazioneSintomo.getSintomo(),
                 rilevazioneSintomo.getIntensita()
         );
@@ -189,7 +190,7 @@ public class PazienteDAO extends UserDAO {
                 "INSERT INTO rilevazione_glicemia (id_paziente, timestamp, valore, gravita, prima_pasto) " +
                         "VALUES (?, ?, ?, ?, ?)",
                 rilevazioneGlicemia.getIdPaziente(),
-                rilevazioneGlicemia.getTimestamp().toString(),
+                Timestamp.valueOf(rilevazioneGlicemia.getTimestamp().toLocalDateTime().withNano(0)).toString(),
                 rilevazioneGlicemia.getValore(),
                 rilevazioneGlicemia.getGravita(),
                 rilevazioneGlicemia.getPrimaPasto()
@@ -219,7 +220,7 @@ public class PazienteDAO extends UserDAO {
                         "VALUES (?, ?, ?, ?, ?)",
                 rilevazioneFarmaco.getIdPaziente(),
                 rilevazioneFarmaco.getFarmaco().getId(),
-                rilevazioneFarmaco.getTimestamp().toString(),
+                Timestamp.valueOf(rilevazioneFarmaco.getTimestamp().toLocalDateTime().withNano(0)).toString(),
                 rilevazioneFarmaco.getQuantita(),
                 rilevazioneFarmaco.getNoteRilevazione()
         );

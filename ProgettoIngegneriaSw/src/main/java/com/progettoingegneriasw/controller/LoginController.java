@@ -37,7 +37,7 @@ public class LoginController {
         }
         
         User user = userDAO.getUser(username);
-        if (user != null && user.checkPassword(password)) {
+        if (user != null && user.checkPassword(password) && !userDAO.isUserDeleted(username)) {
             // Login successful
             ViewNavigator.setAuthenticatedUser(username);
             ViewNavigator.navigateToDashboard();

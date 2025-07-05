@@ -49,7 +49,7 @@
 
                 </VBox>
 
-
+                <!--
                 <VBox alignment="CENTER" HBox.hgrow="ALWAYS" prefHeight="600" prefWidth="300" styleClass="card, container" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
                     <children>
                         <Label text="Statistiche" textAlignment="CENTER">
@@ -62,14 +62,12 @@
                         </Label>
 
 
-                        <!-- Inserire grafico e menu a comparizione per la scelta della visualizzazione estesa della rilevazione selezionata -->
-
                     </children>
                     <padding>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                     </padding>
                 </VBox>
-
+                -->
 
             </HBox>
         </center>

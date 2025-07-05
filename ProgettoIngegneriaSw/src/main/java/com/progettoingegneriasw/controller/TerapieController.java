@@ -14,6 +14,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 public class TerapieController {
@@ -108,7 +110,7 @@ public class TerapieController {
                                 RilevazioneFarmaco rilevazioneFarmaco = new RilevazioneFarmaco(
                                         MedicoDAO.getInstance().getPazienteFromTerapia(terapia).getId(),
                                         terapia.getFarmaco(),
-                                        new java.sql.Timestamp(System.currentTimeMillis()),
+                                        Timestamp.valueOf(LocalDateTime.now().withNano(0)),
                                         terapia.getQuantitaPerDose(),
                                         ""
                                 );

@@ -12,10 +12,7 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 
@@ -50,6 +47,7 @@ public class RilevazioniGlicemiaHandlingController {
     public void initialize() throws SQLException {
         id.setCellValueFactory(new PropertyValueFactory<RilevazioneGlicemia, Integer>("id"));
         timestamp.setCellValueFactory(new PropertyValueFactory<RilevazioneGlicemia, Timestamp>("timestamp"));
+        setTimestampFormat();
         valore.setCellValueFactory(new PropertyValueFactory<RilevazioneGlicemia, Integer>("valore"));
         gravita.setCellValueFactory(new PropertyValueFactory<RilevazioneGlicemia, Integer>("gravita"));
         primaPasto.setCellValueFactory(new PropertyValueFactory<RilevazioneGlicemia, Boolean>("primaPasto"));
@@ -123,6 +121,24 @@ public class RilevazioniGlicemiaHandlingController {
                             labelRisultato.setText("Rilevazione glicemia nel sangue: " + TestController.selectedUser.getNome() + ", " + TestController.selectedUser.getCognome() + "   ->   " + data.getYValue() + ", " + data.getXValue());
                         });
                     }
+                }
+            }
+        });
+    }
+
+    ///  this method set the timestamp format to 2025-05-17 08:00 instead of 2025-05-17 08:00:00.0
+    private void setTimestampFormat(){
+        timestamp.setCellFactory(column -> new TableCell<RilevazioneGlicemia, Timestamp>() {
+            private final java.time.format.DateTimeFormatter formatter =
+                    java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+            @Override
+            protected void updateItem(Timestamp item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.toLocalDateTime().format(formatter));
                 }
             }
         });
