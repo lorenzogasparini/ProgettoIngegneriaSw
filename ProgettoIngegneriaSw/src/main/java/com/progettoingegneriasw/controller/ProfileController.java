@@ -5,15 +5,14 @@ import com.progettoingegneriasw.model.Admin.AdminUser;
 import com.progettoingegneriasw.model.Medico.Medico;
 import com.progettoingegneriasw.model.Medico.MedicoUser;
 import com.progettoingegneriasw.model.Paziente.Paziente;
+import com.progettoingegneriasw.model.Paziente.PazienteDAO;
 import com.progettoingegneriasw.model.Paziente.PazienteUser;
 import com.progettoingegneriasw.model.User;
 import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.model.UserTypes;
 import com.progettoingegneriasw.view.ViewNavigator;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
@@ -30,6 +29,8 @@ import java.nio.file.StandardCopyOption;
 public class ProfileController {
 
     @FXML private ImageView profileImage;
+    private final Image imgDoctor = new Image("file:" + AppConfig.ICON_DIR + "buttonIcons/doctorIcon.png");
+    @FXML private Button contactDoctorButton;
     @FXML private Label usernameLabel;
     @FXML private PasswordField newPasswordField;
     @FXML private PasswordField confirmPasswordField;
@@ -48,7 +49,7 @@ public class ProfileController {
         currentUsername = ViewNavigator.getAuthenticatedUsername();
 
         loadProfileImage(currentUsername);
-        // Display the current username
+        setContactDoctorIcon();
         usernameLabel.setText(currentUsername);
         
         // Hide the status label initially
@@ -198,6 +199,24 @@ public class ProfileController {
             }
         }
     }
+
+    private void setContactDoctorIcon(){
+        ImageView icon = new ImageView(imgDoctor);
+        icon.setFitWidth(16);
+        icon.setFitHeight(16);
+        contactDoctorButton.setGraphic(icon);
+        contactDoctorButton.setContentDisplay(ContentDisplay.LEFT);
+    }
+
+    @FXML
+    private void handleContattaDiabetologo() {
+
+        String currentUsername = ViewNavigator.getAuthenticatedUsername();
+        UserDAO.getInstance().contattaDiabetologo(
+                PazienteDAO.getInstance().getMedicoRiferimento(currentUsername).getEmail(),"", "");
+
+    }
+
 
 
 }
