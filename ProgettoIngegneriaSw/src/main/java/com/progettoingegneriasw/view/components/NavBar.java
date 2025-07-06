@@ -169,7 +169,7 @@ public class NavBar extends HBox {
     ///  otherwise if countAlerts() == 0 then the alertBtn is standard
     private void startAlertPolling() {
         javafx.animation.Timeline timeline = new javafx.animation.Timeline(
-                new javafx.animation.KeyFrame(javafx.util.Duration.seconds(5), event -> {
+                new javafx.animation.KeyFrame(javafx.util.Duration.seconds(2), event -> {
 
                     if (!ViewNavigator.isAuthenticated())
                         return;

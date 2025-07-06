@@ -44,15 +44,14 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Load the main application view
+
         URL mainViewUrl = getClass().getResource("/com/progettoingegneriasw/fxml/MainView.fxml");
         FXMLLoader loader = new FXMLLoader(mainViewUrl);
 
         Parent root = loader.load();
 
-        // Slightly bigger scene size (e.g., 1200x750)
+        // Set up the scene
         Scene scene = new Scene(root, 1200, 750);
-
-        // Load CSS
         URL cssUrl = getClass().getResource("/com/progettoingegneriasw/css/styles.css");
         scene.getStylesheets().add(cssUrl.toExternalForm());
 
@@ -61,26 +60,12 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        // for 60 FPS
-        AnimationTimer timer = new AnimationTimer() {
-            private long lastUpdate = 0;
-
-            @Override
-            public void handle(long now) {
-                // Limit to ~60 FPS
-                if (now - lastUpdate >= 16_666_667) {
-                    lastUpdate = now;
-                }
-            }
-        };
-        timer.start();
     }
-
 
 
     public static void main(String[] args) throws SQLException {
 
-        startAlertLockWatcher(10, 20); // update every 1s, retry lock every 5s
+        startAlertLockWatcher(2, 5); // update every 2s, retry lock every 5s
 
         // JavaFX launch
         launch(args);
