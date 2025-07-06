@@ -57,7 +57,7 @@ public class DashboardController {
 
     @FXML
     private void handleVisualizzaPazienti() {
-        ViewNavigator.navigateToTest();
+        ViewNavigator.navigateToPazienti();
     }
 
     @FXML
@@ -80,17 +80,17 @@ public class DashboardController {
 
     @FXML
     private void handleApriRegisterView() {
-        ViewNavigator.navigateToRegister();  // già esistente
+        ViewNavigator.navigateToRegister();
     }
 
     @FXML
     private void handleApriGestioneUtenti() {
-        ViewNavigator.navigateToGestioneUtenti(); // da creare
+        ViewNavigator.navigateToGestioneUtenti();
     }
 
     @FXML
     private void handleApriVisualizzazioneLog() {
-        ViewNavigator.navigateToVisualizzazioneLog(); // da creare
+        ViewNavigator.navigateToVisualizzazioneLog();
     }
 
 

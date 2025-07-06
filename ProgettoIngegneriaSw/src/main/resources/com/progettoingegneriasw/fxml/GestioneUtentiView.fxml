@@ -5,15 +5,11 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+
 <?import javafx.geometry.Insets?>
-
 <?import javafx.scene.text.Font?>
-
-
 <?import javafx.scene.image.ImageView?>
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.progettoingegneriasw.controller.ContattaUtenteController">
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.progettoingegneriasw.controller.GestioneUtentiController">
     <BorderPane xmlns="http://javafx.com/javafx/17" VBox.vgrow="ALWAYS" xmlns:fx="http://javafx.com/fxml/1">
         <center>
             <HBox alignment="CENTER" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS" spacing="10">
@@ -54,7 +50,7 @@
 
                 <VBox alignment="CENTER" HBox.hgrow="ALWAYS" prefHeight="600" prefWidth="300" styleClass="card, container" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:id="VBoxContatta" visible="false" managed="false">
                     <children>
-                        <Label text="Contatta utente" textAlignment="CENTER">
+                        <Label text="Gestione utente" textAlignment="CENTER">
                             <font>
                                 <Font name="System Bold" size="24.0" />
                             </font>
@@ -72,10 +68,26 @@
                             </VBox.margin>
                         </Label>
 
-                        <ImageView fx:id="profileImage"
-                                   fitHeight="200" fitWidth="200"
-                                   preserveRatio="true"
-                                   styleClass="profile-image" />
+                        <HBox alignment="CENTER_LEFT" spacing="10" HBox.hgrow="ALWAYS">
+                            <VBox alignment="CENTER" spacing="10">
+                                <ImageView fx:id="profileImage"
+                                           fitHeight="200" fitWidth="200"
+                                           preserveRatio="true"
+                                           styleClass="profile-image" />
+                            </VBox>
+
+                            <VBox alignment="TOP_RIGHT" HBox.hgrow="ALWAYS">
+                                <Button fx:id="deleteButton"
+                                        onAction="#handleDeleteUtente"
+                                        style="-fx-background-color: #d9534f; -fx-text-fill: white;"
+                                        prefHeight="20" prefWidth="20">
+                                    <VBox.margin>
+                                        <Insets right="20" top="10" />
+                                    </VBox.margin>
+                                </Button>
+                            </VBox>
+                        </HBox>
+
 
                         <VBox spacing="10.0" visible="false" fx:id="VBoxDestinatario">
                             <children>

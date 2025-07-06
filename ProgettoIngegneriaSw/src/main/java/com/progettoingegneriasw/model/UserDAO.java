@@ -425,14 +425,16 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
 
     /**
      *
-     * @return Tutti gli utenti del sistema: medici e pazienti
+     * @return se l'utente loggato è un medico o un admin ritorna medici e pazienti
+     * altrimenti se l'utente loggato è un paziente ritorna solo i medici
      */
+    // TODO: sistemare questo metodo parametrizzandolo o facendo altro
     public User[] getAllUsers(){
         ArrayList<User> users = new ArrayList<>();
 
         if(ViewNavigator.getAuthenticatedUser().isMedico()){
             dbManager.executeQuery(
-                    "SELECT * FROM paziente",
+                    "SELECT * FROM paziente WHERE deleted = false",
                     rs -> {
                         while (rs.next()) {
                             users.add(new PazienteUser(
@@ -455,25 +457,90 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
                         return null;
                     }
             );
-        }
-        dbManager.executeQuery(
-                "SELECT * FROM diabetologo",
-                rs -> {
-                    while (rs.next()) {
-                        users.add(new MedicoUser(
-                                        rs.getInt("id"),
-                                        rs.getString("username"),
-                                        rs.getString("password"),
-                                        rs.getString("nome"),
-                                        rs.getString("cognome"),
-                                        rs.getString("email"),
-                                        rs.getString("profile_image_name")
-                                )
-                        );
+
+            dbManager.executeQuery(
+                    "SELECT * FROM diabetologo WHERE deleted = false",
+                    rs -> {
+                        while (rs.next()) {
+                            users.add(new MedicoUser(
+                                            rs.getInt("id"),
+                                            rs.getString("username"),
+                                            rs.getString("password"),
+                                            rs.getString("nome"),
+                                            rs.getString("cognome"),
+                                            rs.getString("email"),
+                                            rs.getString("profile_image_name")
+                                    )
+                            );
+                        }
+                        return null;
                     }
-                    return null;
-                }
-        );
+            );
+
+        } else if (ViewNavigator.getAuthenticatedUser().isPaziente()){
+            dbManager.executeQuery(
+                    "SELECT * FROM diabetologo WHERE deleted = false",
+                    rs -> {
+                        while (rs.next()) {
+                            users.add(new MedicoUser(
+                                            rs.getInt("id"),
+                                            rs.getString("username"),
+                                            rs.getString("password"),
+                                            rs.getString("nome"),
+                                            rs.getString("cognome"),
+                                            rs.getString("email"),
+                                            rs.getString("profile_image_name")
+                                    )
+                            );
+                        }
+                        return null;
+                    }
+            );
+        } else if(ViewNavigator.getAuthenticatedUser().isAdmin()){
+            dbManager.executeQuery(
+                    "SELECT * FROM paziente", // todo: gestire l'opzione con un menu a tendina per mostrare all'admin tutti gli utenti, oppure solo quelli cancellati
+                    rs -> {
+                        while (rs.next()) {
+                            users.add(new PazienteUser(
+                                            rs.getInt("id"),
+                                            rs.getString("username"),
+                                            rs.getString("password"),
+                                            rs.getString("nome"),
+                                            rs.getString("cognome"),
+                                            rs.getString("email"),
+                                            rs.getInt("id_diabetologo"),
+                                            Date.valueOf(rs.getString("data_nascita")),
+                                            rs.getDouble("peso"),
+                                            rs.getString("provincia_residenza"),
+                                            rs.getString("comune_residenza"),
+                                            rs.getString("note_paziente"),
+                                            rs.getString("profile_image_name")
+                                    )
+                            );
+                        }
+                        return null;
+                    }
+            );
+            dbManager.executeQuery(
+                    "SELECT * FROM diabetologo ",  // todo: gestire l'opzione con un menu a tendina per mostrare all'admin tutti gli utenti, oppure solo quelli cancellati
+                    rs -> {
+                        while (rs.next()) {
+                            users.add(new MedicoUser(
+                                            rs.getInt("id"),
+                                            rs.getString("username"),
+                                            rs.getString("password"),
+                                            rs.getString("nome"),
+                                            rs.getString("cognome"),
+                                            rs.getString("email"),
+                                            rs.getString("profile_image_name")
+                                    )
+                            );
+                        }
+                        return null;
+                    }
+            );
+        }
+
         return users.toArray(new User[users.size()]);
     }
 

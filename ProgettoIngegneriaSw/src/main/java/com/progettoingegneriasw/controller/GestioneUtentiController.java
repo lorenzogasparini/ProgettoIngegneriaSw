@@ -1,10 +1,11 @@
 package com.progettoingegneriasw.controller;
+
 import com.progettoingegneriasw.config.AppConfig;
+import com.progettoingegneriasw.model.Admin.AdminDAO;
 import com.progettoingegneriasw.model.Medico.MedicoUser;
 import com.progettoingegneriasw.model.Paziente.PazienteUser;
 import com.progettoingegneriasw.model.User;
 import com.progettoingegneriasw.model.UserDAO;
-import com.progettoingegneriasw.view.ViewNavigator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,7 +18,7 @@ import javafx.scene.layout.VBox;
 import java.io.File;
 import java.sql.SQLException;
 
-public class ContattaUtenteController {
+public class GestioneUtentiController {
     @FXML
     private Button loginButton;
 
@@ -34,6 +35,8 @@ public class ContattaUtenteController {
 
     @FXML private VBox VBoxDestinatario;
     @FXML private ImageView profileImage;
+    @FXML private Button deleteButton;
+    @FXML private User selectedUser;
     @FXML private TextField emailDestinatario;
     @FXML private VBox VBoxOggetto;
     @FXML private TextField emailOggetto;
@@ -46,6 +49,7 @@ public class ContattaUtenteController {
     private UserDAO userDAO = UserDAO.getInstance();
 
     public void initialize() throws SQLException {
+        setupDeleteButton();
         username.setCellValueFactory(new PropertyValueFactory<User, String>("username"));
         nome.setCellValueFactory(new PropertyValueFactory<User, String>("nome"));
         cognome.setCellValueFactory(new PropertyValueFactory<User, String>("cognome"));
@@ -55,8 +59,17 @@ public class ContattaUtenteController {
         refreshTable();
     }
 
+    private void setupDeleteButton(){
+        Image image = new Image("file:" + AppConfig.ICON_DIR + "buttonIcons/deleteIcon.png");
+        ImageView icon = new ImageView(image);
+        icon.setFitWidth(16);
+        icon.setFitHeight(16);
+        deleteButton.setGraphic(icon);
+        deleteButton.setContentDisplay(ContentDisplay.LEFT);
+    }
+
     @FXML
-    private void setupComunication() {
+    private void setupHandleUserPanel() {
         VBoxContatta.setVisible(true);
         VBoxContatta.setManaged(true);
 
@@ -70,13 +83,13 @@ public class ContattaUtenteController {
         emailDestinatario.setVisible(true);
     }
 
-    private void setupTableSelection(){
+    private void setupTableSelection() {
         tableView.setOnMouseClicked(event -> {
-            // Per  la riga cliccata:
             User selectedUser = tableView.getSelectionModel().getSelectedItem();
 
             if (selectedUser != null) {
-                setupComunication(); // Show communication panel
+                this.selectedUser = selectedUser;
+                setupHandleUserPanel(); // Show communication panel
 
                 if(selectedUser.isMedico()) {
                     MedicoUser medico = (MedicoUser) userDAO.getUser(selectedUser.getUsername());
@@ -89,7 +102,7 @@ public class ContattaUtenteController {
                     emailDestinatario.setText(paziente.getEmail());
                 }
                 else{
-                    System.out.println("Errore");
+                    System.out.println("Errore: gli utenti admin NON possono essere gestiti da altri utenti admin");
                 }
             }
         });
@@ -100,7 +113,51 @@ public class ContattaUtenteController {
         userDAO.contattaDiabetologo(emailDestinatario.getText(), emailOggetto.getText(), emailCorpo.getText());
     }
 
-    private void refreshTable(){
+    @FXML
+    private void handleDeleteUtente() {
+        if (selectedUser == null) {
+            return;
+        }
+
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Conferma eliminazione");
+        confirm.setHeaderText("Vuoi davvero eliminare questo utente?");
+
+        ButtonType okButton = new ButtonType("Elimina", ButtonBar.ButtonData.OK_DONE);
+        ButtonType cancelButton = new ButtonType("Annulla", ButtonBar.ButtonData.CANCEL_CLOSE);
+        confirm.getButtonTypes().setAll(okButton, cancelButton);
+
+        confirm.showAndWait().ifPresent(response -> {
+            if (response == okButton) {
+                try {
+                    AdminDAO.getInstance().deleteUser(selectedUser.getUsername());
+
+                    // Success notification
+                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                    successAlert.setTitle("Successo");
+                    successAlert.setHeaderText("Utente eliminato con successo");
+                    successAlert.setContentText("L'utente " + selectedUser.getUsername() + " è stato eliminato.");
+                    // successAlert.getDialogPane().getStyleClass().add("alert-success"); // todo: capire perché non funziona
+                    successAlert.showAndWait();
+
+                    refreshTable();
+
+                } catch (SQLException e) {
+                    // Error notification
+                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                    errorAlert.setTitle("Errore");
+                    errorAlert.setHeaderText("Errore durante l'eliminazione");
+                    errorAlert.setContentText("Impossibile eliminare l'utente. Riprovare.");
+                    // errorAlert.getDialogPane().getStyleClass().add("alert-danger"); // todo: capire perché non funziona
+                    errorAlert.showAndWait();
+
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void refreshTable() throws SQLException {
         UserDAO userDAO = UserDAO.getInstance();
         User[] user = userDAO.getAllUsers();
 
@@ -108,6 +165,7 @@ public class ContattaUtenteController {
 
         tableView.setItems(users);
     }
+
 
     private void loadProfileImage(String profileImageName){
         String imagePath = AppConfig.IMAGE_DIR + profileImageName;

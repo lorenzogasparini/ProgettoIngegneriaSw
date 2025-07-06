@@ -83,7 +83,7 @@ public class ViewNavigator {
     /**
      * Navigate to the test view
      */
-    public static void navigateToTest() {
+    public static void navigateToPazienti() {
         loadView("PazientiView.fxml");
     }
     
