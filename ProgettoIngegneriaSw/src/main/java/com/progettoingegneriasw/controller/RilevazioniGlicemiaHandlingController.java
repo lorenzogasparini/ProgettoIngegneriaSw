@@ -53,7 +53,7 @@ public class RilevazioniGlicemiaHandlingController {
         primaPasto.setCellValueFactory(new PropertyValueFactory<RilevazioneGlicemia, Boolean>("primaPasto"));
 
         MedicoDAO medicoDAO = MedicoDAO.getInstance();
-        medicoDAO.getUser(ViewNavigator.getAuthenticatedUsername());
+
         RilevazioneGlicemia[] rilevazioniGlicemia = medicoDAO.getRilevazioniGlicemia(PazientiController.selectedUser.getUsername());
 
         rilglicemia = FXCollections.observableArrayList(rilevazioniGlicemia);

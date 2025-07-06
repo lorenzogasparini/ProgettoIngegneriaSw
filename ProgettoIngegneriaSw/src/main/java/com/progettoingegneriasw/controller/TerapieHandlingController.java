@@ -91,7 +91,6 @@ public class TerapieHandlingController {
     }
 
     private void refreshTable() throws SQLException {
-        medicoDAO.getUser(ViewNavigator.getAuthenticatedUsername());
         Terapia[] terapie = medicoDAO.getTerapiePaziente(PazientiController.selectedUser.getUsername());
 
         ObservableList<Terapia> ter = FXCollections.observableArrayList(terapie);
@@ -248,7 +247,7 @@ public class TerapieHandlingController {
 
     @FXML
     private void handleInserimento() throws SQLException {
-        Medico loggedMedico = (Medico) UserDAO.getInstance().getUser(ViewNavigator.getAuthenticatedUsername());
+        Medico loggedMedico = (Medico) ViewNavigator.getAuthenticatedUser();
 
         Terapia ter = new Terapia(
                 loggedMedico,
@@ -284,7 +283,7 @@ public class TerapieHandlingController {
     private void handleUpdate() throws SQLException {
         //  gestire il lancio della query di update della terapia sulla base delle info fornite -> Implementare controlli
         MedicoDAO medicoDAO = MedicoDAO.getInstance();
-        Medico loggedMedico = (Medico) UserDAO.getInstance().getUser(ViewNavigator.getAuthenticatedUsername());
+        Medico loggedMedico = (Medico) ViewNavigator.getAuthenticatedUser();
         medicoTextFieldUpdate.setText(loggedMedico.getUsername());
 
         if(VBoxUpdate.isVisible()) {

@@ -28,14 +28,12 @@ public class StatsController {
     private VBox userListContainer;
 
     private UserDAO userDAO;
-    private String currentUsername;
     private User user;
     
     @FXML
     public void initialize() {
         userDAO = UserDAO.getLoggedUserDAO();
-        currentUsername = ViewNavigator.getAuthenticatedUsername();
-        user = userDAO.getUser(currentUsername);
+        user = ViewNavigator.getAuthenticatedUser();
         
         if (user.isAdmin()) {
             // For admin users, show the user management interface

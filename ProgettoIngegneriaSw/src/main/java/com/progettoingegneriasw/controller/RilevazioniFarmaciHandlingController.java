@@ -56,7 +56,7 @@ public class RilevazioniFarmaciHandlingController {
                 new SimpleStringProperty(cellData.getValue().getFarmaco().getNome()));
 
         MedicoDAO medicoDAO = MedicoDAO.getInstance();
-        medicoDAO.getUser(ViewNavigator.getAuthenticatedUsername());
+
         RilevazioneFarmaco[] rilevazioniFarmaci = medicoDAO.getRilevazioniFarmaco(PazientiController.selectedUser.getUsername());
 
         ObservableList<RilevazioneFarmaco> rilFarmaci = FXCollections.observableArrayList(rilevazioniFarmaci);

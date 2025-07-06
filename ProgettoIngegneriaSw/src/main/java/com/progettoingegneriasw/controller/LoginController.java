@@ -39,7 +39,7 @@ public class LoginController {
         User user = userDAO.getUser(username);
         if (user != null && user.checkPassword(password) && !userDAO.isUserDeleted(username)) {
             // Login successful
-            ViewNavigator.setAuthenticatedUser(username);
+            ViewNavigator.setAuthenticatedUsername(username);
             ViewNavigator.navigateToDashboard();
         } else {
             showError("Invalid username or password");

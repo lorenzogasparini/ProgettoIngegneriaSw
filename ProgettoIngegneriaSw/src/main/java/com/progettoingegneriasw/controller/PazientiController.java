@@ -48,8 +48,7 @@ public class PazientiController {
         comuneResidenza.setCellValueFactory(new PropertyValueFactory<Paziente, String>("comuneResidenza"));
         notePaziente.setCellValueFactory(new PropertyValueFactory<Paziente, String>("notePaziente"));
 
-        MedicoDAO medicoDAO = MedicoDAO.getInstance();
-        medicoDAO.getUser(ViewNavigator.getAuthenticatedUsername());
+
 
         // Default filter value
         filtroPazientiCombo.getSelectionModel().select("Solo i miei pazienti");

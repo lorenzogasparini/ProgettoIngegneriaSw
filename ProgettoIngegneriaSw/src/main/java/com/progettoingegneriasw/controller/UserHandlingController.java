@@ -128,7 +128,6 @@ public class UserHandlingController {
             @Override
             protected Void call() throws Exception {
                 MedicoDAO medicoDAO = MedicoDAO.getInstance();
-                medicoDAO.getUser(ViewNavigator.getAuthenticatedUsername());
 
                 Terapia[] terapie = medicoDAO.getTerapiePaziente(paziente.getUsername());
                 RilevazioneFarmaco[] farmaci = medicoDAO.getRilevazioniFarmaco(paziente.getUsername());

@@ -59,7 +59,6 @@ public class RegisterController {
     private void updateFieldsVisibility() {
         boolean isPaziente = radioPaziente.isSelected();
         boolean isMedico = radioMedico.isSelected();
-        // boolean isAdmin = radioAdmin.isSelected(); todo: capire se non serve
 
         pazienteVBox.setVisible(isPaziente);
         pazienteVBox.setManaged(isPaziente);
@@ -70,7 +69,6 @@ public class RegisterController {
 
     @FXML
     private void handleRegister() {
-        User userToCreate = null;
         String username = usernameField.getText();
         String password = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
@@ -174,15 +172,14 @@ public class RegisterController {
 
     private void showError(String message) {
         statusLabel.setText(message);
-        statusLabel.getStyleClass().removeAll("error", "success");
-        statusLabel.getStyleClass().add("error");
+        statusLabel.setVisible(true);
+        statusLabel.getStyleClass().setAll("status-label", "error");
     }
 
     private void showSuccess(String message) {
         statusLabel.setText(message);
-        statusLabel.setText(message);
-        statusLabel.getStyleClass().removeAll("error", "success");
-        statusLabel.getStyleClass().add("success");
+        statusLabel.setVisible(true);
+        statusLabel.getStyleClass().setAll("status-label", "success");
     }
 
 }

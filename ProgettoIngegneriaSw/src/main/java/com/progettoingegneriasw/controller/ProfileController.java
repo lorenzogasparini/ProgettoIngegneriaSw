@@ -56,7 +56,7 @@ public class ProfileController {
 
         loadProfileImageAsync(currentUsername);
     }
-    
+
     /**
      * Handle updating the user's password.
      * This method is called when the user clicks the "Update Password" button.
@@ -126,8 +126,7 @@ public class ProfileController {
         Task<Image> task = new Task<>() {
             @Override
             protected Image call() throws Exception {
-                String currentUsername = ViewNavigator.getAuthenticatedUsername();
-                User currentUser = UserDAO.getInstance().getUser(currentUsername);
+                User currentUser = ViewNavigator.getAuthenticatedUser();
                 String fileName = selectedFile.getName();
 
                 File destDir = new File(AppConfig.IMAGE_DIR);

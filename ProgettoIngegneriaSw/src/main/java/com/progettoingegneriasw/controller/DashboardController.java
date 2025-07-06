@@ -22,14 +22,14 @@ public class DashboardController {
         String username = ViewNavigator.getAuthenticatedUsername();
         userDAO = UserDAO.getInstance();
         welcomeLabel.setText("Benvenuto nella tua dashboard, " +
-                (userDAO.getUser(ViewNavigator.getAuthenticatedUsername()).isMedico() ? "dott. " : " ") + username + "!");
+                (ViewNavigator.getAuthenticatedUser().isMedico() ? "dott. " : " ") + username + "!");
         showUserTypePanel();
 
     }
 
     private void showUserTypePanel(){
         userDAO = UserDAO.getInstance();
-        if(userDAO.getUser(ViewNavigator.getAuthenticatedUsername()).isMedico()) {
+        if(ViewNavigator.getAuthenticatedUser().isMedico()) {
             handlingPanelPaziente.setManaged(false);
             handlingPanelPaziente.setVisible(false);
             handlingPanelAdmin.setManaged(false);
@@ -37,7 +37,7 @@ public class DashboardController {
             handlingPanelMedico.setManaged(true);
             handlingPanelMedico.setVisible(true);
         }
-        else if(userDAO.getUser(ViewNavigator.getAuthenticatedUsername()).isPaziente()){
+        else if(ViewNavigator.getAuthenticatedUser().isPaziente()){
             handlingPanelMedico.setManaged(false);
             handlingPanelMedico.setVisible(false);
             handlingPanelAdmin.setManaged(false);
@@ -45,7 +45,7 @@ public class DashboardController {
             handlingPanelPaziente.setManaged(true);
             handlingPanelPaziente.setVisible(true);
         }
-        else if (userDAO.getUser(ViewNavigator.getAuthenticatedUsername()).isAdmin()){
+        else if (ViewNavigator.getAuthenticatedUser().isAdmin()){
             handlingPanelPaziente.setManaged(false);
             handlingPanelPaziente.setVisible(false);
             handlingPanelMedico.setManaged(false);

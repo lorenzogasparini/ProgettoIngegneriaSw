@@ -49,7 +49,6 @@ public class RilevazioniSintomiHandlingController {
         intensita.setCellValueFactory(new PropertyValueFactory<RilevazioneSintomo, String>("intensita"));
 
         MedicoDAO medicoDAO = MedicoDAO.getInstance();
-        medicoDAO.getUser(ViewNavigator.getAuthenticatedUsername());
         RilevazioneSintomo[] rilevazioniSintomi = medicoDAO.getRilevazioniSintomo(PazientiController.selectedUser.getUsername());
 
         ObservableList<RilevazioneSintomo> rilSintomi = FXCollections.observableArrayList(rilevazioniSintomi);

@@ -388,3 +388,20 @@ CSS VECCHIO:
     -fx-background-color: white;
     -fx-padding: 4px;
 }
+
+.status-label {
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+    -fx-padding: 8px;
+    -fx-font-size: 14px;
+}
+
+.status-label.error {
+    -fx-background-color: rgba(255, 0, 0, 0.1);
+    -fx-text-fill: red;
+}
+
+.status-label.success {
+    -fx-background-color: rgba(0, 255, 0, 0.1);;
+    -fx-text-fill: green;
+}

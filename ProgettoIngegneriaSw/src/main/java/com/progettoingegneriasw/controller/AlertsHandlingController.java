@@ -88,7 +88,6 @@ public class AlertsHandlingController {
         };
 
         MedicoDAO medicoDAO = MedicoDAO.getInstance();
-        medicoDAO.getUser(ViewNavigator.getAuthenticatedUsername());
 
         Alert[] alerts = soloMieiPazienti
                 ? medicoDAO.getAlertsPazientiCurati(filtro)

@@ -169,7 +169,7 @@ public class NavBar extends HBox {
     ///  otherwise if countAlerts() == 0 then the alertBtn is standard
     private void startAlertPolling() {
         javafx.animation.Timeline timeline = new javafx.animation.Timeline(
-                new javafx.animation.KeyFrame(javafx.util.Duration.seconds(2), event -> {
+                new javafx.animation.KeyFrame(javafx.util.Duration.seconds(5), event -> {
 
                     if (!ViewNavigator.isAuthenticated())
                         return;
@@ -177,9 +177,9 @@ public class NavBar extends HBox {
                     try {
                         int alertCount = 0;
 
-                        if (UserDAO.getInstance().getUser(ViewNavigator.getAuthenticatedUsername()) instanceof Medico medico){
+                        if (ViewNavigator.getAuthenticatedUser() instanceof Medico medico){
                             alertCount = MedicoDAO.getInstance().countAlerts();
-                        }else if (UserDAO.getInstance().getUser(ViewNavigator.getAuthenticatedUsername()) instanceof Paziente paziente){
+                        }else if (ViewNavigator.getAuthenticatedUser() instanceof Paziente paziente){
                             alertCount = PazienteDAO.getInstance().countAlerts();
                         }
 

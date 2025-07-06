@@ -430,7 +430,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
     public User[] getAllUsers(){
         ArrayList<User> users = new ArrayList<>();
 
-        if(getUser(ViewNavigator.getAuthenticatedUsername()).isMedico()){
+        if(ViewNavigator.getAuthenticatedUser().isMedico()){
             dbManager.executeQuery(
                     "SELECT * FROM paziente",
                     rs -> {

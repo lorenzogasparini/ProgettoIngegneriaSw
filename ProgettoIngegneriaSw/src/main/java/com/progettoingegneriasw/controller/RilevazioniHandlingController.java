@@ -132,7 +132,6 @@ public class RilevazioniHandlingController {
 
                 // get Data from DB
                 MedicoDAO medicoDAO = MedicoDAO.getInstance();
-                medicoDAO.getUser(ViewNavigator.getAuthenticatedUsername());
                 RilevazioneFarmaco[] rilevazioniFarmaci = medicoDAO.getRilevazioniFarmaco(ViewNavigator.getAuthenticatedUsername());
                 RilevazioneGlicemia[] rilevazioniGlicemia = medicoDAO.getRilevazioniGlicemia(ViewNavigator.getAuthenticatedUsername());
                 RilevazioneSintomo[] rilevazioniSintomi = medicoDAO.getRilevazioniSintomo(ViewNavigator.getAuthenticatedUsername());

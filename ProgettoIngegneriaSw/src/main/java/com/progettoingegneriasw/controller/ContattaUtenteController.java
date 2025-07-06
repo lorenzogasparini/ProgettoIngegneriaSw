@@ -52,7 +52,6 @@ public class ContattaUtenteController {
         email.setCellValueFactory(new PropertyValueFactory<User, String>("email"));
 
         UserDAO userDAO = UserDAO.getInstance();
-        userDAO.getUser(ViewNavigator.getAuthenticatedUsername());
         User[] user = userDAO.getAllUsers();
 
         ObservableList<User> users = FXCollections.observableArrayList(user);

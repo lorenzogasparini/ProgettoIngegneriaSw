@@ -4,6 +4,7 @@ import com.progettoingegneriasw.Main;
 import com.progettoingegneriasw.controller.MainController;
 import com.progettoingegneriasw.model.Medico.Medico;
 import com.progettoingegneriasw.model.Paziente.Paziente;
+import com.progettoingegneriasw.model.User;
 import com.progettoingegneriasw.model.UserDAO;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -20,7 +21,8 @@ public class ViewNavigator {
     // Reference to the main controller
     private static MainController mainController;
     // Current authenticated username
-    private static String authenticatedUser = null;
+    private static String authenticatedUsername = null;
+    private static User authenticatedUser = null;
     private static final String VIEW_BASE_PATH = "/com/progettoingegneriasw/fxml/";
 
     ///  stack per il meccanismo che consente di tornare alla pagina precedente
@@ -121,9 +123,9 @@ public class ViewNavigator {
 
     public static void navigateToAlerts() {
         if (isAuthenticated()) {
-            if (UserDAO.getInstance().getUser(ViewNavigator.getAuthenticatedUsername()) instanceof Medico medico){
+            if (authenticatedUser instanceof Medico medico){
                 loadView("AlertsHandlingView.fxml");
-            }else if (UserDAO.getInstance().getUser(ViewNavigator.getAuthenticatedUsername()) instanceof Paziente paziente){
+            }else if (authenticatedUser instanceof Paziente paziente){
                 loadView("TerapieView.fxml");
             }
 
@@ -206,12 +208,10 @@ public class ViewNavigator {
      * Set the authenticated user and the user role
      * @param username The username of the authenticated user
      */
-    public static void setAuthenticatedUser(String username) {
-        authenticatedUser = username;
+    public static void setAuthenticatedUsername(String username) {
+        authenticatedUsername = username;
+        authenticatedUser = UserDAO.getInstance().getUser(username);
         mainController.updateNavBar(isAuthenticated());
-
-        // todo: testare gli alert
-        //mainController.checkAndShowAlerts();
 
     }
     
@@ -220,21 +220,27 @@ public class ViewNavigator {
      * @return The username of the authenticated user, or null if not authenticated
      */
     public static String getAuthenticatedUsername() {
+        return authenticatedUsername;
+    }
+
+    public static User getAuthenticatedUser(){
         return authenticatedUser;
     }
+
     
     /**
      * Check if a user is authenticated
      * @return true if a user is authenticated, false otherwise
      */
     public static boolean isAuthenticated() {
-        return authenticatedUser != null;
+        return authenticatedUsername != null;
     }
     
     /**
      * Logout the current user
      */
     public static void logout() {
+        authenticatedUsername = null;
         authenticatedUser = null;
         mainController.updateNavBar(false);
         navigateToHome();
