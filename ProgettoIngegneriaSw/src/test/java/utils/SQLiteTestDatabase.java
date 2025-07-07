@@ -46,6 +46,7 @@ public class SQLiteTestDatabase {
     public void close() {
         try {
             connection.close();
+            // delete test.db after test is finished
             new File(AppConfig.TESTDATABASE_PATH).delete();
         } catch (Exception e) {
             e.printStackTrace();

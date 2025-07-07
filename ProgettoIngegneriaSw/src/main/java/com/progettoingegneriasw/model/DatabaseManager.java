@@ -23,61 +23,7 @@ public class DatabaseManager {
         //initializeDatabase(); // commented (not used)
     }
 
-    // todo: da cancellare: non utilizzata
-    /**
-     * Funzione che permette di eseguire query SQL direttamente da file fornito in input
-     * @param path : parametro "percorso" in cui si trova il file SQL da eseguire
-     */
-    /*
-    public void executeFile(String path) { // da testare
-        try (FileReader reader = new FileReader(path);
-             // Wrap the FileReader in a BufferedReader for efficient reading.
-             BufferedReader bufferedReader = new BufferedReader(reader);
 
-             // Stabilisce una connessione con il database, mediante funzione getConnection() per sqlite definita di seguito
-             Connection connection = getConnection();
-
-             // Crea un oggetto statement per eseguire l'oggetto SQL.
-             Statement statement = connection.createStatement();) {
-
-            StringBuilder builder = new StringBuilder();
-
-            String line;
-            int lineNumber = 0;
-            int count = 0;
-
-            // Leggiamo tutte le righe del file SQL fornito in input
-            while ((line = bufferedReader.readLine()) != null) {
-                lineNumber += 1;
-                line = line.trim();
-
-                // Salta righe vuote e -
-                if (line.isEmpty() || line.startsWith("--"))
-                    continue;
-
-                builder.append(line);
-
-                // Se la righa termina con una ; allora ciò indica di terminare il comando SQL che si sta scorrendo
-                if (line.endsWith(";"))
-                    try {
-                        // Esegui il comando SQL
-                        statement.execute(builder.toString());
-                        // Print a success message along with the first 15 characters of the executed command.
-                        System.out.println(++count + " Command successfully executed : " + builder.substring(0, Math.min(builder.length(), 15)) + "...");
-                        builder.setLength(0);
-                    }
-                    catch (SQLException e) {
-                        System.err.println("At line " + lineNumber + " : " + e.getMessage() + "\n");
-                        return;
-                    }
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    */
-    
     /**
      * Get a database connection
      */

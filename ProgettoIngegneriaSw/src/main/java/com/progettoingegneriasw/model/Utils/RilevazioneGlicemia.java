@@ -13,7 +13,7 @@ public class RilevazioneGlicemia extends Rilevazione{
         this(null, id_paziente, timestamp, valore, primaPasto);
     }
 
-    public RilevazioneGlicemia(Integer id, int id_paziente, Timestamp timestamp, int valore, boolean primaPasto){
+    public RilevazioneGlicemia(Integer id, Integer id_paziente, Timestamp timestamp, int valore, boolean primaPasto){
         super(id, id_paziente, timestamp);
         this.valore = valore;
         this.gravita = getGravitaValoreGlicemia(this);

@@ -1,4 +1,4 @@
-package com.progettoIngegneriaSw.model.Admin.AdminDAOTest;
+package com.progettoIngegneriaSw.model;
 
 import com.progettoingegneriasw.config.AppConfig;
 import com.progettoingegneriasw.model.Admin.AdminDAO;
@@ -75,4 +75,19 @@ public class AdminDAOTest {
         assertNotNull(logs);
         assertTrue(logs.length > 0);
     }
+
+    @Test
+    void testGetAllMedici_FullFields() {
+        Medico[] medici = adminDAO.getAllMedici();
+        assertNotNull(medici);
+        assertTrue(medici.length >= 1);
+
+        Medico medico = medici[0];
+        assertNotNull(medico.getUsername());
+        assertNotNull(medico.getNome());
+        assertNotNull(medico.getCognome());
+        assertNotNull(medico.getEmail());
+        assertNotNull(medico.getProfileImageName());
+    }
+
 }

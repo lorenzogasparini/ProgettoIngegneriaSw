@@ -250,9 +250,13 @@ public class PazienteDAO extends UserDAO {
         );
     }
 
-    @Override
     public int countAlerts() throws SQLException {
-        Map<Terapia, Boolean> terapieEAssunzioni = getTerapieEAssunzioniPaziente(ViewNavigator.getAuthenticatedUsername());
+        return this.countAlerts(ViewNavigator.getAuthenticatedUsername());
+    }
+
+
+    public int countAlerts(String username) throws SQLException {
+        Map<Terapia, Boolean> terapieEAssunzioni = getTerapieEAssunzioniPaziente(username);
         int count = 0;
 
         for (Terapia t: terapieEAssunzioni.keySet()){

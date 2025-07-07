@@ -152,10 +152,7 @@ public class MedicoDAO extends UserDAO {
         setLog(new Log(id_paziente, null, LogAction.SetPatologiaPaziente, null));
     }
 
-    /// getPatologie() (tutte oppure facendo una ricerca della patologia per nome)
-    public Patologia[] getPatologie() throws SQLException {
-        return getPatologie("");
-    }
+
 
     public Patologia getPatologiaFromId(int idPatologia) throws SQLException {
         AtomicReference<Patologia> patologiaRef = new AtomicReference<>();
@@ -181,6 +178,12 @@ public class MedicoDAO extends UserDAO {
         return patologiaRef.get();
     }
 
+    /// getPatologie() ritorna tutte le patologie
+    public Patologia[] getPatologie() throws SQLException {
+        return getPatologie("");
+    }
+
+    // ritorna la patologia con uno specifico nome
     public Patologia[] getPatologie(String nomePatologia) throws SQLException {
         ArrayList<Patologia> patologie = new ArrayList<>();
 
@@ -225,9 +228,6 @@ public class MedicoDAO extends UserDAO {
     public Terapia getTerapiaFromId(Integer idTerapia){
         AtomicReference<Terapia> terapiaRef = new AtomicReference<>();
 
-        String query =  "SELECT a.id, a.id_paziente, a.id_rilevazione, a.tipo_alert, a.data_alert, a.letto " +
-                "FROM alert a ";
-
         super.getConnection().executeQuery(
                 " SELECT t.id, t.id_farmaco, t.dosi_giornaliere, t.quantita_per_dose, t.note, f.id, f.codice_aic, f.nome," +
                         " d.id AS id_diabetologo, d.nome AS nome_diabetologo, d.cognome AS cognome_diabetologo, " +
@@ -270,14 +270,14 @@ public class MedicoDAO extends UserDAO {
     }
 
 
-    public Terapia[] getTerapiePaziente(String username) throws SQLException {   //  Verificare il risultato fornito
+    public Terapia[] getTerapiePaziente(String username) throws SQLException {
         int id_paziente = getIdFromDB(username);
         ArrayList<Terapia> terapie = new ArrayList<>();
         if(id_paziente == -1) {
-            throw new SQLException();   //  Verificare se si tratta della giusta eccezione
+            throw new SQLException();
         }
 
-        super.getConnection().executeQuery( // todo: testare il funzionamento corretto
+        super.getConnection().executeQuery(
                 " SELECT t.id, t.id_farmaco, t.dosi_giornaliere, t.quantita_per_dose, t.note, f.id, f.codice_aic, f.nome," +
                         "d.id AS id_diabetologo, d.nome AS nome_diabetologo, d.cognome AS cognome_diabetologo, " +
                         "d.username AS username_diabetologo, d.password AS password_diabetologo, " +
@@ -443,7 +443,6 @@ public class MedicoDAO extends UserDAO {
     }
 
 
-
     public Paziente getPazienteFromTerapia(Terapia terapia) {
         AtomicReference<Paziente> pazienteRef = new AtomicReference<>();
 
@@ -605,7 +604,7 @@ public class MedicoDAO extends UserDAO {
         "SELECT r.id, r.id_paziente, r.timestamp, r.quantita, r.note, f.id AS id_farmaco, f.codice_aic, f.nome " +
         "FROM rilevazione_farmaco r " +
         "INNER JOIN farmaco f ON r.id_farmaco = f.id " +
-        "WHERE r.id_paziente = ?";
+        "WHERE (? IS NULL OR r.id_paziente = ?)";
 
     super.getConnection().executeQuery(
                 query,
@@ -622,8 +621,8 @@ public class MedicoDAO extends UserDAO {
                     }
                     return null;
                 },
+                usernamePaziente.isEmpty() ? null : getIdFromDB(usernamePaziente),
                 usernamePaziente.isEmpty() ? null : getIdFromDB(usernamePaziente)
-                //  usernamePaziente.isEmpty() ? null : usernamePaziente
         );
 
         return rilevazioniFarmaci.toArray(new RilevazioneFarmaco[0]);
