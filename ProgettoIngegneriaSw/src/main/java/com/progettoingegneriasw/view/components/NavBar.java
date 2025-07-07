@@ -110,7 +110,10 @@ public class NavBar extends HBox {
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        this.getChildren().addAll(backbutton, dashboardBtn, spacer, userBtn, alertBtn, logoutBtn);
+        if(ViewNavigator.getAuthenticatedUser().isPaziente()|| ViewNavigator.getAuthenticatedUser().isMedico())
+            this.getChildren().addAll(backbutton, dashboardBtn, spacer, userBtn, alertBtn, logoutBtn);
+        else
+            this.getChildren().addAll(backbutton, dashboardBtn, spacer, userBtn, logoutBtn);
     }
     
     /**

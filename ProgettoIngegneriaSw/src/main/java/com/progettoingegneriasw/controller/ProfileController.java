@@ -17,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -29,6 +30,7 @@ import java.nio.file.StandardCopyOption;
  */
 public class ProfileController {
 
+    @FXML private HBox HBoxUserInfo;
     @FXML private ImageView profileImage;
     private final Image imgDoctor = new Image("file:" + AppConfig.ICON_DIR + "buttonIcons/doctorIcon.png");
     @FXML private Button contactDoctorButton;
@@ -48,6 +50,11 @@ public class ProfileController {
     public void initialize() {
         userDAO = UserDAO.getLoggedUserDAO();
         currentUsername = ViewNavigator.getAuthenticatedUsername();
+
+        if(ViewNavigator.getAuthenticatedUser().isAdmin()){
+            HBoxUserInfo.setVisible(false);
+            HBoxUserInfo.setManaged(false);
+        }
 
         usernameLabel.setText(currentUsername);
         setContactDoctorIcon();

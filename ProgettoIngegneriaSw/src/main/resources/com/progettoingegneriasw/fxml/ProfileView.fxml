@@ -20,7 +20,7 @@
             <Label styleClass="card-header" text="Informazioni personali" />
 
             <!-- Image container & Contatta Diabetologo button -->
-            <HBox alignment="CENTER_LEFT" spacing="10" HBox.hgrow="ALWAYS">
+            <HBox fx:id="HBoxUserInfo" alignment="CENTER_LEFT" spacing="10" HBox.hgrow="ALWAYS">
                <VBox alignment="CENTER" spacing="10">
                   <ImageView fx:id="profileImage" fitHeight="400" fitWidth="400" preserveRatio="true" styleClass="profile-image" />
                   <Button onAction="#handleCambiaImmagine" style="-fx-background-color: #cccccc; -fx-text-fill: black;" text="Cambia immagine profilo" />
