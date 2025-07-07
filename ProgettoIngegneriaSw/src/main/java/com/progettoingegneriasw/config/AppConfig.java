@@ -7,8 +7,11 @@ public class AppConfig {
     public static final String APP_TITLE = "Gestione diabete";
     
     // Data storage settings
-    public static final String DATA_DIR = System.getProperty("user.dir") + "/src/main/resources/com/progettoingegneriasw/data";
-    public static final String DATABASE_PATH = DATA_DIR + "/DiabeteDB.db";
+    public static final String DATA_DIR = System.getProperty("user.dir") + "/src/main/resources/com/progettoingegneriasw/data/";
+    public static final String DATABASE_PATH = DATA_DIR + "DiabeteDB.db";
+    public static final String TESTDATA_DIR = System.getProperty("user.dir") + "/src/test/resources/data/";
+    public static final String TESTSCHEMA_PATH = TESTDATA_DIR + "schema.sql";
+    public static final String TESTDATABASE_PATH = TESTDATA_DIR + "test.db";
     public static final String IMAGE_DIR = System.getProperty("user.dir") + "/src/main/resources/images/";
     public static final String ICON_DIR = System.getProperty("user.dir") + "/src/main/resources/icons/";
     public static final String DEFAULT_IMAGE = "default.png";

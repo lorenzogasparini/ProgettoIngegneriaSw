@@ -19,13 +19,18 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class UserDAO { // todo: è corretto rendere questa classe abstract???
-    private final DatabaseManager dbManager;
+    private DatabaseManager dbManager;
     private static UserDAO instance;
     public static User loggedUser; // this contains the current logged user; //todo: capire dove metterlo
 
     protected UserDAO() {
         this.dbManager = new DatabaseManager();
         //refreshUserCache();
+    }
+
+    ///  set dbManager to the real DB or the testDB
+    public void setConnection(DatabaseManager dbManager) {
+        this.dbManager = dbManager;
     }
 
     public static synchronized UserDAO getInstance() {

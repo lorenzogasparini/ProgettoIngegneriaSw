@@ -1,28 +1,26 @@
 BEGIN TRANSACTION;
 
 CREATE TABLE IF NOT EXISTS "amministratore" (
-	"id"	INTEGER,
+	"id" INTEGER PRIMARY KEY AUTOINCREMENT,
 	"nome"	VARCHAR(50) NOT NULL,
 	"cognome"	VARCHAR(50) NOT NULL,
 	"username"	VARCHAR(50) NOT NULL UNIQUE,
-	"password"	VARCHAR(255) NOT NULL,
-	PRIMARY KEY("id" AUTOINCREMENT)
+	"password"	VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS "diabetologo" (
-	"id"	INTEGER,
+	"id" INTEGER PRIMARY KEY AUTOINCREMENT,
 	"username"	VARCHAR(50) NOT NULL UNIQUE,
 	"nome"	VARCHAR(50) NOT NULL,
 	"cognome"	VARCHAR(50) NOT NULL,
 	"password"	VARCHAR(255) NOT NULL,
 	"email"	VARCHAR(100) NOT NULL,
 	"profile_image_name"	TEXT,
-	"deleted" BOOLEAN DEFAULT 0,
-	PRIMARY KEY("id" AUTOINCREMENT)
+	"deleted" BOOLEAN DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS "paziente" (
-	"id"	INTEGER,
+	"id" INTEGER PRIMARY KEY AUTOINCREMENT,
 	"nome"	VARCHAR(50) NOT NULL,
 	"cognome"	VARCHAR(50) NOT NULL,
 	"username"	VARCHAR(50) NOT NULL UNIQUE,
@@ -36,55 +34,49 @@ CREATE TABLE IF NOT EXISTS "paziente" (
 	"note_paziente"	TEXT,
 	"profile_image_name"	TEXT,
 	"deleted" BOOLEAN DEFAULT 0,
-	PRIMARY KEY("id" AUTOINCREMENT),
 	FOREIGN KEY("id_diabetologo") REFERENCES "diabetologo"("id")
 );
 
 CREATE TABLE IF NOT EXISTS "farmaco" (
-	"id"	INTEGER,
+	"id" INTEGER PRIMARY KEY AUTOINCREMENT,
 	"codice_aic"	VARCHAR(10) NOT NULL UNIQUE,
-	"nome"	VARCHAR(1000) NOT NULL,
-	PRIMARY KEY("id" AUTOINCREMENT)
+	"nome"	VARCHAR(1000) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS "patologia" (
-	"id"	INTEGER,
+	"id" INTEGER PRIMARY KEY AUTOINCREMENT,
 	"nome"	VARCHAR(1000) NOT NULL,
-	"codice_icd"	VARCHAR(10) NOT NULL UNIQUE,
-	PRIMARY KEY("id" AUTOINCREMENT)
+	"codice_icd"	VARCHAR(10) NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS "log" (
-	"id"	INTEGER,
+	"id" INTEGER PRIMARY KEY AUTOINCREMENT,
 	"id_paziente"	INTEGER,
 	"id_diabetologo"	INTEGER,
 	"azione"	TEXT NOT NULL,
 	"timestamp"	DATETIME DEFAULT CURRENT_TIMESTAMP,
-	PRIMARY KEY("id" AUTOINCREMENT),
 	FOREIGN KEY("id_diabetologo") REFERENCES "diabetologo"("id"),
 	FOREIGN KEY("id_paziente") REFERENCES "paziente"("id")
 );
 
 CREATE TABLE IF NOT EXISTS "terapia" (
-	"id"	INTEGER,
+	"id" INTEGER PRIMARY KEY AUTOINCREMENT,
 	"id_diabetologo"	INTEGER NOT NULL,
 	"id_farmaco"	INTEGER NOT NULL,
 	"dosi_giornaliere"	INTEGER,
 	"quantita_per_dose"	REAL,
 	"note"	TEXT,
-	PRIMARY KEY("id" AUTOINCREMENT),
 	FOREIGN KEY("id_diabetologo") REFERENCES "diabetologo"("id") ,
 	FOREIGN KEY("id_farmaco") REFERENCES "farmaco"("id")
 );
 
 CREATE TABLE IF NOT EXISTS "patologia_paziente" (
-	"id"	INTEGER,
+	"id" INTEGER PRIMARY KEY AUTOINCREMENT,
 	"id_paziente"	INTEGER NOT NULL,
 	"id_patologia"	INTEGER NOT NULL,
 	"id_terapia"	INTEGER,
 	"data_diagnosi"	DATE,
 	"note_patologia"	TEXT,
-	PRIMARY KEY("id" AUTOINCREMENT),
 	UNIQUE("id_paziente","id_patologia"),
 	FOREIGN KEY("id_patologia") REFERENCES "patologia"("id") ON DELETE CASCADE,
 	FOREIGN KEY("id_paziente") REFERENCES "paziente"("id") ON DELETE CASCADE,
@@ -92,46 +84,42 @@ CREATE TABLE IF NOT EXISTS "patologia_paziente" (
 );
 
 CREATE TABLE IF NOT EXISTS "rilevazione_farmaco" (
-	"id"	INTEGER,
+	"id" INTEGER PRIMARY KEY AUTOINCREMENT,
 	"id_paziente"	INTEGER NOT NULL,
 	"id_farmaco"	INTEGER NOT NULL,
 	"timestamp"	DATETIME DEFAULT CURRENT_TIMESTAMP,
 	"quantita"	REAL,
 	"note"	TEXT,
-	PRIMARY KEY("id" AUTOINCREMENT),
 	FOREIGN KEY("id_farmaco") REFERENCES "farmaco"("id"),
 	FOREIGN KEY("id_paziente") REFERENCES "paziente"("id")
 );
 
 CREATE TABLE IF NOT EXISTS "rilevazione_glicemia" (
-	"id"	INTEGER,
+	"id" INTEGER PRIMARY KEY AUTOINCREMENT,
 	"id_paziente"	INTEGER NOT NULL,
 	"timestamp"	DATETIME DEFAULT CURRENT_TIMESTAMP,
 	"valore"	INTEGER NOT NULL,
 	"gravita"	INTEGER CHECK("gravita" >= 0 AND "gravita" <= 3),
 	"prima_pasto"	BOOLEAN,
-	PRIMARY KEY("id" AUTOINCREMENT),
 	FOREIGN KEY("id_paziente") REFERENCES "paziente"("id")
 );
 
 CREATE TABLE IF NOT EXISTS "rilevazione_sintomo" (
-	"id"	INTEGER,
+	"id" INTEGER PRIMARY KEY AUTOINCREMENT,
 	"id_paziente"	INTEGER NOT NULL,
 	"timestamp"	DATETIME DEFAULT CURRENT_TIMESTAMP,
 	"sintomo"	TEXT NOT NULL,
 	"intensita"	INTEGER CHECK("intensita" >= 1 AND "intensita" <= 10),
-	PRIMARY KEY("id" AUTOINCREMENT),
 	FOREIGN KEY("id_paziente") REFERENCES "paziente"("id")
 );
 
 CREATE TABLE IF NOT EXISTS "alert" (
-	"id"	INTEGER,
+	"id" INTEGER PRIMARY KEY AUTOINCREMENT,
 	"id_paziente"	INTEGER NOT NULL,
 	"id_rilevazione"	INTEGER NOT NULL,
 	"tipo_alert"	TEXT NOT NULL CHECK("tipo_alert" IN ('glicemia', 'promemoriaFarmaco', 'farmacoNonAssuntoDa3Giorni')),
 	"data_alert"	TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	"letto"	BOOLEAN DEFAULT 0,
-	PRIMARY KEY("id" AUTOINCREMENT),
 	FOREIGN KEY("id_paziente") REFERENCES "paziente"("id")
 );
 
@@ -197,8 +185,8 @@ INSERT INTO "patologia_paziente" VALUES (3,2,2,17,'2022-03-12','Necessita insuli
 INSERT INTO "patologia_paziente" VALUES (4,3,3,3,'2021-10-05','Stabile');
 INSERT INTO "patologia_paziente" VALUES (5,4,4,4,'2019-12-30',NULL);
 INSERT INTO "patologia_paziente" VALUES (7,2,4,16,'2025-05-29','');
-INSERT INTO "patologia_paziente" VALUES (9,1,1,19,'2025-06-25 20:45:58.0','');
-INSERT INTO "patologia_paziente" VALUES (10,2,1,20,'2025-06-25 20:50:20.0','');
+INSERT INTO "patologia_paziente" VALUES (9,1,1,19,'2025-06-25','');
+INSERT INTO "patologia_paziente" VALUES (10,2,1,20,'2025-06-25','');
 
 
 INSERT INTO "rilevazione_farmaco" VALUES (1,4,1,'2025-05-28 17:36:20',500.0,'Dopo colazione');
