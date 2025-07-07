@@ -371,7 +371,6 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
     }
 
 
-
     //todo: quando UserDAO sarà astratto togliere il codice da qui e definire questa funzione solo nei figli
     public String getSQLTableName(){
         return "";
@@ -427,17 +426,19 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
         );
     }
 
+    public User[] getAllUsers() {
+        return getAllUsers(ViewNavigator.getAuthenticatedUser().getUserType());
+    }
 
     /**
      *
      * @return se l'utente loggato è un medico o un admin ritorna medici e pazienti
      * altrimenti se l'utente loggato è un paziente ritorna solo i medici
      */
-    // TODO: sistemare questo metodo parametrizzandolo o facendo altro
-    public User[] getAllUsers(){
+    public User[] getAllUsers(UserType userType){
         ArrayList<User> users = new ArrayList<>();
 
-        if(ViewNavigator.getAuthenticatedUser().isMedico() || ViewNavigator.getAuthenticatedUser().isAdmin()){
+        if(userType.equals(UserType.Medico) || userType.equals(UserType.Admin)){
             dbManager.executeQuery(
                     "SELECT * FROM paziente WHERE deleted = false",
                     rs -> {
@@ -565,14 +566,6 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
     public void automaticUpdateAlertTable() throws SQLException {
 
         Alert[] alerts = getAlertFarmaciNonAssuntiDaAlmeno3GiorniENonSegnalati();
-
-        /*
-        System.out.println("--- Alerts to insert ---");
-        for(Alert a: alerts){
-            System.out.println("Alert: " + a);
-        }
-        System.out.println("\n");
-         */
 
         insertAlerts(alerts);
 
