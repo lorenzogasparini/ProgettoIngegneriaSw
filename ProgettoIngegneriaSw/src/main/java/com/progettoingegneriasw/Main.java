@@ -1,5 +1,6 @@
 package com.progettoingegneriasw;
 
+import com.progettoingegneriasw.config.AppConfig;
 import com.progettoingegneriasw.model.Admin.AdminDAO;
 import com.progettoingegneriasw.model.Admin.AdminUser;
 import com.progettoingegneriasw.model.Medico.Medico;
@@ -19,6 +20,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -57,6 +59,10 @@ public class Main extends Application {
 
         // Configure and show the stage
         primaryStage.setTitle("Progetto Diabete");
+        // Setup App Icon
+        Image image = new Image(getClass().getResourceAsStream(AppConfig.APPICON_IMAGE));
+        primaryStage.getIcons().add(image);
+
         primaryStage.setScene(scene);
         primaryStage.show();
 

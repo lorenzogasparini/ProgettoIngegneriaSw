@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.image.ImageView?>
 <VBox spacing="20.0" styleClass="container" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" alignment="BASELINE_CENTER" fx:controller="com.progettoingegneriasw.controller.DashboardController">
    <children>
       <Label text="Dashboard" textAlignment="CENTER">
@@ -23,13 +24,20 @@
             <!-- VBox Visualizza pazienti -->
             <VBox styleClass="card" HBox.hgrow="ALWAYS" fx:id="pannelloVisualizzaPazienti">
                <children>
-                  <Label styleClass="card-header" text="Visualizza pazienti" />
-                  <Label text="Visualizza i pazienti, le terapie assegnate ed eventuali rilevazioni pervenute." wrapText="true">
-                     <VBox.margin>
-                        <Insets bottom="10.0" top="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <Button mnemonicParsing="false" text="Visualizza" fx:id="visualizzaPazienti" onAction="#handleVisualizzaPazienti" />
+                  <VBox alignment="CENTER">
+                     <Label styleClass="card-header" text="Visualizza pazienti" />
+                     <Label text="Visualizza i pazienti, le terapie assegnate ed eventuali rilevazioni pervenute." wrapText="true">
+                        <VBox.margin>
+                           <Insets bottom="10.0" top="10.0" />
+                        </VBox.margin>
+                     </Label>
+                     <ImageView fx:id="iconVisualizzaPazienti" fitWidth="90" fitHeight="90" preserveRatio="true" />
+                     <Button mnemonicParsing="false" text="Visualizza" fx:id="visualizzaPazienti" onAction="#handleVisualizzaPazienti" >
+                        <VBox.margin>
+                           <Insets top="10.0"/>
+                        </VBox.margin>
+                     </Button>
+                  </VBox>
                </children>
                <padding>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
@@ -39,17 +47,24 @@
             <!-- VBox Contatta utente -->
             <VBox styleClass="card" HBox.hgrow="ALWAYS" fx:id="pannelloContattaUtente">
                <children>
-                  <Label styleClass="card-header" text="Contatta utente" />
-                  <Label text="Visualizzazione utenti paziente e utenti medico." wrapText="true">
+                  <VBox alignment="CENTER">
+                     <Label styleClass="card-header" text="Contatta utente" />
+                     <Label text="Visualizzazione utenti paziente e utenti medico." wrapText="true">
 
-                     <!-- Visualizzazione utenti paziente (con informazione rispetto al medico curante) e utenti medico e rispettivi contatti, con la possibilità di contattare gli
-                  stessi con la chiamata a servizio mail appositamente predisposta dal sistema. Vi è inoltre la possibilità di fare richiesta (all'admin) di mettere in cura dei pazienti. -->
+                        <!-- Visualizzazione utenti paziente (con informazione rispetto al medico curante) e utenti medico e rispettivi contatti, con la possibilità di contattare gli
+                     stessi con la chiamata a servizio mail appositamente predisposta dal sistema. Vi è inoltre la possibilità di fare richiesta (all'admin) di mettere in cura dei pazienti. -->
 
-                     <VBox.margin>
-                        <Insets bottom="10.0" top="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <Button mnemonicParsing="false" text="Visualizza" onMouseClicked="#handleContattaUtente" />
+                        <VBox.margin>
+                           <Insets bottom="10.0" top="10.0" />
+                        </VBox.margin>
+                     </Label>
+                     <ImageView fx:id="iconContattaUtente" fitWidth="90" fitHeight="90" preserveRatio="true" />
+                     <Button mnemonicParsing="false" text="Visualizza" onMouseClicked="#handleContattaUtente" >
+                        <VBox.margin>
+                           <Insets top="10.0"/>
+                        </VBox.margin>
+                     </Button>
+                  </VBox>
                </children>
                <padding>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
@@ -59,13 +74,20 @@
             <!-- VBox Notifiche -->
             <VBox styleClass="card" HBox.hgrow="ALWAYS" fx:id="pannelloNotifiche">
                <children>
-                  <Label styleClass="card-header" text="Alerts" />
-                  <Label text="Questa sezione fornisce lo storico delle notifiche di allerta rispetto ai pazienti curati." wrapText="true">
-                     <VBox.margin>
-                        <Insets bottom="10.0" top="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <Button mnemonicParsing="false" text="Visualizza" onMouseClicked="#handleVisualizzaAlerts" />
+                  <VBox alignment="CENTER">
+                     <Label styleClass="card-header" text="Alerts" />
+                     <Label text="Questa sezione fornisce lo storico delle notifiche di allerta rispetto ai pazienti curati." wrapText="true">
+                        <VBox.margin>
+                           <Insets bottom="10.0" top="10.0" />
+                        </VBox.margin>
+                     </Label>
+                     <ImageView fx:id="iconAlerts" fitWidth="90" fitHeight="90" preserveRatio="true" />
+                     <Button mnemonicParsing="false" text="Visualizza" onMouseClicked="#handleVisualizzaAlerts" >
+                        <VBox.margin>
+                           <Insets top="10.0"/>
+                        </VBox.margin>
+                     </Button>
+                  </VBox>
                </children>
 
                <padding>
@@ -76,15 +98,22 @@
       </HBox>
 
       <HBox spacing="20.0" alignment="CENTER" fx:id="handlingPanelPaziente">
-         <VBox styleClass="card" HBox.hgrow="ALWAYS" fx:id="pannelloGestisciRilevazioni">
+         <VBox styleClass="card" HBox.hgrow="ALWAYS" fx:id="pannelloGestioneRilevazioni">
             <children>
-               <Label styleClass="card-header" text="Gestione rilevazioni" />
-               <Label text="Gestisci le rilevazioni di glicemia, sintomi ed assunzioni di farmaci." wrapText="true">
-                  <VBox.margin>
-                     <Insets bottom="10.0" top="10.0" />
-                  </VBox.margin>
-               </Label>
-               <Button mnemonicParsing="false" text="Rilevazioni" fx:id="gestioneRilevazioni" onAction="#handleGestioneRilevazioni" />
+               <VBox alignment="CENTER">
+                  <Label styleClass="card-header" text="Gestione rilevazioni" />
+                  <Label text="Gestisci le rilevazioni di glicemia, sintomi ed assunzioni di farmaci." wrapText="true">
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                        <ImageView fx:id="iconGestioneRilevazioni" fitWidth="90" fitHeight="90" preserveRatio="true" />
+                  <Button mnemonicParsing="false" text="Visualizza" fx:id="gestioneRilevazioni" onAction="#handleGestioneRilevazioni" >
+                     <VBox.margin>
+                        <Insets top="10.0"/>
+                     </VBox.margin>
+                  </Button>
+               </VBox>
             </children>
             <padding>
                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
@@ -93,13 +122,20 @@
 
          <VBox styleClass="card" HBox.hgrow="ALWAYS" fx:id="pannelloGestioneTerapie">
             <children>
-               <Label styleClass="card-header" text="Gestione terapie" />
-               <Label text="Gestisci le terapie assegnate dai medici del sistema." wrapText="true">
-                  <VBox.margin>
-                     <Insets bottom="10.0" top="10.0" />
-                  </VBox.margin>
-               </Label>
-               <Button mnemonicParsing="false" text="Terapie" fx:id="gestioneTerapie" onAction="#handleGestioneTerapie" />
+               <VBox alignment="CENTER">
+                  <Label styleClass="card-header" text="Gestione terapie" />
+                  <Label text="Gestisci le terapie assegnate dai medici del sistema." wrapText="true">
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <ImageView fx:id="iconGestioneTerapie" fitWidth="90" fitHeight="90" preserveRatio="true" />
+                  <Button mnemonicParsing="false" text="Visualizza" fx:id="gestioneTerapie" onAction="#handleGestioneTerapie" >
+                     <VBox.margin>
+                        <Insets top="10.0"/>
+                     </VBox.margin>
+                  </Button>
+               </VBox>
             </children>
             <padding>
                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
@@ -108,14 +144,20 @@
 
          <VBox styleClass="card" HBox.hgrow="ALWAYS" fx:id="pannelloContattaMedico">
             <children>
-               <Label styleClass="card-header" text="Contatta Medico" />
-               <Label text="Visualizzazione utenti medico e rispettivi contatti." wrapText="true">
-
-                  <VBox.margin>
-                     <Insets bottom="10.0" top="10.0" />
-                  </VBox.margin>
-               </Label>
-               <Button mnemonicParsing="false" text="Visualizza" onMouseClicked="#handleContattaUtente" />
+               <VBox alignment="CENTER">
+                  <Label styleClass="card-header" text="Contatta Medico" />
+                  <Label text="Visualizzazione utenti medico e rispettivi contatti." wrapText="true">
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <ImageView fx:id="iconContattaMedico" fitWidth="90" fitHeight="90" preserveRatio="true" />
+                  <Button mnemonicParsing="false" text="Visualizza" onMouseClicked="#handleContattaUtente">
+                     <VBox.margin>
+                        <Insets top="10.0"/>
+                     </VBox.margin>
+                  </Button>
+               </VBox>
             </children>
             <padding>
                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
@@ -129,11 +171,18 @@
             <!-- Inserisci utente -->
             <VBox styleClass="card" HBox.hgrow="ALWAYS" fx:id="pannelloInserisciUtenti">
                <children>
-                  <Label styleClass="card-header" text="Inserisci nuovo utente" />
-                  <Label text="Accedi alla schermata per registrare un nuovo utente." wrapText="true">
-                     <VBox.margin><Insets top="10.0" bottom="10.0"/></VBox.margin>
-                  </Label>
-                  <Button text="Registra" onAction="#handleApriRegisterView" />
+                  <VBox alignment="CENTER">
+                     <Label styleClass="card-header" text="Inserisci nuovo utente" />
+                     <Label text="Accedi alla schermata per registrare un nuovo utente." wrapText="true">
+                        <VBox.margin><Insets top="10.0" bottom="10.0"/></VBox.margin>
+                     </Label>
+                     <ImageView fx:id="iconRegister" fitWidth="90" fitHeight="90" preserveRatio="true" />
+                     <Button text="Visualizza" onAction="#handleApriRegisterView" >
+                        <VBox.margin>
+                           <Insets top="10.0"/>
+                        </VBox.margin>
+                     </Button>
+                  </VBox>
                </children>
                <padding><Insets top="15.0" bottom="15.0" left="15.0" right="15.0"/></padding>
             </VBox>
@@ -141,11 +190,19 @@
             <!-- Gestione utenti -->
             <VBox styleClass="card" HBox.hgrow="ALWAYS" fx:id="pannelloGestioneUtenti">
                <children>
-                  <Label styleClass="card-header" text="Gestione utenti" />
-                  <Label text="Visualizza, modifica o elimina gli utenti esistenti." wrapText="true">
+                  <VBox alignment="CENTER">
+                     <Label styleClass="card-header" text="Gestione utenti" />
+                     <Label text="Visualizza, modifica o elimina gli utenti esistenti." wrapText="true">
+                        <VBox.margin><Insets top="10.0" bottom="10.0"/></VBox.margin>
+                     </Label>
+                     <ImageView fx:id="iconGestioneUtenti" fitWidth="90" fitHeight="90" preserveRatio="true" />
                      <VBox.margin><Insets top="10.0" bottom="10.0"/></VBox.margin>
-                  </Label>
-                  <Button text="Visualizza" onAction="#handleApriGestioneUtenti" />
+                     <Button text="Visualizza" onAction="#handleApriGestioneUtenti" >
+                        <VBox.margin>
+                           <Insets top="10.0"/>
+                        </VBox.margin>
+                     </Button>
+                  </VBox>
                </children>
                <padding><Insets top="15.0" bottom="15.0" left="15.0" right="15.0"/></padding>
             </VBox>
@@ -153,11 +210,18 @@
             <!-- Log sistema -->
             <VBox styleClass="card" HBox.hgrow="ALWAYS" fx:id="pannelloVisualizzaLog">
                <children>
-                  <Label styleClass="card-header" text="Log di sistema" />
-                  <Label text="Consulta i log delle azioni eseguite dagli utenti." wrapText="true">
-                     <VBox.margin><Insets top="10.0" bottom="10.0"/></VBox.margin>
-                  </Label>
-                  <Button text="Visualizza log" onAction="#handleApriVisualizzazioneLog" />
+                  <VBox alignment="CENTER">
+                     <Label styleClass="card-header" text="Log di sistema" />
+                     <Label text="Consulta i log delle azioni eseguite dagli utenti." wrapText="true">
+                        <VBox.margin><Insets top="10.0" bottom="10.0"/></VBox.margin>
+                     </Label>
+                     <ImageView fx:id="iconVisualizzaLog" fitWidth="90" fitHeight="90" preserveRatio="true" />
+                     <Button text="Visualizza" onAction="#handleApriVisualizzazioneLog" >
+                        <VBox.margin>
+                           <Insets top="10.0"/>
+                        </VBox.margin>
+                     </Button>
+                  </VBox>
                </children>
                <padding><Insets top="15.0" bottom="15.0" left="15.0" right="15.0"/></padding>
             </VBox>

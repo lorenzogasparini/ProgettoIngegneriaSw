@@ -42,11 +42,11 @@
       <!-- Campi comuni -->
       <VBox spacing="10">
          <children>
-            <TextField fx:id="usernameField" promptText="Username" />
-            <PasswordField fx:id="passwordField" promptText="Password" />
-            <PasswordField fx:id="confirmPasswordField" promptText="Conferma password" />
-            <TextField fx:id="nomeField" promptText="Nome" />
-            <TextField fx:id="cognomeField" promptText="Cognome" />
+            <TextField fx:id="usernameField" promptText="Username" styleClass="form-control"/>
+            <PasswordField fx:id="passwordField" promptText="Password" styleClass="form-control"/>
+            <PasswordField fx:id="confirmPasswordField" promptText="Conferma password" styleClass="form-control"/>
+            <TextField fx:id="nomeField" promptText="Nome" styleClass="form-control"/>
+            <TextField fx:id="cognomeField" promptText="Cognome" styleClass="form-control"/>
          </children>
          <VBox.margin>
             <Insets bottom="10.0" />
@@ -56,7 +56,7 @@
       <!-- Campi per Medico -->
       <VBox fx:id="medicoVBox" spacing="10" visible="false" managed="false">
          <children>
-            <TextField fx:id="emailMedicoField" promptText="Email del medico" />
+            <TextField fx:id="emailMedicoField" promptText="Email del medico" styleClass="form-control"/>
          </children>
          <VBox.margin>
             <Insets bottom="10.0" />
@@ -68,11 +68,11 @@
          <children>
             <ComboBox fx:id="diabetologoComboBox" promptText="Diabetologo di riferimento"
                       maxWidth="Infinity" />
-            <TextField fx:id="emailPazienteField" promptText="Email del paziente" />
-            <TextField fx:id="pesoField" promptText="Peso (Kg)" />
-            <TextField fx:id="provinciaField" promptText="Provincia di residenza (sigla)" />
-            <TextField fx:id="comuneField" promptText="Comune di residenza" />
-            <DatePicker fx:id="dataNascitaPicker" promptText="Data di nascita" />
+            <TextField fx:id="emailPazienteField" promptText="Email del paziente" styleClass="form-control"/>
+            <TextField fx:id="pesoField" promptText="Peso (Kg)" styleClass="form-control"/>
+            <TextField fx:id="provinciaField" promptText="Provincia di residenza (sigla)" styleClass="form-control"/>
+            <TextField fx:id="comuneField" promptText="Comune di residenza" styleClass="form-control"/>
+            <DatePicker fx:id="dataNascitaPicker" promptText="Data di nascita" styleClass="form-control"/>
          </children>
          <VBox.margin>
             <Insets bottom="10.0" />

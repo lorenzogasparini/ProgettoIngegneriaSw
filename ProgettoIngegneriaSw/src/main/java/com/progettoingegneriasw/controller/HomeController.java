@@ -5,11 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Hyperlink;
 
 public class HomeController {
-    @FXML
-    private Hyperlink loginButton;
-    
-    @FXML
-    private Hyperlink registerButton;
+    @FXML private Hyperlink loginButton;
+    @FXML private Hyperlink registerButton;
     
     @FXML
     public void initialize() {
