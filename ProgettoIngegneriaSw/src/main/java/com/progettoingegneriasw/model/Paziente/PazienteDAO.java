@@ -1,6 +1,7 @@
 package com.progettoingegneriasw.model.Paziente;
 
 import com.progettoingegneriasw.model.Medico.MedicoUser;
+import com.progettoingegneriasw.model.User;
 import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.model.Utils.*;
 import com.progettoingegneriasw.view.ViewNavigator;
@@ -225,6 +226,11 @@ public class PazienteDAO extends UserDAO {
     }
 
     public MedicoUser getMedicoRiferimento(String username){
+
+        User user = getUser(username);
+        if(!user.isPaziente())
+            throw new IllegalArgumentException("getMedicoRiferimento() può essere chiamato solo da pazienti!");
+
         int id_paziente = getIdFromDB(username);
 
         return getConnection().executeQuery(

@@ -211,6 +211,13 @@ public class ProfileController {
     }
 
     private void setContactDoctorIcon(){
+
+        if(!ViewNavigator.getAuthenticatedUser().getUserType().equals(UserType.Paziente)){
+            contactDoctorButton.setVisible(false);
+            contactDoctorButton.setManaged(false);
+            return;
+        }
+
         ImageView icon = new ImageView(imgDoctor);
         icon.setFitWidth(16);
         icon.setFitHeight(16);
@@ -223,6 +230,8 @@ public class ProfileController {
         Task<Void> task = new Task<>() {
             @Override
             protected Void call() {
+                if(!ViewNavigator.getAuthenticatedUser().getUserType().equals(UserType.Paziente))
+                    return null;
                 String email = PazienteDAO.getInstance()
                         .getMedicoRiferimento(currentUsername)
                         .getEmail();
