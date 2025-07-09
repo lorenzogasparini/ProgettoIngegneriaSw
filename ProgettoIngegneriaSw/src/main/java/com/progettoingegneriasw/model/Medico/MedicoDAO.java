@@ -690,7 +690,7 @@ public class MedicoDAO extends UserDAO {
             case READ -> query.append(" WHERE a.letto = 1");
             case UNREAD -> query.append(" WHERE a.letto = 0");
             case ALL -> {
-                // nessuna condizione WHERE
+                // nessuna condizione su letto
             }
         }
 
@@ -725,10 +725,10 @@ public class MedicoDAO extends UserDAO {
         );
 
         switch (filter) {
-            case READ -> query.append(" WHERE a.letto = 1");
-            case UNREAD -> query.append(" WHERE a.letto = 0");
+            case READ -> query.append(" AND a.letto = 1");
+            case UNREAD -> query.append(" AND a.letto = 0");
             case ALL -> {
-                // nessuna condizione WHERE
+                // nessuna condizione
             }
         }
 

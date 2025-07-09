@@ -175,20 +175,26 @@ public class AlertsHandlingController {
     }
 
     @FXML
-    private void clickHandling(){
+    private void clickHandling() {
         tableView.setOnMouseClicked(event -> {
-        User selectedUserInAlert = UserDAO.getInstance().getUser(
-                tableView.getSelectionModel().getSelectedItem().getIdPaziente(),
-                UserType.Paziente);
+            var selectedAlert = tableView.getSelectionModel().getSelectedItem();
 
-        if(selectedUserInAlert == null)
-            return;
+            if (selectedAlert == null)
+                return;
 
-            // Per  la riga cliccata:
+            User selectedUserInAlert = UserDAO.getInstance().getUser(
+                    selectedAlert.getIdPaziente(),
+                    UserType.Paziente
+            );
+
+            if (selectedUserInAlert == null)
+                return;
+
             PazientiController.selectedUser = (Paziente) selectedUserInAlert;
             handleUserHandling();
         });
     }
+
 
     @FXML
     private void handleUserHandling(){

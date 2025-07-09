@@ -208,6 +208,9 @@ public class TerapieHandlingController {
                 noteUpdate.setText(selectedTerapia.getNote());
             }
             else {
+                if(selectedTerapia == null)
+                    return;
+
                 doseGiornalieraUpdate.setText(selectedTerapia.getDosiGiornaliere().toString());
                 quantitaPerDose2.setText(selectedTerapia.getQuantitaPerDose().toString());
                 note2.setText(selectedTerapia.getNote());
