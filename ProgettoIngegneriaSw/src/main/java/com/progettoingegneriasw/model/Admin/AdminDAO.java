@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class AdminDAO extends UserDAO {
 
     private final String SQLTableName = "amministratore";
-    private static AdminDAO instance;
+    private static AdminDAO instance = null;
 
     private AdminDAO(){
         // Init DB connection, maybe from a config class

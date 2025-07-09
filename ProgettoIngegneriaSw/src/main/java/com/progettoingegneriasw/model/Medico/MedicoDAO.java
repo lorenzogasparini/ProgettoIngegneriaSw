@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class MedicoDAO extends UserDAO {
 
     private final String SQLTableName = "diabetologo";
-    private static MedicoDAO instance;
+    private static MedicoDAO instance = null;
 
     private MedicoDAO() {
         // Init DB connection, maybe from a config class

@@ -18,7 +18,7 @@ import java.util.Map;
 public class PazienteDAO extends UserDAO {
 
     private final String SQLTableName = "paziente";
-    private static PazienteDAO instance;
+    private static PazienteDAO instance = null;
 
     // todo: capire in che modo renderlo privato per implementare il singleton
     private PazienteDAO() {
