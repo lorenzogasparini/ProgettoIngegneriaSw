@@ -136,7 +136,6 @@ public class Main extends Application {
     }
 
 
-
     public static void releaseLockAlertHandler(){
         try {
             if (alertLock != null && alertLock.isValid()) {
@@ -149,7 +148,6 @@ public class Main extends Application {
             e.printStackTrace();
         }
     }
-
 
 
     /**
