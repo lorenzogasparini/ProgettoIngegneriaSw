@@ -69,7 +69,7 @@
                         <TableView fx:id="tableViewTerapie" VBox.vgrow="ALWAYS" onMouseClicked="#handleTerapie" >
                             <columns>
                                 <TableColumn prefWidth="100.0" text="Dosi giornaliere" fx:id="dosiGiornaliere" />
-                                <TableColumn prefWidth="100.0" text="Quantità per dose" fx:id="quantitaPerDose" />
+                                <TableColumn prefWidth="100.0" text="Qtà. dose [mg]" fx:id="quantitaPerDose" />
                                 <TableColumn prefWidth="100.0" text="Note" fx:id="note" />
                                 <TableColumn prefWidth="100.0" text="Farmaco" fx:id="Nome_farmaco" />
                                 <TableColumn prefWidth="100.0" text="Codice AIC" fx:id="Codice_aic" />
@@ -94,32 +94,55 @@
                             </VBox.margin>
                         </Label>
 
-                        <TableView fx:id="tableViewRilevazioniFarmaci" VBox.vgrow="ALWAYS" onMouseClicked="#handleRilevazioniFarmaci" >
-                            <columns>
-                                <TableColumn prefWidth="100.0" text="Timestamp" fx:id="timestampRilFarmaco" />
-                                <TableColumn prefWidth="100.0" text="Nome" fx:id="nome" />
-                                <TableColumn prefWidth="100.0" text="Codice AIC" fx:id="codiceAic" />
-                                <TableColumn prefWidth="100.0" text="Quantità" fx:id="quantita" />
-                                <TableColumn prefWidth="100.0" text="Note" fx:id="noteRilevazione" />
-                            </columns>
-                        </TableView>
+                        <VBox spacing="10">
+                            <Label text="Rilevazioni Farmaci">
+                                <font>
+                                    <Font name="System Bold" size="16" />
+                                </font>
+                            </Label>
 
-                        <TableView fx:id="tableViewRilevazioniGlicemia" VBox.vgrow="ALWAYS" onMouseClicked="#handleRilevazioniGlicemia" >
-                            <columns>
-                                <TableColumn prefWidth="100.0" text="Timestamp" fx:id="timestampRilGlicemia" />
-                                <TableColumn prefWidth="100.0" text="Valore glicemico" fx:id="valore" />
-                                <TableColumn prefWidth="100.0" text="Livello di allerta" fx:id="gravita" />
-                                <TableColumn prefWidth="100.0" text="Prima del pasto" fx:id="primaPasto" />
-                            </columns>
-                        </TableView>
+                            <TableView fx:id="tableViewRilevazioniFarmaci" VBox.vgrow="ALWAYS" onMouseClicked="#handleRilevazioniFarmaci" >
+                                <columns>
+                                    <TableColumn prefWidth="100.0" text="Timestamp" fx:id="timestampRilFarmaco" />
+                                    <TableColumn prefWidth="100.0" text="Nome" fx:id="nome" />
+                                    <TableColumn prefWidth="100.0" text="Codice AIC" fx:id="codiceAic" />
+                                    <TableColumn prefWidth="100.0" text="Qtà. [mg]" fx:id="quantita" />
+                                    <TableColumn prefWidth="100.0" text="Note" fx:id="noteRilevazione" />
+                                </columns>
+                            </TableView>
+                        </VBox>
 
-                        <TableView fx:id="tableViewRilevazioniSintomi" VBox.vgrow="ALWAYS" onMouseClicked="#handleRilevazioniSintomi" >
-                            <columns>
-                            <TableColumn prefWidth="100.0" text="Timestamp" fx:id="timestampRilSintomo" />
-                            <TableColumn prefWidth="100.0" text="Sintomo" fx:id="sintomo" />
-                            <TableColumn prefWidth="100.0" text="Intensità sintomo" fx:id="intensita" />
-                        </columns>
-                        </TableView>
+                        <VBox spacing="10">
+                            <Label text="Rilevazioni Glicemia">
+                                <font>
+                                    <Font name="System Bold" size="16" />
+                                </font>
+                            </Label>
+                            <TableView fx:id="tableViewRilevazioniGlicemia" VBox.vgrow="ALWAYS" onMouseClicked="#handleRilevazioniGlicemia" >
+                                <columns>
+                                    <TableColumn prefWidth="100.0" text="Timestamp" fx:id="timestampRilGlicemia" />
+                                    <TableColumn prefWidth="100.0" text="Valore glicemico" fx:id="valore" />
+                                    <TableColumn prefWidth="100.0" text="Livello di allerta" fx:id="gravita" />
+                                    <TableColumn prefWidth="100.0" text="Prima del pasto" fx:id="primaPasto" />
+                                </columns>
+                            </TableView>
+                        </VBox>
+
+                        <VBox spacing="10">
+                            <Label text="Rilevazioni Sintomi">
+                                <font>
+                                    <Font name="System Bold" size="16" />
+                                </font>
+                            </Label>
+                            <TableView fx:id="tableViewRilevazioniSintomi" VBox.vgrow="ALWAYS" onMouseClicked="#handleRilevazioniSintomi" >
+                                <columns>
+                                    <TableColumn prefWidth="100.0" text="Timestamp" fx:id="timestampRilSintomo" />
+                                    <TableColumn prefWidth="100.0" text="Sintomo" fx:id="sintomo" />
+                                    <TableColumn prefWidth="100.0" text="Intensità sintomo" fx:id="intensita" />
+                                </columns>
+                            </TableView>
+                        </VBox>
+
                     </children>
 
                     <padding>

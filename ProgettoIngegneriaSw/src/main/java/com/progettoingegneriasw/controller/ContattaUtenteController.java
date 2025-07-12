@@ -78,10 +78,15 @@ public class ContattaUtenteController {
             if (selectedUser != null) {
                 setupComunication(); // Show communication panel
 
+                // clean fields
+                emailOggetto.setText("");
+                emailCorpo.setText("");
+
                 if(selectedUser.isMedico()) {
                     MedicoUser medico = (MedicoUser) userDAO.getUser(selectedUser.getUsername());
                     loadProfileImage(medico.getProfileImageName());
                     emailDestinatario.setText(medico.getEmail());
+
                 }
                 else if(selectedUser.isPaziente()){
                     PazienteUser paziente = (PazienteUser) userDAO.getUser(selectedUser.getUsername());
@@ -98,6 +103,8 @@ public class ContattaUtenteController {
     @FXML
     private void handleComunication() {
         userDAO.contattaDiabetologo(emailDestinatario.getText(), emailOggetto.getText(), emailCorpo.getText());
+        VBoxContatta.setVisible(false);
+        VBoxContatta.setManaged(false);
     }
 
     private void refreshTable(){

@@ -146,13 +146,6 @@ public class ViewNavigator {
         }
     }
 
-    public static void navigateToStats() {
-        if (isAuthenticated()) {
-            loadView("StatsView.fxml");
-        } else {
-            navigateToLogin();
-        }
-    }
 
     public static void navigateToTerapie() {loadView("TerapieView.fxml");}
 

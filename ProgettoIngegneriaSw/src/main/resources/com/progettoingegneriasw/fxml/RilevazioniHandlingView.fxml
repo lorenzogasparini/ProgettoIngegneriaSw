@@ -43,7 +43,7 @@
                                 <TableColumn prefWidth="100.0" text="Timestamp" fx:id="timestampRilFarmaco" />
                                 <TableColumn prefWidth="100.0" text="Nome" fx:id="nome" />
                                 <TableColumn prefWidth="100.0" text="Codice AIC" fx:id="codiceAic" />
-                                <TableColumn prefWidth="100.0" text="Quantità" fx:id="quantita" />
+                                <TableColumn prefWidth="100.0" text="Qtà. [mg]" fx:id="quantita" />
                                 <TableColumn prefWidth="100.0" text="Note" fx:id="noteRilevazione" />
                             </columns>
                         </TableView>
@@ -71,133 +71,146 @@
                     </VBox>
                 </VBox>
 
+                <ScrollPane fx:id="scrollPaneInserisciRilevazione"
+                            HBox.hgrow="ALWAYS"
+                            fitToWidth="true"
+                            prefHeight="600"
+                            prefWidth="300"
+                            visible="false"
+                            managed="false"
+                            styleClass="card, container">
 
-                <VBox alignment="CENTER" HBox.hgrow="ALWAYS" prefHeight="600" prefWidth="300" styleClass="card, container" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:id="VBoxNuovaRilevazione" visible="false" managed="false">
-                    <children>
-                        <Label text="Inserisci nuova rilevazione" textAlignment="CENTER">
-                            <font>
-                                <Font name="System Bold" size="24.0" />
-                            </font>
-                            <VBox.margin>
-                                <Insets bottom="20.0" />
-                            </VBox.margin>
-                        </Label>
+                    <content>
 
-                        <!-- Da utilizzare opportunamente in caso di necessità di comunicazione di scorretto inserimento
-                        di info della terapia-->
-                        <Label fx:id="statusLabel" styleClass="alert-danger" text="Status message goes here" wrapText="true" visible="false" managed="true">
-                            <VBox.margin>
-                                <Insets bottom="10.0" />
-                            </VBox.margin>
-                        </Label>
-
-                        <ComboBox fx:id="comboBoxRilevazione" onAction="#onComboBoxChanged">
-                            <items>
-                                <FXCollections fx:factory="observableArrayList">
-                                    <String fx:value="Rilevazione glicemia" />
-                                    <String fx:value="Rilevazione assunzione farmaco" />
-                                    <String fx:value="Rilevazione sintomo" />
-                                </FXCollections>
-                            </items>
-                        </ComboBox>
-
-                        <VBox spacing="10.0" visible="false" fx:id="VBoxIdPaziente" managed="false">
+                        <VBox alignment="CENTER" HBox.hgrow="ALWAYS" prefHeight="600" prefWidth="300" styleClass="card, container"
+                              xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
+                              fx:id="VBoxNuovaRilevazione" visible="false" managed="false">
                             <children>
-                                <Label styleClass="form-label" text="Id paziente" />
-                                <TextField fx:id="idPazienteNuovaRilevazione" promptText="" styleClass="form-control" />
-                            </children>
-                            <VBox.margin>
-                                <Insets bottom="10.0" />
-                            </VBox.margin>
-                        </VBox>
+                                <Label text="Inserisci nuova rilevazione" textAlignment="CENTER">
+                                    <font>
+                                        <Font name="System Bold" size="24.0" />
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets bottom="20.0" />
+                                    </VBox.margin>
+                                </Label>
 
-                        <VBox spacing="10.0" visible="false" fx:id="VBoxTimestamp" managed="false">
-                            <children>
-                                <Label styleClass="form-label" text="Data rilevazione" />
-                                <DatePicker fx:id="datePickerRilevazione" />
-                                <Label styleClass="form-label" text="Ora rilevazione" />
-                                <Spinner fx:id="hourSpinner" editable="true" />
-                                <Spinner fx:id="minuteSpinner" editable="true" />
-                            </children>
-                            <VBox.margin>
-                                <Insets bottom="20.0" />
-                            </VBox.margin>
-                        </VBox>
+                                <!-- Da utilizzare opportunamente in caso di necessità di comunicazione di scorretto inserimento
+                                di info della terapia-->
+                                <Label fx:id="statusLabel" styleClass="alert-danger" text="Status message goes here" wrapText="true" visible="false" managed="true">
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" />
+                                    </VBox.margin>
+                                </Label>
 
-                        <VBox spacing="10.0" visible="false" fx:id="VBoxNuovaRilevazioneFarmaco" managed="false">
-                            <children>
-                                <Label styleClass="form-label" text="Codice AIC" />
-                                <TextField fx:id="codiceAicNuovaRilevazione" promptText="Codice AIC del farmaco assunto" styleClass="form-control" />
-                                <ComboBox fx:id="comboBoxFarmaco">
+                                <ComboBox fx:id="comboBoxRilevazione" onAction="#onComboBoxChanged">
                                     <items>
                                         <FXCollections fx:factory="observableArrayList">
-                                            <String fx:value="      -- Farmaci --" />
+                                            <String fx:value="Rilevazione glicemia" />
+                                            <String fx:value="Rilevazione assunzione farmaco" />
+                                            <String fx:value="Rilevazione sintomo" />
                                         </FXCollections>
                                     </items>
                                 </ComboBox>
-                                <Label styleClass="form-label" text="Quantità" />
-                                <TextField fx:id="quantitaNuovaRilevazione" promptText="Inserisci la quantità della terapia assunta" styleClass="form-control" />
-                                <Label styleClass="form-label" text="Note" />
-                                <TextField fx:id="noteNuovaRilevazione" promptText="Inserisci note" styleClass="form-control" />
-                            </children>
-                            <VBox.margin>
-                                <Insets bottom="20.0" />
-                            </VBox.margin>
-                        </VBox>
 
-                        <VBox spacing="10.0" visible="false" fx:id="VBoxNuovaRilevazioneGlicemia" managed="false">
-                            <children>
-                                <Label styleClass="form-label" text="Valore glicemico" />
-                                <TextField fx:id="valoreNuovaRilevazione" promptText="Inserisci il valore della glicemia" styleClass="form-control" />
-                                <Label styleClass="form-label" text="Periodo assunzione" />
-
-                                <HBox spacing="10.0">
+                                <VBox spacing="10.0" visible="false" fx:id="VBoxIdPaziente" managed="false">
                                     <children>
-                                        <RadioButton fx:id="radioPrimaPasto" text="Prima del pasto" />
-                                        <RadioButton fx:id="radioDopoPasto" text="Dopo il pasto" />
+                                        <Label styleClass="form-label" text="Id paziente" />
+                                        <TextField fx:id="idPazienteNuovaRilevazione" promptText="" styleClass="form-control" />
                                     </children>
-                                </HBox>
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" />
+                                    </VBox.margin>
+                                </VBox>
 
+                                <VBox spacing="10.0" visible="false" fx:id="VBoxTimestamp" managed="false">
+                                    <children>
+                                        <Label styleClass="form-label" text="Data rilevazione" />
+                                        <DatePicker fx:id="datePickerRilevazione" />
+                                        <Label styleClass="form-label" text="Ora rilevazione" />
+                                        <Spinner fx:id="hourSpinner" editable="true" />
+                                        <Spinner fx:id="minuteSpinner" editable="true" />
+                                    </children>
+                                    <VBox.margin>
+                                        <Insets bottom="20.0" />
+                                    </VBox.margin>
+                                </VBox>
+
+                                <VBox spacing="10.0" visible="false" fx:id="VBoxNuovaRilevazioneFarmaco" managed="false">
+                                    <children>
+                                        <Label styleClass="form-label" text="Codice AIC" />
+                                        <TextField fx:id="codiceAicNuovaRilevazione" promptText="Codice AIC del farmaco assunto" styleClass="form-control" />
+                                        <ComboBox fx:id="comboBoxFarmaco">
+                                            <items>
+                                                <FXCollections fx:factory="observableArrayList">
+                                                    <String fx:value="      -- Farmaci --" />
+                                                </FXCollections>
+                                            </items>
+                                        </ComboBox>
+                                        <Label styleClass="form-label" text="Quantità [mg]" />
+                                        <TextField fx:id="quantitaNuovaRilevazione" promptText="Inserisci la quantità di farmaco assunta [mg]" styleClass="form-control" />
+                                        <Label styleClass="form-label" text="Note" />
+                                        <TextField fx:id="noteNuovaRilevazione" promptText="Inserisci note" styleClass="form-control" />
+                                    </children>
+                                    <VBox.margin>
+                                        <Insets bottom="20.0" />
+                                    </VBox.margin>
+                                </VBox>
+
+                                <VBox spacing="10.0" visible="false" fx:id="VBoxNuovaRilevazioneGlicemia" managed="false">
+                                    <children>
+                                        <Label styleClass="form-label" text="Valore glicemico" />
+                                        <TextField fx:id="valoreNuovaRilevazione" promptText="Inserisci il valore della glicemia" styleClass="form-control" />
+                                        <Label styleClass="form-label" text="Periodo assunzione" />
+
+                                        <HBox spacing="10.0">
+                                            <children>
+                                                <RadioButton fx:id="radioPrimaPasto" text="Prima del pasto" />
+                                                <RadioButton fx:id="radioDopoPasto" text="Dopo il pasto" />
+                                            </children>
+                                        </HBox>
+
+                                    </children>
+                                    <VBox.margin>
+                                        <Insets bottom="20.0" />
+                                    </VBox.margin>
+                                </VBox>
+
+                                <VBox spacing="10.0" visible="false" fx:id="VBoxNuovaRilevazioneSintomo" managed="false">
+                                    <children>
+                                        <Label styleClass="form-label" text="Sintomo" />
+                                        <TextField fx:id="sintomoNuovaRilevazione" promptText="Inserisci il sintomo" styleClass="form-control" />
+                                        <Label styleClass="form-label" text="Intensità" />
+                                        <Slider fx:id="intensitaSlider"
+                                                min="1"
+                                                max="10"
+                                                value="1"
+                                                majorTickUnit="1"
+                                                minorTickCount="0"
+                                                blockIncrement="1"
+                                                snapToTicks="true"
+                                                showTickMarks="true"
+                                                showTickLabels="true"
+                                                styleClass="custom-slider" />
+
+                                    </children>
+                                    <VBox.margin>
+                                        <Insets bottom="20.0" />
+                                    </VBox.margin>
+                                </VBox>
+
+                                <Button defaultButton="true" maxWidth="1.7976931348623157E308" fx:id="inserisciRilevazioneButton" visible="false" managed="false" mnemonicParsing="false" text="Inserisci" onAction="#handleInserimentoNuovaRilevazione">
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" />
+                                    </VBox.margin>
+                                </Button>
                             </children>
-                            <VBox.margin>
-                                <Insets bottom="20.0" />
-                            </VBox.margin>
+                            <padding>
+                                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                            </padding>
                         </VBox>
-
-                        <VBox spacing="10.0" visible="false" fx:id="VBoxNuovaRilevazioneSintomo" managed="false">
-                            <children>
-                                <Label styleClass="form-label" text="Sintomo" />
-                                <TextField fx:id="sintomoNuovaRilevazione" promptText="Inserisci il sintomo" styleClass="form-control" />
-                                <Label styleClass="form-label" text="Intensità" />
-                                <Slider fx:id="intensitaSlider"
-                                        min="1"
-                                        max="10"
-                                        value="1"
-                                        majorTickUnit="1"
-                                        minorTickCount="0"
-                                        blockIncrement="1"
-                                        snapToTicks="true"
-                                        showTickMarks="true"
-                                        showTickLabels="true"
-                                        styleClass="custom-slider" />
-
-                            </children>
-                            <VBox.margin>
-                                <Insets bottom="20.0" />
-                            </VBox.margin>
-                        </VBox>
-
-                        <Button defaultButton="true" maxWidth="1.7976931348623157E308" fx:id="inserisciRilevazioneButton" visible="false" managed="false" mnemonicParsing="false" text="Inserisci" onAction="#handleInserimentoNuovaRilevazione">
-                            <VBox.margin>
-                                <Insets bottom="10.0" />
-                            </VBox.margin>
-                        </Button>
-                    </children>
-                    <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                    </padding>
-                </VBox>
-
+                    </content>
+                </ScrollPane>
             </HBox>
         </center>
     </BorderPane>

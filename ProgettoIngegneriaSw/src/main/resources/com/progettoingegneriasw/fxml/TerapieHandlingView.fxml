@@ -39,7 +39,7 @@
                             <columns>
                                 <TableColumn prefWidth="100.0" text="Medico" fx:id="usernameMedico"/>
                                 <TableColumn prefWidth="100.0" text="Dosi giornaliere" fx:id="dosiGiornaliere" />
-                                <TableColumn prefWidth="100.0" text="Quantità per dose" fx:id="quantitaPerDose" />
+                                <TableColumn prefWidth="100.0" text="Qtà. dose [mg]" fx:id="quantitaPerDose" />
                                 <TableColumn prefWidth="100.0" text="Note" fx:id="note" />
                                 <TableColumn prefWidth="100.0" text="Farmaco" fx:id="Nome_farmaco" />
                                 <TableColumn prefWidth="100.0" text="Codice AIC" fx:id="Codice_aic" />
@@ -58,7 +58,7 @@
                     <children>
 
                         <HBox alignment="CENTER_LEFT" spacing="10" HBox.hgrow="ALWAYS">
-                            <Label text="Update" textAlignment="CENTER">
+                            <Label text="Aggiorna" textAlignment="CENTER">
                                 <font>
                                     <Font name="System Bold" size="24.0" />
                                 </font>
@@ -116,7 +116,7 @@
                         <VBox spacing="10.0" visible="false" fx:id="VBoxDosiGiornaliere">
                             <children>
                                 <Label styleClass="form-label" text="Dosi Giornaliere" />
-                                <TextField fx:id="dosiGiornaliereUpdate" promptText="Inserisci dosi giornaliere" styleClass="form-control" />
+                                <TextField fx:id="dosiGiornaliereTextFieldUpdate" promptText="Inserisci dosi giornaliere" styleClass="form-control" />
                             </children>
                             <VBox.margin>
                                 <Insets bottom="10.0" />
@@ -125,8 +125,8 @@
 
                         <VBox spacing="10.0" visible="false" fx:id="VBoxQuantitaPerDose">
                             <children>
-                                <Label styleClass="form-label" text="Quantità per dose" />
-                                <TextField fx:id="quantitaPerDoseUpdate" promptText="Inserisci quantità per dose" styleClass="form-control" />
+                                <Label styleClass="form-label" text="Quantità per dose [mg]" />
+                                <TextField fx:id="quantitaPerDoseTextFieldUpdate" promptText="Inserisci quantità per dose [mg]" styleClass="form-control" />
                             </children>
                             <VBox.margin>
                                 <Insets bottom="20.0" />
@@ -174,7 +174,7 @@
 
                         <!-- Da utilizzare opportunamente in caso di necessità di comunicazione di scorretto inserimento
                         di info della terapia-->
-                        <Label fx:id="statusLabel2" styleClass="alert-danger" text="Status message goes here"
+                        <Label fx:id="statusLabelInserimento" styleClass="alert-danger" text="Status message goes here"
                                wrapText="true" visible="false" managed="true">
                             <VBox.margin>
                                 <Insets bottom="10.0" />
@@ -217,7 +217,7 @@
                         <VBox spacing="10.0" visible="false" fx:id="VBoxDoseGiornaliera">
                             <children>
                                 <Label styleClass="form-label" text="Dosi Giornaliere" />
-                                <TextField fx:id="doseGiornalieraUpdate" promptText="Inserisci dosi giornaliere" styleClass="form-control" />
+                                <TextField fx:id="doseGiornaliereTextFieldInsert" promptText="Inserisci dosi giornaliere" styleClass="form-control" />
                             </children>
                             <VBox.margin>
                                 <Insets bottom="10.0" />
@@ -226,8 +226,8 @@
 
                         <VBox spacing="10.0" visible="false" fx:id="VBoxQuantita">
                             <children>
-                                <Label styleClass="form-label" text="Quantità per dose" />
-                                <TextField fx:id="quantitaPerDose2" promptText="Inserisci quantità per dose" styleClass="form-control" />
+                                <Label styleClass="form-label" text="Quantità per dose [mg]" />
+                                <TextField fx:id="quantitaPerDoseTextFieldInsert" promptText="Inserisci quantità per dose [mg]" styleClass="form-control" />
                             </children>
                             <VBox.margin>
                                 <Insets bottom="20.0" />

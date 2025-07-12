@@ -37,7 +37,7 @@
                                 <TableColumn prefWidth="100.0" text="Codice AIC" fx:id="codiceAic" />
                                 <TableColumn prefWidth="100.0" text="Nome farmaco" fx:id="nome" />
                                 <TableColumn prefWidth="100.0" text="Timestamp" fx:id="timestamp" />
-                                <TableColumn prefWidth="100.0" text="Valore" fx:id="quantita" />
+                                <TableColumn prefWidth="100.0" text="Qtà. [mg]" fx:id="quantita" />
                                 <TableColumn prefWidth="100.0" text="Note" fx:id="noteRilevazione" />
                             </columns>
                         </TableView>

@@ -5,91 +5,100 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxWidth="500.0" styleClass="card, container"
-      xmlns="http://javafx.com/javafx/16"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.progettoingegneriasw.controller.RegisterController">
+<ScrollPane xmlns="http://javafx.com/javafx/16"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.progettoingegneriasw.controller.RegisterController"
+            fitToWidth="true"
+            styleClass="container">
 
-   <children>
-      <Label text="Registrazione utente" textAlignment="CENTER">
-         <font>
-            <Font name="System Bold" size="24.0" />
-         </font>
-         <VBox.margin>
-            <Insets bottom="20.0" />
-         </VBox.margin>
-      </Label>
+   <content>
+      <StackPane alignment="CENTER">
+         <VBox alignment="CENTER"
+               maxWidth="500.0"
+               spacing="15"
+               styleClass="card">
 
-      <Label fx:id="statusLabel" styleClass="status-label">
-      <VBox.margin>
-            <Insets bottom="10.0" />
-         </VBox.margin>
-      </Label>
+            <children>
+               <Label text="Registrazione utente" textAlignment="CENTER">
+                  <font>
+                     <Font name="System Bold" size="24.0" />
+                  </font>
+                  <VBox.margin>
+                     <Insets bottom="20.0" />
+                  </VBox.margin>
+               </Label>
 
-      <!-- Selezione tipo utente -->
-      <HBox spacing="10" alignment="CENTER">
-         <children>
-            <Label text="Tipo utente" />
-            <RadioButton fx:id="radioPaziente" text="Paziente" />
-            <RadioButton fx:id="radioMedico" text="Medico" />
-            <RadioButton fx:id="radioAdmin" text="Admin"  />
-         </children>
-         <VBox.margin>
-            <Insets bottom="15.0" />
-         </VBox.margin>
-      </HBox>
+               <Label fx:id="statusLabel" styleClass="status-label">
+                  <VBox.margin>
+                     <Insets bottom="10.0" />
+                  </VBox.margin>
+               </Label>
 
-      <!-- Campi comuni -->
-      <VBox spacing="10">
-         <children>
-            <TextField fx:id="usernameField" promptText="Username" styleClass="form-control"/>
-            <PasswordField fx:id="passwordField" promptText="Password" styleClass="form-control"/>
-            <PasswordField fx:id="confirmPasswordField" promptText="Conferma password" styleClass="form-control"/>
-            <TextField fx:id="nomeField" promptText="Nome" styleClass="form-control"/>
-            <TextField fx:id="cognomeField" promptText="Cognome" styleClass="form-control"/>
-         </children>
-         <VBox.margin>
-            <Insets bottom="10.0" />
-         </VBox.margin>
-      </VBox>
+               <!-- Selezione tipo utente -->
+               <HBox spacing="10" alignment="CENTER">
+                  <children>
+                     <Label text="Tipo utente" />
+                     <RadioButton fx:id="radioPaziente" text="Paziente" />
+                     <RadioButton fx:id="radioMedico" text="Medico" />
+                     <RadioButton fx:id="radioAdmin" text="Admin" />
+                  </children>
+                  <VBox.margin>
+                     <Insets bottom="15.0" />
+                  </VBox.margin>
+               </HBox>
 
-      <!-- Campi per Medico -->
-      <VBox fx:id="medicoVBox" spacing="10" visible="false" managed="false">
-         <children>
-            <TextField fx:id="emailMedicoField" promptText="Email del medico" styleClass="form-control"/>
-         </children>
-         <VBox.margin>
-            <Insets bottom="10.0" />
-         </VBox.margin>
-      </VBox>
+               <!-- Campi comuni -->
+               <VBox spacing="10">
+                  <children>
+                     <TextField fx:id="usernameField" promptText="Username" styleClass="form-control" />
+                     <PasswordField fx:id="passwordField" promptText="Password" styleClass="form-control" />
+                     <PasswordField fx:id="confirmPasswordField" promptText="Conferma password" styleClass="form-control" />
+                     <TextField fx:id="nomeField" promptText="Nome" styleClass="form-control" />
+                     <TextField fx:id="cognomeField" promptText="Cognome" styleClass="form-control" />
+                  </children>
+                  <VBox.margin>
+                     <Insets bottom="10.0" />
+                  </VBox.margin>
+               </VBox>
 
-      <!-- Campi per Paziente -->
-      <VBox fx:id="pazienteVBox" spacing="10" visible="false" managed="false">
-         <children>
-            <ComboBox fx:id="diabetologoComboBox" promptText="Diabetologo di riferimento"
-                      maxWidth="Infinity" />
-            <TextField fx:id="emailPazienteField" promptText="Email del paziente" styleClass="form-control"/>
-            <TextField fx:id="pesoField" promptText="Peso (Kg)" styleClass="form-control"/>
-            <TextField fx:id="provinciaField" promptText="Provincia di residenza (sigla)" styleClass="form-control"/>
-            <TextField fx:id="comuneField" promptText="Comune di residenza" styleClass="form-control"/>
-            <DatePicker fx:id="dataNascitaPicker" promptText="Data di nascita" styleClass="form-control"/>
-         </children>
-         <VBox.margin>
-            <Insets bottom="10.0" />
-         </VBox.margin>
-      </VBox>
+               <!-- Campi per Medico -->
+               <VBox fx:id="medicoVBox" spacing="10" visible="false" managed="false">
+                  <children>
+                     <TextField fx:id="emailMedicoField" promptText="Email del medico" styleClass="form-control" />
+                  </children>
+                  <VBox.margin>
+                     <Insets bottom="10.0" />
+                  </VBox.margin>
+               </VBox>
 
-      <!-- Pulsante registrazione -->
-      <Button fx:id="registerButton" text="Registrati" defaultButton="true"
-              maxWidth="Infinity" onAction="#handleRegister">
-         <VBox.margin>
-            <Insets bottom="15.0" />
-         </VBox.margin>
-      </Button>
+               <!-- Campi per Paziente -->
+               <VBox fx:id="pazienteVBox" spacing="10" visible="false" managed="false">
+                  <children>
+                     <ComboBox fx:id="diabetologoComboBox" promptText="Diabetologo di riferimento" maxWidth="Infinity" />
+                     <TextField fx:id="emailPazienteField" promptText="Email del paziente" styleClass="form-control" />
+                     <TextField fx:id="pesoField" promptText="Peso (Kg)" styleClass="form-control" />
+                     <TextField fx:id="provinciaField" promptText="Provincia di residenza (sigla)" styleClass="form-control" />
+                     <TextField fx:id="comuneField" promptText="Comune di residenza" styleClass="form-control" />
+                     <DatePicker fx:id="dataNascitaPicker" promptText="Data di nascita" styleClass="form-control" />
+                  </children>
+                  <VBox.margin>
+                     <Insets bottom="10.0" />
+                  </VBox.margin>
+               </VBox>
 
-   </children>
+               <!-- Pulsante registrazione -->
+               <Button fx:id="registerButton" text="Registrati" defaultButton="true"
+                       maxWidth="Infinity" onAction="#handleRegister">
+                  <VBox.margin>
+                     <Insets bottom="15.0" />
+                  </VBox.margin>
+               </Button>
+            </children>
 
-   <padding>
-      <Insets top="20" right="20" bottom="20" left="20" />
-   </padding>
-</VBox>
+            <padding>
+               <Insets top="20" right="20" bottom="20" left="20" />
+            </padding>
+         </VBox>
+      </StackPane>
+   </content>
+</ScrollPane>

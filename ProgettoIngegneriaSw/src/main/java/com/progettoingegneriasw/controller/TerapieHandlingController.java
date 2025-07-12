@@ -38,10 +38,10 @@ public class TerapieHandlingController {
     @FXML private TextField medicoTextFieldUpdate;
 
     @FXML private VBox VBoxDosiGiornaliere;
-    @FXML private TextField dosiGiornaliereUpdate;
+    @FXML private TextField dosiGiornaliereTextFieldUpdate;
 
     @FXML private VBox VBoxQuantitaPerDose;
-    @FXML private TextField quantitaPerDoseUpdate;
+    @FXML private TextField quantitaPerDoseTextFieldUpdate;
 
     @FXML private VBox VBoxNote;
     @FXML private TextField noteUpdate;
@@ -50,7 +50,7 @@ public class TerapieHandlingController {
 
     @FXML private VBox VBoxFarmaco;
     @FXML private ComboBox comboBoxFarmacoUpdate;
-    @FXML private int idFarmacoSelezionato;
+    @FXML private Integer idFarmacoSelezionato;
 
 
     Patologia selectedPatologia = null;
@@ -58,15 +58,15 @@ public class TerapieHandlingController {
     private MedicoDAO medicoDAO = MedicoDAO.getInstance();
 
     @FXML private VBox VBoxInserimento;
-    @FXML private Label statusLabel2;
+    @FXML private Label statusLabelInserimento;
     @FXML private VBox VBoxPatologia;
     @FXML private ComboBox comboBoxPatologiaInsert;
     @FXML private VBox VBoxFarmaci;
     @FXML private ComboBox comboBoxFarmacoInsert;
     @FXML private VBox VBoxDoseGiornaliera;
-    @FXML private TextField doseGiornalieraUpdate;
+    @FXML private TextField doseGiornaliereTextFieldInsert;
     @FXML private VBox VBoxQuantita;
-    @FXML private TextField quantitaPerDose2;
+    @FXML private TextField quantitaPerDoseTextFieldInsert;
     @FXML private VBox VBoxNote2;
     @FXML private TextField note2;
 
@@ -86,6 +86,28 @@ public class TerapieHandlingController {
         note.setCellValueFactory(new PropertyValueFactory<Terapia, String>("note"));
         Nome_farmaco.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFarmaco().getNome()));
         Codice_aic.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFarmaco().getCodiceAic()));
+
+        // set to integer only the field formatter
+        TextFormatter<String> formatterInteger = new TextFormatter<>(change -> {
+            return change.getControlNewText().matches("\\d*") ? change : null;
+        });
+        dosiGiornaliereTextFieldUpdate.setTextFormatter(formatterInteger);
+        TextFormatter<String> formatterInteger2 = new TextFormatter<>(change -> {
+            return change.getControlNewText().matches("\\d*") ? change : null;
+        });
+        doseGiornaliereTextFieldInsert.setTextFormatter(formatterInteger2);
+
+
+        // set to double only the field formatter
+        TextFormatter<String> formatterDouble = new TextFormatter<>(change -> {
+            return change.getControlNewText().matches("\\d*(\\.\\d*)?") ? change : null;
+        });
+        quantitaPerDoseTextFieldUpdate.setTextFormatter(formatterDouble);
+        TextFormatter<String> formatterDouble2 = new TextFormatter<>(change -> {
+            return change.getControlNewText().matches("\\d*(\\.\\d*)?") ? change : null;
+        });
+        quantitaPerDoseTextFieldInsert.setTextFormatter(formatterDouble2);
+
 
         refreshTable();
     }
@@ -148,18 +170,19 @@ public class TerapieHandlingController {
 
         // clean fields
         cleanComboBoxes();
-        doseGiornalieraUpdate.clear();
-        quantitaPerDose2.clear();
+        doseGiornaliereTextFieldInsert.clear();
+        quantitaPerDoseTextFieldInsert.clear();
         note2.clear();
         VBoxInserimento.setVisible(false);
         VBoxInserimento.setManaged(false);
+
 
         VBoxUpdate.setVisible(false);
         VBoxUpdate.setManaged(false);
         VBoxInserimento.setVisible(true);
         VBoxInserimento.setManaged(true);
-        statusLabel2.setVisible(false);
-        statusLabel2.setManaged(false);
+        statusLabelInserimento.setVisible(false);
+        statusLabelInserimento.setManaged(false);
         VBoxMedicoUpdate.setVisible(true);
         VBoxMedicoUpdate.setManaged(true);
         VBoxPatologia.setVisible(true);
@@ -172,12 +195,12 @@ public class TerapieHandlingController {
         comboBoxFarmacoInsert.setManaged(true);
         VBoxDoseGiornaliera.setVisible(true);
         VBoxDoseGiornaliera.setManaged(true);
-        doseGiornalieraUpdate.setVisible(true);
-        doseGiornalieraUpdate.setManaged(true);
+        doseGiornaliereTextFieldInsert.setVisible(true);
+        doseGiornaliereTextFieldInsert.setManaged(true);
         VBoxQuantita.setVisible(true);
         VBoxQuantita.setManaged(true);
-        quantitaPerDose2.setVisible(true);
-        quantitaPerDose2.setManaged(true);
+        quantitaPerDoseTextFieldInsert.setVisible(true);
+        quantitaPerDoseTextFieldInsert.setManaged(true);
         VBoxNote2.setVisible(true);
         VBoxNote2.setManaged(true);
         note2.setVisible(true);
@@ -203,16 +226,16 @@ public class TerapieHandlingController {
 
                 medicoTextFieldUpdate.setText(selectedTerapia.getMedico().getNome());
                 comboBoxFarmacoUpdate.getSelectionModel().select(selectedTerapia.getFarmaco());
-                dosiGiornaliereUpdate.setText(selectedTerapia.getDosiGiornaliere().toString());
-                quantitaPerDoseUpdate.setText(selectedTerapia.getQuantitaPerDose().toString());
+                dosiGiornaliereTextFieldUpdate.setText(selectedTerapia.getDosiGiornaliere().toString());
+                quantitaPerDoseTextFieldUpdate.setText(selectedTerapia.getQuantitaPerDose().toString());
                 noteUpdate.setText(selectedTerapia.getNote());
             }
             else {
                 if(selectedTerapia == null)
                     return;
 
-                doseGiornalieraUpdate.setText(selectedTerapia.getDosiGiornaliere().toString());
-                quantitaPerDose2.setText(selectedTerapia.getQuantitaPerDose().toString());
+                doseGiornaliereTextFieldInsert.setText(selectedTerapia.getDosiGiornaliere().toString());
+                quantitaPerDoseTextFieldInsert.setText(selectedTerapia.getQuantitaPerDose().toString());
                 note2.setText(selectedTerapia.getNote());
             }
         });
@@ -249,22 +272,61 @@ public class TerapieHandlingController {
 
 
     @FXML
-    private void handleInserimento() throws SQLException {
-        Medico loggedMedico = (Medico) ViewNavigator.getAuthenticatedUser();
+    private void handleInserimento() {
+        if (doseGiornaliereTextFieldInsert.getText().isBlank() ||
+                quantitaPerDoseTextFieldInsert.getText().isBlank() ||
+                idFarmacoSelezionato == null ||
+                selectedPatologia == null) {
 
-        Terapia ter = new Terapia(
-                loggedMedico,
-                medicoDAO.getFaracoFromId(idFarmacoSelezionato),
-                Integer.parseInt(doseGiornalieraUpdate.getText()),
-                Double.parseDouble(quantitaPerDose2.getText()),
-                note2.getText()
-        );
-        Patologia pat = selectedPatologia;
+            statusLabelInserimento.setText("Compila tutti i campi obbligatori.");
+            statusLabelInserimento.getStyleClass().setAll("status-label", "error");
+            statusLabelInserimento.setVisible(true);
+            statusLabelInserimento.setManaged(true);
+            return;
+        }
 
-        medicoDAO.setTerapiaPaziente(ter, PazientiController.selectedUser.getUsername(), pat, "");
+        try {
+            Medico loggedMedico = (Medico) ViewNavigator.getAuthenticatedUser();
 
-        setup();
+            Terapia ter = new Terapia(
+                    loggedMedico,
+                    medicoDAO.getFaracoFromId(idFarmacoSelezionato),
+                    Integer.parseInt(doseGiornaliereTextFieldInsert.getText()),
+                    Double.parseDouble(quantitaPerDoseTextFieldInsert.getText()),
+                    note2.getText() == null ? "" : note2.getText().trim()
+            );
+
+            Patologia pat = selectedPatologia;
+
+            medicoDAO.setTerapiaPaziente(ter, PazientiController.selectedUser.getUsername(), pat, "");
+
+            // SUCCESS: Show alert
+            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+            successAlert.setTitle("Inserimento riuscito");
+            successAlert.setHeaderText(null);
+            successAlert.setContentText("Inserimento avvenuto con successo!");
+            successAlert.showAndWait();
+
+            // Reset panels
+            VBoxInserimento.setVisible(false);
+            VBoxInserimento.setManaged(false);
+            setup();
+
+        } catch (NumberFormatException e) {
+            statusLabelInserimento.setText("Inserisci valori numerici validi.");
+            statusLabelInserimento.getStyleClass().setAll("status-label", "error");
+            statusLabelInserimento.setVisible(true);
+            statusLabelInserimento.setManaged(true);
+        } catch (Exception e) {
+            statusLabel.setText("Errore durante l'inserimento.");
+            statusLabel.getStyleClass().setAll("status-label", "error");
+            statusLabel.setVisible(true);
+            statusLabelInserimento.setManaged(true);
+            e.printStackTrace();
+        }
     }
+
+
 
     @FXML
     private void onComboBoxFarmaco() throws SQLException {
@@ -284,29 +346,56 @@ public class TerapieHandlingController {
 
     @FXML
     private void handleUpdate() throws SQLException {
-        //  gestire il lancio della query di update della terapia sulla base delle info fornite -> Implementare controlli
-        MedicoDAO medicoDAO = MedicoDAO.getInstance();
-        Medico loggedMedico = (Medico) ViewNavigator.getAuthenticatedUser();
-        medicoTextFieldUpdate.setText(loggedMedico.getUsername());
+        if (!VBoxUpdate.isVisible()) return;
 
-        if(VBoxUpdate.isVisible()) {
-            if((!dosiGiornaliereUpdate.getText().isEmpty()) && (!quantitaPerDoseUpdate.getText().isEmpty()) && (!noteUpdate.getText().isEmpty())) {
-                medicoDAO.updateTerapiaPaziente(
-                        new Terapia(selectedTerapia.getId(),
-                                loggedMedico, // si prende il medico loggato che sta eseguendo la modifica
-                                medicoDAO.getFaracoFromId(idFarmacoSelezionato),
-                                Integer.parseInt(dosiGiornaliereUpdate.getText()),
-                                Double.parseDouble(quantitaPerDoseUpdate.getText()),
-                                noteUpdate.getText()
-                        )
-                );
-            }
-            else {
-                statusLabel.setVisible(true);
-            }
+        if (dosiGiornaliereTextFieldUpdate.getText().isBlank() ||
+                quantitaPerDoseTextFieldUpdate.getText().isBlank()) {
+
+            statusLabel.setText("Compila tutti i campi obbligatori.");
+            statusLabel.getStyleClass().setAll("status-label", "error");
+            statusLabel.setVisible(true);
+            return;
         }
-        setup();
+
+        try {
+            Medico loggedMedico = (Medico) ViewNavigator.getAuthenticatedUser();
+
+            Terapia updatedTerapia = new Terapia(
+                    selectedTerapia.getId(),
+                    loggedMedico,
+                    medicoDAO.getFaracoFromId(idFarmacoSelezionato),
+                    Integer.parseInt(dosiGiornaliereTextFieldUpdate.getText()),
+                    Double.parseDouble(quantitaPerDoseTextFieldUpdate.getText()),
+                    noteUpdate.getText() == null ? "" : noteUpdate.getText().trim()
+            );
+
+            medicoDAO.updateTerapiaPaziente(updatedTerapia);
+
+            // SUCCESS: Show alert
+            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+            successAlert.setTitle("Aggiornamento riuscito");
+            successAlert.setHeaderText(null);
+            successAlert.setContentText("Modifica avvenuta con successo!");
+            successAlert.showAndWait();
+
+            // Hide update panel
+            VBoxUpdate.setVisible(false);
+            VBoxUpdate.setManaged(false);
+
+            setup();
+
+        } catch (NumberFormatException e) {
+            statusLabel.setText("Inserisci valori numerici validi.");
+            statusLabel.getStyleClass().setAll("status-label", "error");
+            statusLabel.setVisible(true);
+        } catch (Exception e) {
+            statusLabel.setText("Errore durante l'aggiornamento.");
+            statusLabel.getStyleClass().setAll("status-label", "error");
+            statusLabel.setVisible(true);
+            e.printStackTrace();
+        }
     }
+
 
 
     @FXML

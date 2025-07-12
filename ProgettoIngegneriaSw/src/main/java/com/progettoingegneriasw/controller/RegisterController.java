@@ -73,6 +73,11 @@ public class RegisterController {
         String password = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
 
+        if (userTypeGroup.getSelectedToggle() == null) {
+            showError("Seleziona un tipo di utente da inserire");
+            return;
+        }
+
         if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
             showError("Compila tutti i campi obbligatori");
             return;

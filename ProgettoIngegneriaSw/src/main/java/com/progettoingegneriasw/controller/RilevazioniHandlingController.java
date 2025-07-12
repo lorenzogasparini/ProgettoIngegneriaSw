@@ -13,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -45,6 +46,7 @@ public class RilevazioniHandlingController {
 
     @FXML private ComboBox comboBoxRilevazione;
 
+    @FXML private ScrollPane scrollPaneInserisciRilevazione;
     @FXML private VBox VBoxNuovaRilevazione;
     @FXML private VBox VBoxIdPaziente;
     @FXML private TextField idPazienteNuovaRilevazione;
@@ -79,7 +81,6 @@ public class RilevazioniHandlingController {
 
     @FXML private RadioButton radioPrimaPasto;
     @FXML private RadioButton radioDopoPasto;
-    private ToggleGroup pastoToggleGroup;
     @FXML private DatePicker datePickerRilevazione;
     @FXML private Spinner<Integer> hourSpinner;
     @FXML private Spinner<Integer> minuteSpinner;
@@ -88,16 +89,27 @@ public class RilevazioniHandlingController {
     public void initialize() throws SQLException {
         setup();
 
-        pastoToggleGroup = new ToggleGroup();
+        ToggleGroup pastoToggleGroup = new ToggleGroup();
         radioPrimaPasto.setToggleGroup(pastoToggleGroup);
         radioDopoPasto.setToggleGroup(pastoToggleGroup);
         radioPrimaPasto.setSelected(true); // default value
+
+
+        // set to integer only the field formatter
+        TextFormatter<String> formatterInteger = new TextFormatter<>(change -> {
+            return change.getControlNewText().matches("\\d*") ? change : null;
+        });
+        quantitaNuovaRilevazione.setTextFormatter(formatterInteger);
+        TextFormatter<String> formatterInteger2 = new TextFormatter<>(change -> {
+            return change.getControlNewText().matches("\\d*") ? change : null;
+        });
+        valoreNuovaRilevazione.setTextFormatter(formatterInteger2);
+
 
         // round intensità to an integer value
         intensitaSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
             intensitaSlider.setValue(Math.round(newVal.doubleValue()));
         });
-
 
         comboBoxRilevazione.setOnAction(e -> handleTipoRilevazioneSelected());
         comboBoxFarmaco.setOnAction(e -> handleFarmacoSelected());
@@ -120,12 +132,14 @@ public class RilevazioniHandlingController {
 
     @FXML
     private void handleNuovaRilevazione() {
+        scrollPaneInserisciRilevazione.setVisible(true);
+        scrollPaneInserisciRilevazione.setManaged(true);
         VBoxNuovaRilevazione.setVisible(true);
         VBoxNuovaRilevazione.setManaged(true);
     }
 
     private void setup() {
-        ///  performo DB and heavy operations in background avoiding UI freezing
+        //  perform DB and heavy operations in background avoiding UI freezing
         Task<Void> loadDataTask = new Task<>() {
             @Override
             protected Void call() throws Exception {
@@ -209,90 +223,101 @@ public class RilevazioniHandlingController {
 
     @FXML
     private void handleInserimentoNuovaRilevazione() throws SQLException {
-        //  gestire il lancio della query di inserimento della rilevazione sulla base delle info fornite -> Implementare controlli
+        statusLabel.setVisible(false); // reset
 
-        if(VBoxNuovaRilevazione.isVisible() && (!idPazienteNuovaRilevazione.getText().equals(null))) {
-            // inserisci rilevazione Farmaco
-            if (VBoxNuovaRilevazioneFarmaco.isVisible()) {
-                if ((!codiceAicNuovaRilevazione.getText().equals(null)) &&
-                        (!quantitaNuovaRilevazione.getText().equals(null)) &&
-                        (!noteNuovaRilevazione.getText().equals(null))) {
-
-                    if (userDAO.getFarmacoFromAic(codiceAicNuovaRilevazione.getText()) != null) {
-
-                        RilevazioneFarmaco rilevazioneFarmaco = new RilevazioneFarmaco(
-                                Integer.parseInt(idPazienteNuovaRilevazione.getText()),
-                                pazienteDAO.getFarmacoFromAic(codiceAicNuovaRilevazione.getText()),
-                                Timestamp.from(Instant.now()),
-                                Double.parseDouble(quantitaNuovaRilevazione.getText()),
-                                noteNuovaRilevazione.getText()
-                        );
-
-                        pazienteDAO.setRilevazioneFarmaco(rilevazioneFarmaco);
-                        codiceAicNuovaRilevazione.setText("");
-                        //  Da capire come gestire l'azzeramento con: comboBoxFarmaco.setValue(null);
-                        quantitaNuovaRilevazione.setText("");
-                        noteNuovaRilevazione.setText("");
-                        handleRicarica();
-                    }
-                    else {
-                        statusLabel.setText("Inserisci un codice AIC valido.");
-                        statusLabel.setVisible(true);
-                    }
-                }
-                else {
-                    statusLabel.setText("Informazioni mancanti, completare");
-                    statusLabel.setVisible(true);
-                }
-            }
-
-            // Inserisci Rilevazione Glicemia
-            else if (VBoxNuovaRilevazioneGlicemia.isVisible()) {
-                isPrimaPasto = radioPrimaPasto.isSelected();
-                if((!valoreNuovaRilevazione.getText().equals(null))) {
-                    RilevazioneGlicemia rilevazioneGlicemia = new RilevazioneGlicemia(
-                            Integer.parseInt(idPazienteNuovaRilevazione.getText()),
-                            Timestamp.from(Instant.now()),
-                            Integer.parseInt(valoreNuovaRilevazione.getText()),
-                            isPrimaPasto
-                    );
-
-                    pazienteDAO.setRilevazioneGlicemia(rilevazioneGlicemia);
-                    valoreNuovaRilevazione.setText("");
-                    handleRicarica();
-                }
-                else {
-                    statusLabel.setText("Informazioni mancanti, completare");
-                    statusLabel.setVisible(true);
-                }
-            }
-
-            // Inserisci Rilevazione Sintomo
-            else if (VBoxNuovaRilevazioneSintomo.isVisible()) {
-                if (sintomoNuovaRilevazione.getText() != null && !sintomoNuovaRilevazione.getText().isBlank()) {
-                    RilevazioneSintomo rilevazioneSintomo = new RilevazioneSintomo(
-                            Integer.parseInt(idPazienteNuovaRilevazione.getText()),
-                            Timestamp.from(Instant.now()),
-                            sintomoNuovaRilevazione.getText(),
-                            (int) intensitaSlider.getValue()
-                    );
-                    pazienteDAO.setRilevazioneSintomo(rilevazioneSintomo);
-                    sintomoNuovaRilevazione.setText("");
-                    intensitaSlider.setValue(1); // reset to default in-range
-                    handleRicarica();
-                } else {
-                    statusLabel.setText("Informazioni mancanti, completare");
-                    statusLabel.setVisible(true);
-                }
-            }
+        if (!VBoxNuovaRilevazione.isVisible() || idPazienteNuovaRilevazione.getText().isBlank()) {
+            showError("ID paziente mancante.");
+            return;
         }
-        else{
-            statusLabel.setText("Informazioni mancanti, completare");
-            statusLabel.setVisible(true);
+
+        // FARMACO
+        if (VBoxNuovaRilevazioneFarmaco.isVisible()) {
+            if (codiceAicNuovaRilevazione.getText().isBlank() ||
+                    quantitaNuovaRilevazione.getText().isBlank()) {
+
+                showError("Completa tutti i campi per la rilevazione farmaco.");
+                return;
+            }
+
+            if (userDAO.getFarmacoFromAic(codiceAicNuovaRilevazione.getText()) == null) {
+                showError("Codice AIC non valido.");
+                return;
+            }
+
+            RilevazioneFarmaco rilevazioneFarmaco = new RilevazioneFarmaco(
+                    Integer.parseInt(idPazienteNuovaRilevazione.getText()),
+                    pazienteDAO.getFarmacoFromAic(codiceAicNuovaRilevazione.getText()),
+                    Timestamp.from(Instant.now()),
+                    Double.parseDouble(quantitaNuovaRilevazione.getText()),
+                    noteNuovaRilevazione.getText()
+            );
+            pazienteDAO.setRilevazioneFarmaco(rilevazioneFarmaco);
+            showSuccessAlert("Inserimento avvenuto con successo!");
+            codiceAicNuovaRilevazione.clear();
+            quantitaNuovaRilevazione.clear();
+            noteNuovaRilevazione.clear();
+            handleRicarica();
+        }
+
+        // GLICEMIA
+        else if (VBoxNuovaRilevazioneGlicemia.isVisible()) {
+            if (valoreNuovaRilevazione.getText().isBlank()) {
+                showError("Inserisci un valore per la glicemia.");
+                return;
+            }
+
+            isPrimaPasto = radioPrimaPasto.isSelected();
+            RilevazioneGlicemia rilevazioneGlicemia = new RilevazioneGlicemia(
+                    Integer.parseInt(idPazienteNuovaRilevazione.getText()),
+                    Timestamp.from(Instant.now()),
+                    Integer.parseInt(valoreNuovaRilevazione.getText()),
+                    isPrimaPasto
+            );
+            pazienteDAO.setRilevazioneGlicemia(rilevazioneGlicemia);
+            showSuccessAlert("Inserimento avvenuto con successo!");
+            valoreNuovaRilevazione.clear();
+            handleRicarica();
+        }
+
+        // SINTOMO
+        else if (VBoxNuovaRilevazioneSintomo.isVisible()) {
+            if (sintomoNuovaRilevazione.getText().isBlank()) {
+                showError("Inserisci un sintomo.");
+                return;
+            }
+
+            RilevazioneSintomo rilevazioneSintomo = new RilevazioneSintomo(
+                    Integer.parseInt(idPazienteNuovaRilevazione.getText()),
+                    Timestamp.from(Instant.now()),
+                    sintomoNuovaRilevazione.getText(),
+                    (int) intensitaSlider.getValue()
+            );
+            pazienteDAO.setRilevazioneSintomo(rilevazioneSintomo);
+            showSuccessAlert("Inserimento avvenuto con successo!");
+            sintomoNuovaRilevazione.clear();
+            intensitaSlider.setValue(1);
+            handleRicarica();
         }
 
         clearInputFields();
     }
+
+
+    private void showError(String message) {
+        statusLabel.setText(message);
+        statusLabel.getStyleClass().setAll("status-label", "error");
+        statusLabel.setVisible(true);
+    }
+
+    private void showSuccessAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Successo");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+
 
 
 
