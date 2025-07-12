@@ -32,4 +32,5 @@ public abstract class Rilevazione {
     public String toString(){
         return "id: " + id + "; idPaziente: " + idPaziente + "; timestamp: " + timestamp;
     }
+
 }

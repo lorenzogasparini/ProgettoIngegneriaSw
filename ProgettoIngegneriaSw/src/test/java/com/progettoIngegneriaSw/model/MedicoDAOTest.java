@@ -6,6 +6,7 @@ import com.progettoingegneriasw.model.Medico.Medico;
 import com.progettoingegneriasw.model.Medico.MedicoDAO;
 import com.progettoingegneriasw.model.Medico.MedicoUser;
 import com.progettoingegneriasw.model.Paziente.Paziente;
+import com.progettoingegneriasw.model.Paziente.PazienteDAO;
 import com.progettoingegneriasw.model.Utils.*;
 import com.progettoingegneriasw.view.ViewNavigator;
 import org.junit.jupiter.api.*;
@@ -13,8 +14,11 @@ import utils.SQLiteTestDatabase;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -292,6 +296,50 @@ public class MedicoDAOTest {
         int count = medicoDAO.countAlerts();
         assertTrue(count >= 0);
     }
+
+    @Test
+    void testGetRilevazioneFormAlert_Farmaco() throws SQLException {
+        Alert[] alerts = medicoDAO.getAllAlerts(AlertFilter.ALL);
+
+        Optional<Alert> optionalAlert = Arrays.stream(alerts)
+                .filter(a -> a.getTipoAlert() == AlertType.farmacoNonAssuntoDa3Giorni)
+                .findFirst();
+
+        assertTrue(optionalAlert.isPresent(), "Nessun alert di tipo farmacoNonAssuntoDa3Giorni trovato");
+
+        Alert alert = optionalAlert.get();
+        Rilevazione result = medicoDAO.getRilevazioneFormAlert(alert);
+
+        assertNotNull(result);
+        assertInstanceOf(RilevazioneFarmaco.class, result);
+
+        RilevazioneFarmaco rf = (RilevazioneFarmaco) result;
+        assertEquals(alert.getIdPaziente(), rf.getIdPaziente());
+        assertEquals(alert.getIdRilevazione(), rf.getId()); // assuming ID matches rilevazione ID
+    }
+
+
+    @Test
+    void testGetRilevazioneFormAlert_Glicemia() throws SQLException {
+        Alert[] alerts = medicoDAO.getAllAlerts(AlertFilter.ALL);
+
+        Optional<Alert> optionalAlert = Arrays.stream(alerts)
+                .filter(a -> a.getTipoAlert() == AlertType.glicemia)
+                .findFirst();
+
+        assertTrue(optionalAlert.isPresent(), "Nessun alert di tipo glicemia trovato");
+
+        Alert alert = optionalAlert.get();
+        Rilevazione result = medicoDAO.getRilevazioneFormAlert(alert);
+
+        assertNotNull(result);
+        assertInstanceOf(RilevazioneGlicemia.class, result);
+
+        RilevazioneGlicemia rg = (RilevazioneGlicemia) result;
+        assertEquals(alert.getIdPaziente(), rg.getIdPaziente());
+        assertEquals(alert.getIdRilevazione(), rg.getId()); // assuming ID matches rilevazione ID
+    }
+
 
 
 }

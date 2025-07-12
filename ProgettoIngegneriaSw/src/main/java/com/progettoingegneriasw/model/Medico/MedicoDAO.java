@@ -10,6 +10,7 @@ import java.sql.*;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class MedicoDAO extends UserDAO {
@@ -785,5 +786,58 @@ public class MedicoDAO extends UserDAO {
     public int countAlerts() throws SQLException {
         return getAllAlerts(AlertFilter.UNREAD).length;
     }
+
+    // restituisce la rilevazione di alert relativi al medico
+    public Rilevazione getRilevazioneFormAlert(Alert alert) {
+        final Rilevazione[] rilevazione = new Rilevazione[1];
+
+
+        if (alert.getTipoAlert().equals(AlertType.farmacoNonAssuntoDa3Giorni)) {
+            String query = "SELECT * FROM rilevazione_farmaco WHERE id = ?";
+
+            super.getConnection().executeQuery(
+                    query,
+                    rs -> {
+                        if (rs.next()) {
+                            rilevazione[0] = new RilevazioneFarmaco(
+                                    rs.getInt("id"),
+                                    rs.getInt("id_paziente"),
+                                    UserDAO.getInstance().getFaracoFromId(rs.getInt("id_farmaco")),
+                                    rs.getTimestamp("timestamp"),
+                                    rs.getDouble("quantita"),
+                                    rs.getString("note")
+                            );
+                        }
+                        return null;
+                    },
+                    alert.getIdRilevazione()
+            );
+        }
+
+        else if (alert.getTipoAlert().equals(AlertType.glicemia)) {
+            String query = "SELECT * FROM rilevazione_glicemia WHERE id = ?";
+
+            super.getConnection().executeQuery(
+                    query,
+                    rs -> {
+                        if (rs.next()) {
+                            rilevazione[0] = new RilevazioneGlicemia(
+                                    rs.getInt("id"),
+                                    rs.getInt("id_paziente"),
+                                    rs.getTimestamp("timestamp"),
+                                    rs.getInt("valore"),
+                                    rs.getBoolean("prima_pasto")
+                            );
+                        }
+                        return null;
+                    },
+                    alert.getIdRilevazione()
+            );
+        }
+
+        return rilevazione[0];
+    }
+
+
 
 }

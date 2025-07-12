@@ -5,13 +5,15 @@ import com.progettoingegneriasw.model.Paziente.Paziente;
 import com.progettoingegneriasw.model.User;
 import com.progettoingegneriasw.model.UserDAO;
 import com.progettoingegneriasw.model.UserType;
+import com.progettoingegneriasw.model.Utils.*;
 import com.progettoingegneriasw.model.Utils.Alert;
-import com.progettoingegneriasw.model.Utils.AlertFilter;
 import com.progettoingegneriasw.view.ViewNavigator;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
@@ -31,14 +33,28 @@ public class AlertsHandlingController {
 
     @FXML private TableView<Alert> tableView;
     @FXML private TableColumn<Alert, Integer> Id;
+    @FXML private TableColumn<Alert, String> gravita;
     @FXML private TableColumn<Alert, String> usernamePaziente;
     @FXML private TableColumn<Alert, Integer> idRilevazione;
     @FXML private TableColumn<Alert, String> tipoAlert;
     @FXML private TableColumn<Alert, Timestamp> timestamp;
     @FXML private TableColumn<Alert, Boolean> letto;
 
+
     public void initialize() throws SQLException {
         Id.setCellValueFactory(new PropertyValueFactory<Alert, Integer>("Id"));
+        gravita.setCellValueFactory(cellData -> {
+            Alert alert = cellData.getValue();
+            Rilevazione rilevazione = MedicoDAO.getInstance().getRilevazioneFormAlert(alert);
+
+            if (rilevazione instanceof RilevazioneGlicemia rg) {
+                int gravita = RilevazioneGlicemia.getGravitaValoreGlicemia(rg);
+                String alertString = "!".repeat(Math.max(0, gravita));
+                return new ReadOnlyObjectWrapper<>(alertString);
+            } else {
+                return new ReadOnlyObjectWrapper<>("");
+            }
+        });
         usernamePaziente.setCellValueFactory(cellData -> new SimpleStringProperty(
                 UserDAO.getInstance().getUser(cellData.getValue().getIdPaziente(), UserType.Paziente).getUsername()
         ));
@@ -46,8 +62,10 @@ public class AlertsHandlingController {
         tipoAlert.setCellValueFactory(new PropertyValueFactory<Alert, String>("tipoAlert"));
         timestamp.setCellValueFactory(new PropertyValueFactory<Alert, Timestamp>("timestamp"));
         letto.setCellValueFactory(new PropertyValueFactory<Alert, Boolean>("letto"));
+
+
         setTimestampFormat();
-        handleRead();
+        setupTableColumnsFactory();
 
         // Imposta valori predefiniti dei filtri
         filtroPazientiCombo.getSelectionModel().select("Tutti i pazienti");
@@ -99,7 +117,7 @@ public class AlertsHandlingController {
 
 
 
-    private void handleRead(){
+    private void setupTableColumnsFactory(){
         letto.setCellFactory(new Callback<TableColumn<Alert, Boolean>, TableCell<Alert, Boolean>>() {
             @Override
             public TableCell<Alert, Boolean> call(TableColumn<Alert, Boolean> param) {
@@ -163,6 +181,25 @@ public class AlertsHandlingController {
                 };
             }
         });
+
+        // set "!" in red and bold based on level of glicemia
+        gravita.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null || item.isEmpty()) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(item);
+                    setStyle("-fx-text-fill: red; -fx-font-weight: bold; -fx-font-size: 30px;");
+                    setAlignment(Pos.CENTER_LEFT); // optional alignment
+                }
+            }
+        });
+
+
     }
 
     @FXML

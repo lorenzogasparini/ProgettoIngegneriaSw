@@ -231,10 +231,8 @@ INSERT INTO "rilevazione_sintomo" VALUES (7,1,'2025-07-03 17:24:50.0','mal di te
 
 INSERT INTO "alert" VALUES (1,2,3,'glicemia','2025-05-17 08:00:00',0);
 INSERT INTO "alert" VALUES (2,1,2,'glicemia','2025-05-16 18:30:00',1);
-INSERT INTO "alert" VALUES (3,1,2,'promemoriaFarmaco','2025-05-15 21:00:00',1);
 INSERT INTO "alert" VALUES (4,2,3,'farmacoNonAssuntoDa3Giorni','2025-05-16 22:00:00',1);
 INSERT INTO "alert" VALUES (5,4,5,'glicemia','2025-05-17 07:00:00',0);
-INSERT INTO "alert" VALUES (6,3,4,'promemoriaFarmaco','2025-05-16 08:00:00',0);
 INSERT INTO "alert" VALUES (7,1,6,'glicemia','2025-05-29 13:28:45.924121088',1);
 INSERT INTO "alert" VALUES (14,4,1,'farmacoNonAssuntoDa3Giorni','2025-06-22 12:02:25.0',1);
 INSERT INTO "alert" VALUES (16,3,2,'farmacoNonAssuntoDa3Giorni','2025-06-22 12:03:03.0',0);

@@ -61,6 +61,7 @@
                         <TableView fx:id="tableView" VBox.vgrow="ALWAYS" onMouseClicked="#clickHandling">
                             <columns>
                                 <TableColumn prefWidth="55.0" text="Id" fx:id="Id" />
+                                <TableColumn prefWidth="100.0" text="Gravità" fx:id="gravita"/>
                                 <TableColumn prefWidth="120.0" text="Paziente" fx:id="usernamePaziente" />
                                 <TableColumn prefWidth="100.0" text="Id rilevazione" fx:id="idRilevazione" />
                                 <TableColumn prefWidth="100.0" text="Tipologia alert" fx:id="tipoAlert" />
