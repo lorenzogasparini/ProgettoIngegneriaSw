@@ -119,7 +119,7 @@ public class ContattaUtenteController {
     private void loadProfileImage(String profileImageName){
         String imagePath = AppConfig.IMAGE_DIR + profileImageName;
 
-        if (imagePath != null && !imagePath.isEmpty()) {
+        if (!imagePath.isEmpty()) {
             File file = new File(imagePath);
             if (file.exists()) {
                 profileImage.setImage(new Image(file.toURI().toString()));

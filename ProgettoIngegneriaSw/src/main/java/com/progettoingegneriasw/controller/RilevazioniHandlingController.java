@@ -318,9 +318,6 @@ public class RilevazioniHandlingController {
     }
 
 
-
-
-
     @FXML
     private void onComboBoxChanged() {
         //  gestire il comportamento del menu a tendina e dei campi della pagina di inserimento in maniera dinamica

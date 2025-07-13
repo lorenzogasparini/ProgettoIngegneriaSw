@@ -71,7 +71,7 @@ public class MedicoDAO extends UserDAO {
      * @param medicoUsername The String-value for the medicoUsername of the intance of MedicoUser
      * @return HashMap that contains all the users observed by the intance of MedicoUser
      */
-    public Paziente[] getPazientiAssegnati(String medicoUsername) throws SQLException { // todo: capire se è giusto far ritornare un Paziente
+    public Paziente[] getPazientiAssegnati(String medicoUsername) throws SQLException { //
         ArrayList<Paziente> pazienti = new ArrayList<>();
         int id_diabetologo = getIdFromDB(medicoUsername);
         if(id_diabetologo == -1) {
@@ -136,7 +136,6 @@ public class MedicoDAO extends UserDAO {
         return patologie.toArray(new Patologia[patologie.size()]);
     }
 
-    // todo: non è chiamata da nessuno, è corretto? In teoria viene fatto tutto dalla terapia?
     public void setPatologiaPaziente(Patologia patologia, String username, Terapia terapia, Date dataDiagnosi, String notePatologia){
         int id_paziente = getIdFromDB(username);
         super.getConnection().executeUpdate(
@@ -627,9 +626,6 @@ public class MedicoDAO extends UserDAO {
         return rilevazioniFarmaci.toArray(new RilevazioneFarmaco[0]);
     }
 
-    //  IMPORTANTE:
-    // todo: gestire il dato id_paziente correttamente nelle query per gli alert, magari usando il metodo apposito per paziente
-    // todo: a cosa serve?
     public Alert[] getAlert() throws SQLException {
         ArrayList<Alert> alerts = new ArrayList<>();
 

@@ -20,7 +20,6 @@ public class PazienteDAO extends UserDAO {
     private final String SQLTableName = "paziente";
     private static PazienteDAO instance = null;
 
-    // todo: capire in che modo renderlo privato per implementare il singleton
     private PazienteDAO() {
         // Init DB connection, maybe from a config class
         super();
@@ -131,7 +130,7 @@ public class PazienteDAO extends UserDAO {
                         " WHERE p.id = ? ",
                 rs -> {
                     while (rs.next()) {
-                        terapieEAssunzioni.put( // todo: sistemare
+                        terapieEAssunzioni.put(
                                 new Terapia(
                                         rs.getInt("id"),
                                         new MedicoUser(

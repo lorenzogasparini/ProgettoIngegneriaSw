@@ -49,7 +49,6 @@ public class PazientiController {
         notePaziente.setCellValueFactory(new PropertyValueFactory<Paziente, String>("notePaziente"));
 
 
-
         // Default filter value
         filtroPazientiCombo.getSelectionModel().select("Solo i miei pazienti");
 

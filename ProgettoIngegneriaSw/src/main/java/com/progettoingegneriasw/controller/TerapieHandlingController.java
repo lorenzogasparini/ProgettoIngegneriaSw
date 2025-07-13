@@ -79,7 +79,7 @@ public class TerapieHandlingController {
 
 
     private void setup() throws SQLException {
-        usernameMedico.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getMedico().getNome())); // todo: capire perchè ritorna lo username (anche se è ciò che voglio) e non il nome con .getNome()
+        usernameMedico.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getMedico().getNome()));
         medicoTextFieldUpdate.setEditable(false);
         dosiGiornaliere.setCellValueFactory(new PropertyValueFactory<Terapia, Integer>("dosiGiornaliere"));
         quantitaPerDose.setCellValueFactory(new PropertyValueFactory<Terapia, Double>("quantitaPerDose"));

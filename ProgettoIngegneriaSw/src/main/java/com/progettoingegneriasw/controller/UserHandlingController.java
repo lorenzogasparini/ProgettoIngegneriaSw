@@ -184,24 +184,6 @@ public class UserHandlingController {
         ViewNavigator.navigateToHandleRilevazioniGlicemia();
     }
 
-    @FXML
-    private void handleLogin() {
-        PazientiController.selectedUser = null;
-        ViewNavigator.navigateToLogin();
-    }
-
-    @FXML
-    private void handleRegister() {
-        PazientiController.selectedUser = null;
-        ViewNavigator.navigateToRegister();
-    }
-
-    @FXML
-    private void handleDashboard() {
-        PazientiController.selectedUser = null;
-        ViewNavigator.navigateToDashboard();
-    }
-
 
     @FXML
     private void showDatiEditBox() {
@@ -239,7 +221,6 @@ public class UserHandlingController {
     private void handleSalvaDatiPaziente() {
         try {
 
-            //todo: consentire la modifica di altri campi?
             Paziente pazienteUpdated = new PazienteUser(
                     PazientiController.selectedUser.getId(),
                     PazientiController.selectedUser.getUsername(),

@@ -17,11 +17,6 @@ public class AppConfig {
     public static final String DEFAULT_IMAGE = "default.png";
     public static final String APPICON_IMAGE = "/icons/app_icon.png";
 
-//    public static final String DATA_DIR = "src/resources/data";
-//    public static final String DATABASE_PATH = DATA_DIR + "/Diabete.db";
-//    public static final String DATABASE_POPULATION_SQL = DATA_DIR + "/populateDiabeteDB.sql";
-//    public static final String DATABASE_CREATION_SQL = DATA_DIR + "/createDiabeteDB_old.sql";
-
 
     // Create data directory if it doesn't exist
     static {

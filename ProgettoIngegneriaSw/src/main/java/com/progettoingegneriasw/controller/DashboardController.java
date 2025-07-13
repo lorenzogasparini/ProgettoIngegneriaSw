@@ -28,9 +28,6 @@ public class DashboardController {
     @FXML private ImageView iconGestioneUtenti;
     @FXML private ImageView iconVisualizzaLog;
 
-// ... repeat for others
-
-
 
     private UserDAO userDAO;
     
@@ -138,14 +135,4 @@ public class DashboardController {
         ViewNavigator.navigateToVisualizzazioneLog();
     }
 
-
-    @FXML
-    private void handleViewProfile() {
-        ViewNavigator.navigateToProfile();
-    }
-    
-    @FXML
-    private void handleLogout() {
-        ViewNavigator.logout();
-    }
 }

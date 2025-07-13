@@ -38,8 +38,6 @@ public class VisualizzazioneLogController {
 
     public void initialize() {
         idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-        //pazienteIdCol.setCellValueFactory(new PropertyValueFactory<>("idPaziente"));
-        //medicoIdCol.setCellValueFactory(new PropertyValueFactory<>("idDiabetologo"));
         pazienteUsernameCol.setCellValueFactory(cellData -> {
             ///  se il paziente non è presente sulla tabella log è presente il valore id_paziente = 00
             Integer idPaziente = cellData.getValue().getIdPaziente();

@@ -20,14 +20,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 public class RilevazioniGlicemiaHandlingController {
-    @FXML
-    private Button loginButton;
 
-    @FXML
-    private Button registerButton;
-
-    @FXML
-    private Label labelRisultato;
+    @FXML private Label labelRisultato;
 
     @FXML private TableView<RilevazioneGlicemia> tableViewRilevazioni;
     @FXML private TableColumn<RilevazioneGlicemia, Integer> id;
@@ -53,11 +47,8 @@ public class RilevazioniGlicemiaHandlingController {
         primaPasto.setCellValueFactory(new PropertyValueFactory<RilevazioneGlicemia, Boolean>("primaPasto"));
 
         MedicoDAO medicoDAO = MedicoDAO.getInstance();
-
         RilevazioneGlicemia[] rilevazioniGlicemia = medicoDAO.getRilevazioniGlicemia(PazientiController.selectedUser.getUsername());
-
         rilglicemia = FXCollections.observableArrayList(rilevazioniGlicemia);
-
         tableViewRilevazioni.setItems(rilglicemia);
         visualizzaGrafico();
     }
@@ -68,45 +59,11 @@ public class RilevazioniGlicemiaHandlingController {
         xAxis.setLabel("Data");
 
         XYChart.Series series = new XYChart.Series();
-        //  series.setName("Ano: 2018");
 
         for(RilevazioneGlicemia ril : rilglicemia){
             series.getData().add(new XYChart.Data<>(ril.getTimestamp().toString(), ril.getValore()));
         }
 
-        /*
-        series.getData().add(new XYChart.Data("Jan", 23));
-        series.getData().add(new XYChart.Data("Feb", 14));
-        series.getData().add(new XYChart.Data("Mar", 15));
-        series.getData().add(new XYChart.Data("Apr", 24));
-        series.getData().add(new XYChart.Data("May", 34));
-        series.getData().add(new XYChart.Data("Jun", 36));
-        series.getData().add(new XYChart.Data("Jul", 22));
-        series.getData().add(new XYChart.Data("Aug", 45));
-        series.getData().add(new XYChart.Data("Sep", 43));
-        series.getData().add(new XYChart.Data("Oct", 17));
-        series.getData().add(new XYChart.Data("Nov", 29));
-        series.getData().add(new XYChart.Data("Dec", 25));
-        */
-
-        /*
-        XYChart.Series series2 = new XYChart.Series();
-        series2.setName("Ano: 2019");
-        series2.getData().add(new XYChart.Data("Jan", 28));
-        series2.getData().add(new XYChart.Data("Feb", 17));
-        series2.getData().add(new XYChart.Data("Mar", 19));
-        series2.getData().add(new XYChart.Data("Apr", 14));
-        series2.getData().add(new XYChart.Data("May", 20));
-        series2.getData().add(new XYChart.Data("Jun", 42));
-        series2.getData().add(new XYChart.Data("Jul", 27));
-        series2.getData().add(new XYChart.Data("Aug", 48));
-        series2.getData().add(new XYChart.Data("Sep", 47));
-        series2.getData().add(new XYChart.Data("Oct", 19));
-        series2.getData().add(new XYChart.Data("Nov", 39));
-        series2.getData().add(new XYChart.Data("Dec", 29));
-        */
-
-        //  lineChart.getData().addAll(series, series2);
         lineChart.getData().add(series);
         lineChart.setAnimated(false);
         lineChart.setLegendVisible(false);
@@ -144,21 +101,4 @@ public class RilevazioniGlicemiaHandlingController {
         });
     }
 
-    @FXML
-    private void handleLogin() {
-        PazientiController.selectedUser = null;
-        ViewNavigator.navigateToLogin();
-    }
-
-    @FXML
-    private void handleRegister() {
-        PazientiController.selectedUser = null;
-        ViewNavigator.navigateToRegister();
-    }
-
-    @FXML
-    private void handleDashboard() {
-        PazientiController.selectedUser = null;
-        ViewNavigator.navigateToDashboard();
-    }
 }

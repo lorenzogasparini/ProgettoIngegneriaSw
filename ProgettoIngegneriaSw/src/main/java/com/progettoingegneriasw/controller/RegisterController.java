@@ -28,7 +28,7 @@ public class RegisterController {
     
     @FXML private Label statusLabel;
     @FXML private RadioButton radioPaziente, radioMedico, radioAdmin;
-    private ToggleGroup userTypeGroup = new ToggleGroup();
+    private final ToggleGroup userTypeGroup = new ToggleGroup();
     @FXML private VBox pazienteVBox, medicoVBox;
 
     @FXML private ComboBox<Medico> diabetologoComboBox;

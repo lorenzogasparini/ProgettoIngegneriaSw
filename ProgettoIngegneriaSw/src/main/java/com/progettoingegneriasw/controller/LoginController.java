@@ -45,12 +45,7 @@ public class LoginController {
             showError("Invalid username or password");
         }
     }
-    
-    @FXML
-    private void handleRegister() {
-        ViewNavigator.navigateToRegister();
-    }
-    
+
     private void showError(String message) {
         statusLabel.setText(message);
         statusLabel.setStyle("-fx-text-fill: red;");

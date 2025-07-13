@@ -19,31 +19,6 @@
       </Label>
       <Label text="Autenticati per accedere all'utilizzo del sistema di telemedicina." wrapText="true" />
 
-      <!-- observableArrayList
-      <VBox spacing="10.0">
-         <children>
-            <Label text="Features:">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <ListView prefHeight="200.0" managed="true" mouseTransparent="true" 
-                      focusTraversable="false" style="-fx-background-color: transparent;">
-               <items>
-                  <javafx.collections.FXCollections fx:factory="observableArrayList">
-                     <String fx:value="Multiple pages with navigation" />
-                     <String fx:value="User authentication with login/logout" />
-                     <String fx:value="Dynamic navigation based on login status" />
-                     <String fx:value="Protected routes for authenticated users only" />
-                     <String fx:value="Model-View-Controller architecture" />
-                     <String fx:value="CSV-based user data storage" />
-                  </javafx.collections.FXCollections>
-               </items>
-            </ListView>
-         </children>
-      </VBox>
-      -->
-
       <HBox spacing="10.0" alignment="CENTER">
          <children>
             <Hyperlink fx:id="loginButton" mnemonicParsing="false" onAction="#handleLogin" text="Log-in" />

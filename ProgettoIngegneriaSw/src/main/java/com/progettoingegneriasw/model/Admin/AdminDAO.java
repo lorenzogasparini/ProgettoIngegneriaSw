@@ -38,13 +38,11 @@ public class AdminDAO extends UserDAO {
         return SQLTableName;
     }
 
-    // todo: aggiungi i metodi per l'Admin
-
     /*
     /**
      * Delete a user from the DB (just the Admin is allowed to do perform this operation)
      */
-    public void deleteUser(String username) { // todo: da testare
+    public void deleteUser(String username) {
 
         User user;
 

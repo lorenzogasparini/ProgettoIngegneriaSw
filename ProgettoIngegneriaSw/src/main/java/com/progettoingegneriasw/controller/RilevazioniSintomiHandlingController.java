@@ -13,20 +13,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 public class RilevazioniSintomiHandlingController {
-    @FXML
-    private Button loginButton;
-
-    @FXML
-    private Button registerButton;
-
-    @FXML
-    private Label label1;
-    @FXML
-    private Label label2;
-    @FXML
-    private Label label3;
-    @FXML
-    private Label label4;
 
     @FXML private TableView<RilevazioneSintomo> tableViewRilevazioni;
     @FXML private TableColumn<RilevazioneSintomo, Integer> id;
@@ -35,12 +21,6 @@ public class RilevazioniSintomiHandlingController {
     @FXML private TableColumn<RilevazioneSintomo, Timestamp> timestamp;
 
     public void initialize() throws SQLException {
-        /*
-        label1.setText(TestController.selectedUser.getNome() + ", " + TestController.selectedUser.getCognome() + ", " + TestController.selectedUser.getDataNascita());
-        label2.setText(TestController.selectedUser.getEmail());
-        label3.setText("Peso: " + TestController.selectedUser.getPeso() + " Kg");
-        label4.setText("Note: " + TestController.selectedUser.getNotePaziente());
-        */
 
         id.setCellValueFactory(new PropertyValueFactory<RilevazioneSintomo, Integer>("id"));
         timestamp.setCellValueFactory(new PropertyValueFactory<RilevazioneSintomo, Timestamp>("timestamp"));
@@ -72,23 +52,5 @@ public class RilevazioniSintomiHandlingController {
                 }
             }
         });
-    }
-
-    @FXML
-    private void handleLogin() {
-        PazientiController.selectedUser = null;
-        ViewNavigator.navigateToLogin();
-    }
-
-    @FXML
-    private void handleRegister() {
-        PazientiController.selectedUser = null;
-        ViewNavigator.navigateToRegister();
-    }
-
-    @FXML
-    private void handleDashboard() {
-        PazientiController.selectedUser = null;
-        ViewNavigator.navigateToDashboard();
     }
 }

@@ -39,34 +39,7 @@ public class TerapieController {
         refreshAssunzioni();
         handleAssunzioni();
 
-
-        //setupTable();
     }
-
-    /**
-     * Da terminare: si deve fare attenzione al fatto che un farmaco può essere stato assunto ma
-     * essendo potenzialmente presente in più terapie si deve valutare anche la quantità assunta
-     * al fine di stabilire se la terapia è stata assunta e quindi debba essere indicata in grigio nella tabella
-     */
-//    @FXML
-//    private void setupTable() { // todo: da cancellare?
-//        PazienteDAO pazienteDAO = PazienteDAO.getInstance();
-//        tableViewTerapie.setRowFactory(tv -> new TableRow<Terapia>() {
-//            @Override
-//            protected void updateItem(Terapia terapia, boolean empty) {
-//                super.updateItem(terapia, empty);
-//                try {
-//                    if (pazienteDAO.getFarmacoAssuntoOggi(terapia.getFarmaco())) {
-//                        setStyle("-fx-background-color: #dddddd; -fx-text-fill: #666666;");
-//                    }
-//                } catch (SQLException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            }
-//        });
-//    }
-
-
 
     private void handleAssunzioni(){
         assunto.setCellFactory(column -> new TableCell<Terapia, Boolean>() {
@@ -160,8 +133,4 @@ public class TerapieController {
 
         new Thread(task).start();
     }
-
-
-
-
 }

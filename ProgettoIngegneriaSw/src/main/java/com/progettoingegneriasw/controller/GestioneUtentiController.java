@@ -59,7 +59,7 @@ public class GestioneUtentiController {
     @FXML private TextArea updateNotePazienteField;
 
 
-    private UserDAO userDAO = UserDAO.getInstance();
+    private final UserDAO userDAO = UserDAO.getInstance();
 
     public void initialize() throws SQLException {
         setupDeleteButton();
@@ -217,7 +217,6 @@ public class GestioneUtentiController {
                     successAlert.setTitle("Successo");
                     successAlert.setHeaderText("Utente eliminato con successo");
                     successAlert.setContentText("L'utente " + selectedUser.getUsername() + " è stato eliminato.");
-                    // successAlert.getDialogPane().getStyleClass().add("alert-success"); // todo: capire perché non funziona
                     successAlert.showAndWait();
 
                     refreshTable();
@@ -228,7 +227,6 @@ public class GestioneUtentiController {
                     errorAlert.setTitle("Errore");
                     errorAlert.setHeaderText("Errore durante l'eliminazione");
                     errorAlert.setContentText("Impossibile eliminare l'utente. Riprovare.");
-                    // errorAlert.getDialogPane().getStyleClass().add("alert-danger"); // todo: capire perché non funziona
                     errorAlert.showAndWait();
 
                     e.printStackTrace();
@@ -334,7 +332,7 @@ public class GestioneUtentiController {
     private void loadProfileImage(String profileImageName){
         String imagePath = AppConfig.IMAGE_DIR + profileImageName;
 
-        if (imagePath != null && !imagePath.isEmpty()) {
+        if (!imagePath.isEmpty()) {
             File file = new File(imagePath);
             if (file.exists()) {
                 profileImage.setImage(new Image(file.toURI().toString()));

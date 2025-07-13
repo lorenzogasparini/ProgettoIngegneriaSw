@@ -166,7 +166,7 @@ public class ProfileController {
      */
     private void showError(String message) {
         statusLabel.setText(message);
-        statusLabel.setStyle("-fx-text-fill: red;"); // todo: il bordo resta verde in caso di errore
+        statusLabel.setStyle("-fx-text-fill: red; -fx-border-color: red; -fx-background-color: #ffe6e6;");
         statusLabel.setVisible(true);
         statusLabel.setManaged(true);
     }
@@ -241,8 +241,5 @@ public class ProfileController {
         };
         new Thread(task).start();
     }
-
-
-
 
 }
