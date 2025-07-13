@@ -7,10 +7,8 @@ import com.progettoingegneriasw.model.Utils.*;
 import com.progettoingegneriasw.view.ViewNavigator;
 
 import java.sql.*;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class MedicoDAO extends UserDAO {
@@ -802,7 +800,7 @@ public class MedicoDAO extends UserDAO {
                             rilevazione[0] = new RilevazioneFarmaco(
                                     rs.getInt("id"),
                                     rs.getInt("id_paziente"),
-                                    UserDAO.getInstance().getFaracoFromId(rs.getInt("id_farmaco")),
+                                    UserDAO.getInstance().getFarmacoFromId(rs.getInt("id_farmaco")),
                                     rs.getTimestamp("timestamp"),
                                     rs.getDouble("quantita"),
                                     rs.getString("note")

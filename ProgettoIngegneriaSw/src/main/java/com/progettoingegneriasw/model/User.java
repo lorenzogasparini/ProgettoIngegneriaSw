@@ -32,21 +32,6 @@ public abstract class User implements UserInterface{
     }
 
 
-    // todo: capire se utilizzare al posto di questo create saveUser() contenuto in UserDAO
-//    /**
-//     * Factory method to create a new user
-//     *
-//     * @param username The user's username
-//     * @param password The user's password
-//     * @return A new User object
-//     */
-//    public static User create(String username, String password, String nome, String cognome) {
-//        User user =  new User(username, password, nome, cognome);
-//        UserDAO userDAO = UserDAO.getInstance();
-//
-//        return user;
-//    }
-    
     /**
      * Verify if the provided password matches the stored password
      * 
@@ -122,10 +107,9 @@ public abstract class User implements UserInterface{
                 "; cognome: " + cognome;
     }
 
-    // todo: rimuovere quando si rende User stratta
+
     @Override
-    public String getSQLTableName() {
-        return "";
-    }
+    public abstract String getSQLTableName();
+
 
 }

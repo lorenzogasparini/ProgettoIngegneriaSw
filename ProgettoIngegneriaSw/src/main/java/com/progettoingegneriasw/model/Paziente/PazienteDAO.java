@@ -103,7 +103,7 @@ public class PazienteDAO extends UserDAO {
         int id_paziente = getIdFromDB(username);
         Map<Terapia, Boolean> terapieEAssunzioni = new HashMap<>();
         if(id_paziente == -1) {
-            throw new SQLException();   // todo: verificare se si tratta della giusta eccezione
+            throw new SQLException();
         }
 
         super.getConnection().executeQuery(

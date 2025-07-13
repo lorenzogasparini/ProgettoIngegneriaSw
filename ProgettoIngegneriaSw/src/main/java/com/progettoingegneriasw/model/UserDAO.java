@@ -371,7 +371,6 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
     }
 
 
-    //todo: quando UserDAO sarà astratto togliere il codice da qui e definire questa funzione solo nei figli
     public String getSQLTableName(){
         return "";
     }
@@ -486,7 +485,7 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
         return users.toArray(new User[users.size()]);
     }
 
-    public Farmaco getFaracoFromId(Integer idFarmaco){
+    public Farmaco getFarmacoFromId(Integer idFarmaco){
         return getConnection().executeQuery(
                 "SELECT * FROM farmaco WHERE id = ?",
                 rs -> {

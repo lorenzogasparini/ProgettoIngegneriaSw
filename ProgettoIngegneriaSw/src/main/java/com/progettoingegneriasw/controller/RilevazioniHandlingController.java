@@ -471,7 +471,7 @@ public class RilevazioniHandlingController {
             Task<String> task = new Task<>() {
                 @Override
                 protected String call() throws Exception {
-                    return pazienteDAO.getFaracoFromId(id).getCodiceAic();
+                    return pazienteDAO.getFarmacoFromId(id).getCodiceAic();
                 }
             };
             task.setOnSucceeded(e -> codiceAicNuovaRilevazione.setText(task.getValue()));

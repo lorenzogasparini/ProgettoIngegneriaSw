@@ -123,7 +123,7 @@ public class UserDAOTest {
 
     @Test
     void testGetFarmacoFromIdAndAic() {
-        Farmaco f1 = userDAO.getFaracoFromId(1);
+        Farmaco f1 = userDAO.getFarmacoFromId(1);
         assertNotNull(f1);
 
         Farmaco f2 = userDAO.getFarmacoFromAic("012345678");

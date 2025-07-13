@@ -290,7 +290,7 @@ public class TerapieHandlingController {
 
             Terapia ter = new Terapia(
                     loggedMedico,
-                    medicoDAO.getFaracoFromId(idFarmacoSelezionato),
+                    medicoDAO.getFarmacoFromId(idFarmacoSelezionato),
                     Integer.parseInt(doseGiornaliereTextFieldInsert.getText()),
                     Double.parseDouble(quantitaPerDoseTextFieldInsert.getText()),
                     note2.getText() == null ? "" : note2.getText().trim()
@@ -363,7 +363,7 @@ public class TerapieHandlingController {
             Terapia updatedTerapia = new Terapia(
                     selectedTerapia.getId(),
                     loggedMedico,
-                    medicoDAO.getFaracoFromId(idFarmacoSelezionato),
+                    medicoDAO.getFarmacoFromId(idFarmacoSelezionato),
                     Integer.parseInt(dosiGiornaliereTextFieldUpdate.getText()),
                     Double.parseDouble(quantitaPerDoseTextFieldUpdate.getText()),
                     noteUpdate.getText() == null ? "" : noteUpdate.getText().trim()
