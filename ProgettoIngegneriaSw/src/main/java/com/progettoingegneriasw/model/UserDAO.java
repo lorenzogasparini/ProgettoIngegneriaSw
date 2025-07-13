@@ -18,10 +18,10 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class UserDAO { // todo: è corretto rendere questa classe abstract???
+public class UserDAO {
     private DatabaseManager dbManager;
     private static UserDAO instance;
-    public static User loggedUser; // this contains the current logged user; //todo: capire dove metterlo
+    public static User loggedUser; // this contains the current logged user;
 
     protected UserDAO() {
         this.dbManager = new DatabaseManager();
@@ -40,11 +40,6 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
         return instance;
     }
 
-    // todo: capire quando chiamare questo metodo (probabilmente dopo che l'utente si logga) e metterlo private finiti i test
-    //  forse non è necessario
-    public void refreshLoggedUser(User currUser){
-        loggedUser = currUser;
-    }
 
     public static boolean userIsLogged(){
         return loggedUser != null;
@@ -193,8 +188,6 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
             e.printStackTrace();
         }
     }
-
-
 
 
     /**
@@ -554,20 +547,17 @@ public class UserDAO { // todo: è corretto rendere questa classe abstract???
         }
     }
 
-    // todo: questo metodo andrebbe reso astratto e ridefinito solo in PazienteDAO e MedicoDAO
-    public int countAlerts() throws SQLException { // todo: da ridefinire in PazienteDAO perché deve prendere solo gli alert con
+
+    public int countAlerts() throws SQLException {
         return 0;
     }
 
-    // todo: verificare se ci sono pazienti che non assumono i farmaci che dovrebbero da più di 3 giorni
     /// in un sistema CLIENT-SERVER questo metodo verrebbe chiamato ripetutamente dal server (qui per maggiore efficienza
     /// lo facciamo chiamare da un solo client tramite un file .lck
     public void automaticUpdateAlertTable() throws SQLException {
 
         Alert[] alerts = getAlertFarmaciNonAssuntiDaAlmeno3GiorniENonSegnalati();
-
         insertAlerts(alerts);
-
     }
 
     public Alert[] getAlertFarmaciNonAssuntiDaAlmeno3GiorniENonSegnalati(){

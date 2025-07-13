@@ -33,8 +33,6 @@ public class NavBar extends HBox {
     private Image imgAlert = new Image("file:" + AppConfig.ICON_DIR + "buttonIcons/alertIcon.png");
     private Image imgLogout = new Image("file:" + AppConfig.ICON_DIR + "buttonIcons/logoutIcon.png");
     private Image imgLogin = new Image("file:" + AppConfig.ICON_DIR + "buttonIcons/loginIcon.png");
-    private Image imgAdd = new Image("file:" + AppConfig.ICON_DIR + "buttonIcons/addIcon.png");
-    private Image imgReload = new Image("file:" + AppConfig.ICON_DIR + "buttonIcons/reloadIcon.png");
 
     private Button backbutton;
     private Button dashboardBtn;
@@ -62,17 +60,6 @@ public class NavBar extends HBox {
         this.setStyle("-fx-background-color: #2a9d8f;");
         this.setAlignment(javafx.geometry.Pos.CENTER);
 
-        //  Label brandLabel = new Label("Dash App");
-        //  brandLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 18px;");
-        //  this.getChildren().add(brandLabel);
-        
-        // Spacer
-        /*
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-        this.getChildren().add(spacer);
-        */
-
         // Create buttons based on authentication status
         if (isAuthenticated) {
             createAuthenticatedNavButtons();
@@ -85,21 +72,9 @@ public class NavBar extends HBox {
      * Create navigation buttons for authenticated users
      */
     private void createAuthenticatedNavButtons() {
-        /*
-        // Crea il bottone con testo + icona
-        Button btn = new Button("Profile", icon);
-        btn.setGraphicTextGap(5); // spazio tra testo e icona
-        */
 
-
-        //  Button homeBtn = createNavButton("Home", e -> ViewNavigator.navigateToHome());
         backbutton = createNavButton("Back", e -> ViewNavigator.navigateBack(), imgBack);
         dashboardBtn = createNavButton("Dashboard", e -> ViewNavigator.navigateToDashboard(), imgDashboard);
-
-        
-        //  Label userLabel = new Label("Hello, " + username);
-        //  userLabel.setStyle("-fx-text-fill: white;");
-
         profileBtn = createNavButton("Profile", e -> ViewNavigator.navigateToProfile(), imgProfile);
         logoutBtn = createNavButton("Logout", e -> ViewNavigator.logout(), imgLogout);
         alertBtn = createNavButton("Alerts", e -> ViewNavigator.navigateToAlerts(), imgAlert);
@@ -122,7 +97,6 @@ public class NavBar extends HBox {
     private void createUnauthenticatedNavButtons() {
         Button homeBtn = createNavButton("Home", e -> ViewNavigator.navigateToHome(), imgDashboard);
         Button loginBtn = createNavButton("Login", e -> ViewNavigator.navigateToLogin(), imgLogin);
-        //  Button registerBtn = createNavButton("Register", e -> ViewNavigator.navigateToRegister());
 
         this.getChildren().addAll(homeBtn, loginBtn/*, registerBtn*/);
     }
@@ -149,11 +123,6 @@ public class NavBar extends HBox {
             button.setStyle("-fx-background-color: #21867a; -fx-border-width: 1; -fx-background-radius: 50 50 50 50; -fx-text-fill: white; -fx-cursor: hand;"));
         button.setOnMouseExited(e ->
             button.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-cursor: hand;"));
-
-        /*
-        button.setOnMouseClicked(e ->
-            button.setStyle("-fx-background-color: #f5f5f5; -fx-text-fill: #21867a; -fx-border-width: 1; -fx-background-radius: 20 20 0 0; -fx-padding: 8;"));
-        */
 
         return button;
     }

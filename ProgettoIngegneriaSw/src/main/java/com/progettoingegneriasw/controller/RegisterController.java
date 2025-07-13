@@ -169,12 +169,6 @@ public class RegisterController {
     }
 
 
-
-    @FXML
-    private void handleBackToLogin() {
-        ViewNavigator.navigateToLogin();
-    }
-
     private void showError(String message) {
         statusLabel.setText(message);
         statusLabel.setVisible(true);
