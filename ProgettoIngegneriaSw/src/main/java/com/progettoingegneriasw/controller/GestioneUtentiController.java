@@ -35,11 +35,9 @@ public class GestioneUtentiController {
 
     @FXML private ScrollPane ScrollPaneGestioneUtente;
     @FXML private VBox VBoxGestioneUtente;
-    @FXML private VBox VBoxDestinatario;
     @FXML private ImageView profileImage;
     @FXML private Button deleteButton;
     @FXML private User selectedUser;
-    @FXML private TextField emailDestinatario;
 
     @FXML private VBox updateUserBox;
     @FXML private VBox medicoFieldsBox;
@@ -92,11 +90,6 @@ public class GestioneUtentiController {
         VBoxGestioneUtente.setVisible(true);
         VBoxGestioneUtente.setManaged(true);
 
-        VBoxDestinatario.setVisible(true);
-        VBoxDestinatario.setManaged(true);
-
-        emailDestinatario.setVisible(true);
-        emailDestinatario.setManaged(true);
     }
 
 
@@ -125,7 +118,6 @@ public class GestioneUtentiController {
                 if (selectedUser.isMedico()) {
                     MedicoUser medico = (MedicoUser) userDAO.getUser(selectedUser.getUsername());
                     loadProfileImage(medico.getProfileImageName());
-                    emailDestinatario.setText(medico.getEmail());
 
                     medicoFieldsBox.setVisible(true);
                     medicoFieldsBox.setManaged(true);
@@ -134,7 +126,6 @@ public class GestioneUtentiController {
                 else if (selectedUser.isPaziente()) {
                     PazienteUser paziente = (PazienteUser) userDAO.getUser(selectedUser.getUsername());
                     loadProfileImage(paziente.getProfileImageName());
-                    emailDestinatario.setText(paziente.getEmail());
 
                     pazienteFieldsBox.setVisible(true);
                     pazienteFieldsBox.setManaged(true);

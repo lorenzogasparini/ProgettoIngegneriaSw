@@ -72,13 +72,17 @@ public class RegisterController {
         String username = usernameField.getText();
         String password = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
+        String nome = nomeField.getText();
+        String cognome = cognomeField.getText();
 
+        // Check user type selected
         if (userTypeGroup.getSelectedToggle() == null) {
             showError("Seleziona un tipo di utente da inserire");
             return;
         }
 
-        if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+        // Check common fields
+        if (username.isBlank() || password.isBlank() || confirmPassword.isBlank() || nome.isBlank() || cognome.isBlank()) {
             showError("Compila tutti i campi obbligatori");
             return;
         }
@@ -93,62 +97,58 @@ public class RegisterController {
             return;
         }
 
-        String nome = nomeField.getText();
-        String cognome = cognomeField.getText();
-
         if (radioPaziente.isSelected()) {
-            // Campi specifici paziente
             String email = emailPazienteField.getText();
             String provincia = provinciaField.getText();
             String comune = comuneField.getText();
             LocalDate dataNascita = dataNascitaPicker.getValue();
-            String notePaziente = "";
-            String profileImageName = AppConfig.DEFAULT_IMAGE;
+            String pesoText = pesoField.getText();
+            Medico diabetologo = diabetologoComboBox.getValue();
+
+            if (email.isBlank() || provincia.isBlank() || comune.isBlank() || dataNascita == null || pesoText.isBlank() || diabetologo == null) {
+                showError("Compila tutti i campi obbligatori del paziente");
+                return;
+            }
 
             double peso;
             try {
-                peso = Double.parseDouble(pesoField.getText());
+                peso = Double.parseDouble(pesoText);
             } catch (NumberFormatException e) {
                 showError("Peso non valido");
                 return;
             }
 
-            Medico diabetologo = diabetologoComboBox.getValue();
-            if (diabetologo == null) {
-                showError("Seleziona un diabetologo di riferimento");
-                return;
-            }
-
-            Integer idDiabetologo = diabetologo.getId();
-
             PazienteUser newPaziente = new PazienteUser(
                     username, password, nome, cognome, email,
-                    idDiabetologo,
+                    diabetologo.getId(),
                     Date.valueOf(dataNascita),
                     peso,
                     provincia,
                     comune,
-                    notePaziente,
-                    profileImageName
+                    "", // notePaziente
+                    AppConfig.DEFAULT_IMAGE
             );
-
             userDAO.saveUser(newPaziente);
-        } else if (radioMedico.isSelected()) {
-            // Campi specifici medico
-            String email = emailMedicoField.getText();
-            String profileImageName = AppConfig.DEFAULT_IMAGE;
 
-            MedicoUser newMedico = new MedicoUser(username, password, nome, cognome, email, profileImageName);
+        } else if (radioMedico.isSelected()) {
+            String email = emailMedicoField.getText();
+            if (email.isBlank()) {
+                showError("Inserisci l'email del medico");
+                return;
+            }
+
+            MedicoUser newMedico = new MedicoUser(username, password, nome, cognome, email, AppConfig.DEFAULT_IMAGE);
             userDAO.saveUser(newMedico);
 
         } else if (radioAdmin.isSelected()) {
-            // Campi admin (nessun campo extra richiesto)
-            userDAO.saveUser(new AdminUser(username, password, nome, cognome));
+            AdminUser newAdmin = new AdminUser(username, password, nome, cognome);
+            userDAO.saveUser(newAdmin);
         }
 
         showSuccess("Utente registrato con successo!");
         clearForm();
     }
+
 
     private void clearForm() {
         usernameField.clear();

@@ -80,9 +80,9 @@ public class UserDAO {
                                 "profile_image_name) VALUES (?, ?, ?, ?, ?, ?)",
                         medico.getUsername(),
                         medico.getPassword(),
-                        medico.getEmail(),
                         medico.getNome(),
                         medico.getCognome(),
+                        medico.getEmail(),
                         medico.getProfileImageName()
                 );
                 setLog(new Log(null, medicoId, LogAction.SaveUser, null));
@@ -352,7 +352,13 @@ public class UserDAO {
 
     public boolean isUserDeleted(String username) {
         String tableName = getUser(username).getSQLTableName();
+        User user = getUser(username);
+
+        if(user.isAdmin())
+            return false; // admin users cannot be deleted
+
         String query = "SELECT 1 FROM " + tableName + " WHERE username = ? AND deleted = true";
+
 
         Boolean result = getConnection().executeQuery(
                 query,

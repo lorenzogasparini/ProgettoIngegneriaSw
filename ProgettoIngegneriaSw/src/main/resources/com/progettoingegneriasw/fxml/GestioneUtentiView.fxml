@@ -104,12 +104,6 @@
                                     </VBox>
                                 </HBox>
 
-                                <!-- Email -->
-                                <VBox spacing="10.0" fx:id="VBoxDestinatario" visible="false" managed="false">
-                                    <Label styleClass="form-label" text="Email destinatario" />
-                                    <TextField fx:id="emailDestinatario" promptText="Inserisci email destinatario" styleClass="form-control" />
-                                </VBox>
-
                                 <!-- Update User Fields -->
                                 <VBox spacing="10" fx:id="updateUserBox" visible="false" managed="false">
                                     <Label text="Modifica dati utente" styleClass="form-label" />
