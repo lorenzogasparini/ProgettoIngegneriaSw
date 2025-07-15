@@ -15,7 +15,7 @@ import com.progettoingegneriasw.view.ViewNavigator;
 import java.sql.Date;
 import java.util.ArrayList;
 
-public class AdminDAO extends UserDAO {
+public class AdminDAO extends UserDAO implements AdminDAOInterface{
 
     private final String SQLTableName = "amministratore";
     private static AdminDAO instance = null;

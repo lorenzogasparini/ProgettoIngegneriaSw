@@ -236,9 +236,8 @@ public class UserHandlingController {
                     noteArea.getText(),
                     PazientiController.selectedUser.getProfileImageName()
             );
-
             UserDAO.getInstance().saveUser((User) pazienteUpdated);
-
+            PazientiController.selectedUser = pazienteUpdated;
             showDatiViewBox(pazienteUpdated);
 
 

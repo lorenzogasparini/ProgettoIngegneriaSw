@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class MedicoDAO extends UserDAO {
+public class MedicoDAO extends UserDAO implements MedicoDAOInterface{
 
     private final String SQLTableName = "diabetologo";
     private static MedicoDAO instance = null;

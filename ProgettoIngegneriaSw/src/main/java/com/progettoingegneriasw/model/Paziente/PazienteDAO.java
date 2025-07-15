@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Paziente Model is the DAO (Data Access Object) class
  */
-public class PazienteDAO extends UserDAO {
+public class PazienteDAO extends UserDAO implements PazienteDAOInterface{
 
     private final String SQLTableName = "paziente";
     private static PazienteDAO instance = null;
@@ -255,6 +255,7 @@ public class PazienteDAO extends UserDAO {
         );
     }
 
+    @Override
     public int countAlerts() throws SQLException {
         return this.countAlerts(ViewNavigator.getAuthenticatedUsername());
     }

@@ -18,7 +18,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class UserDAO {
+public class UserDAO implements DAOInterface, UserDAOInterface{
     private DatabaseManager dbManager;
     private static UserDAO instance;
     public static User loggedUser; // this contains the current logged user;
