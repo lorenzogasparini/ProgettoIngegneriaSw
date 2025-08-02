@@ -6,7 +6,7 @@
 [![Unlicense License][license-shield]][license-url]
 ![java-shield]
 
-[Funzioni da implementare](https://gist.github.com/AndreaPellizzari/7df0bee0c5017cf846bf2cb3f5d8702c)
+<!-- [Funzioni da implementare](https://gist.github.com/AndreaPellizzari/7df0bee0c5017cf846bf2cb3f5d8702c) -->
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -54,7 +54,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-Elaborato conclusivo del corso di Ingegneria del Software per l'anno accademico A.A.
+Elaborato conclusivo del corso di Ingegneria del Software per l'anno accademico 2024/2025.
 
 There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
 
@@ -108,11 +108,11 @@ _Per ulteriori informazioni rispetto l'utilizzo del sistema software consultare 
 ## Roadmap
 
 - [x] Progettazione e documentazione della fase di progettazione
-- [ ] Fase di sviluppo
-- [ ] Documentazione fase di sviluppo
-- [ ] Testing
-- [ ] Documentazione testing
-- [ ] Rilascio
+- [X] Fase di sviluppo
+- [X] Documentazione fase di sviluppo
+- [X] Testing
+- [X] Documentazione testing
+- [X] Rilascio
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -132,7 +132,7 @@ Don't forget to give the project a star! Thanks again!
 
 <a href="https://github.com/lorenzogasparini/ProgettoIngegneriaSw/graphs/contributors">
   <!-- <img src="https://contrib.rocks/image?repo=lorenzogasparini/ProgettoIngegneriaSw" alt="contrib.rocks image" /> -->
-  <img src="https://contrib.rocks/image?repo=AndreaPellizzari/FlutterScala" />
+  <img src="https://contrib.rocks/image?repo=lorenzogasparini/ProgettoIngegneriaSw" />
 </a>
 
 <!-- LICENSE -->
