@@ -1,6 +1,5 @@
 <a id="readme-top"></a>
 [![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![Unlicense License][license-shield]][license-url]
@@ -14,6 +13,8 @@
 
   <p align="center">
     Elaborato conclusivo del corso di Ingegneria del Software: Servizio clinico per la gestione di pazienti diabetici.
+    <br />
+    <i>Final project for the a.y. 2024-2025 Software Engineering course: Clinical service for the management of diabetic patients.</i>
     <br />
     <br />
     <a href="https://github.com/lorenzogasparini/ProgettoIngegneriaSw/tree/main/doc"><strong>Explore the docs »</strong></a>
@@ -55,6 +56,14 @@
 ## About The Project
 
 Elaborato conclusivo del corso di Ingegneria del Software per l'anno accademico 2024/2025.
+
+The project aims to supply a diabetes patients managing software platform (type 2 diabetes mellitus). 
+
+Diabetes is a chronic metabolic disease characterised by high blood glucose levels. The users of the system are therefore **patients** and **doctors** - alias diabetologists - (**diabetologists** belonging to a common medical institute) who treat them.
+
+The system will allow doctors and patients to interact with regard to the details involved in managing the disease itself. The system will be coordinated by users identified as responsible for the telemedicine service, who will enter and subsequently manage the initial data of patients and doctors necessary for authentication, referred to below as **admins**.
+
+**CONTINUARE**
 
 There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
 
@@ -150,17 +159,17 @@ Andrea Pellizzari - andrea.pellizzari19024@gmail.com
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/lorenzogasparini/ProgettoIngegneriaSw.svg?style=for-the-badge
 [contributors-url]: https://github.com/lorenzogasparini/ProgettoIngegneriaSw/graphs/contributors
 
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-url]: [https://github.com/othneildrew/Best-README-Template](https://github.com/lorenzogasparini/ProgettoIngegneriaSw)/network/members
+[forks-shield]: https://img.shields.io/github/forks/lorenzogasparini/ProgettoIngegneriaSw.svg?style=for-the-badge
+[forks-url]: [https://github.com/lorenzogasparini/ProgettoIngegneriaSw](https://github.com/lorenzogasparini/ProgettoIngegneriaSw)/network/members
 
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
+[stars-shield]: https://img.shields.io/github/stars/lorenzogasparini/ProgettoIngegneriaSw.svg?style=for-the-badge
+[stars-url]: https://github.com/lorenzogasparini/ProgettoIngegneriaSw/stargazers
 
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
+[issues-shield]: https://img.shields.io/github/issues/lorenzogasparini/ProgettoIngegneriaSw.svg?style=for-the-badge
+[issues-url]: https://github.com/lorenzogasparini/ProgettoIngegneriaSw/issues
 
 [license-shield]: https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge
 [license-url]: https://github.com/lorenzogasparini/ProgettoIngegneriaSw/blob/main/LICENSE
