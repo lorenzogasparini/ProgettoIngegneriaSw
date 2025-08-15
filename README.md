@@ -109,19 +109,21 @@ _Di seguito sono indicate le istruzioni per l'installazione del sistema software
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+**INSERIRE ISTRUZIONI SULL'UTILIZZO E DOCUMENTAZIONE + IMMAGINI SISTEMA SOFTWARE IN UTILIZZO**
 
-_Per ulteriori informazioni rispetto l'utilizzo del sistema software consultare [Documentazione](https://example.com)_
+Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources. For further information on using or contributing the software system, please refer to [Documentation](https://github.com/lorenzogasparini/ProgettoIngegneriaSw/blob/main/doc/Documentazione.pdf) section.
+
+_Per ulteriori informazioni rispetto l'utilizzo del sistema software consultare [Documentazione](https://github.com/lorenzogasparini/ProgettoIngegneriaSw/blob/main/doc/Documentazione.pdf)_.
 
 <!-- ROADMAP -->
 ## Roadmap
 
-- [x] Progettazione e documentazione della fase di progettazione
-- [X] Fase di sviluppo
-- [X] Documentazione fase di sviluppo
+- [x] Design and documentation of the design phase
+- [X] Development phase
+- [X] Development phase documentation
 - [X] Testing
-- [X] Documentazione testing
-- [X] Rilascio
+- [X] Testing phase documentation
+- [X] Release
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -147,9 +149,9 @@ Don't forget to give the project a star! Thanks again!
 <!-- LICENSE -->
 ## License
 
-Distribuito sotto licenza MIT. Visualizza `LICENSE.txt` per ulteriori informazioni. 
 Distributed under MIT License. See `LICENSE.txt` for more information.
 
+_Distribuito sotto licenza MIT. Visualizza `LICENSE.txt` per ulteriori informazioni._
 <!-- CONTACT -->
 ## Contact
 
