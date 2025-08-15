@@ -55,8 +55,6 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-Elaborato conclusivo del corso di Ingegneria del Software per l'anno accademico 2024/2025.
-
 The project aims to supply a diabetes patients managing software platform (type 2 diabetes mellitus). 
 
 Diabetes is a chronic metabolic disease characterised by high blood glucose levels. The users of the system are therefore **patients** and **doctors** - alias diabetologists - (**diabetologists** belonging to a common medical institute) who treat them.
