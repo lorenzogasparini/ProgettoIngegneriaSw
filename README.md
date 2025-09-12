@@ -61,22 +61,28 @@ Diabetes is a chronic metabolic disease characterised by high blood glucose leve
 
 The system will allow doctors and patients to interact with regard to the details involved in managing the disease itself. The system will be coordinated by users identified as responsible for the telemedicine service, who will enter and subsequently manage the initial data of patients and doctors necessary for authentication, referred to below as **admins**.
 
-**CONTINUARE**
+Each doctor will be able to analyse and update the data of each patient authenticated in the system at any time (this data includes the patient's personal details and a brief medical history; furthermore, these changes can be analysed and managed by the service manager (admin). Any user who needs to interact with the system must be able to authenticate themselves. The actual creation of the system is the direct responsibility of the administrator users.
 
-There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
+The core functionality on which the system is based, as mentioned above, is the **management of details relating to the treatment** of the patient's conditions, linked to their history of type 2 diabetes: In fact, one of the basic functions provided by the system is the **management of blood glucose level measurements**, which may need to be taken several times a day. The system also allows the user to record other health-related data, such as weight, blood pressure, and heart rate, as well as to monitor the results of previous measurements. Once authenticated, the diabetologist will be able to **specify and manage the therapies prescribed** for patients in the system (either those under his care or general patients under the care of other doctors), where management means supervising the correct intake of medication and any symptoms experienced by the patient at any given time, who will clearly be able to interact with the system to view and enter this information. The system will have to **verify the safety and correctness of blood glucose levels** and compliance with the therapies assigned to it by an internal doctor, and **send a notification** in the event of situations that are not in line with the correct ones.
 
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should implement DRY principles to the rest of your life :smile:
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
+<div>
+  <p>
+    The product of the specification, design and documentation procedure, defined entirely in UML notation, is contained in its entirety in the document written in Italian and includes: <b>Use cases and UML specification</b>, <b>Sequence and interaction diagrams</b>, <b>Activity diagrams</b>, <b>Class diagrams</b>, as well as documentation of the <b>Software system design and development process</b> (containing: documentation relating to the application architecture, <b>architectural design</b>, <b>database design</b> (E/R schema, restructuring into SQL tables), <b>architectural patterns</b> and <b>design patterns</b>, as well as a description of some implementation details and the <b>process</b> (model and its implementation in the programming phase) <b>of software development</b>) and <b>Testing phase</b> (including: documentation of the unit testing operations used, as well as the test scenarios considered and the system release test).
+    <br />
+    <br />
+    <i>Il prodotto della procedura di specifica, progettazione e documentazione, definita completamente in notazione UML è integralmente contenuto nel documento redatto in lingua italiana e comprende: <b>Casi d'uso e specifica UML</b>, <b>Diagrammi di sequenza ed interazione</b>, <b>Diagrammi di attività</b>, <b>Diagramma delle classi</b>, nonchè documentazione del <b>Processo di progettazione e sviluppo del sistema software</b> (contenente: la documentazione relativa all'architettura dell'applicazione, la <b>progettazione architetturale</b>, la <b>progettazione della base di dati</b> (Schema E/R, ristrutturazione in tabelle SQL), <b>pattern architetturali</b> e <b>design pattern</b> nonchè la descrizione di alcuni dettagli implementativi e del <b>processo</b> (modello e sua attuazione in fase di programmazione) <b>di sviluppo software</b>) e <b>Fase di test</b> (comprendente: documentazione delle operazioni di Unit testing utilizzate, nonchè gli scenari di test considerati e il test di rilascio del sistema).</i>
+  </p>
+</div>
 
-Use the `BLANK_README.md` to get started.
+Please refer to the `doc/Documentazione.pdf` file for further information regarding documentation written in UML formalism.
+
+_Per ulteriori informazioni sulla documentazione redatta in formalismo UML, consultare il file `doc/Documentazione.pdf`._
 
 ### Built With
+The main libraries and the database system used for the development of the project are listed below.
 
-Di seguito si indicano le principali librerie, nonchè il sistema di database utilizzato per lo sviluppo del progetto.
+_Di seguito si indicano le principali librerie, nonchè il sistema di database utilizzato per lo sviluppo del progetto._
 
 * ![JavaFX](https://img.shields.io/badge/JavaFX-17.0.6-green?style=for-the-badge)
 * ![SQLite][sqlite-shield]
@@ -89,20 +95,21 @@ To get a local copy up and running follow these simple example steps.
 
 ### Installation
 
+Below are the instructions for installing the software system.
+
 _Di seguito sono indicate le istruzioni per l'installazione del sistema software._
 
-1. Setup dei prerequisiti, elencati nella sezione Build With.
-2. Clona la repo
+1. Set up the prerequisites listed in the 'Build With' section.
+2. Clone the repo:
    ```sh
    git clone https://github.com/lorenzogasparini/ProgettoIngegneriaSw
    ```
-3. Cambiare l'url remoto di git per evitare push accidentali al progetto base
+3. Change the remote URL of git to avoid accidental pushes to the base project:
    ```sh
    git remote set-url origin lorenzogasparini/ProgettoIngegneriaSw
    git remote -v # confirm the changes
    ```
-4. Setup delle module settings sulla base dei prerequisiti
-5.  Main.java
+4. Setup of module settings based on prerequisites.
 
 <!-- USAGE EXAMPLES -->
 ## Usage
