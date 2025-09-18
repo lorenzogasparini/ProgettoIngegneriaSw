@@ -115,10 +115,23 @@ _Di seguito sono indicate le istruzioni per l'installazione del sistema software
 ## Usage
 
 **INSERIRE ISTRUZIONI SULL'UTILIZZO E DOCUMENTAZIONE + IMMAGINI SISTEMA SOFTWARE IN UTILIZZO**
+Di seguito vengono forniti alcune 
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources. For further information on using or contributing the software system, please refer to [Documentation](https://github.com/lorenzogasparini/ProgettoIngegneriaSw/blob/main/doc/Documentazione.pdf) section.
+For further information on using the software system, please refer to [Documentation](https://github.com/lorenzogasparini/ProgettoIngegneriaSw/blob/main/doc/Documentazione.pdf) section.
 
 _Per ulteriori informazioni rispetto l'utilizzo del sistema software consultare [Documentazione](https://github.com/lorenzogasparini/ProgettoIngegneriaSw/blob/main/doc/Documentazione.pdf)_.
+
+<p align="center">
+  <img src="https://github.com/lorenzogasparini/ProgettoIngegneriaSw/blob/main/doc/demo/homepage.gif"/>
+</p>
+
+<p align="center">
+  <img src="https://github.com/lorenzogasparini/ProgettoIngegneriaSw/blob/main/doc/demo/userDemo.gif"/>
+</p>
+
+<p align="center">
+  <img src="https://github.com/lorenzogasparini/ProgettoIngegneriaSw/blob/main/doc/demo/doctorDemo.gif"/>
+</p>
 
 <!-- ROADMAP -->
 ## Roadmap
