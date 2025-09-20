@@ -113,24 +113,27 @@ _Di seguito sono indicate le istruzioni per l'installazione del sistema software
 
 <!-- USAGE EXAMPLES -->
 ## Usage
+Below are some demonstrations of how the software platform works, with regard to _client_ and _doctor_ use. Each demonstration refers to the respective user pages. For further information on using the software system, please refer to [Documentation](https://github.com/lorenzogasparini/ProgettoIngegneriaSw/blob/main/doc/Documentazione.pdf) section.
 
-**INSERIRE ISTRUZIONI SULL'UTILIZZO E DOCUMENTAZIONE + IMMAGINI SISTEMA SOFTWARE IN UTILIZZO**
-Di seguito vengono forniti alcune 
-
-For further information on using the software system, please refer to [Documentation](https://github.com/lorenzogasparini/ProgettoIngegneriaSw/blob/main/doc/Documentazione.pdf) section.
-
+_Di seguito vengono fornite alcune dimostrazioni del funzionamento della piattaforma software, rispetto all'utilizzo client, medico. Ogni dimostrazione si riferisce alle pagine rispettive degli utenti._
 _Per ulteriori informazioni rispetto l'utilizzo del sistema software consultare [Documentazione](https://github.com/lorenzogasparini/ProgettoIngegneriaSw/blob/main/doc/Documentazione.pdf)_.
 
 <p align="center">
   <img src="https://github.com/lorenzogasparini/ProgettoIngegneriaSw/blob/main/doc/demo/homepage.gif"/>
+  <br>
+  <em>Demonstration of the welcome screen, login screen, and homepage.</em>
 </p>
 
 <p align="center">
   <img src="https://github.com/lorenzogasparini/ProgettoIngegneriaSw/blob/main/doc/demo/userDemo.gif"/>
+  <br>
+  <em>Demonstration of the user's homepage, detection and therapies hangling pages.</em>
 </p>
 
 <p align="center">
   <img src="https://github.com/lorenzogasparini/ProgettoIngegneriaSw/blob/main/doc/demo/doctorDemo.gif"/>
+  <br>
+  <em>Demonstration of the doctor's homepage, doctor's therapie, alerts and detections handling pages.</em>
 </p>
 
 <!-- ROADMAP -->
